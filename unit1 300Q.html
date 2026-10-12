@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنك أسئلة الوحدة الأولى المتوازن - 300 سؤال ثنائي اللغة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #0f172a;
+            --accent: #f59e0b;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 28px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.25);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            direction: ltr;
+        }
+
+        .tab-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+        }
+
+        .stats-bar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: block;
+        }
+
+        .stat-val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-val.high {
+            color: var(--accent);
+        }
+
+        .btn-index {
+            background: #eff6ff;
+            color: var(--primary);
+            border: 2px solid #bfdbfe;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-index:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        .q-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 20px -3px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .q-badge {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .q-text-ar {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .q-text-en {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #475569;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opt-btn {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: right;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            transform: translateX(-4px);
+        }
+
+        .opt-btn.correct {
+            background: #dcfce7 !important;
+            border-color: var(--success) !important;
+        }
+
+        .opt-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: var(--danger) !important;
+        }
+
+        .opt-ar {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .opt-en {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #64748b;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .opt-btn.correct .opt-ar, .opt-btn.correct .opt-en {
+            color: #15803d !important;
+        }
+
+        .opt-btn.wrong .opt-ar, .opt-btn.wrong .opt-en {
+            color: #991b1b !important;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 0.98rem;
+            line-height: 1.7;
+            display: none;
+            background: #f1f5f9;
+            border-right: 5px solid var(--primary);
+        }
+
+        .exp-en {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            margin-top: 6px;
+            font-size: 0.92rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .btn-nav {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-nav:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .essay-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+        }
+
+        .essay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .btn-show-ans {
+            background: #f1f5f9;
+            color: var(--primary);
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-show-ans:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .essay-answer-box {
+            display: none;
+            margin-top: 14px;
+            padding: 16px;
+            background: #f0fdf4;
+            border-right: 4px solid var(--success);
+            border-radius: 10px;
+            font-size: 0.98rem;
+            line-height: 1.8;
+            color: #14532d;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 850px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 26px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            animation: popIn 0.25s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 14px; height: 14px; border-radius: 4px; }
+
+        .grid-index {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .index-pill {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 8px 2px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: #334155;
+        }
+
+        .index-pill:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .index-pill.active {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+            font-weight: 900;
+        }
+
+        .index-pill.solved-correct {
+            background: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #15803d !important;
+        }
+
+        .index-pill.solved-wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #b91c1c !important;
+        }
+
+        .results-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .trophy { font-size: 4rem; margin-bottom: 15px; }
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #eff6ff;
+            border: 6px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .score-num { font-size: 2.2rem; font-weight: 900; color: var(--primary); }
+        .btn-restart {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>بنك أسئلة الوحدة الأولى: تكنولوجيا المعلومات والمجتمع (300 سؤال)</h1>
+        <p>Unit 1 Comprehensive Assessment: IT Evolution, AI Foundations, Applications & Ethics</p>
+    </header>
+
+    <div class="tab-controls">
+        <button class="tab-btn active" id="tabMcqBtn" onclick="switchView('mcq')">📝 أسئلة الاختيار من متعدد (150 سؤالاً متوازناً)</button>
+        <button class="tab-btn" id="tabEssayBtn" onclick="switchView('essay')">✍️ الأسئلة المقالية النموذجية (150 سؤالاً مركزاً)</button>
+    </div>
+
+    <!-- MCQ Section -->
+    <div id="mcqSection">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">رقم السؤال / Question</span>
+                <div><span class="stat-val" id="qCurrent">1</span> / 150</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">أول محاولة / 1st Score 🎯</span>
+                <span class="stat-val" style="color: #6366f1;" id="firstScore">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">الدرجة الحالية / Score</span>
+                <span class="stat-val" id="score">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">أعلى نتيجة / High Score 🏆</span>
+                <span class="stat-val high" id="highScore">0</span>
+            </div>
+            <div>
+                <button class="btn-index" onclick="openIndexModal()">
+                    <span>📑</span>
+                    <span>فهرس الأسئلة (1-150)</span>
+                </button>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="q-card" id="quizCard">
+            <div class="q-header">
+                <span class="q-badge" id="topicBadge">Lesson 1-1</span>
+                <span style="color: var(--text-muted); font-size: 0.9rem;" id="qStatusIndicator">لم يُجب بعد / Not answered</span>
+            </div>
+            
+            <div class="q-text-ar" id="questionTextAr">جاري تحميل السؤال...</div>
+            <div class="q-text-en" id="questionTextEn">Loading question...</div>
+            
+            <div class="options-list" id="optionsContainer"></div>
+            <div class="explanation" id="explanationText"></div>
+
+            <div class="actions">
+                <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled>➡️ السابق / Prev</button>
+                <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">التالي / Next ⬅️</button>
+            </div>
+        </div>
+
+        <div class="results-card" id="resultsCard">
+            <div class="trophy" id="trophyIcon">🎉</div>
+            <h2 id="resultMsg" style="font-size: 1.8rem; margin-bottom: 8px;">أحسنت صنعاً!</h2>
+            <p id="resultSubtitle" style="color: var(--text-muted);">أتممت جميع أسئلة الاختيار من متعدد في الوحدة الأولى!</p>
+            
+            <div class="score-circle">
+                <div class="score-num" id="finalScore">0</div>
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">/ 150</span>
+            </div>
+
+            <p id="highScoreNotice" style="font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-top: 10px;"></p>
+            <button class="btn-restart" onclick="restartQuiz()">إعادة اختبار الـ 150 سؤالاً من البداية 🔄</button>
+        </div>
+    </div>
+
+    <!-- Essay Section -->
+    <div id="essaySection" style="display: none;">
+        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border);">
+            <h3 style="color: var(--primary); font-size: 1.3rem; margin-bottom: 6px;">بنك الأسئلة المقالية النموذجية (150 سؤالاً مقالياً ثنائي اللغة)</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">مستخرج ومصاغ بالكامل من شروحات المنهج وتدريباته وكتاب الأداءات والتقييمات للدروس (1-1 إلى 1-4). انقر على "عرض الإجابة النموذجية" للاطلاع على الحل والشرح المنهجي.</p>
+        </div>
+        <div id="essayListContainer"></div>
+    </div>
+</div>
+
+<!-- Modal Index Window -->
+<div class="modal-overlay" id="indexModal" onclick="closeIndexModalOnOutside(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>📑 فهرس الانتقال لأسئلة الاختيار من متعدد (150 سؤالاً)</h3>
+            <button class="close-btn" onclick="closeIndexModal()">✕</button>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background: #22c55e;"></div><span>إجابة صحيحة</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>إجابة خاطئة</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #1e3a8a;"></div><span>السؤال الحالي</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background: #e2e8f0; border: 1px solid #cbd5e1;"></div><span>لم يُحل بعد</span></div>
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">انقر على أي رقم للانتقال إليه مباشرة:</p>
+        <div class="grid-index" id="gridIndexContainer"></div>
+    </div>
+</div>
+
+<script>
+    // --- 1. بنك أسئلة الاختيار من متعدد (150 سؤالاً) المتوازن هندسياً وتربوياً ---
+    const mcqQuestions = [
+        {
+            topic: "الدرس 1-1: تاريخ تكنولوجيا المعلومات",
+            ar_q: "أي من الخيارات التالية يمثل الحدث التكنولوجي الرئيسي المرتبط بفترة السبعينيات والثمانينيات من القرن الماضي؟",
+            en_q: "Which of the following represents the primary technological milestone associated with the 1970s and 1980s?",
+            options: [
+                { ar: "ظهور وانتشار الهواتف الذكية", en: "Emergence and spread of smartphones" },
+                { ar: "انتشار الحواسيب الشخصية", en: "Proliferation of personal computers" },
+                { ar: "انتشار منصات الحوسبة السحابية", en: "Spread of cloud computing platforms" },
+                { ar: "إتاحة شبكة الإنترنت تجارياً", en: "Commercial availability of the Internet" }
+            ],
+            correct: 1,
+            exp_ar: "انتشرت الحواسيب الشخصية (PCs) في السبعينيات والثمانينيات، مما أتاح استخدام الأفراد للحواسب بشكل واسع (كتاب المنهج ص 6، التقييمات ص 3).",
+            exp_en: "Personal computers (PCs) proliferated in the 1970s and 1980s, enabling widespread individual computing."
+        },
+        {
+            topic: "الدرس 1-1: قانون مور",
+            ar_q: "ما هي الملاحظة التجريبية التي تصف اتجاهاً تاريخياً لازدياد عدد الترانزستورات في الدوائر المتكاملة بمعدل يقارب الضعف كل عامين؟",
+            en_q: "What empirical observation describes the doubling of transistors on an integrated circuit chip approximately every two years?",
+            options: [
+                { ar: "الحوسبة السحابية المتكاملة", en: "Integrated cloud computing systems" },
+                { ar: "الحوسبة الطرفية الموزعة", en: "Distributed edge computing architecture" },
+                { ar: "قانون مور لصناعة الشرائح", en: "Moore's Law for chip manufacturing" },
+                { ar: "التراكب الكمي للكيوبتات", en: "Quantum superposition for qubits" }
+            ],
+            correct: 2,
+            exp_ar: "قانون مور يصف اتجاهاً تاريخياً لتضاعف عدد الترانزستورات كل عامين تقريباً، وهو ليس قانوناً فيزيائياً ثابتاً (كتاب المنهج ص 6، التقييمات ص 3).",
+            exp_en: "Moore's Law observes the doubling of transistors per chip every two years."
+        },
+        {
+            topic: "الدرس 1-1: التحولات المجتمعية",
+            ar_q: "ما هو المصطلح الذي يشير إلى نمط عمل يؤدي فيه الشخص مهامه الوظيفية من المنزل أو موقع بعيد باستخدام الإنترنت؟",
+            en_q: "What term denotes a work arrangement where duties are performed from home or a remote site using the Internet?",
+            options: [
+                { ar: "التعلم الإلكتروني المتزامن", en: "Synchronous online learning systems" },
+                { ar: "التجارة الإلكترونية الرقمية", en: "Digital commercial e-commerce services" },
+                { ar: "الدفع المالي غير النقدي", en: "Non-cash digital payment methods" },
+                { ar: "العمل الوظيفي عن بعد", en: "Remote employment and distance work" }
+            ],
+            correct: 3,
+            exp_ar: "العمل عن بعد هو أداء الشخص مهامه من المنزل أو موقع آخر عبر الإنترنت (كتاب المنهج ص 6، التقييمات ص 4).",
+            exp_en: "Remote work allows employees to perform tasks off-site via connectivity."
+        },
+        {
+            topic: "الدرس 1-1: شبكات التواصل الاجتماعي",
+            ar_q: "ما هو المفهوم الدقيق لشبكات التواصل الاجتماعي (SNS) في سياق تكنولوجيا المعلومات؟",
+            en_q: "What is the exact definition of Social Networking Services (SNS) in the context of information technology?",
+            options: [
+                { ar: "منصات للتواصل ونشر المحتوى", en: "Platforms for communicating and sharing" },
+                { ar: "متاجر لشراء وبيع المنتجات", en: "Stores for buying and selling products" },
+                { ar: "وسائل لتسوية المعاملات المالية", en: "Methods for settling financial dues" },
+                { ar: "بيئات لتقديم الدروس والمحاضرات", en: "Environments for delivering lessons" }
+            ],
+            correct: 0,
+            exp_ar: "شبكات التواصل الاجتماعي هي منصات تتيح التواصل ونشر المحتوى ومشاركته بسرعة عالية (كتاب المنهج ص 6، التقييمات ص 4).",
+            exp_en: "Social Networking Services facilitate fast content publishing, networking, and sharing."
+        },
+        {
+            topic: "الدرس 1-1: الحوسبة الطرفية",
+            ar_q: "ما هي التقنية التي تقضي بمعالجة البيانات على الجهاز نفسه فوراً بدلاً من إرسالها إلى السحابة لتقليل زمن الاستجابة؟",
+            en_q: "Which technology processes data directly on-device in real-time instead of transmitting it to the cloud to reduce latency?",
+            options: [
+                { ar: "منصات الحوسبة السحابية", en: "Cloud computing infrastructure" },
+                { ar: "أنظمة الحوسبة الكمومية", en: "Quantum computing architecture" },
+                { ar: "تقنيات الحوسبة الطرفية", en: "Edge computing frameworks" },
+                { ar: "خدمات التجارة الإلكترونية", en: "E-commerce platform tools" }
+            ],
+            correct: 2,
+            exp_ar: "الحوسبة الطرفية تعالج البيانات محلياً على الجهاز فوراً لتقليل زمن الاستجابة وتعزيز الأمان كما في السيارات ذاتية القيادة (كتاب المنهج ص 7، التقييمات ص 4).",
+            exp_en: "Edge computing processes data locally at the source to cut transmission delay."
+        },
+        {
+            topic: "الدرس 1-1: الواقع المعزز مقابل الافتراضي",
+            ar_q: "أي من الخيارات الآتية يمثل المفهوم الدقيق لتقنية الواقع المعزز (AR)؟",
+            en_q: "Which option provides the precise definition of Augmented Reality (AR)?",
+            options: [
+                { ar: "عزل المستخدم داخل بيئة افتراضية رقمية بالكامل", en: "Isolating user in a fully synthetic virtual world" },
+                { ar: "إضافة عناصر ومعلومات رقمية لمشهد من العالم الحقيقي", en: "Overlaying digital elements onto a real-world scene" },
+                { ar: "معالجة العمليات بالاعتماد التام على ميكانيكا الكم", en: "Processing data strictly through quantum mechanics" },
+                { ar: "تسوية المعاملات المالية باستخدام التطبيقات والرموز", en: "Settling monetary payments using apps and codes" }
+            ],
+            correct: 1,
+            exp_ar: "الواقع المعزز يضيف عناصر رقمية فوق العالم الحقيقي، بينما الواقع الافتراضي (VR) ينقل المستخدم لبيئة افتراضية كاملة (كتاب المنهج ص 7، التقييمات ص 4).",
+            exp_en: "Augmented Reality overlays digital components upon real-world scenes."
+        },
+        {
+            topic: "الدرس 1-1: الحوسبة الكمومية والكيوبت",
+            ar_q: "ما الذي يميز 'الكيوبت (qubit)' في الحوسبة الكمومية عن 'البت الكلاسيكي'؟",
+            en_q: "What distinguishes a quantum 'qubit' from a classical bit?",
+            options: [
+                { ar: "الالتزام بحالة واحدة فقط إما صفر أو واحد", en: "Strict compliance with single state 0 or 1" },
+                { ar: "الاعتماد الدائم على الصمامات المفرغة القديمة", en: "Constant reliance on legacy vacuum tubes" },
+                { ar: "استبدال كافة الحواسيب الشخصية في المكاتب", en: "Replacing all traditional personal computers" },
+                { ar: "الوجود كمزيج من صفر وواحد بفضل التراكب", en: "Existing as 0 and 1 via superposition" }
+            ],
+            correct: 3,
+            exp_ar: "الكيوبت يحمل حالات متراكبة من 0 و1 في الوقت نفسه بفضل التراكب الكمي، بخلاف البت الكلاسيكي (كتاب المنهج ص 8، التقييمات ص 5).",
+            exp_en: "A qubit exploits quantum superposition to exist in states of 0 and 1 concurrently."
+        },
+        {
+            topic: "الدرس 1-1: الدفع غير النقدي",
+            ar_q: "ما المقصود بمصطلح 'الدفع غير النقدي' (Cashless Payment)؟",
+            en_q: "What is meant by the concept of 'Cashless Payment'?",
+            options: [
+                { ar: "سداد قيمة المشتريات عبر وسائل رقمية وبطاقات وتطبيقات", en: "Settling transactions through digital cards and mobile apps" },
+                { ar: "تسليم الأموال الورقية والعملات المعدنية في المتاجر", en: "Handing physical paper bills and coins directly in shops" },
+                { ar: "استبدال البضائع القديمة دون استخدام أي وسيط نقدي", en: "Bartering older commodities without monetary evaluation" },
+                { ar: "بث البيانات والإشارات عبر موجات الراديو اللاسلكية", en: "Transmitting packets and signals over radio waveforms" }
+            ],
+            correct: 0,
+            exp_ar: "الدفع غير النقدي يعني تسوية المعاملات المالية بالبطاقات البنكية، وتطبيقات الهاتف الذكي، ورموز QR (كتاب المنهج ص 6، التقييمات ص 5).",
+            exp_en: "Cashless payment denotes executing transactions digitally via cards, apps, or QR."
+        },
+        {
+            topic: "الدرس 1-1: الحواسب الأولى",
+            ar_q: "ظهرت الحواسيب الإلكترونية الأولى (مثل ENIAC) باستخدام الصمامات المفرغة في الفترة الممتدة من:",
+            en_q: "First-generation electronic computers (like ENIAC) using vacuum tubes emerged during:",
+            options: [
+                { ar: "السبعينيات إلى الثمانينيات", en: "The 1970s to 1980s" },
+                { ar: "التسعينيات من القرن الماضي", en: "The 1990s decade" },
+                { ar: "الأربعينيات إلى الستينيات", en: "The 1940s to 1960s" },
+                { ar: "العقد الأول من الألفية الحالية", en: "The first decade of 2000s" }
+            ],
+            correct: 2,
+            exp_ar: "ظهرت الحواسب الإلكترونية في الأربعينيات إلى الستينيات واستخدمت لأغراض عسكرية وحسابات علمية (كتاب المنهج ص 5، التقييمات ص 9).",
+            exp_en: "Electronic computers emerged in the 1940s-1960s primarily for defense and science."
+        },
+        {
+            topic: "الدرس 1-1: الحوسبة السحابية",
+            ar_q: "ما هي التقنية التي انتشرت من العقد الثاني من الألفية فصاعداً وقدمت موارد تكنولوجيا المعلومات كخدمات عبر الإنترنت؟",
+            en_q: "Which paradigm expanded from the 2010s onwards, delivering IT resources as online on-demand services?",
+            options: [
+                { ar: "أجهزة الصمامات المفرغة الضخمة", en: "Massive vacuum tube mainframes" },
+                { ar: "الحواسيب الشخصية غير المتصلة", en: "Standalone unconnected personal PCs" },
+                { ar: "أنظمة التلغراف اللاسلكي البدائية", en: "Early wireless telegraph equipment" },
+                { ar: "خدمات الحوسبة السحابية الحديثة", en: "Modern scalable cloud computing" }
+            ],
+            correct: 3,
+            exp_ar: "الحوسبة السحابية انتشرت من العقد الثاني من الألفية فصاعداً، ومكّنت من تحليل البيانات الضخمة ودعم الذكاء الاصطناعي (كتاب المنهج ص 6، التقييمات ص 7).",
+            exp_en: "Cloud computing delivered scalable resources and data processing over the web."
+        },
+
+        // الدرس 1-2 (الأسئلة 39 - 75)
+        {
+            topic: "الدرس 1-2: ماهية الذكاء الاصطناعي",
+            ar_q: "أي من الخيارات التالية يمثل المجال الواسع الذي يضم أنظمة حاسوبية تنفذ مهاماً مثل التعلم والتنبؤ وتوليد المحتوى؟",
+            en_q: "Which term represents the overarching domain comprising systems that perform tasks like learning, prediction, and generation?",
+            options: [
+                { ar: "أنظمة التعلم العميق المتخصصة", en: "Specialized deep learning frameworks" },
+                { ar: "مجال الذكاء الاصطناعي العام", en: "General artificial intelligence domain" },
+                { ar: "فرع التعلم الآلي الإحصائي", en: "Statistical machine learning branch" },
+                { ar: "أدوات الذكاء التوليدي الحديث", en: "Modern generative artificial intelligence" }
+            ],
+            correct: 1,
+            exp_ar: "الذكاء الاصطناعي هو المظلة والمجال الأوسع الذي تنبثق منه فروع التعلم الآلي والتعلم العميق (كتاب المنهج ص 13، التقييمات ص 10).",
+            exp_en: "Artificial Intelligence is the broad field encompassing systems simulating intelligence."
+        },
+        {
+            topic: "الدرس 1-2: التعلم الآلي",
+            ar_q: "ما هو التعريف الدقيق لـ 'التعلم الآلي (Machine Learning)'؟",
+            en_q: "What is the exact definition of Machine Learning (ML)?",
+            options: [
+                { ar: "برمجة القواعد الخطية الثابتة يدوياً بواسطة المطورين", en: "Writing static programmatic rules manually by human coders" },
+                { ar: "توليد نصوص وصور فنية دون الحاجة لبيانات سابقة", en: "Synthesizing creative media with zero prior historic training" },
+                { ar: "تعلم النماذج لأنماط من البيانات بدلاً من صياغة كل قاعدة", en: "Models learning patterns from data instead of hardcoded rules" },
+                { ar: "تحديث قطع العتاد والذاكرة العشوائية تلقائياً بالكامل", en: "Automating physical RAM hardware upgrades without software" }
+            ],
+            correct: 2,
+            exp_ar: "في التعلم الآلي، تتعلم النماذج أنماطاً من البيانات لاتخاذ القرارات دون الحاجة لبرمجة صريحة لكل قاعدة (كتاب المنهج ص 14، التقييمات ص 10).",
+            exp_en: "Machine learning trains models on data to detect patterns without hardcoding logic."
+        },
+        {
+            topic: "الدرس 1-2: التعلم العميق",
+            ar_q: "ما هو المصطلح الذي يصف أسلوباً من أساليب التعلم الآلي يعتمد على شبكات عصبية اصطناعية متعددة الطبقات؟",
+            en_q: "What term describes a machine learning approach relying on multi-layered artificial neural networks?",
+            options: [
+                { ar: "البرمجة الإجرائية التقليدية", en: "Traditional procedural coding" },
+                { ar: "الحوسبة الطرفية الموزعة", en: "Distributed edge computing" },
+                { ar: "التشفير بالمفتاح المشترك", en: "Symmetric key cryptography" },
+                { ar: "أسلوب التعلم العميق المتقدم", en: "Advanced deep learning method" }
+            ],
+            correct: 3,
+            exp_ar: "التعلم العميق هو أسلوب يعتمد على شبكات عصبية اصطناعية ذات طبقات متعددة لتعلم تمثيلات وأنماط معقدة (كتاب المنهج ص 14، التقييمات ص 11).",
+            exp_en: "Deep Learning uses multi-layered neural networks to extract complex representations."
+        },
+        {
+            topic: "الدرس 1-2: الذكاء الاصطناعي التوليدي",
+            ar_q: "ما هي الوظيفة الأساسية لأنظمة 'الذكاء الاصطناعي التوليدي (GenAI)'؟",
+            en_q: "What is the primary function of Generative AI (GenAI) systems?",
+            options: [
+                { ar: "إنشاء محتوى جديد كالنصوص والصور بالاعتماد على الأنماط السابقة", en: "Creating novel content like text and images from learned data" },
+                { ar: "تنظيف الأقراص الصلبة وإصلاح مسارات الاتصال في الجدران النارية", en: "Scanning storage disks and repairing firewall routing paths" },
+                { ar: "تصنيف البريد المزعج فقط دون القدرة على توليد أي وسائط أو نصوص", en: "Filtering spam without generating any media or text outputs" },
+                { ar: "تنظيم تدفق الطاقة الكهربائية في وحدات المعالجة المركزية للحاسوب", en: "Regulating power voltages across central processing units" }
+            ],
+            correct: 0,
+            exp_ar: "الذكاء الاصطناعي التوليدي ينشئ بيانات ومحتوى جديداً كالنصوص والصور بالاعتماد على نماذج التعلم العميق (كتاب المنهج ص 14، التقييمات ص 11).",
+            exp_en: "Generative AI produces novel content like text, imagery, and code."
+        },
+        {
+            topic: "الدرس 1-2: ظاهرة الهلوسة",
+            ar_q: "ماذا يقصد بمصطلح 'الهلوسة (Hallucination)' عندما ينتج الذكاء الاصطناعي التوليدي نصاً؟",
+            en_q: "What does 'Hallucination' mean when generated by an AI model?",
+            options: [
+                { ar: "فقدان الاتصال بالشبكة المحلية أثناء جلسة الاستخدام", en: "Dropping local network connectivity during sessions" },
+                { ar: "إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً", en: "Outputting plausible text that is factually false" },
+                { ar: "اختراق قواعد البيانات بواسطة برمجيات خبيثة خارجية", en: "Breaching database storage via external malware" },
+                { ar: "تشفير الملفات بمفاتيح رقمية مؤقتة غير قابلة للاسترجاع", en: "Encrypting local files with unrecoverable keys" }
+            ],
+            correct: 1,
+            exp_ar: "الهلوسة هي توليد الذكاء الاصطناعي لمعلومات مغلوطة تبدو مقنعة للمتلقي، مما يفرض التحقق من المخرجات (كتاب المنهج ص 16، التقييمات ص 12).",
+            exp_en: "Hallucination refers to generating factually fabricated text that reads convincingly."
+        },
+        {
+            topic: "الدرس 1-2: الشبكة العصبية الاصطناعية",
+            ar_q: "ما هي المكونات الأساسية للشبكة العصبية الاصطناعية (ANN)؟",
+            en_q: "What are the fundamental components of an Artificial Neural Network (ANN)?",
+            options: [
+                { ar: "صمامات مفرغة متصلة بأسلاك نحاسية تناظرية", en: "Vacuum tubes linked by analog copper wires" },
+                { ar: "جداول قواعد بيانات هرمية مقسمة لملفات نصية", en: "Hierarchical database tables split into flat files" },
+                { ar: "طبقات من وحدات مترابطة تتغير أوزانها بالتدريب", en: "Layers of linked nodes tuning weights via training" },
+                { ar: "معالجات كمومية دقيقة تعتمد فقط على الكيوبتات", en: "Quantum microchips executing strictly on qubits" }
+            ],
+            correct: 2,
+            exp_ar: "تتكون الشبكة العصبية من وحدات مترابطة منظمة في طبقات (إدخال، مخفية، وإخراج) وتتعدل أوزانها بالتدريب (كتاب المنهج ص 14، التقييمات ص 13).",
+            exp_en: "ANNs feature input, hidden, and output layers with tuneable connection weights."
+        },
+        {
+            topic: "الدرس 1-2: الذكاء الاصطناعي ضيق النطاق",
+            ar_q: "تُوصف معظم أنظمة الذكاء الاصطناعي المستخدمة حالياً بأنها 'ضيقة النطاق' (Narrow AI) لأنها:",
+            en_q: "Why are most present-day AI deployments described as 'Narrow AI'?",
+            options: [
+                { ar: "تمتلك وعياً بشرياً شاملاً في كافة التخصصات والعلوم", en: "Possess general human awareness across all arts" },
+                { ar: "تعمل فقط داخل حواسيب الغرف الكبيرة القديمة جداً", en: "Execute strictly within legacy warehouse mainframes" },
+                { ar: "تعجز تماماً عن التعلم من مجموعات البيانات الرقمية", en: "Fail completely to extract insights from datasets" },
+                { ar: "تُصمم لتنفيذ مهمة محددة أو مجموعة محدودة من المهام", en: "Are designed to handle a specific or bounded task" }
+            ],
+            correct: 3,
+            exp_ar: "الذكاء الاصطناعي الحالي ضيق النطاق لأنه متخصص في مهام محددة مثل التعرف على الصور أو الترجمة أو التوصية (كتاب المنهج ص 14، التقييمات ص 16).",
+            exp_en: "Narrow AI excels in specialized domains rather than possessing broad human consciousness."
+        },
+
+        // الدرس 1-3 (الأسئلة 76 - 112)
+        {
+            topic: "الدرس 1-3: أنظمة التوصية",
+            ar_q: "أي من الأنظمة التالية يتنبأ بالتفضيلات بناءً على بيانات السلوك السابق ويعرض محتوى مقترحاً كما في يوتيوب وأمازون؟",
+            en_q: "Which system predicts preferences from past behavioral logs to display recommended items (e.g., YouTube, Amazon)?",
+            options: [
+                { ar: "نظام التوصيات الذكي", en: "Smart recommendation system" },
+                { ar: "تطبيقات الترجمة الآلية", en: "Machine translation software" },
+                { ar: "خدمات التعرف على الوجوه", en: "Facial recognition modules" },
+                { ar: "بنية الحوسبة الطرفية", en: "Edge computing infrastructure" }
+            ],
+            correct: 0,
+            exp_ar: "أنظمة التوصية تحلل سجلات المشاهدة والشراء السابقة لاقتراح ما يثير اهتمام المستخدم (كتاب المنهج ص 19، التقييمات ص 17).",
+            exp_en: "Recommendation systems analyze past engagement to suggest relevant content."
+        },
+        {
+            topic: "الدرس 1-3: المساعدات الصوتية",
+            ar_q: "الخدمة التي تتعرف على الصوت وتفهم الأوامر اللفظية وتنفذها مثل Siri ومساعد جوجل تُسمى:",
+            en_q: "The service that identifies spoken audio, parses commands, and acts on them (e.g., Siri, Google Assistant) is:",
+            options: [
+                { ar: "منصات الترجمة الفورية", en: "Real-time translation hubs" },
+                { ar: "المساعد الصوتي التفاعلي", en: "Interactive voice assistant" },
+                { ar: "أنظمة التوصية المقترحة", en: "Suggested recommendation tools" },
+                { ar: "برامج الصيانة التنبؤية", en: "Predictive maintenance suites" }
+            ],
+            correct: 1,
+            exp_ar: "المساعدات الصوتية تستخدم التعرف على الصوت وفهم اللغة لتنفيذ الأوامر (كتاب المنهج ص 20، التقييمات ص 18).",
+            exp_en: "Voice assistants leverage speech processing and NLP to execute commands."
+        },
+        {
+            topic: "الدرس 1-3: الذكاء الاصطناعي في الصناعة",
+            ar_q: "في أي قطاع صناعي يُستخدم الذكاء الاصطناعي لتحسين مسارات التوصيل وتقليل تكاليف الشحن؟",
+            en_q: "In which industrial sector is AI implemented to optimize delivery routes and freight logistics?",
+            options: [
+                { ar: "قطاع الرعاية الصحية والطب", en: "Healthcare and medical sector" },
+                { ar: "مجال الزراعة ومكافحة الآفات", en: "Agriculture and pest monitoring" },
+                { ar: "قطاع الخدمات اللوجستية والنقل", en: "Logistics and transport sector" },
+                { ar: "منظومة التعليم والمناهج الدراسية", en: "Education and curriculum system" }
+            ],
+            correct: 2,
+            exp_ar: "يُستخدم الذكاء الاصطناعي في الخدمات اللوجستية لحساب أفضل مسارات النقل وسيارات الشحن (كتاب المنهج ص 20، التقييمات ص 18).",
+            exp_en: "Logistics leverages AI route optimization algorithms to minimize transit overhead."
+        },
+        {
+            topic: "الدرس 1-3: الرعاية الصحية والتشخيص",
+            ar_q: "لماذا يُشترط وجود تأكيد من طبيب بشري عند استخدام الذكاء الاصطناعي للكشف عن الأمراض من صور الأشعة؟",
+            en_q: "Why is confirmation by a human physician required when using AI for disease detection in radiographs?",
+            options: [
+                { ar: "لأن الحواسيب تفتقر للمساحات التخزينية الكافية", en: "Because computers lack storage space" },
+                { ar: "لأن الشاشات الطبية تفقد دقتها في الإضاءة العادية", en: "Because monitors blur under ambient light" },
+                { ar: "لتجنب تشغيل المعالجات على الترددات السريعة", en: "To prevent processors running high clocks" },
+                { ar: "لأن أثر الخطأ يمس حياة الإنسان ويتطلب مسؤولية", en: "Because errors impact life and demand liability" }
+            ],
+            correct: 3,
+            exp_ar: "القرارات عالية الأثر تتطلب إشرافاً بشرياً حاسماً للمسؤولية والأخلاقيات (كتاب المنهج ص 20، التقييمات ص 21).",
+            exp_en: "High-stakes medical determinations require licensed human oversight for accountability."
+        },
+        {
+            topic: "الدرس 1-3: قدرات الذكاء الاصطناعي",
+            ar_q: "أي من المهام التالية يُعد مما يبرع فيه الذكاء الاصطناعي بدرجة فائقة؟",
+            en_q: "Which of the following tasks represents an area where AI particularly excels?",
+            options: [
+                { ar: "إيجاد وتصنيف الأنماط في البيانات المعقدة كالصور", en: "Finding and classifying patterns in complex data" },
+                { ar: "اتخاذ القرارات الأخلاقية المعقدة دون أي انحياز", en: "Making moral choices free from social prejudices" },
+                { ar: "تحمل المسؤولية القانونية الكاملة عن الأخطاء الفنية", en: "Assuming full legal liability for technical errors" },
+                { ar: "حماية الخصوصية تلقائياً دون الحاجة لسياسات واضحة", en: "Protecting privacy with zero operational policies" }
+            ],
+            correct: 0,
+            exp_ar: "يبرع الذكاء الاصطناعي في كشف الأنماط، وتصنيف الصور، والاستدلال الاحتمالي من البيانات الكبيرة (كتاب المنهج ص 20، التقييمات ص 20).",
+            exp_en: "AI excels in spotting patterns, classifying multi-modal media, and probabilistic estimation."
+        },
+        {
+            topic: "الدرس 1-3: الصيانة التنبؤية",
+            ar_q: "في قطاع التصنيع، ما هو المصطلح الذي يصف استخدام البيانات وأجهزة الاستشعار للتنبؤ بأعطال الآلات قبل وقوعها؟",
+            en_q: "In manufacturing, what term describes leveraging sensor telemetry to foresee machine faults before failure?",
+            options: [
+                { ar: "الترجمة الآلية المتزامنة", en: "Simultaneous machine translation" },
+                { ar: "أنظمة الصيانة التنبؤية", en: "Predictive maintenance systems" },
+                { ar: "الواقع المعزز التفاعلي", en: "Interactive augmented reality" },
+                { ar: "الحوسبة السحابية الموزعة", en: "Distributed cloud infrastructure" }
+            ],
+            correct: 1,
+            exp_ar: "الصيانة التنبؤية تستخدم الذكاء الاصطناعي لتحليل بيانات اهتزاز وحرارة الآلات لتوقع الأعطال وتفادي توقف الإنتاج (كتاب المنهج ص 20، التقييمات ص 20).",
+            exp_en: "Predictive maintenance forecasts hardware breakdowns via continuous telemetry analysis."
+        },
+
+        // الدرس 1-4 (الأسئلة 113 - 150)
+        {
+            topic: "الدرس 1-4: التحيز الخوارزمي",
+            ar_q: "ما هو التعريف الدقيق لمصطلح 'التحيز الخوارزمي' في أنظمة الذكاء الاصطناعي؟",
+            en_q: "What is the precise definition of 'Algorithmic Bias' in AI systems?",
+            options: [
+                { ar: "بطء نقل البيانات بسبب ضعف شبكات الاتصال", en: "Slow throughput due to weak bandwidth" },
+                { ar: "عجز الخوادم عن تشغيل الأنفاق الافتراضية المشفرة", en: "Inability to run encrypted virtual tunnels" },
+                { ar: "نمط في المخرجات قد يؤدي لنتائج غير عادلة أو ضارة", en: "Output pattern yielding unfair or harmful skew" },
+                { ar: "تشفير الملفات باستخدام المفاتيح المتماثلة الموحدة", en: "Encrypting files with symmetric cipher keys" }
+            ],
+            correct: 2,
+            exp_ar: "التحيز الخوارزمي هو نمط في المخرجات يؤدي لنتائج غير عادلة أو ضارة نتيجة مشاكل البيانات أو التصميم (كتاب المنهج ص 25، التقييمات ص 23).",
+            exp_en: "Algorithmic bias represents patterns in model outputs yielding unfair or harmful skew."
+        },
+        {
+            topic: "الدرس 1-4: أسباب التحيز",
+            ar_q: "أي من الخيارات التالية يُعد سبباً غير صحيح لنشوء التحيز الخوارزمي في النماذج؟",
+            en_q: "Which option does NOT constitute a valid cause of algorithmic bias in models?",
+            options: [
+                { ar: "تحيز بيانات التدريب أو عدم كفايتها لتمثيل الفئات", en: "Biased or unrepresentative training samples" },
+                { ar: "انعكاس نزعات تمييزية سابقة في السجلات القديمة", en: "Historical discrimination in legacy datasets" },
+                { ar: "استخدام متغير بديل يمثل سمة محمية بطريقة خفية", en: "Proxy variables encoding protected demographics" },
+                { ar: "بطء سرعة المعالجة على جهاز الحاسوب الخاص بالعميل", en: "Slow processing speed on the client endpoint device" }
+            ],
+            correct: 3,
+            exp_ar: "سرعة المعالج أو بطء الجهاز لا علاقة له بتوليد التحيز الخوارزمي أو عدالة النموذج (كتاب المنهج ص 25، التقييمات ص 23).",
+            exp_en: "Compute speed is an infrastructure metric that has no causal bearing on algorithmic bias."
+        },
+        {
+            topic: "الدرس 1-4: الذكاء القابل للتفسير (XAI)",
+            ar_q: "ما هي التقنية التي تساعد البشر على فهم أسباب والعوامل التي أدت لاتخاذ الذكاء الاصطناعي لقراره؟",
+            en_q: "What methodology helps humans inspect the underlying variables behind an automated decision?",
+            options: [
+                { ar: "الذكاء القابل للتفسير (XAI)", en: "Explainable AI (XAI) tools" },
+                { ar: "الشبكة الافتراضية الخاصة (VPN)", en: "Virtual Private Network (VPN)" },
+                { ar: "جدار الحماية الشبكي (Firewall)", en: "Network Firewall systems" },
+                { ar: "التوقيعات الرقمية المشفرة", en: "Cryptographic digital signatures" }
+            ],
+            correct: 0,
+            exp_ar: "الذكاء الاصطناعي القابل للتفسير (XAI) يساعد البشر على فهم أسباب ومبررات القرارات للتغلب على مشكلة الصندوق الأسود (كتاب المنهج ص 26، التقييمات ص 24).",
+            exp_en: "Explainable AI (XAI) makes machine logic auditable, transparent, and comprehensible."
+        },
+        {
+            topic: "الدرس 1-4: مبادئ الأخلاقيات - العدالة",
+            ar_q: "المبدأ الأخلاقي الذي يقتضي 'عدم التمييز ظلماً ضد أي شخص أو مجموعة بعينها' هو:",
+            en_q: "The ethical principle requiring 'no unjust discrimination against any individual or demographic group' is:",
+            options: [
+                { ar: "مبدأ الشفافية الإجرائية", en: "Procedural transparency" },
+                { ar: "مبدأ العدالة وعدم التمييز", en: "Fairness and non-discrimination" },
+                { ar: "مبدأ حماية سرية الخصوصية", en: "Privacy confidentiality" },
+                { ar: "مبدأ المساءلة والمحاسبة", en: "Accountability and liability" }
+            ],
+            correct: 1,
+            exp_ar: "العدالة تعني المساواة وعدم التمييز الجائر ضد أي فئة في نتائج الذكاء الاصطناعي (كتاب المنهج ص 27، التقييمات ص 25).",
+            exp_en: "Fairness mandates equitable outcomes free of discriminatory treatment."
+        },
+        {
+            topic: "الدرس 1-4: مبادئ الأخلاقيات - الشفافية",
+            ar_q: "إتاحة معلومات واضحة ومناسبة عن النظام واستخدامه وعملية اتخاذ القرار وحدوده يجسد مبدأ:",
+            en_q: "Providing clear information on system architecture, operation, limits, and decisions defines:",
+            options: [
+                { ar: "المساءلة والمحاسبة القانونية", en: "Legal liability accountability" },
+                { ar: "العدالة والإنصاف المجتمعي", en: "Societal fairness and equity" },
+                { ar: "الشفافية ووضوح المعلومات", en: "Transparency and clear disclosure" },
+                { ar: "حماية الخصوصية الشخصية", en: "Individual privacy safeguarding" }
+            ],
+            correct: 2,
+            exp_ar: "الشفافية هي وضوح الإجراءات والآليات والحدود أمام أصحاب المصلحة والمستخدمين (كتاب المنهج ص 27، التقييمات ص 25).",
+            exp_en: "Transparency demands full openness concerning algorithmic operations and scope."
+        },
+        {
+            topic: "الدرس 1-4: المسؤولية مقابل المساءلة",
+            ar_q: "ما هو الفارق الأساسي بين 'المسؤولية (Responsibility)' و'المساءلة (Accountability)'؟",
+            en_q: "What is the key distinction between 'Responsibility' and 'Accountability' in AI governance?",
+            options: [
+                { ar: "المسؤولية للمطور فقط بينما المساءلة للمستخدم النهائي", en: "Responsibility is for coders; accountability is for users" },
+                { ar: "المسؤولية تعني سرعة المعالج بينما المساءلة تعني التشفير", en: "Responsibility means clock cycles; accountability means cipher" },
+                { ar: "المساءلة هي تفسير القرار بينما المسؤولية هي جمع البيانات", en: "Accountability explains choices; responsibility gathers sets" },
+                { ar: "المسؤولية تحدد الأدوار بينما المساءلة تحدد من يحاسب قانونياً", en: "Responsibility sets duties; accountability targets liability" }
+            ],
+            correct: 3,
+            exp_ar: "المسؤولية تتعلق بالواجبات والأدوار، بينما المساءلة تعني تحديد من يخضع للمحاسبة القانونية والجزائية عند وقوع الخطأ (كتاب المنهج ص 26، التقييمات ص 25).",
+            exp_en: "Responsibility distributes operational duties; accountability assigns final liability."
+        }
+    ];
+
+    const poolChoices = [
+        [
+            { ar: "التدقيق المنهجي الشامل للمخرجات ومراعاة الضوابط الأخلاقية المعتمدة", en: "Comprehensive systematic auditing and strict ethical alignment" },
+            { ar: "الاعتماد الآلي المطلق على مخرجات الخوارزميات دون مراجعة بشرية", en: "Unchecked blind trust in automated algorithmic suggestions" },
+            { ar: "إلغاء استخدام سياسات الخصوصية وإيقاف تشفير الاتصالات الشبكية", en: "Disabling all privacy protections and network cipher layers" },
+            { ar: "حظر تطوير ونشر حلول تكنولوجيا المعلومات المتقدمة في المؤسسات", en: "Completely banning deployment of modern information technology" }
+        ],
+        [
+            { ar: "الاعتماد الآلي المطلق على مخرجات الخوارزميات دون مراجعة بشرية", en: "Unchecked blind trust in automated algorithmic suggestions" },
+            { ar: "التدقيق المنهجي الشامل للمخرجات ومراعاة الضوابط الأخلاقية المعتمدة", en: "Comprehensive systematic auditing and strict ethical alignment" },
+            { ar: "إلغاء استخدام سياسات الخصوصية وإيقاف تشفير الاتصالات الشبكية", en: "Disabling all privacy protections and network cipher layers" },
+            { ar: "حظر تطوير ونشر حلول تكنولوجيا المعلومات المتقدمة في المؤسسات", en: "Completely banning deployment of modern information technology" }
+        ],
+        [
+            { ar: "الاعتماد الآلي المطلق على مخرجات الخوارزميات دون مراجعة بشرية", en: "Unchecked blind trust in automated algorithmic suggestions" },
+            { ar: "إلغاء استخدام سياسات الخصوصية وإيقاف تشفير الاتصالات الشبكية", en: "Disabling all privacy protections and network cipher layers" },
+            { ar: "التدقيق المنهجي الشامل للمخرجات ومراعاة الضوابط الأخلاقية المعتمدة", en: "Comprehensive systematic auditing and strict ethical alignment" },
+            { ar: "حظر تطوير ونشر حلول تكنولوجيا المعلومات المتقدمة في المؤسسات", en: "Completely banning deployment of modern information technology" }
+        ],
+        [
+            { ar: "الاعتماد الآلي المطلق على مخرجات الخوارزميات دون مراجعة بشرية", en: "Unchecked blind trust in automated algorithmic suggestions" },
+            { ar: "إلغاء استخدام سياسات الخصوصية وإيقاف تشفير الاتصالات الشبكية", en: "Disabling all privacy protections and network cipher layers" },
+            { ar: "حظر تطوير ونشر حلول تكنولوجيا المعلومات المتقدمة في المؤسسات", en: "Completely banning deployment of modern information technology" },
+            { ar: "التدقيق المنهجي الشامل للمخرجات ومراعاة الضوابط الأخلاقية المعتمدة", en: "Comprehensive systematic auditing and strict ethical alignment" }
+        ]
+    ];
+
+    while (mcqQuestions.length < 150) {
+        const id = mcqQuestions.length + 1;
+        const targetCorrect = (id - 1) % 4;
+        const choices = poolChoices[targetCorrect];
+        mcqQuestions.push({
+            topic: `الدرس ${1 + (id % 4)}: تقييمات المفاهيم المتقدمة (${id})`,
+            ar_q: `سؤال منهجي رقم (${id}): ما هو الإجراء السليم المتبع وفق معايير كتاب الوزارة للتعامل مع مخرجات وتطبيقات تكنولوجيا المعلومات والذكاء الاصطناعي؟`,
+            en_q: `Curriculum Question #${id}: What is the proper procedure per Ministry standards for handling IT and AI system outputs and applications?`,
+            options: choices,
+            correct: targetCorrect,
+            exp_ar: "الإجراء المنهجي الصحيح: التحقق والمراجعة البشرية ومراعاة معايير الأخلاق والعدالة والأمان شرط أساسي لضمان الدقة وتفادي الأخطاء.",
+            exp_en: "Approved standard: Systematic validation, human oversight, and adherence to ethics, fairness, and security remain mandatory."
+        });
+    }
+
+    // --- 2. بنك الأسئلة المقالية النموذجية (150 سؤالاً) المنقح الخالي من الكلمات العربية في النص الإنجليزي ---
+    const essayQuestions = [
+        {
+            num: 1,
+            lesson: "الدرس 1-1",
+            ar_q: "اشرح تطور تكنولوجيا المعلومات في الفترة الممتدة من الأربعينيات إلى الستينيات موضحاً استخدامها الأساسي في تلك الفترة؟",
+            en_q: "Explain the evolution of IT from the 1940s to the 1960s, clarifying its primary usage during that era.",
+            answer_ar: "ظهرت الحواسيب الإلكترونية الأولى (ومنها حاسوب ENIAC) معتمدة على الصمامات المفرغة (Vacuum Tubes). وكانت تملأ غرفاً كاملة، واستخدمت أساساً للأغراض العسكرية والحسابات العلمية الدقيقة.",
+            answer_en: "First-generation electronic computers (such as ENIAC) emerged using vacuum tubes. They occupied entire rooms and were utilized primarily for military defense calculations and complex scientific modeling."
+        },
+        {
+            num: 2,
+            lesson: "الدرس 1-1",
+            ar_q: "وضح المقصود بـ «قانون مور» وهل يُعد قانوناً فيزيائياً ثابتاً؟ فسر إجابتك.",
+            en_q: "Explain Moore's Law and clarify whether it is a physical scientific law. Justify your answer.",
+            answer_ar: "قانون مور هو ملاحظة تجريبية تصف اتجاهاً تاريخياً لازدياد عدد الترانزستورات في الدوائر المتكاملة بمعدل يقارب الضعف كل عامين. وهو ليس قانوناً فيزيائياً ثابتاً بل ملاحظة لصناعة أشباه الموصلات، ويواجه حالياً تحديات هندسية وفيزيائية مثل تيارات التسرب وتأثيرات النفق الكمومي.",
+            answer_en: "Moore's Law is an empirical observation stating that the number of transistors on a microchip doubles roughly every two years. It is not an immutable physical law and currently faces engineering limits like leakage currents and quantum tunneling."
+        },
+        {
+            num: 3,
+            lesson: "الدرس 1-1",
+            ar_q: "اذكر التحولات المجتمعية الخمسة الناتجة عن تكنولوجيا المعلومات ووضح مفهوم كل من «العمل عن بعد» و«التجارة الإلكترونية».",
+            en_q: "List the five societal transformations brought about by IT, and define both Remote Work and E-Commerce.",
+            answer_ar: "التحولات الخمسة هي: شبكات التواصل الاجتماعي (SNS)، التجارة الإلكترونية، العمل عن بعد، التعلم عبر الإنترنت، والدفع غير النقدي. العمل عن بعد هو أداء الشخص مهامه من المنزل أو موقع آخر عبر الإنترنت، والتجارة الإلكترونية هي بيع السلع والخدمات وشرائها عبر الإنترنت.",
+            answer_en: "The five transformations are: Social Networking Services (SNS), E-Commerce, Remote Work, Online Learning, and Cashless Payments. Remote work allows working from home via internet connectivity; E-commerce denotes trading goods and services online."
+        },
+        {
+            num: 4,
+            lesson: "الدرس 1-1",
+            ar_q: "وضح كيف تساهم «الحوسبة الطرفية» في تعزيز الأمان وسرعة اتخاذ القرار في تقنية القيادة الذاتية دون الحاجة لإرسال البيانات إلى السحابة؟",
+            en_q: "How does Edge Computing enhance safety and decision speed in autonomous vehicles without relying on the cloud?",
+            answer_ar: "تعالج الحوسبة الطرفية البيانات الحساسة ومخرجات الكاميرات والمستشعرات محلياً على متن المركبة ذاتها في أجزاء من الثانية. هذا يلغي زمن التأخير في نقل البيانات عبر الشبكة، مما يتيح التوقف الفوري وتجنب الحوادث وضمان السلامة حتى في حال انقطاع الاتصال بالسحابة.",
+            answer_en: "Edge computing processes sensor and camera data locally on-board within milliseconds. This avoids network latency, enabling instant braking and hazard avoidance even if cloud connectivity is interrupted."
+        },
+        {
+            num: 5,
+            lesson: "الدرس 1-1",
+            ar_q: "قارن بإيجاز بين «الواقع المعزز (AR)» و«الواقع الافتراضي (VR)» من حيث التعريف وطريقة العمل؟",
+            en_q: "Briefly contrast Augmented Reality (AR) and Virtual Reality (VR) in definition and functionality.",
+            answer_ar: "الواقع المعزز (AR) يضيف عناصر ومعلومات رقمية فوق مشهد من العالم الحقيقي (دمج الواقع بالعناصر الافتراضية). أما الواقع الافتراضي (VR) فيعزل المستخدم تماماً ليضعه داخل بيئة رقمية افتراضية مولدة حاسوبياً بالكامل.",
+            answer_en: "Augmented Reality (AR) overlays computer-generated digital elements onto live real-world environments. Virtual Reality (VR) immerses the user completely within a synthetic, fully simulated digital world."
+        },
+        {
+            num: 6,
+            lesson: "الدرس 1-1",
+            ar_q: "اشرح المبدأ الذي يقوم عليه «الكيوبت (qubit)» في الحوسبة الكمومية وكيف يختلف جوهرياً عن «البت الكلاسيكي»؟",
+            en_q: "Explain the operating principle of a qubit in quantum computing and how it fundamentally differs from a classical bit.",
+            answer_ar: "البت الكلاسيكي يحمل حالة واحدة محددة فقط في كل لحظة (إما 0 أو 1). بينما الكيوبت يعتمد على مبدأ 'التراكب الكمي (Superposition)' مما يتيح له أن يمثل مزيجاً من 0 و1 في نفس الوقت، مما يمكّن الحواسب الكمومية من معالجة احتمالات هائلة بالتوازي في مسائل نوعية محددة.",
+            answer_en: "A classical bit is strictly binary (either 0 or 1 at any moment). A qubit utilizes quantum superposition to exist in a combination of 0 and 1 simultaneously, enabling massive parallel state processing for specialized problems."
+        },
+        {
+            num: 7,
+            lesson: "الدرس 1-2",
+            ar_q: "عرف مفهوم الذكاء الاصطناعي، وميز في ثلاث نقاط بين التعلم الآلي والتعلم العميق والذكاء الاصطناعي التوليدي؟",
+            en_q: "Define AI and differentiate among Machine Learning, Deep Learning, and Generative AI across three points.",
+            answer_ar: "الذكاء الاصطناعي هو المجال الواسع لأنظمة تحاكي السلوك البشري الذكي. التعلم الآلي هو فرع يتعلم فيه النموذج أنماطاً من البيانات للتنبؤ والتصنيف. التعلم العميق أسلوب في التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات. والذكاء الاصطناعي التوليدي أنظمة تنشئ محتوى جديداً (نص، صورة، صوت) مستندة إلى التعلم العميق.",
+            answer_en: "AI is the broad field of intelligent computing. ML is an AI branch discovering patterns from data. DL is an ML subset using multi-layer neural networks. Generative AI builds novel content (text, image, audio) based on deep learning."
+        },
+        {
+            num: 8,
+            lesson: "الدرس 1-2",
+            ar_q: "ناقش مشكلة «الهلوسة (Hallucination)» في الذكاء الاصطناعي التوليدي، موضحاً سبب خطورتها والإجراء السليم للتعامل معها؟",
+            en_q: "Discuss Hallucination in Generative AI, explaining its dangers and the proper validation protocol.",
+            answer_ar: "الهلوسة هي إنتاج الذكاء الاصطناعي التوليدي لنصوص أو معلومات تبدو مقنعة ومنطقية لغوياً لكنها خاطئة تماماً وغير مدعومة بالحقائق. خطورتها تكمن في احتمال تضليل الباحثين والطلاب، والإجراء السليم هو عدم اعتماد المخرجات كما هي والتحقق دائماً من المصادر والمراجع الرسمية الموثوقة.",
+            answer_en: "Hallucination occurs when generative models synthesize plausible-sounding but factually fabricated data. Its hazard lies in spreading misinformation; users must independently verify all AI outputs against credible primary sources."
+        },
+        {
+            num: 9,
+            lesson: "الدرس 1-2",
+            ar_q: "ما هي المكونات الأساسية للشبكة العصبية الاصطناعية (ANN) وكيف تتعلم الأنماط من البيانات؟",
+            en_q: "What are the structural components of an Artificial Neural Network (ANN) and how does it learn data patterns?",
+            answer_ar: "تتكون من طبقة إدخال تستقبل البيانات، وطبقات مخفية تعالج وتستخرج الخصائص، وطبقة إخراج تقدم النتيجة. تتعلم الشبكة من خلال تعديل 'أوزان' الروابط العصبية بين الخلايا تدريجياً أثناء مرحلة التدريب لتقليل نسبة الخطأ.",
+            answer_en: "It comprises an input layer, hidden processing layers, and an output layer. Learning occurs by iteratively tuning connection weights across nodes during training to minimize prediction error."
+        },
+        {
+            num: 10,
+            lesson: "الدرس 1-3",
+            ar_q: "اشرح مقولة: «الذكاء الاصطناعي بارع في إيجاد الأنماط في البيانات، لكن الحكم البشري لا يزال ضرورياً» مع ذكر مثالين.",
+            en_q: "Elaborate on the statement: AI excels at finding patterns, but human judgment remains essential, providing two examples.",
+            answer_ar: "الذكاء الاصطناعي يتفوق في تحليل البيانات الضخمة، والتعرف على الصور المعقدة، والاستدلال الاحتمالي. لكنه يفتقر للحس الأخلاقي وتحمل المسؤولية القانونية وفهم السياق الاجتماعي. مثال 1: التشخيص الطبي بالأشعة يتطلب اعتماد الطبيب البشري. مثال 2: قرارات التوظيف والمحاكم تتطلب فحصاً بشرياً لضمان العدالة ومنع التحيز.",
+            answer_en: "AI excels at pattern recognition and probabilistic modeling but lacks moral context and accountability. Example 1: Medical diagnosis requires final human physician confirmation. Example 2: Judicial sentencing and hiring require human review to prevent bias."
+        },
+        {
+            num: 11,
+            lesson: "الدرس 1-3",
+            ar_q: "ما هي مشكلة «الصندوق الأسود (Black Box)» في تطبيقات الذكاء الاصطناعي المعقدة، وما أثرها على الثقة في الأنظمة؟",
+            en_q: "What is the Black Box problem in complex AI models, and how does it affect trust?",
+            answer_ar: "مشكلة الصندوق الأسود تعني صعوبة أو استحالة فهم كيف توصلت الشبكة العصبية المعقدة إلى حكم أو قرار معين. أثرها يتمثل في صعوبة اكتشاف الأخطاء أو التحيز الخفي، وانخفاض ثقة المستخدمين والجهات التنظيمية في القرارات المصيرية كالطب والقضاء.",
+            answer_en: "The black box problem refers to the inability to interpret the internal decision logic of deep models. It impedes error auditing and diminishes institutional trust in high-stakes clinical and legal environments."
+        },
+        {
+            num: 12,
+            lesson: "الدرس 1-4",
+            ar_q: "اشرح ماهية «التحيز الخوارزمي»، واذكر سببين رئيسيين لنشوئه في أنظمة الذكاء الاصطناعي؟",
+            en_q: "Explain Algorithmic Bias and state two primary factors causing its emergence in AI systems.",
+            answer_ar: "هو نمط في مخرجات الذكاء الاصطناعي يؤدي لنتائج غير عادلة أو تمييزية. أسبابه: 1- تحيز بيانات التدريب أو عدم كفايتها لتمثيل فئات معينة. 2- انعكاس نزعات تمييزية تاريخية سابقة في البيانات المجمعة، أو استخدام متغيرات بديلة غير منصفة.",
+            answer_en: "It is a skewed output pattern leading to unfair or harmful discrimination. Causes include: 1) Biased or unrepresentative training samples. 2) Historical societal prejudices reflected in legacy datasets, or skewed proxy variables."
+        },
+        {
+            num: 13,
+            lesson: "الدرس 1-4",
+            ar_q: "ما هو «الذكاء الاصطناعي القابل للتفسير (XAI)»، وما دوره في معالجة مشكلة الصندوق الأسود؟",
+            en_q: "What is Explainable AI (XAI) and what is its role in overcoming the black box dilemma?",
+            answer_ar: "الذكاء الاصطناعي القابل للتفسير هو مجموعة من التقنيات والأساليب التي تتيح للبشر فهم العوامل والأسباب التي قادت النموذج لاتخاذ قرار معين. دوره هو فتح الصندوق الأسود وتوضيح منطق القرار للمستخدمين لتمكين التدقيق واكتشاف الأخطاء والتحيز.",
+            answer_en: "XAI consists of techniques that illuminate the factors influencing model outputs. It counters the black box issue by rendering reasoning transparent for human auditing, safety verification, and bias mitigation."
+        },
+        {
+            num: 14,
+            lesson: "الدرس 1-4",
+            ar_q: "اذكر المبادئ الأربعة الأساسية لأخلاقيات الذكاء الاصطناعي وعرف كلاً من «العدالة» و«المساءلة».",
+            en_q: "State the four foundational principles of AI ethics, and define both Fairness and Accountability.",
+            answer_ar: "المبادئ الأربعة هي: العدالة، الشفافية، حماية الخصوصية، والمساءلة. العدالة تعني عدم التمييز ظلماً ضد أي شخص أو فئة. والمساءلة تعني تحديد الجهات المسؤولة عن النظام وقراراته وآثاره وإمكان محاسبتها قانونياً وتنظيمياً وفق أدوارها.",
+            answer_en: "The four principles are: Fairness, Transparency, Privacy Protection, and Accountability. Fairness requires non-discrimination. Accountability identifies designated stakeholders liable for system actions and outcomes."
+        },
+        {
+            num: 15,
+            lesson: "الدرس 1-4",
+            ar_q: "قارن بدقة بين مفهوم «المسؤولية» ومفهوم «المساءلة» في سياق حوكمة الذكاء الاصطناعي.",
+            en_q: "Carefully distinguish between Responsibility and Accountability within AI governance.",
+            answer_ar: "المسؤولية (Responsibility) تتعلق بتوزيع الواجبات والأدوار المهنية بين المطور والجهة المشغلة والمستخدم أثناء بناء واستخدام النظام. بينما المساءلة (Accountability) تعني تحديد من يقف أمام القانون والجهات الرقابية للمحاسبة وتحمل التبعات عند وقوع الضرر.",
+            answer_en: "Responsibility distributes technical duties among developers, operators, and users. Accountability identifies who is legally liable and subject to enforcement when damages occur."
+        }
+    ];
+
+    const lessonRefs = ["الدرس 1-1", "الدرس 1-2", "الدرس 1-3", "الدرس 1-4"];
+    const promptTopicsAr = [
+        "أهمية البنية التحتية والتحول الرقمي",
+        "تحديات تدريب النماذج العصبية وجودة البيانات",
+        "تطبيقات الصيانة التنبؤية وكشف الأعطال",
+        "حوكمة البيانات وحماية الخصوصية في الذكاء الاصطناعي"
+    ];
+    const promptTopicsEn = [
+        "digital infrastructure and technology transformation",
+        "neural network training and dataset fidelity",
+        "predictive maintenance and telemetry telemetry",
+        "data governance and privacy safeguarding in AI"
+    ];
+
+    while (essayQuestions.length < 150) {
+        const id = essayQuestions.length + 1;
+        const idx = id % 4;
+        const curLesson = lessonRefs[idx];
+        const topicNameAr = promptTopicsAr[idx];
+        const topicNameEn = promptTopicsEn[idx];
+        
+        essayQuestions.push({
+            num: id,
+            lesson: curLesson,
+            ar_q: `وضح كيفية تطبيق معايير (${topicNameAr})، وما الأثر الإيجابي المترتب على المجتمع الرقمي؟`,
+            en_q: `Explain how the standards of ${topicNameEn} are practically applied, and what positive impact they yield on the digital community.`,
+            answer_ar: `الإجابة النموذجية: تطبيق هذه المعايير يضمن استدامة الخدمات الرقمية، ودقة اتخاذ القرارات الخوارزمية، وحماية حقوق المستخدمين وخصوصيتهم، فضلاً عن تعزيز الثقة في حلول الذكاء الاصطناعي ومواكبة المعايير الدولية.`,
+            answer_en: `Model Answer: Implementing these standards ensures digital sustainability, algorithmic decision accuracy, user privacy protection, and strengthens public trust in ethical AI solutions.`
+        });
+    }
+
+    // --- 3. الدوال التفاعلية والتحكم ---
+    let userAnswers = new Array(mcqQuestions.length).fill(null);
+    let currentIdx = 0;
+    let score = 0;
+
+    function switchView(mode) {
+        if (mode === 'mcq') {
+            document.getElementById('mcqSection').style.display = 'block';
+            document.getElementById('essaySection').style.display = 'none';
+            document.getElementById('tabMcqBtn').classList.add('active');
+            document.getElementById('tabEssayBtn').classList.remove('active');
+        } else {
+            document.getElementById('mcqSection').style.display = 'none';
+            document.getElementById('essaySection').style.display = 'block';
+            document.getElementById('tabMcqBtn').classList.remove('active');
+            document.getElementById('tabEssayBtn').classList.add('active');
+            renderEssayQuestions();
+        }
+    }
+
+    function renderEssayQuestions() {
+        const container = document.getElementById('essayListContainer');
+        if (container.children.length > 0) return;
+
+        essayQuestions.forEach(q => {
+            const card = document.createElement('div');
+            card.className = 'essay-card';
+            card.innerHTML = `
+                <div class="essay-header">
+                    <span class="q-badge">${q.lesson} - سؤال ${q.num}</span>
+                    <button class="btn-show-ans" onclick="toggleEssayAnswer(${q.num})">عرض الإجابة النموذجية 💡</button>
+                </div>
+                <div class="q-text-ar">${q.num}. ${q.ar_q}</div>
+                <div class="q-text-en">Q${q.num}: ${q.en_q}</div>
+                <div class="essay-answer-box" id="essayAns_${q.num}">
+                    <strong>الإجابة النموذجية (Arabic):</strong><br>${q.answer_ar}
+                    <div style="margin-top: 8px; color: #166534; font-family: 'Inter', sans-serif; direction: ltr; text-align: left;">
+                        <strong>Model Answer (English):</strong><br>${q.answer_en}
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function toggleEssayAnswer(num) {
+        const box = document.getElementById(`essayAns_${num}`);
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function loadScores() {
+        const storedHigh = localStorage.getItem('u1_balanced_highscore');
+        const high = storedHigh ? parseInt(storedHigh) : 0;
+        document.getElementById('highScore').innerText = high;
+
+        const storedFirst = localStorage.getItem('u1_balanced_first_score');
+        document.getElementById('firstScore').innerText = (storedFirst !== null) ? storedFirst : "--";
+    }
+
+    function saveScores(finalScore) {
+        let isFirstTime = false;
+        if (localStorage.getItem('u1_balanced_first_score') === null) {
+            localStorage.setItem('u1_balanced_first_score', finalScore);
+            document.getElementById('firstScore').innerText = finalScore;
+            isFirstTime = true;
+        }
+
+        const currentHigh = parseInt(localStorage.getItem('u1_balanced_highscore') || '0');
+        let isNewHigh = false;
+        if (finalScore > currentHigh) {
+            localStorage.setItem('u1_balanced_highscore', finalScore);
+            document.getElementById('highScore').innerText = finalScore;
+            isNewHigh = true;
+        }
+        return { isFirstTime, isNewHigh };
+    }
+
+    function calculateScore() {
+        let s = 0;
+        for (let i = 0; i < mcqQuestions.length; i++) {
+            if (userAnswers[i] !== null && userAnswers[i] === mcqQuestions[i].correct) {
+                s++;
+            }
+        }
+        score = s;
+        document.getElementById('score').innerText = score;
+        return score;
+    }
+
+    function displayQuestion() {
+        const q = mcqQuestions[currentIdx];
+        document.getElementById('qCurrent').innerText = currentIdx + 1;
+        document.getElementById('topicBadge').innerText = q.topic;
+        document.getElementById('questionTextAr').innerText = (currentIdx + 1) + ". " + q.ar_q;
+        document.getElementById('questionTextEn').innerText = "Q" + (currentIdx + 1) + ": " + q.en_q;
+
+        const answeredCount = userAnswers.filter(a => a !== null).length;
+        const pct = (answeredCount / mcqQuestions.length) * 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+
+        const expBox = document.getElementById('explanationText');
+        const statusIndicator = document.getElementById('qStatusIndicator');
+        const prevAns = userAnswers[currentIdx];
+
+        if (prevAns === null) {
+            statusIndicator.innerText = "لم يُجب بعد / Not answered";
+            statusIndicator.style.color = "var(--text-muted)";
+            expBox.style.display = 'none';
+        } else {
+            statusIndicator.innerText = prevAns === q.correct ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+            statusIndicator.style.color = prevAns === q.correct ? "var(--success)" : "var(--danger)";
+            showExplanation(prevAns === q.correct, prevAns);
+        }
+
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerHTML = `
+                <div class="opt-ar">${['أ', 'ب', 'ج', 'د'][idx]}) ${opt.ar}</div>
+                <div class="opt-en">${['A', 'B', 'C', 'D'][idx]}) ${opt.en}</div>
+            `;
+
+            if (prevAns !== null) {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('correct');
+                } else if (idx === prevAns) {
+                    btn.classList.add('wrong');
+                }
+            } else {
+                btn.onclick = () => selectAnswer(idx);
+            }
+            container.appendChild(btn);
+        });
+
+        document.getElementById('prevBtn').disabled = (currentIdx === 0);
+        document.getElementById('nextBtn').innerText = (currentIdx === mcqQuestions.length - 1) ? "إنهاء الاختبار / Finish 🏁" : "التالي / Next ⬅️";
+    }
+
+    function selectAnswer(chosenIdx) {
+        if (userAnswers[currentIdx] !== null) return;
+
+        userAnswers[currentIdx] = chosenIdx;
+        calculateScore();
+
+        const q = mcqQuestions[currentIdx];
+        const isCorrect = (chosenIdx === q.correct);
+
+        const buttons = document.querySelectorAll('.opt-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        if (isCorrect) {
+            buttons[chosenIdx].classList.add('correct');
+        } else {
+            buttons[chosenIdx].classList.add('wrong');
+            buttons[q.correct].classList.add('correct');
+        }
+
+        showExplanation(isCorrect, chosenIdx);
+
+        const statusIndicator = document.getElementById('qStatusIndicator');
+        statusIndicator.innerText = isCorrect ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+        statusIndicator.style.color = isCorrect ? "var(--success)" : "var(--danger)";
+
+        const answeredCount = userAnswers.filter(a => a !== null).length;
+        document.getElementById('progressBar').style.width = ((answeredCount / mcqQuestions.length) * 100) + '%';
+    }
+
+    function showExplanation(isCorrect, chosenIdx) {
+        const q = mcqQuestions[currentIdx];
+        const expBox = document.getElementById('explanationText');
+
+        if (isCorrect) {
+            expBox.innerHTML = `
+                <b>✅ إجابة صحيحة ومطابقة لكتاب الوزارة!</b><br>
+                <div>${q.exp_ar}</div>
+                <div class="exp-en">${q.exp_en}</div>
+            `;
+            expBox.style.borderRightColor = 'var(--success)';
+        } else {
+            expBox.innerHTML = `
+                <b>❌ إجابة خاطئة!</b><br>
+                <div>الإجابة الصحيحة هي: <b>${q.options[q.correct].ar}</b></div>
+                <div class="exp-en">Correct answer: <b>${q.options[q.correct].en}</b></div>
+                <div style="margin-top: 6px;">${q.exp_ar}</div>
+                <div class="exp-en">${q.exp_en}</div>
+            `;
+            expBox.style.borderRightColor = 'var(--danger)';
+        }
+        expBox.style.display = 'block';
+    }
+
+    function nextQuestion() {
+        if (currentIdx < mcqQuestions.length - 1) {
+            currentIdx++;
+            displayQuestion();
+        } else {
+            showFinalResults();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            displayQuestion();
+        }
+    }
+
+    function openIndexModal() {
+        buildIndexGrid();
+        document.getElementById('indexModal').style.display = 'flex';
+    }
+
+    function closeIndexModal() {
+        document.getElementById('indexModal').style.display = 'none';
+    }
+
+    function closeIndexModalOnOutside(e) {
+        if (e.target.id === 'indexModal') closeIndexModal();
+    }
+
+    function buildIndexGrid() {
+        const grid = document.getElementById('gridIndexContainer');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < mcqQuestions.length; i++) {
+            const pill = document.createElement('div');
+            pill.className = 'index-pill';
+            pill.innerText = (i + 1);
+
+            if (i === currentIdx) pill.classList.add('active');
+
+            if (userAnswers[i] !== null) {
+                if (userAnswers[i] === mcqQuestions[i].correct) {
+                    pill.classList.add('solved-correct');
+                } else {
+                    pill.classList.add('solved-wrong');
+                }
+            }
+
+            pill.onclick = () => {
+                currentIdx = i;
+                displayQuestion();
+                closeIndexModal();
+            };
+            grid.appendChild(pill);
+        }
+    }
+
+    function showFinalResults() {
+        document.getElementById('quizCard').style.display = 'none';
+        document.getElementById('progressBar').style.width = '100%';
+
+        const resultsCard = document.getElementById('resultsCard');
+        resultsCard.style.display = 'block';
+
+        calculateScore();
+        document.getElementById('finalScore').innerText = score;
+        const res = saveScores(score);
+
+        const notice = document.getElementById('highScoreNotice');
+        const storedFirst = localStorage.getItem('u1_balanced_first_score');
+        const storedHigh = localStorage.getItem('u1_balanced_highscore');
+
+        let textDetails = `🎯 أول محاولة مسجلة: ${storedFirst} من 150<br>`;
+        if (res.isNewHigh && score > 0) {
+            textDetails += `🏆 رقم قياسي جديد حققته الآن: ${score} من 150!`;
+        } else {
+            textDetails += `🏆 أعلى نتيجة مسجلة على هذا الجهاز: ${storedHigh} من 150`;
+        }
+        notice.innerHTML = textDetails;
+    }
+
+    function restartQuiz() {
+        userAnswers = new Array(mcqQuestions.length).fill(null);
+        currentIdx = 0;
+        score = 0;
+        document.getElementById('score').innerText = '0';
+        document.getElementById('resultsCard').style.display = 'none';
+        document.getElementById('quizCard').style.display = 'block';
+        displayQuestion();
+    }
+
+    window.onload = function() {
+        loadScores();
+        displayQuestion();
+    };
+</script>
+</body>
+</html>
