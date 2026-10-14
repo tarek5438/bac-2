@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 2-1: تقنيات التشفير والمصادقة (25 اختياري + 25 مقالي)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #2563eb;
+            --primary-soft: #eff6ff;
+            --accent: #f59e0b;
+            --accent-soft: #fffbeb;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --success-soft: #dcfce7;
+            --danger: #ef4444;
+            --danger-soft: #fee2e2;
+            --purple: #7c3aed;
+            --purple-soft: #f3e8ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding-bottom: 80px;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to left, var(--accent), var(--primary-light));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0b1e36 0%, #0f4c81 60%, #1d4ed8 100%);
+            color: white;
+            padding: 45px 20px 35px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2.1rem;
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 860px;
+            margin: 0 auto 16px;
+        }
+
+        .nav-shortcuts {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .shortcut-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .shortcut-btn:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary);
+            padding: 5px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            border: 1px solid #bfdbfe;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+        }
+
+        .hook-box {
+            background: var(--accent-soft);
+            border-right: 6px solid var(--accent);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 18px 0;
+            font-size: 1.05rem;
+        }
+
+        .hook-box strong {
+            color: #b45309;
+            font-size: 1.15rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .crypto-compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .crypto-compare {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .crypto-card {
+            border-radius: 14px;
+            padding: 22px;
+            border: 2px solid var(--border);
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-light);
+        }
+
+        .cipher-interactive {
+            background: #f1f5f9;
+            border: 2px dashed #94a3b8;
+            border-radius: 16px;
+            padding: 22px;
+            margin: 20px 0;
+        }
+
+        .cipher-flow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .cipher-flow {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cipher-box {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .cipher-box h4 {
+            font-size: 0.95rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .cipher-text-display {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.05rem;
+            padding: 8px;
+            background: #f8fafc;
+            border-radius: 6px;
+            word-break: break-all;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tls-animator {
+            background: #fafcff;
+            border: 2px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 22px;
+            margin: 25px 0;
+        }
+
+        .tls-step-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tls-step-card.active {
+            border-color: var(--primary-light);
+            background: var(--primary-soft);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+            transform: scale(1.01);
+        }
+
+        .step-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .mfa-simulator {
+            background: var(--purple-soft);
+            border: 2px solid #d8b4fe;
+            border-radius: 16px;
+            padding: 22px;
+            margin: 20px 0;
+        }
+
+        .factors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 18px 0;
+        }
+
+        .factor-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e9d5ff;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .factor-card:hover, .factor-card.selected {
+            border-color: var(--purple);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(124, 58, 237, 0.15);
+        }
+
+        .factor-icon {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            text-align: right;
+        }
+
+        table th {
+            background: #f1f5f9;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        /* تبويبات الأسئلة: 25 اختياري مقابل 25 مقالي */
+        .quiz-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 14px rgba(15, 76, 129, 0.25);
+        }
+
+        .stats-bar {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: block;
+        }
+
+        .stat-val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-val.high {
+            color: var(--accent);
+        }
+
+        .btn-index {
+            background: #eff6ff;
+            color: var(--primary);
+            border: 2px solid #bfdbfe;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-index:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        .q-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 20px -3px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .q-badge {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .q-text-ar {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .q-text-en {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #475569;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opt-btn {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: right;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            transform: translateX(-4px);
+        }
+
+        .opt-btn.correct {
+            background: #dcfce7 !important;
+            border-color: var(--success) !important;
+        }
+
+        .opt-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: var(--danger) !important;
+        }
+
+        .opt-ar {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .opt-en {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #64748b;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .opt-btn.correct .opt-ar, .opt-btn.correct .opt-en {
+            color: #15803d !important;
+        }
+
+        .opt-btn.wrong .opt-ar, .opt-btn.wrong .opt-en {
+            color: #991b1b !important;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 0.98rem;
+            line-height: 1.7;
+            display: none;
+            background: #f1f5f9;
+            border-right: 5px solid var(--primary);
+        }
+
+        .exp-en {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            margin-top: 6px;
+            font-size: 0.92rem;
+        }
+
+        /* تنسيقات الأسئلة المقالية */
+        .essay-container {
+            display: none;
+        }
+
+        .essay-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .essay-source {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            background: var(--primary-soft);
+            padding: 3px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .essay-q-text {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .essay-textarea {
+            width: 100%;
+            height: 90px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.98rem;
+            resize: vertical;
+            margin-bottom: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .essay-textarea:focus {
+            border-color: var(--primary-light);
+        }
+
+        .btn-reveal-answer {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: var(--text-main);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-reveal-answer:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-color: #93c5fd;
+        }
+
+        .model-answer {
+            display: none;
+            margin-top: 15px;
+            padding: 16px;
+            background: #f0fdf4;
+            border-right: 4px solid var(--success);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: #14532d;
+            line-height: 1.7;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .btn-nav {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: #0b1e36;
+        }
+
+        .btn-nav:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 26px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            animation: popIn 0.25s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+        }
+
+        .grid-index {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .index-pill {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            padding: 10px 4px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: #334155;
+        }
+
+        .index-pill:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+
+        .index-pill.active {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.25);
+            font-weight: 900;
+        }
+
+        .index-pill.solved-correct {
+            background: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #15803d !important;
+        }
+
+        .index-pill.solved-wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #b91c1c !important;
+        }
+
+        .results-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .trophy {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #eff6ff;
+            border: 6px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .score-num {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .btn-restart {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.2s;
+        }
+
+        .btn-restart:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <header>
+        <h1>الدرس 2-1: تقنيات التشفير والمصادقة (الشرح + بنك الأسئلة الشامل)</h1>
+        <p>مقرر البرمجة والذكاء الاصطناعي — الصف الثاني الثانوي (الوحدة الثانية: الأمن السيبراني)</p>
+        <div class="nav-shortcuts">
+            <a href="#lesson-explanation" class="shortcut-btn">📖 الشرح التفاعلي</a>
+            <a href="#quiz-section" class="shortcut-btn" onclick="switchMainTab('mcq')">🔘 25 سؤالاً اختيارياً</a>
+            <a href="#quiz-section" class="shortcut-btn" onclick="switchMainTab('essay')">✍️ 25 سؤالاً مقالياً وتحليلياً</a>
+        </div>
+    </header>
+
+    <div class="container" id="lesson-explanation">
+
+        <!-- التهيئة الحافزة والموقف الانطلاقي -->
+        <div class="card">
+            <span class="badge">تمهيد صفي استكشافي</span>
+            <h2>🔐 سؤال الانطلاق: هل يكفي رمز القفل الأخضر لضمان الأمان الكامل؟</h2>
+            <div class="hook-box">
+                <strong>موقف واقعي للمناقشة:</strong>
+                عندما تفتح تطبيق حسابك البنكي أو تتسوق عبر متجر إلكتروني، يظهر قفل الأمان بجوار العنوان `https://`[cite: 34]. في نفس الوقت يطلب التطبيق كلمة المرور ورمز تحقق إضافي يتم إرساله إلى هاتفك المحمول (OTP).
+                <br><br>
+                <strong>السؤال للطلاب:</strong> لماذا لا نكتفي بكلمة مرور معقدة فقط؟ ولماذا نحتاج إلى تشفير البيانات أثناء انتقالها إذا كانت محمية بكلمة مرور من الأساس؟[cite: 34, 37]
+            </div>
+            <p>
+                <strong>الخلاصة الجوهرية للدرس:</strong> لا يتحقق الأمان الفعلي من وسيلة واحدة منعزلة، بل من <strong>تكامل طبقات الحماية</strong>: تشفير يحمي سرية البيانات، وشهادات رقمية تثبت هوية الموقع، ومصادقة تمنع الدخول غير المصرح به، وتوقيعات تمنع التلاعب وتثبت عدم التنصل[cite: 34, 36, 38].
+            </p>
+        </div>
+
+        <!-- 1. كيف تعمل اتصالات HTTPS ومصافحة TLS -->
+        <div class="card">
+            <span class="badge">المحور الأول</span>
+            <h2>1. كيف تعمل اتصالات HTTPS ومصافحة TLS؟</h2>
+            <p>
+                <strong>HTTPS:</strong> هو بروتوكول HTTP منقول عبر اتصال <strong>TLS (Transport Layer Security)</strong> مؤمّن يوفر سرية البيانات وسلامتها أثناء النقل، ويساعد المتصفح في التحقق من هوية الخادم واسم النطاق[cite: 34]. وتسمى عملية تأسيس الاتصال الآمن بـ <strong>مصافحة TLS (TLS Handshake)</strong>[cite: 34].
+            </p>
+
+            <div class="tls-animator">
+                <h3 style="color: var(--primary); margin-bottom: 12px;">🔄 محاكي تفاعلي لمراحل مصافحة TLS (انقر على كل مرحلة لمعاينتها):</h3>
+                
+                <div class="tls-step-card active" onclick="activateStep(this, 1)">
+                    <div class="step-circle">1</div>
+                    <div>
+                        <strong style="color: var(--primary);">مرحلة المصافحة والتحقق من الشهادة الرقمية</strong>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 4px;">
+                            يرسل الخادم شهادته الرقمية ومفتاحه العام[cite: 34, 35]. يتحقق متصفح العميل من صلاحيتها، وسلسلة الثقة، ومطابقتها لاسم الموقع المطلوب[cite: 34, 35].
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tls-step-card" onclick="activateStep(this, 2)">
+                    <div class="step-circle">2</div>
+                    <div>
+                        <strong style="color: var(--primary);">مرحلة تبادل المفاتيح واشتقاق مفاتيح الجلسة</strong>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 4px;">
+                            يتفاوض الطرفان عبر آليات التشفير بالمفتاح العام للاتفاق على سر مشترك، ويشتق كل طرف "مفتاح جلسة" سرياً لديه دون إرساله مكشوفاً عبر الشبكة[cite: 34, 35]!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tls-step-card" onclick="activateStep(this, 3)">
+                    <div class="step-circle">3</div>
+                    <div>
+                        <strong style="color: var(--primary);">مرحلة تبادل البيانات الفعلية (التشفير المتماثل)</strong>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 4px;">
+                            تُشفّر جميع البيانات المتبادلة لاحقاً باستخدام التشفير المتماثل (مفتاح الجلسة المشترك) لسرعته الفائقة وكفاءته في نقل البيانات الضخمة[cite: 34, 35, 37].
+                        </p>
+                    </div>
+                </div>
+
+                <div id="tls-explanation" style="margin-top: 15px; padding: 12px; background: white; border-radius: 8px; border: 1px solid #93c5fd; font-weight: bold; color: var(--primary);">
+                    🔍 <strong>الخطوة 1:</strong> العميل يفحص شهادة الخادم ومفتاحه العام[cite: 34, 35]. الهدف: التأكد التام من أن الموقع حقيقي وليس مزيفاً[cite: 34, 35].
+                </div>
+            </div>
+
+            <!-- بطاقة التشفير المتماثل وغير المتماثل بالأمثلة والتشبيهات -->
+            <div class="crypto-compare">
+                <div class="crypto-card" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary);">🔑 التشفير المتماثل (Symmetric)</h3>
+                    <p><strong>الفكرة:</strong> استخدام مفتاح سري واحد مشترك للتشفير وفك التشفير معاً[cite: 34, 37].</p>
+                    <div style="background: var(--primary-soft); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 0.95rem;">
+                        📦 <strong>تشبيه الصندوق الحديدي:</strong> صندوق يُقفل ويُفتح بنفس المفتاح المعدني. لا يمكن لأحد فتحه إلا من يحمل نسخة من نفس المفتاح.
+                    </div>
+                    <ul style="margin-right: 18px; font-size: 0.9rem; color: var(--text-muted);">
+                        <li><strong>السرعة:</strong> فائق الكفاءة ومثالي لنقل البيانات الضخمة والفيديوهات[cite: 35, 37].</li>
+                        <li><strong>التحدي:</strong> كيف تنقل المفتاح للطرف الآخر بأمان في البداية دون اعتراضه[cite: 35]؟</li>
+                    </ul>
+                </div>
+
+                <div class="crypto-card" style="border-right: 5px solid var(--purple);">
+                    <h3 style="color: var(--purple);">🗝️ التشفير بالمفتاح العام (Asymmetric)</h3>
+                    <p><strong>الفكرة:</strong> زوج من المفاتيح: مفتاح عام متاح للجميع، ومفتاح خاص سري لصاحبه فقط[cite: 34].</p>
+                    <div style="background: var(--purple-soft); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 0.95rem;">
+                        📮 <strong>تشبيه صندوق البريد:</strong> فتحة الصندوق متاحة لأي شخص ليلقي رسالة (المفتاح العام)[cite: 34, 35]، لكن لا أحد يملك مفتاح فتح القفل وإخراجها إلا ساعي البريد (المفتاح الخاص)[cite: 34, 35].
+                    </div>
+                    <ul style="margin-right: 18px; font-size: 0.9rem; color: var(--text-muted);">
+                        <li><strong>الميزة:</strong> يحل مشكلة تبادل المفاتيح بأمان دون مشاركة أي سر عبر الشبكة[cite: 35, 37].</li>
+                        <li><strong>التحدي:</strong> بطيء نسبياً في المعالجة الرياضية مقارنة بالمتماثل[cite: 37].</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cipher-interactive">
+                <h3 style="color: var(--primary); margin-bottom: 8px;">🧪 تجربة تفاعلية: جرب تشفير رسالة وفك تشفيرها</h3>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">اكتب أي نص وشاهد كيف تتحول البيانات المكشوفة إلى نص مشفر يحمي الخصوصية أثناء النقل:</p>
+                <input type="text" id="plainInput" value="كلمة المرور: P@ssw0rd2026" oninput="runSimCipher()" style="width: 100%; padding: 10px 14px; margin-top: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem;">
+
+                <div class="cipher-flow">
+                    <div class="cipher-box">
+                        <h4>النص الأصلي (Plaintext)</h4>
+                        <div id="box-plain" class="cipher-text-display">كلمة المرور: P@ssw0rd2026</div>
+                    </div>
+                    <div style="font-size: 1.5rem; color: var(--primary);">⬅️ تشفير 🔒</div>
+                    <div class="cipher-box" style="border-color: #f59e0b;">
+                        <h4>البيانات المشفرة (Ciphertext)</h4>
+                        <div id="box-cipher" class="cipher-text-display" style="color: #d97706;">dGVzdGluZ19jaXBoZXI=</div>
+                    </div>
+                    <div style="font-size: 1.5rem; color: var(--success);">⬅️ فك تشفير 🔓</div>
+                    <div class="cipher-box">
+                        <h4>المستلم الآمن</h4>
+                        <div id="box-decrypted" class="cipher-text-display" style="color: #166534;">كلمة المرور: P@ssw0rd2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. الشهادة الرقمية والتوقيع الرقمي مع التشبيهات المعمقة -->
+        <div class="card">
+            <span class="badge">توضيح معمق</span>
+            <h2>2. الشهادة الرقمية والتوقيع الرقمي</h2>
+            
+            <div class="crypto-compare">
+                <div class="crypto-card" style="border-right: 5px solid var(--success);">
+                    <h3 style="color: #15803d;">🪪 الشهادة الرقمية (Digital Certificate)</h3>
+                    <p><strong>الهدف:</strong> التحقق من أن الطرف المقابل في الاتصال هو الموقع الحقيقي وليس موقعاً وهمياً[cite: 34, 36, 37].</p>
+                    <div style="background: var(--success-soft); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 0.95rem;">
+                        🛂 <strong>تشبيه جواز السفر:</strong> وثيقة تثبت هوية الموقع صادرة من جهة موثوقة (CA)[cite: 34, 36]، يفحصها المتصفح للتأكد من هوية خادم الويب قبل إرسال بياناتك[cite: 34, 36].
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        🛡️ <strong>التهديد المعالج:</strong> منع هجمات انتحال الشخصية والمواقع الاحتيالية المقلدة[cite: 36, 39].
+                    </p>
+                </div>
+
+                <div class="crypto-card" style="border-right: 5px solid var(--accent);">
+                    <h3 style="color: #b45309;">✍️ التوقيع الرقمي (Digital Signature)</h3>
+                    <p><strong>الهدف:</strong> التحقق من سلامة الرسالة (عدم التلاعب) وإثبات عدم التنصل[cite: 36, 39].</p>
+                    <div style="background: var(--accent-soft); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 0.95rem;">
+                        📜 <strong>تشبيه الختم الشمعي:</strong> ختم خاص بالمرسل إذا انكسر أو تغير أي حرف بالرسالة ينكشف التلاعب فوراً، ولا يستطيع المرسل إنكار توقيعه[cite: 36, 39].
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        🛡️ <strong>التهديد المعالج:</strong> كشف تعديل البيانات أثناء النقل ومنع التهرب من المعاملات المبرمة[cite: 36, 39].
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. المصادقة الثنائية (2FA) والمتعددة (MFA) -->
+        <div class="card">
+            <span class="badge">المحور الثاني</span>
+            <h2>3. المصادقة في الخدمات الفعلية (2FA & MFA)</h2>
+            <p>
+                <strong>المصادقة الثنائية (2FA):</strong> إثبات الهوية باستخدام <strong>عاملين مستقلين من فئتين مختلفتين</strong>[cite: 35].
+                <br>
+                <strong>المصادقة متعددة العوامل (MFA):</strong> استخدام عاملين أو أكثر من الفئات الثلاث الرئيسية[cite: 35]:
+            </p>
+
+            <div class="mfa-simulator">
+                <h3 style="color: var(--purple); margin-bottom: 10px;">🛡️ فئات عوامل المصادقة الثلاث (اضغط لاختيار فئتين وبناء مصادقة ثنائية صحيحة):</h3>
+
+                <div class="factors-grid">
+                    <div class="factor-card" id="factor-knowledge" onclick="toggleFactor('knowledge', this)">
+                        <div class="factor-icon">🧠</div>
+                        <h4>1. المعرفة (Knowledge)</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 6px;">
+                            "شيء تعرفه"<br>(كلمة مرور، رمز PIN، سؤال سري)[cite: 35, 37]
+                        </p>
+                    </div>
+
+                    <div class="factor-card" id="factor-possession" onclick="toggleFactor('possession', this)">
+                        <div class="factor-icon">📱</div>
+                        <h4>2. الحيازة (Possession)</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 6px;">
+                            "شيء تمتلكه"<br>(هاتف لتلقي OTP، بطاقة IC، تطبيق مصادقة)[cite: 35, 37]
+                        </p>
+                    </div>
+
+                    <div class="factor-card" id="factor-inherence" onclick="toggleFactor('inherence', this)">
+                        <div class="factor-icon">👁️</div>
+                        <h4>3. السمات الحيوية (Inherence)</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 6px;">
+                            "شيء في ذاتك"<br>(بصمة الإصبع، التعرف على الوجه، بصمة العين)[cite: 35, 37]
+                        </p>
+                    </div>
+                </div>
+
+                <div id="mfa-status" style="background: white; padding: 14px; border-radius: 10px; font-weight: bold; color: var(--purple); text-align: center;">
+                    اختر عاملين من فئتين مختلفتين لتحقيق المصادقة الثنائية (2FA)[cite: 35]...
+                </div>
+            </div>
+
+            <div class="hook-box" style="background: #fef2f2; border-right-color: var(--danger);">
+                <strong>⚠️ انتبه في الامتحان: خطأ شائع جداً!</strong>
+                تعيين كلمتي مرور للحساب (أو كلمة مرور + سؤال سري) <strong>لا يُعد مصادقة ثنائية (2FA)</strong>؛ لأن كلاهما ينتمي إلى نفس العامل وهو (عامل المعرفة)، بل يسمى ذلك "مصادقة متعددة الخطوات بنفس العامل"[cite: 37, 39]!
+            </div>
+        </div>
+
+        <!-- 4. تكامل تقنيات الأمان -->
+        <div class="card">
+            <span class="badge">المحور الثالث</span>
+            <h2>4. تكامل تركيبات تقنيات الأمان (طبقات الحماية)</h2>
+            <p>يتحقق الأمان القوي عبر دمج تقنيات متعددة تعالج كل منها تهديداً مستقلاً[cite: 36]:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>التقنية الأمنية</th>
+                        <th>الأثر والدور الوظيفي</th>
+                        <th>التهديد الذي تعالجه</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>التشفير (متماثل / غير متماثل)</strong></td>
+                        <td>حماية سرية البيانات ومنع قراءتها من أطراف ثالثة[cite: 34, 36].</td>
+                        <td>التنصت وسرقة البيانات أثناء انتقالها[cite: 36, 39].</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الشهادة الرقمية (Digital Certificate)</strong></td>
+                        <td>تساعد المتصفح في التحقق من هوية الخادم وارتباطه باسم النطاق الشرعي[cite: 34, 36, 38].</td>
+                        <td>المواقع المزيفة وهجمات انتحال الشخصية (Spoofing)[cite: 36, 39].</td>
+                    </tr>
+                    <tr>
+                        <td><strong>التوقيع الرقمي (Digital Signature)</strong></td>
+                        <td>التحقق من سلامة البيانات وهوية المرسل، وتوفير دليل يدعم <strong>عدم التنصل</strong>[cite: 36, 39].</td>
+                        <td>التلاعب بمحتوى الرسائل وإنكار إرسالها[cite: 36, 39].</td>
+                    </tr>
+                    <tr>
+                        <td><strong>المصادقة الثنائية (2FA)</strong></td>
+                        <td>التحقق الصارم من هوية المستخدم بعاملين مستقلين[cite: 35, 36].</td>
+                        <td>تسجيل الدخول غير المصرح به عند تسرب كلمات المرور[cite: 35, 36, 39].</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- قسم بنك الأسئلة الشامل (25 اختياري + 25 مقالي) -->
+        <div id="quiz-section">
+            
+            <div class="quiz-tabs">
+                <button class="tab-btn active" id="tabMCQ" onclick="switchMainTab('mcq')">
+                    <span>🔘</span>
+                    <span>25 سؤالاً اختيارياً (MCQ)</span>
+                </button>
+                <button class="tab-btn" id="tabEssay" onclick="switchMainTab('essay')">
+                    <span>✍️</span>
+                    <span>25 سؤالاً مقالياً وتحليلياً (Essay Questions)</span>
+                </button>
+            </div>
+
+            <!-- حاوية الأسئلة الاختيارية -->
+            <div id="mcqContainer">
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">رقم السؤال / Question</span>
+                        <div><span class="stat-val" id="qCurrent">1</span> / 25</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">أول محاولة / 1st Score 🎯</span>
+                        <span class="stat-val" style="color: #6366f1;" id="firstScore">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">الدرجة الحالية / Score</span>
+                        <span class="stat-val" id="score">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">أعلى نتيجة / High Score 🏆</span>
+                        <span class="stat-val high" id="highScore">0</span>
+                    </div>
+                    <div>
+                        <button class="btn-index" onclick="openIndexModal()">
+                            <span>📑</span>
+                            <span>فهرس الأسئلة الاختيارية (1-25)</span>
+                        </button>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+
+                <div class="q-card" id="quizCard">
+                    <div class="q-header">
+                        <span class="q-badge" id="topicBadge">الأسئلة الاختيارية</span>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;" id="qStatusIndicator">لم يُجب بعد / Not answered</span>
+                    </div>
+                    
+                    <div class="q-text-ar" id="questionTextAr">جاري تحميل السؤال...</div>
+                    <div class="q-text-en" id="questionTextEn">Loading question...</div>
+                    
+                    <div class="options-list" id="optionsContainer"></div>
+                    
+                    <div class="explanation" id="explanationText"></div>
+
+                    <div class="actions">
+                        <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled>➡️ السابق / Prev</button>
+                        <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">التالي / Next ⬅️</button>
+                    </div>
+                </div>
+
+                <div class="results-card" id="resultsCard">
+                    <div class="trophy" id="trophyIcon">🎉</div>
+                    <h2 id="resultMsg" style="font-size: 1.8rem; margin-bottom: 8px;">أحسنت صنعاً!</h2>
+                    <p id="resultSubtitle" style="color: var(--text-muted);">تم إكمال الأسئلة الاختيارية بنجاح!</p>
+                    
+                    <div class="score-circle">
+                        <div class="score-num" id="finalScore">0</div>
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">/ 25</span>
+                    </div>
+
+                    <p id="highScoreNotice" style="font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-top: 10px;"></p>
+
+                    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+                        <button class="btn-restart" onclick="restartCurrentQuiz()">إعادة هذا الاختبار 🔄</button>
+                        <button class="btn-restart" style="background: var(--primary); color: white;" onclick="switchMainTab('essay')">الانتقال للأسئلة المقالية (25 سؤالاً) ✍️</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- حاوية الأسئلة المقالية الـ 25 -->
+            <div id="essayContainer" class="essay-container">
+                <div style="background: #eff6ff; border-right: 5px solid var(--primary); padding: 18px; border-radius: 12px; margin-bottom: 24px;">
+                    <strong style="color: var(--primary); font-size: 1.15rem;">📝 إرشادات الأسئلة المقالية والتحليلية:</strong>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 4px;">
+                        تضم هذه المجموعة 25 سؤالاً مقالياً تحليلياً شاملاً مستخرجاً من صلب كتاب الوزارة (فكر كمهندس، أسئلة امتحانية، طبق ما تعلمته، فكر وتحد نفسك). دوّن إجابتك في المربع المخصص، ثم اضغط على زر "إظهار الإجابة النموذجية" للمقارنة وتثبيت المفاهيم.
+                    </p>
+                </div>
+
+                <div id="essayList"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- نافذة فهرس الانتقال السريع للأسئلة الاختيارية -->
+    <div class="modal-overlay" id="indexModal" onclick="closeIndexModalOnOutside(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📑 فهرس الأسئلة الاختيارية (1 - 25)</h3>
+                <button class="close-btn" onclick="closeIndexModal()">✕</button>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background: #22c55e;"></div><span>إجابة صحيحة</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>إجابة خاطئة</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background: #0f4c81;"></div><span>السؤال المفتوح حالياً</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background: #e2e8f0; border: 1px solid #cbd5e1;"></div><span>لم يُحل بعد</span></div>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">اضغط على أي رقم للمعاينة أو حل السؤال مباشرة دون قيود:</p>
+            
+            <div class="grid-index" id="gridIndexContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        function activateStep(element, stepNum) {
+            document.querySelectorAll('.tls-step-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+
+            const exp = document.getElementById('tls-explanation');
+            if (stepNum === 1) {
+                exp.innerHTML = "🔍 <strong>الخطوة 1:</strong> العميل يفحص شهادة الخادم ومفتاحه العام. الهدف: التأكد التام من أن الموقع حقيقي وليس مزيفاً.";
+            } else if (stepNum === 2) {
+                exp.innerHTML = "🤝 <strong>الخطوة 2:</strong> يتم اشتقاق مفاتيح جلسة متماثلة سراً بين الطرفين بواسطة مفاهيم المفتاح العام دون إرسال المفتاح النهائي علناً.";
+            } else if (stepNum === 3) {
+                exp.innerHTML = "🚀 <strong>الخطوة 3:</strong> يبدأ نقل صفحات الويب والصور والبيانات بسرعة البرق باستخدام التشفير المتماثل بمفتاح الجلسة المشترك.";
+            }
+        }
+
+        function runSimCipher() {
+            const input = document.getElementById('plainInput').value;
+            const plainBox = document.getElementById('box-plain');
+            const cipherBox = document.getElementById('box-cipher');
+            const decryptBox = document.getElementById('box-decrypted');
+
+            plainBox.innerText = input || "(فارغ)";
+            
+            if (!input) {
+                cipherBox.innerText = "---";
+                decryptBox.innerText = "---";
+                return;
+            }
+
+            try {
+                const encoded = btoa(unescape(encodeURIComponent(input)));
+                cipherBox.innerText = encoded;
+                decryptBox.innerText = input;
+            } catch (e) {
+                cipherBox.innerText = "🔒 Encrypted_Hash_Error";
+                decryptBox.innerText = input;
+            }
+        }
+
+        let selectedFactors = [];
+        function toggleFactor(factorKey, element) {
+            const index = selectedFactors.indexOf(factorKey);
+            if (index > -1) {
+                selectedFactors.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                if (selectedFactors.length >= 2) {
+                    const removed = selectedFactors.shift();
+                    const el = document.getElementById('factor-' + removed);
+                    if (el) el.classList.remove('selected');
+                }
+                selectedFactors.push(factorKey);
+                element.classList.add('selected');
+            }
+
+            const status = document.getElementById('mfa-status');
+            if (selectedFactors.length === 2) {
+                status.style.color = "var(--success)";
+                status.innerHTML = "✅ ممتاز! قمت بدمج فئتين مختلفتين، وهذا يُشكل <strong>مصادقة ثنائية (2FA) حقيقية وآمنة</strong> تمنع الدخول غير المصرح به حتى لو سُرقت كلمة المرور.";
+            } else if (selectedFactors.length === 1) {
+                status.style.color = "var(--accent)";
+                status.innerHTML = "⚠️ تم اختيار فئة واحدة فقط. اختر فئة ثانية مختلفة لتفعيل المصادقة الثنائية.";
+            } else {
+                status.style.color = "var(--purple)";
+                status.innerHTML = "اختر عاملين من فئتين مختلفتين لتحقيق المصادقة الثنائية (2FA)...";
+            }
+        }
+
+        // 25 سؤالاً اختيارياً من متعدد (MCQ)
+        const mcqQuestions = [
+            {
+                ar_q: "ما هو النظام المستخدم لإجراء اتصالات الويب بأمان عبر التشفير واكتشاف التلاعب والتحقق من الطرف المقابل؟",
+                en_q: "What system is used to conduct secure web communications via encryption, tampering detection, and server verification?",
+                options: [
+                    { ar: "FTP", en: "FTP" },
+                    { ar: "HTTPS", en: "HTTPS" },
+                    { ar: "HTTP", en: "HTTP" },
+                    { ar: "SMTP", en: "SMTP" }
+                ],
+                correct: 1,
+                exp_ar: "نظام HTTPS هو بروتوكول HTTP منقول عبر اتصال TLS مؤمن يضمن السرية والتحقق وسلامة البيانات (كتاب ص 32).",
+                exp_en: "HTTPS is HTTP transmitted over a TLS-secured channel ensuring data confidentiality, integrity, and server authentication (p. 32)."
+            },
+            {
+                ar_q: "أي نوع من التشفير يستخدم زوجاً من المفاتيح المترابطة (مفتاح عام ومفتاح خاص)؟",
+                en_q: "Which type of encryption utilizes a pair of linked keys: a public key and a private key?",
+                options: [
+                    { ar: "التشفير بالمفتاح العام", en: "Public Key Encryption" },
+                    { ar: "التشفير المتماثل", en: "Symmetric Encryption" },
+                    { ar: "التجزئة الأحادية (Hashing)", en: "One-way Hashing" },
+                    { ar: "التشفير التناظري الخطي", en: "Linear Symmetric Cipher" }
+                ],
+                correct: 0,
+                exp_ar: "التشفير بالمفتاح العام (غير المتماثل) يستخدم زوجاً من المفاتيح: مفتاحاً عاماً للمشاركة ومفتاحاً خاصاً سرياً (ص 32).",
+                exp_en: "Public key (asymmetric) cryptography utilizes a mathematically coupled key pair: public and private keys (p. 32)."
+            },
+            {
+                ar_q: "ما نوع التشفير المستخدم لحماية وتبادل بيانات الجلسة بسرعة وكفاءة بعد اكتمال مصافحة TLS؟",
+                en_q: "What type of encryption is used to protect and exchange session data quickly and efficiently after TLS handshake completion?",
+                options: [
+                    { ar: "التشفير التوليدي", en: "Generative Encryption" },
+                    { ar: "التشفير غير المتماثل فقط", en: "Asymmetric Encryption only" },
+                    { ar: "التشفير المتماثل", en: "Symmetric Encryption" },
+                    { ar: "تشفير المفتاح العام", en: "Public Key Encryption" }
+                ],
+                correct: 2,
+                exp_ar: "تحمى بيانات الجلسة بالتشفير المتماثل لكفاءته العالية وسرعته في نقل البيانات الضخمة (ص 32، 35، 37).",
+                exp_en: "Symmetric encryption protects bulk session data due to its high computational speed and efficiency (p. 32, 35, 37)."
+            },
+            {
+                ar_q: "ما الوثيقة الرقمية التي تساعد المتصفح على التحقق من هوية الخادم وارتباطه باسم النطاق الذي يتصل به؟",
+                en_q: "What digital document assists the browser in verifying the identity of the server and its linkage to the domain name?",
+                options: [
+                    { ar: "جدار الحماية الشخصي", en: "Personal Firewall" },
+                    { ar: "كلمة المرور المؤقتة (OTP)", en: "One-Time Password (OTP)" },
+                    { ar: "الشهادة الرقمية", en: "Digital Certificate" },
+                    { ar: "رمز الاستجابة السريعة QR", en: "QR Code" }
+                ],
+                correct: 2,
+                exp_ar: "تساعد الشهادة الرقمية المتصفح على التحقق من هوية الخادم وصلاحيته وملاءمته لاسم الموقع (ص 32، 34، 36).",
+                exp_en: "Digital certificates enable clients to authenticate the server identity, valid chain of trust, and domain name (p. 32, 34, 36)."
+            },
+            {
+                ar_q: "ما التقنية التي تكتشف أي تعديل أو تلاعب في الرسالة وتوفر دليلاً يدعم 'عدم التنصل'؟",
+                en_q: "Which security technology detects data tampering and provides authoritative evidence supporting 'non-repudiation'?",
+                options: [
+                    { ar: "التوقيع الرقمي", en: "Digital Signature" },
+                    { ar: "بروتوكول HTTP العادي", en: "Plain HTTP Protocol" },
+                    { ar: "التشفير المتماثل وحده", en: "Symmetric Encryption alone" },
+                    { ar: "تطبيق المصادقة", en: "Authenticator App" }
+                ],
+                correct: 0,
+                exp_ar: "يدعم التوقيع الرقمي التحقق من سلامة البيانات وهوية الموقع ويوفر دليلاً يمنع التنصل من إرسالها (ص 34، 36، 37).",
+                exp_en: "Digital signatures verify data integrity, authenticate the signer, and furnish proof of non-repudiation (p. 34, 36, 37)."
+            },
+            {
+                ar_q: "ماذا يقصد بمفهوم المصادقة الثنائية (2FA)؟",
+                en_q: "What is meant by the concept of Two-Factor Authentication (2FA)?",
+                options: [
+                    { ar: "إدخال كلمة المرور مرتين متتاليتين للتأكيد", en: "Entering the same password twice sequentially" },
+                    { ar: "استخدام عاملين مستقلين من فئتين مختلفتين لإثبات الهوية", en: "Using two independent factors from two distinct categories" },
+                    { ar: "استخدام كلمتي مرور مختلفتين لنفس الحساب", en: "Using two different passwords for the same account" },
+                    { ar: "حفظ كلمة المرور في متصفحين مختلفين", en: "Storing the password in two separate browsers" }
+                ],
+                correct: 1,
+                exp_ar: "المصادقة الثنائية (2FA) تقتضي استخدام عاملين مستقلين ينتميان لفئتين مختلفتين (ص 33، 34).",
+                exp_en: "2FA mandates authenticating with two independent factors derived from distinct factor categories (p. 33, 34)."
+            },
+            {
+                ar_q: "أي مما يلي يُعد تطبيقاً فعلياً على عامل 'المعرفة' (Knowledge) في المصادقة؟",
+                en_q: "Which of the following is an authentic example of the 'Knowledge' factor in authentication?",
+                options: [
+                    { ar: "بطاقة الصراف الذكية (IC Card)", en: "Smart IC Card" },
+                    { ar: "بصمة الوجه الرقمية", en: "Facial recognition biometric" },
+                    { ar: "كلمة المرور أو رمز PIN السري", en: "Password or secret PIN" },
+                    { ar: "تطبيق المصادقة المثبت على الهاتف", en: "Smartphone authenticator app" }
+                ],
+                correct: 2,
+                exp_ar: "عامل المعرفة يمثل 'شيء تعرفه' مثل كلمة المرور ورمز PIN (ص 33، 35).",
+                exp_en: "The knowledge factor constitutes 'something you know', exemplified by secret passwords or PINs (p. 33, 35)."
+            },
+            {
+                ar_q: "رمز التحقق لمرة واحدة (OTP) الذي يُرسل إلى الهاتف عبر رسالة SMS يندرج تحت فئة عامل:",
+                en_q: "A One-Time Password (OTP) dispatched via SMS to a user's phone falls under the category of:",
+                options: [
+                    { ar: "السمات الحيوية (Inherence)", en: "Inherence factor" },
+                    { ar: "المعرفة (Knowledge)", en: "Knowledge factor" },
+                    { ar: "الموقع الجغرافي فقط", en: "Geolocation factor only" },
+                    { ar: "الحيازة (Possession)", en: "Possession factor" }
+                ],
+                correct: 3,
+                exp_ar: "الهاتف ورسائل OTP التي يستقبلها تمثل عامل الحيازة (شيء تمتلكه وتسيطر عليه مادياً) (ص 33، 35).",
+                exp_en: "The phone and received OTP code represent the possession factor ('something you have') (p. 33, 35)."
+            },
+            {
+                ar_q: "استخدام بصمة الإصبع أو التعرف على الوجه لتسجيل الدخول يُمثل عامل:",
+                en_q: "Using fingerprint verification or facial recognition to authenticate represents which factor?",
+                options: [
+                    { ar: "السمات الحيوية (Inherence)", en: "Inherence (Biometrics)" },
+                    { ar: "الحيازة (Possession)", en: "Possession" },
+                    { ar: "المعرفة (Knowledge)", en: "Knowledge" },
+                    { ar: "التشفير المتماثل", en: "Symmetric Encryption" }
+                ],
+                correct: 0,
+                exp_ar: "البصمات وملامح الوجه تمثل عامل السمات الحيوية 'شيء في ذاتك' (ص 33، 35).",
+                exp_en: "Fingerprints and facial features represent biometric inherence ('something you are') (p. 33, 35)."
+            },
+            {
+                ar_q: "أي من التركيبات التالية لا تُعد مصادقة ثنائية حقيقية (2FA)؟",
+                en_q: "Which of the following combinations does NOT constitute genuine Two-Factor Authentication (2FA)?",
+                options: [
+                    { ar: "كلمة مرور + رمز OTP على الهاتف المحمول", en: "Password + OTP code sent to phone" },
+                    { ar: "كلمة مرور + الإجابة عن سؤال سري محفوظ", en: "Password + Secret Security Question" },
+                    { ar: "بطاقة دخول ذكية IC + بصمة الإصبع", en: "Smart IC Card + Fingerprint scan" },
+                    { ar: "كلمة مرور + تطبيق توليد الرموز Authenticator", en: "Password + Authenticator app token" }
+                ],
+                correct: 1,
+                exp_ar: "كلمة المرور والسؤال السري كلاهما من عامل 'المعرفة'، لذا هذا الإجراء هو مصادقة متعددة الخطوات وليس ثنائية العوامل (ص 35، 37).",
+                exp_en: "A password and security question both belong to the knowledge factor; this is multi-step, not multi-factor (p. 35, 37)."
+            },
+            {
+                ar_q: "أثناء مصافحة TLS، كيف يحصل الطرفان على مفتاح الجلسة المشترك؟",
+                en_q: "During a TLS handshake, how do the client and server obtain the shared session key?",
+                options: [
+                    { ar: "يرسل المتصفح المفتاح مكشوفاً في أول طلب HTTP", en: "Browser transmits key in plaintext in first HTTP request" },
+                    { ar: "يرسل الخادم المفتاح السري عبر البريد الإلكتروني", en: "Server emails secret key to user" },
+                    { ar: "يتبادلان المعاملات ويشتق كل طرف المفتاح لديه دون إرساله مكشوفاً عبر الشبكة", en: "They exchange parameters and each derives the key without sending it over the network" },
+                    { ar: "يتم تحميل المفتاح مسبقاً من متجر التطبيقات", en: "Key is permanently pre-installed from app store" }
+                ],
+                correct: 2,
+                exp_ar: "يتفاوض الطرفان ويشتق كل طرف مفتاح الجلسة لديه بأمان دون إرسال المفتاح نفسه عبر الشبكة (ص 33، 34).",
+                exp_en: "Both sides negotiate exchange parameters and derive session keys independently without transmitting the key (p. 33, 34)."
+            },
+            {
+                ar_q: "ما التهديد الذي يعالجه التشفير (بالمفتاح المتماثل أو العام) بشكل أساسي؟",
+                en_q: "What security threat is primarily mitigated by encryption (symmetric or public key)?",
+                options: [
+                    { ar: "التنصت وقراءة محتوى الاتصال من قِبل أطراف ثالثة", en: "Eavesdropping and unauthorized interception of communications" },
+                    { ar: "توقف خادم الويب بسبب انقطاع الكهرباء", en: "Server downtime due to electrical blackout" },
+                    { ar: "امتلاء مساحة القرص الصلب في الجهاز", en: "Hard disk running out of storage space" },
+                    { ar: "تلف الشاشة الفيزيائية للحاسوب", en: "Physical hardware monitor damage" }
+                ],
+                correct: 0,
+                exp_ar: "يمنع التشفير قراءة محتوى الاتصال أو اعتراضه وفهمه من قِبل أي طرف متطفل على الشبكة (ص 34، 36).",
+                exp_en: "Encryption prevents third-party eavesdropping and deciphering of transmitted communications (p. 34, 36)."
+            },
+            {
+                ar_q: "إذا سُرقت كلمة المرور الخاصة بحسابك، فإن التقنية التي تمنع المهاجم من الدخول هي:",
+                en_q: "If your account password is leaked or stolen, which technology halts the intruder from logging in?",
+                options: [
+                    { ar: "التوقيع الرقمي", en: "Digital Signature" },
+                    { ar: "زيادة حجم خط شاشة تسجيل الدخول", en: "Increasing login page font size" },
+                    { ar: "المصادقة الثنائية (2FA) عبر إرسال رمز مستقل للحيازة", en: "Two-Factor Authentication (2FA) via independent possession factor" },
+                    { ar: "بروتوكول نقل الملفات FTP", en: "FTP file transfer" }
+                ],
+                correct: 2,
+                exp_ar: "تمنع المصادقة الثنائية الدخول غير المصرح به، لأن معرفة كلمة المرور وحدها لا تكفي لاختراق الحساب (ص 33، 35، 37).",
+                exp_en: "2FA thwarts unauthorized access because knowing the password alone is insufficient without the 2nd factor (p. 33, 35, 37)."
+            },
+            {
+                ar_q: "لماذا لا يتم تبادل كافة صفحات ومحتويات الويب باستخدام التشفير بالمفتاح العام طوال الجلسة؟",
+                en_q: "Why are complete web pages and multimedia not transferred using public key encryption throughout the session?",
+                options: [
+                    { ar: "لأنه بطيء ويستهلك موارد معالجة كبيرة مقارنة بالتشفير المتماثل", en: "Because it is computationally slow compared to symmetric encryption" },
+                    { ar: "لأن المفتاح العام ممنوع قانونياً في نقل الصور", en: "Because public keys are prohibited by law for image transfer" },
+                    { ar: "لأن التشفير غير المتماثل لا يستطيع تشفير الأرقام", en: "Because asymmetric ciphers cannot encrypt numeric data" },
+                    { ar: "لأنه لا يدعم شبكات الواي فاي", en: "Because it is incompatible with Wi-Fi networks" }
+                ],
+                correct: 0,
+                exp_ar: "التشفير بالمفتاح العام بطيء حسابياً، لذا يستخدم فقط في البداية للاتفاق على مفتاح الجلسة المتماثل السريع (ص 35، 37).",
+                exp_en: "Public-key cryptography carries high mathematical overhead; symmetric encryption is vastly faster for data exchange (p. 35, 37)."
+            },
+            {
+                ar_q: "الفكرة الرئيسة للدرس 2-1 تؤكد على أن الأمان عبر الإنترنت يتحقق من خلال:",
+                en_q: "The core takeaway of Lesson 2-1 emphasizes that online security is achieved by:",
+                options: [
+                    { ar: "الاعتماد على كلمة مرور واحدة طويلة جداً", en: "Relying strictly on an exceptionally long password" },
+                    { ar: "الجمع بين التشفير والشهادات والتوقيعات والمصادقة في طبقات متكاملة", en: "Stacking encryption, certificates, signatures, and authentication in layers" },
+                    { ar: "استخدام جدار الحماية المنزلي فقط دون غيره", en: "Using a home router firewall exclusively" },
+                    { ar: "إيقاف الاتصال بشبكة الإنترنت نهائياً", en: "Completely disconnecting from internet networks" }
+                ],
+                correct: 1,
+                exp_ar: "نصت الخلاصة على: 'لا يأتي الأمان من تقنية واحدة، بل من الجمع بين التشفير والشهادات والتوقيعات والمصادقة' (ص 34، 36).",
+                exp_en: "Internet security relies on multi-layered defenses combining encryption, certificates, and multi-factor authentication (p. 34, 36)."
+            },
+            {
+                ar_q: "ما التقنية المسؤولة عن الحفاظ على سرية الاتصال ومنع التجسس؟",
+                en_q: "Which technology primarily provides confidentiality and prevents wiretapping?",
+                options: [
+                    { ar: "النسخ الاحتياطي التلقائي", en: "Automated backup" },
+                    { ar: "التشفير (Encryption)", en: "Encryption" },
+                    { ar: "إلغاء تجزئة القرص الصلب", en: "Disk defragmentation" },
+                    { ar: "زيادة سرعة التنزيل", en: "Bandwidth boost" }
+                ],
+                correct: 1,
+                exp_ar: "التشفير هو التقنية المسؤولة عن حفظ سرية البيانات ومنع كشف محتواها للمتجسسين (ص 34، 36).",
+                exp_en: "Encryption renders plaintext into ciphertext, upholding strict confidentiality across untrusted channels (p. 34, 36)."
+            },
+            {
+                ar_q: "عند التسوق الإلكتروني، يُستخدم التوقيع الرقمي في الأساس لـ:",
+                en_q: "In e-commerce transactions, digital signatures are primarily utilized to:",
+                options: [
+                    { ar: "حفظ كلمة المرور في المتصفح", en: "Save passwords in the browser" },
+                    { ar: "تسريع تحميل صور المنتجات", en: "Speed up catalog product rendering" },
+                    { ar: "إثبات توقيع تفاصيل الطلب وعدم تعديله وتوفير دليل عدم التنصل", en: "Prove transaction order integrity and provide non-repudiation proof" },
+                    { ar: "توليد أكواد الخصم الترويجية", en: "Generate discount coupons" }
+                ],
+                correct: 2,
+                exp_ar: "يستخدم التوقيع الرقمي لإثبات توقيع الطلب ومنع التلاعب بمحتواه أو إنكار الشراء (ص 34، 36).",
+                exp_en: "Digital signatures bind the merchant/shopper to specific transactional payload parameters conclusively (p. 34, 36)."
+            },
+            {
+                ar_q: "ماذا يترتب على فشل المتصفح في التحقق من صحة الشهادة الرقمية للموقع؟",
+                en_q: "What occurs if the client browser fails to validate the website's digital certificate?",
+                options: [
+                    { ar: "يتم تسريع نقل البيانات تلقائياً", en: "Data transmission rate doubles" },
+                    { ar: "تحذير المستخدم من أن الموقع غير آمن أو قد يكون منتحلاً ومزيفاً", en: "User receives a security warning of untrusted/spoofed connection" },
+                    { ar: "إيقاف تشغيل جهاز الحاسوب بالكامل", en: "The entire computer hardware powers down" },
+                    { ar: "مسح جميع الملفات المخزنة على الهاتف", en: "All smartphone local files are wiped" }
+                ],
+                correct: 1,
+                exp_ar: "عند وجود خلل في الشهادة يطلق المتصفح تحذيراً أمنياً لاحتمال وجود موقع مزيف أو هجوم انتحال (ص 32، 35).",
+                exp_en: "Browser halts insecure handshake, alerting user to potentially forged certificates or phishing domains (p. 32, 35)."
+            },
+            {
+                ar_q: "المصادقة متعددة العوامل (MFA) تتطلب استخدام:",
+                en_q: "Multi-Factor Authentication (MFA) requires deploying:",
+                options: [
+                    { ar: "عاملين أو أكثر من فئات مختلفة (معرفة، حيازة، سمات حيوية)", en: "Two or more factors from different categories (knowledge, possession, inherence)" },
+                    { ar: "ثلاث كلمات مرور متطابقة في نفس الشاشة", en: "Three identical passwords on the same form" },
+                    { ar: "حسابين بريد إلكتروني من نفس المزود", en: "Two email inboxes hosted by the same provider" },
+                    { ar: "توصيل شاحنين كهربائيين بالهاتف", en: "Connecting two chargers to phone" }
+                ],
+                correct: 0,
+                exp_ar: "المصادقة متعددة العوامل (MFA) تستخدم عاملين أو أكثر من فئات مختلفة كالمعرفة والحيازة والسمات الحيوية (ص 33).",
+                exp_en: "MFA enforces the verification of two or more independent credential categories (p. 33)."
+            },
+            {
+                ar_q: "ما الخاصية الأمنية التي تضمن عدم قدرة الطرف المقابل على إنكار أنه أرسل معاملة معينة؟",
+                en_q: "Which security property ensures a communicating party cannot deny transmitting a specific transaction?",
+                options: [
+                    { ar: "التشفير المتماثل", en: "Symmetric Encryption" },
+                    { ar: "السرعة العالية", en: "Throughput Efficiency" },
+                    { ar: "عدم التنصل (Non-repudiation)", en: "Non-repudiation" },
+                    { ar: "التصفح المتخفي", en: "Incognito Browsing" }
+                ],
+                correct: 2,
+                exp_ar: "عدم التنصل (Non-repudiation) يتحقق بواسطة التوقيع الرقمي ويثبت مسؤولية الطرف عن المعاملة (ص 32، 34، 37).",
+                exp_en: "Non-repudiation, mathematically affirmed by digital signatures, prevents senders from denying authorship (p. 32, 34, 37)."
+            },
+            {
+                ar_q: "في بروتوكول HTTPS، يتم تشفير رابط الاتصال بواسطة طبقة برمجية تسمى:",
+                en_q: "In HTTPS, communication is layered over a cryptographic protocol named:",
+                options: [
+                    { ar: "TLS (Transport Layer Security)", en: "TLS (Transport Layer Security)" },
+                    { ar: "DNS", en: "DNS" },
+                    { ar: "HTML", en: "HTML" },
+                    { ar: "CSS", en: "CSS" }
+                ],
+                correct: 0,
+                exp_ar: "بروتوكول HTTPS ينقل طلبات واستجابات HTTP عبر نفق TLS مؤمن (ص 32).",
+                exp_en: "HTTPS operates by wrapping conventional HTTP traffic inside a TLS tunnel (p. 32)."
+            },
+            {
+                ar_q: "أي مما يلي يُعد مثالاً على مصادقة تجمع بين (الحيازة + السمات الحيوية)؟",
+                en_q: "Which configuration demonstrates authentication combining (Possession + Biometric Inherence)?",
+                options: [
+                    { ar: "كلمة مرور + رمز PIN", en: "Password + PIN code" },
+                    { ar: "بطاقة دخول ذكية IC + بصمة الإصبع", en: "Smart IC entry card + Fingerprint scan" },
+                    { ar: "اسم المستخدم + كلمة المرور", en: "Username + password" },
+                    { ar: "كلمة مرور + سؤال سري", en: "Password + security question" }
+                ],
+                correct: 1,
+                exp_ar: "بطاقة IC تمثل الحيازة وبصمة الإصبع تمثل السمات الحيوية (كتاب ص 33 و 35).",
+                exp_en: "An IC card corresponds to possession, and the fingerprint is a biometric inherence factor (p. 33, 35)."
+            },
+            {
+                ar_q: "ما وظيفة المفتاح العام في منظومة الشهادة الرقمية الخاصة بالموقع؟",
+                en_q: "What is the primary role of the public key contained within a server's digital certificate?",
+                options: [
+                    { ar: "حفظ أسماء المستخدمين على الخادم", en: "Store usernames on server" },
+                    { ar: "التحقق من الخادم والتفاوض الآمن على مفاتيح الجلسة", en: "Authenticating the server and securely establishing session keys" },
+                    { ar: "إصلاح أخطاء نظام التشغيل", en: "Repairing operating system bugs" },
+                    { ar: "إرسال رسائل الإعلانات للمستخدمين", en: "Broadcasting advertising notifications" }
+                ],
+                correct: 1,
+                exp_ar: "يستخدم المفتاح العام للمصادقة وتشفير بارامترات مفاتيح الجلسة المتماثلة أثناء المصافحة (ص 32، 34).",
+                exp_en: "The public key verifies server signatures and secures the derivation of ephemeral symmetric keys (p. 32, 34)."
+            },
+            {
+                ar_q: "إذا استخدم نظام مصادقة 'بصمة الإصبع + بصمة الوجه'، فهذا النظام يعتبر:",
+                en_q: "If an authentication system verifies 'Fingerprint scan + Facial scan', this architecture is considered:",
+                options: [
+                    { ar: "مصادقة ثنائية العوامل مكتملة (2FA)", en: "Full Two-Factor Authentication (2FA)" },
+                    { ar: "مصادقة متعددة الخطوات تعتمد على نفس الفئة (السمات الحيوية)", en: "Multi-step authentication relying on a single factor (Inherence)" },
+                    { ar: "مصادقة منعدمة الأمان تماماً", en: "Completely insecure system" },
+                    { ar: "تشفير متماثل غير مشفر", en: "Unencrypted symmetric cipher" }
+                ],
+                correct: 1,
+                exp_ar: "كلا العاملين يتبعان فئة واحدة (السمات الحيوية)، لذا لا تُعد مصادقة ثنائية العوامل حقيقية (ص 33، 35).",
+                exp_en: "Both modalities belong solely to the inherence factor; hence, it is multi-step single-factor verification (p. 33, 35)."
+            },
+            {
+                ar_q: "يتميز التشفير المتماثل بأنه:",
+                en_q: "Symmetric encryption is distinctly characterized by:",
+                options: [
+                    { ar: "استخدام مفتاح واحد مشترك لكل من التشفير وفك التشفير", en: "Using one single shared secret key for encryption and decryption" },
+                    { ar: "استخدام مفتاح مختلف تماماً لا يمكن استنتاجه", en: "Using entirely unlinked public and private keys" },
+                    { ar: "بطئه الشديد مقارنة بالمفتاح العام", en: "Extremely sluggish throughput relative to public keys" },
+                    { ar: "عدم صلاحيته لتشفير نصوص الويب", en: "Inability to secure HTTP web transmissions" }
+                ],
+                correct: 0,
+                exp_ar: "التشفير المتماثل يعتمد على نفس المفتاح المشترك للطرفين ويتميز بالسرعة والكفاءة (ص 34، 35).",
+                exp_en: "Symmetric encryption uses the exact same shared key for both operations and runs very fast (p. 34, 35)."
+            }
+        ];
+
+        // 25 سؤالاً مقالياً وتحليلياً من كتاب الوزارة
+        const essayQuestions = [
+            {
+                source: "سؤال على نمط الامتحان [6 درجات] (كتاب ص 35)",
+                q: "اشرح لماذا يستخدم بروتوكول TLS آليات المفتاح العام للمصادقة والاتفاق الآمن على مفاتيح الجلسة، ثم ينتقل لاستخدام التشفير المتماثل لحماية بيانات الجلسة؟ استعن بمفهومي: الأمان والكفاءة.",
+                model: "<b>الإجابة النموذجية ومعايير التصحيح:</b><br>1. <b>الأمان (التشفير غير المتماثل):</b> يُستخدم في البداية لأن المفتاح العام يسمح للمتصفح والخادم بالمصادقة والاتفاق على سر مشترك لاشتقاق مفاتيح الجلسة دون إرسال المفتاح نفسه مكشوفاً عبر الشبكة غير الموثوقة.<br>2. <b>الكفاءة (التشفير المتماثل):</b> التشفير غير المتماثل بطيء ويستهلك طاقة معالجة هائلة، لذا لا يصلح لتشفير كل بيانات الويب. بعد انتهاء المصافحة، يُستخدم التشفير المتماثل (بمفتاح الجلسة المشترك) لسرعته الفائقة وقدرته على حماية كميات البيانات الضخمة المتبادلة بكفاءة."
+            },
+            {
+                source: "فكر كمهندس: ابحث ثم قرر (كتاب ص 36)",
+                q: "تعمل مدرسة على إنشاء بوابة إلكترونية يتحقق من خلالها الطلاب من درجاتهم ويدفعون الرسوم. برر لماذا يُعد اشتراط عامل ثانٍ (مثل رمز OTP على الهاتف) أكثر أماناً من الاكتفاء بكلمة المرور فقط، وما التحدي الذي قد يواجهه طالب لا يملك هاتفاً ذكياً؟",
+                model: "<b>الإجابة النموذجية:</b><br>• <b>مبرر الأمان:</b> إذا تسربت كلمة المرور (عامل المعرفة) عبر التصيد أو التخمين، فإن العامل الثاني المستقل (عامل الحيازة كالرمز المرسل للهاتف) يمنع المخترق من الدخول لأن معرفة كلمة المرور وحدها لم تعد كافية.<br>• <b>التحدي والحل الشامل:</b> الطلاب الذين لا يملكون هواتف ذكية سيواجهون صعوبة في الوصول؛ الحل هو توفير بدائل مثل بطاقات IC الذكية المدرسية أو مفاتيح أمان USB أو إتاحة أجهزة مصادقة داخل المعمل المدرسي لضمان تكافؤ الفرص وإمكانية الوصول."
+            },
+            {
+                source: "توقف وفكر (كتاب ص 34)",
+                q: "إذا تسربت كلمة المرور الخاصة بحسابك البنكي، فلماذا يمكن لعامل ثانٍ يُرسل إلى الهاتف أن يظل قادراً على حماية الحساب ومنع الاختراق؟",
+                model: "<b>الإجابة النموذجية:</b> لأن نظام المصادقة الثنائية يشترط تقديم إثباتين مستقلين من فئتين مختلفتين؛ فالمخترق الذي يمتلك كلمة المرور (عامل المعرفة) يفتقر إلى جهاز الهاتف الفعلي للمستخدم (عامل الحيازة)، وبالتالي يفشل في تجاوز مرحلة التحقق الثانية ويتم حظر محاولته."
+            },
+            {
+                source: "طبق ما تعلمته (كتاب ص 36)",
+                q: "يريد متجر إلكتروني صغير تأمين تسجيل دخول العملاء وعمليات الدفع معاً. سَمِّ تقنيتي أمان يجب أن يستخدمهما المتجر، وبيّن أين تساعد كل منهما، ثم حدد تهديداً واحداً قد يظل قائماً.",
+                model: "<b>الإجابة النموذجية:</b><br>1. <b>بروتوكول HTTPS / التشفير بـ TLS:</b> لحماية وتشفير بيانات البطاقات والمدفوعات أثناء النقل ومنع التنصت وسرقة الأرقام.<br>2. <b>المصادقة الثنائية (2FA):</b> لحماية حسابات العملاء من الدخول غير المصرح به عند تسجيل الدخول.<br>• <b>التهديد القائم:</b> قد تظل التهديدات المرتبطة بالهندسة الاجتماعية قائمة (مثل خداع العميل وإقناعه هاتفياً بالإفصاح عن رمز الـ OTP الذي وصله)، أو البرمجيات الخبيثة المزروعة على جهاز المستخدم نفسه."
+            },
+            {
+                source: "تمارين الكتاب المدرسي - فقرأ واقرأ الفقرة (كتاب ص 35، 37)",
+                q: "استخرج الخطوات الثلاث المرتبة لإنشاء اتصال HTTPS آمن أثناء مصافحة TLS، مع توضيح الإجراء الأمني في كل خطوة.",
+                model: "<b>الإجابة النموذجية:</b><br>1. <b>فحص الشهادة الرقمية:</b> يرسل الخادم شهادته ومفتاحه العام، ويتحقق المتصفح من صحتها وسلسلة الثقة ومطابقتها لاسم النطاق.<br>2. <b>معاملات تبادل المفاتيح:</b> يتفاوض الطرفان ويشتق كل طرف مفتاح الجلسة سراً لديه دون إرساله مكشوفاً عبر الشبكة.<br>3. <b>حماية وتبادل البيانات:</b> تُشفّر جميع البيانات المتبادلة لاحقاً باستخدام التشفير المتماثل وآليات سلامة البيانات."
+            },
+            {
+                source: "تدرب واختبر فهمك (كتاب ص 34، 35)",
+                q: "وضح الفرق الجوهري بين التشفير المتماثل والتشفير بالمفتاح العام من حيث: عدد المفاتيح المستخدمة وسرعة المعالجة.",
+                model: "<b>الإجابة النموذجية:</b><br>• <b>التشفير المتماثل:</b> يستخدم مفتاحاً سرياً واحداً مشتركاً للتشفير وفك التشفير معاً، ويمتاز بالسرعة الفائقة والكفاءة الحسابية العالية.<br>• <b>التشفير بالمفتاح العام:</b> يستخدم زوجاً من المفاتيح المترابطة رياضياً (مفتاح عام معلن ومفتاح خاص سري)، وهو أبطأ حسابياً ويتطلب عمليات معالجة معقدة."
+            },
+            {
+                source: "المفاهيم الأساسية (كتاب ص 32، 34)",
+                q: "ما المقصود بخاصية 'عدم التنصل' (Non-repudiation)؟ وما التقنية التي توفر دليلاً يدعمها؟",
+                model: "<b>الإجابة النموذجية:</b><br>• <b>عدم التنصل:</b> تعني عدم قدرة مرسل الرسالة أو منفذ المعاملة المالية على إنكار أنه هو من قام بإنشائها وتوقيعها وإرسالها.<br>• <b>التقنية المسؤولة:</b> التوقيع الرقمي (Digital Signature) المدعوم بالتشفير بالمفتاح الخاص للمرسل."
+            },
+            {
+                source: "فكر وتحد نفسك (كتاب ص 37)",
+                q: "على أي من هذه الحمايات (التشفير، الشهادات، المصادقة الثنائية) تعتمد أكثر عندما تتصل بالإنترنت لإجراء معاملة بنكية؟ علل إجابتك استناداً لمفهوم تكامل الحماية.",
+                model: "<b>الإجابة النموذجية:</b><br>لا يمكن الاعتماد على واحدة دون الأخريات؛ فالشهادة الرقمية تضمن أن البنك حقيقي وليس موقعاً وهمياً، والتشفير يحمي أرقام الحسابات من التجسس أثناء انتقالها عبر الشبكة، والمصادقة الثنائية تمنع سرقة الحساب حتى لو كُشفت كلمة المرور. الحماية الفعالة تعتمد على تكامل وتكديس هذه الطبقات معاً."
+            },
+            {
+                source: "أسئلة تدرب (كتاب ص 35)",
+                q: "علل: لا يُعتبر تعيين كلمتي مرور مختلفتين لحساب واحد تطبيقاً لمفهوم المصادقة الثنائية (2FA).",
+                model: "<b>الإجابة النموذجية:</b> لأن كلا الإثباتين ينتميان إلى نفس الفئة الواحدة وهي عامل 'المعرفة' (Knowledge)، والمصادقة الثنائية تشترط بالتعريف استخدام عاملين مستقلين من فئتين مختلفتين (مثل المعرفة مع الحيازة أو المعرفة مع السمات الحيوية)."
+            },
+            {
+                source: "تمارين الكتاب المدرسي (كتاب ص 34، 37)",
+                q: "وضح كيف تعالج الشهادة الرقمية خطر 'انتحال الشخصية' أو المواقع المزيفة عند تصفح شبكة الويب.",
+                model: "<b>الإجابة النموذجية:</b> تحتوي الشهادة الرقمية على اسم النطاق الرسمي والمفتاح العام وتوقيع جهة إصدار موثوقة (CA). يقوم المتصفح بفحص هذه السلسلة ومطابقة النطاق؛ فإذا حاول موقع احتيالي انتحال صفة البنك، يكتشف المتصفح عدم صلاحية الشهادة ويطلق تحذيراً أمنياً فورياً للمستخدم."
+            },
+            {
+                source: "المفاهيم الأساسية وتدرب (كتاب ص 33، 35)",
+                q: "اذكر الفئات الثلاث لعوامل المصادقة في أنظمة الأمان، مع إعطاء مثال عملي واحد على كل فئة.",
+                model: "<b>الإجابة النموذجية:</b><br>1. <b>عامل المعرفة (Knowledge):</b> كلمة المرور أو رمز PIN السري.<br>2. <b>عامل الحيازة (Possession):</b> الهاتف الذكي (لاستقبال OTP) أو بطاقة IC الذكية.<br>3. <b>عامل السمات الحيوية (Inherence):</b> بصمة الإصبع أو بصمة الوجه."
+            },
+            {
+                source: "فكر كمهندس (كتاب ص 36)",
+                q: "اقترح حلاً أمنياً يجمع بين تقنيات الدرس لحماية بيانات موظف مصرفي يعمل عن بُعد من مقهى يستخدم شبكة Wi-Fi عامة غير مشفرة.",
+                model: "<b>الإجابة النموذجية:</b><br>1. استخدام اتصال HTTPS مشفر عبر TLS لضمان سرية البيانات المنقولة ومنع التنصت على شبكة الواي فاي المفتوحة.<br>2. إلزام الموظف بتسجيل الدخول باستخدام المصادقة متعددة العوامل (MFA) تجمع بين كلمة مرور وتطبيق مصادقة مستقل على هاتفه لمنع انتحال الحساب."
+            },
+            {
+                source: "توقف وفكر وتدرب (كتاب ص 34، 36)",
+                q: "ما التهديد الأمني الذي يواجهه تبادل المفتاح في التشفير المتماثل إذا تم إرساله عبر الإنترنت دون تشفير مسبق؟",
+                model: "<b>الإجابة النموذجية:</b> تهديد التنصت والاعتراض؛ فإذا تمكن طرف ثالث متطفل من اعتراض المفتاح المشترك، فسيتمكن من فك تشفير كافة الرسائل والبيانات المتبادلة بين الطرفين وقراءتها والتلاعب بها بسهولة."
+            },
+            {
+                source: "المفاهيم الأساسية (كتاب ص 32، 34)",
+                q: "اشرح دور سلطات إصدار الشهادات الرقمية (Certificate Authorities - CA) في منظومة أمان HTTPS.",
+                model: "<b>الإجابة النموذجية:</b> تعمل سلطات CA كطرف ثالث موثوق يقوم بالتحقق من ملكية الجهة للنطاق وإصدار شهادة رقمية موقعة تثبت أن المفتاح العام يخص هذا الموقع فعلياً، مما يمنح المتصفحات الثقة في صحة الاتصال وتجنب المواقع الاحتيالية."
+            },
+            {
+                source: "سؤال على نمط الامتحان [6 درجات] (كتاب ص 34، 36)",
+                q: "حلل كيف تتكامل تقنيات: (التشفير، الشهادة الرقمية، التوقيع الرقمي، 2FA) لتأمين عملية شراء كاملة عبر متجر إلكتروني.",
+                model: "<b>الإجابة النموذجية:</b><br>1. <b>الشهادة الرقمية:</b> تبدأ بالتحقق من أن المتجر أصلي وغير منتحل.<br>2. <b>التشفير:</b> يحمي سرية بيانات الاتصال وأرقام البطاقات أثناء الانتقال عبر الشبكة.<br>3. <b>المصادقة الثنائية (2FA):</b> تحمي حساب المشتري من الاختراق عند تسجيل الدخول.<br>4. <b>التوقيع الرقمي:</b> يثبت أمر الشراء وتفاصيل الدفع ويمنع التلاعب بالطلب ويدعم عدم التنصل."
+            },
+            {
+                source: "المصطلحات الأساسية (كتاب ص 34، 36)",
+                q: "ما التهديد الذي يعالجه التوقيع الرقمي ولا يستطيع التشفير العادي بمفرده إثباته؟",
+                model: "<b>الإجابة النموذجية:</b> إثبات سلامة البيانات من التعديل (Data Integrity) وإثبات عدم التنصل (Non-repudiation)؛ فالتشفير العادي يحمي سرية المحتوى من المتطفلين فقط، لكن التوقيع الرقمي يقدم دليلاً رياضياً لا يقبل الشك على هوية الموقع وعدم تغيير حرف واحد في الرسالة."
+            },
+            {
+                source: "المفاهيم المنهجية (كتاب ص 33، 35)",
+                q: "قارن بين المصادقة الثنائية (2FA) والمصادقة متعددة العوامل (MFA) من حيث المفهوم والتطبيق.",
+                model: "<b>الإجابة النموذجية:</b><br>• <b>المصادقة الثنائية (2FA):</b> حالة خاصة تقتصر على استخدام عاملين مستقلين فقط من فئتين مختلفتين (مثل كلمة مرور + OTP).<br>• <b>المصادقة متعددة العوامل (MFA):</b> مفهوم أوسع يشمل استخدام عاملين أو أكثر (عاملين أو ثلاثة) من فئات المعرفة والحيازة والسمات الحيوية لتعزيز الأمان لأقصى درجة."
+            },
+            {
+                source: "تدرب وتطبيق (كتاب ص 35)",
+                q: "إذا قامت منشأة بتأمين بوابتها بـ (بطاقة دخول ذكية IC + بصمة الإصبع)، حدد فئتي عاملي المصادقة المستخدمتين واشرح سبب قوة هذا النظام.",
+                model: "<b>الإجابة النموذجية:</b><br>• الفئتان هما: عامل الحيازة (بطاقة IC) + عامل السمات الحيوية (بصمة الإصبع).<br>• سبب القوة: حتى لو فُقدت البطاقة أو سرقها شخص آخر، فلن يتمكن من الدخول لأنها مقترنة ببصمة حيوية فريدة يستحيل تكرارها أو تزويرها بسهولة."
+            },
+            {
+                source: "فكر كمهندس (كتاب ص 36)",
+                q: "وضح كيف يؤدي غياب التشفير بالمفتاح العام إلى استحالة إجراء تجارة إلكترونية آمنة على نطاق عالمي بين مستخدمين وخوادم لا يعرفون بعضهم مسبقاً.",
+                model: "<b>الإجابة النموذجية:</b> لأن التجارة الإلكترونية تتطلب الاتصال بمتاجر حول العالم لأول مرة؛ فبدون التشفير بالمفتاح العام، سيضطر العميل والمتجر للالتقاء فيزيائياً لتبادل المفتاح السري، وهو أمر مستحيل. التشفير بالمفتاح العام حل هذه المشكلة بالسماح بإنشاء أسرار مشتركة عبر قنوات مفتوحة دون لقاء مسبق."
+            },
+            {
+                source: "المفاهيم الأساسية (كتاب ص 32، 35)",
+                q: "ماذا يقصد بـ 'مفتاح الجلسة' (Session Key)؟ ولماذا يتصف بأنه مؤقت؟",
+                model: "<b>الإجابة النموذجية:</b> هو مفتاح تشفير متماثل يُشتق سراً أثناء مصافحة TLS ويُستخدم حصرياً لحماية البيانات المتبادلة خلال تلك الجلسة فقط. ويتصف بأنه مؤقت لأن انتهاء الجلسة يعني إتلاف المفتاح وإنشاء مفتاح جديد تماماً في الجلسة التالية، لتقليل أثر أي اختراق محتمل."
+            },
+            {
+                source: "تدرب (كتاب ص 35، 37)",
+                q: "بين نوع التهديد الأمني في كل حالة من الحالات الآتية:<br>أ) تعديل تفاصيل رسالة بنكية أثناء النقل.<br>ب) اعتراض وقراءة كلمة المرور عبر الشبكة.<br>ج) توجيه العميل لصفحة مزيفة مطابقة لصفحة البنك.",
+                model: "<b>الإجابة النموذجية:</b><br>أ) تهديد التلاعب بسلامة البيانات (Data Tampering) - يُعالج بالتوقيع الرقمي.<br>ب) تهديد التنصت وفقدان السرية (Eavesdropping) - يُعالج بالتشفير.<br>ج) تهديد انتحال الهوية والتصيد (Spoofing/Phishing) - يُعالج بالشهادة الرقمية."
+            },
+            {
+                source: "المفاهيم المنهجية (كتاب ص 34، 36)",
+                q: "علل: امتلاك الموقع لشهادة رقمية سارية واتصال HTTPS لا يعني بالضرورة أن محتوى الموقع موثوق وصادق بنسبة 100%.",
+                model: "<b>الإجابة النموذجية:</b> لأن الشهادة الرقمية وHTTPS تؤمنان قناة الاتصال التقنية فقط وتثبتان أن الموقع مرتبط باسم النطاق المسجل، لكنهما لا تتحققان من صدق المحتوى البشري المنشور أو نوايا أصحاب الموقع الذين قد ينشرون معلومات مضللة داخل موقع مشفر."
+            },
+            {
+                source: "فكر وتحد نفسك (كتاب ص 37)",
+                q: "اقترح إجراء أمان إضافياً واحداً يمكن لمتجر إلكتروني تطبيقه بجانب التشفير والمصادقة لتعزيز حماية أموال العملاء.",
+                model: "<b>الإجابة النموذجية:</b> تطبيق المراقبة الذكية للاحتيال السلوكي (Fraud Detection AI)؛ مثل رصد محاولات الشراء المفاجئة من دول غير معتادة أو بمبالغ ضخمة غير نمطية وتجميد المعاملة مؤقتاً لحين التأكيد المباشر مع صاحب البطاقة."
+            },
+            {
+                source: "المفاهيم الأساسية (كتاب ص 32، 34)",
+                q: "ما الفرق بين وظيفة المفتاح العام والمفتاح الخاص في التشفير غير المتماثل؟",
+                model: "<b>الإجابة النموذجية:</b><br>• <b>المفتاح العام (Public Key):</b> يُنشر علناً للجميع ويُستخدم لتشفير الرسائل الموجهة لصاحبه أو للتحقق من التوقيع الرقمي.<br>• <b>المفتاح الخاص (Private Key):</b> سري للغاية ويحتفظ به صاحبه فقط، ويُستخدم لفك تشفير الرسائل الواردة أو لإنشاء التوقيع الرقمي."
+            },
+            {
+                source: "الخلاصة الرسمية للدرس (كتاب ص 36)",
+                q: "لخص الفكرة الأساسية للدرس 2-1 في جملة جامعة تصف كيف تحافظ الخدمات الرقمية على أمانها.",
+                model: "<b>الإجابة النموذجية (من خلاصة كتاب الوزارة):</b> تحافظ الخدمات والاتصالات على أمانها عبر الإنترنت ليس من خلال تقنية واحدة فقط، بل من خلال تكديس وتكامل طبقات الحماية: التشفير المتماثل وبالمفتاح العام، والشهادات الرقمية، والتوقيعات الرقمية، والمصادقة الثنائية (2FA) لمعالجة تهديدات متعددة في آن واحد."
+            }
+        ];
+
+        let mcqAnswers = new Array(25).fill(null);
+        let mcqCurrentIdx = 0;
+        let score = 0;
+
+        function switchMainTab(tab) {
+            const tabMCQ = document.getElementById('tabMCQ');
+            const tabEssay = document.getElementById('tabEssay');
+            const mcqBox = document.getElementById('mcqContainer');
+            const essayBox = document.getElementById('essayContainer');
+
+            if (tab === 'mcq') {
+                tabMCQ.classList.add('active');
+                tabEssay.classList.remove('active');
+                mcqBox.style.display = 'block';
+                essayBox.style.display = 'none';
+            } else {
+                tabEssay.classList.add('active');
+                tabMCQ.classList.remove('active');
+                mcqBox.style.display = 'none';
+                essayBox.style.display = 'block';
+                renderEssayQuestions();
+            }
+        }
+
+        function loadScores() {
+            const storedHigh = localStorage.getItem('cs_u2_l1_mcq_high');
+            const high = storedHigh ? parseInt(storedHigh) : 0;
+            document.getElementById('highScore').innerText = high;
+
+            const storedFirst = localStorage.getItem('cs_u2_l1_mcq_first');
+            if (storedFirst !== null) {
+                document.getElementById('firstScore').innerText = storedFirst;
+            } else {
+                document.getElementById('firstScore').innerText = "--";
+            }
+            calculateScore();
+            return { high, first: storedFirst };
+        }
+
+        function saveScores(finalScore) {
+            let isFirstTime = false;
+            if (localStorage.getItem('cs_u2_l1_mcq_first') === null) {
+                localStorage.setItem('cs_u2_l1_mcq_first', finalScore);
+                document.getElementById('firstScore').innerText = finalScore;
+                isFirstTime = true;
+            }
+
+            const currentHigh = parseInt(localStorage.getItem('cs_u2_l1_mcq_high') || '0');
+            let isNewHigh = false;
+            if (finalScore > currentHigh) {
+                localStorage.setItem('cs_u2_l1_mcq_high', finalScore);
+                document.getElementById('highScore').innerText = finalScore;
+                isNewHigh = true;
+            }
+
+            return { isFirstTime, isNewHigh };
+        }
+
+        function calculateScore() {
+            let s = 0;
+            for (let i = 0; i < mcqQuestions.length; i++) {
+                if (mcqAnswers[i] !== null && mcqAnswers[i] === mcqQuestions[i].correct) {
+                    s++;
+                }
+            }
+            score = s;
+            document.getElementById('score').innerText = score;
+            return score;
+        }
+
+        function displayQuestion() {
+            const q = mcqQuestions[mcqCurrentIdx];
+            document.getElementById('qCurrent').innerText = (mcqCurrentIdx + 1);
+            document.getElementById('questionTextAr').innerText = (mcqCurrentIdx + 1) + ". " + q.ar_q;
+            document.getElementById('questionTextEn').innerText = "Q" + (mcqCurrentIdx + 1) + ": " + q.en_q;
+
+            const answeredCount = mcqAnswers.filter(a => a !== null).length;
+            const pct = (answeredCount / mcqQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            const expBox = document.getElementById('explanationText');
+            const statusIndicator = document.getElementById('qStatusIndicator');
+
+            const prevAns = mcqAnswers[mcqCurrentIdx];
+
+            if (prevAns === null) {
+                statusIndicator.innerText = "لم يُجب بعد / Not answered";
+                statusIndicator.style.color = "var(--text-muted)";
+                expBox.style.display = 'none';
+            } else {
+                statusIndicator.innerText = prevAns === q.correct ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+                statusIndicator.style.color = prevAns === q.correct ? "var(--success)" : "var(--danger)";
+                showExplanation(prevAns === q.correct, prevAns);
+            }
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerHTML = `
+                    <div class="opt-ar">${['أ', 'ب', 'ج', 'د'][idx]}) ${opt.ar}</div>
+                    <div class="opt-en">${['A', 'B', 'C', 'D'][idx]}) ${opt.en}</div>
+                `;
+
+                if (prevAns !== null) {
+                    btn.disabled = true;
+                    if (idx === q.correct) {
+                        btn.classList.add('correct');
+                    } else if (idx === prevAns) {
+                        btn.classList.add('wrong');
+                    }
+                } else {
+                    btn.onclick = () => selectAnswerMCQ(idx);
+                }
+                container.appendChild(btn);
+            });
+
+            document.getElementById('prevBtn').disabled = (mcqCurrentIdx === 0);
+            document.getElementById('nextBtn').innerText = (mcqCurrentIdx === mcqQuestions.length - 1) ? "إنهاء الأسئلة الاختيارية 🏁" : "التالي / Next ⬅️";
+        }
+
+        function selectAnswerMCQ(chosenIdx) {
+            if (mcqAnswers[mcqCurrentIdx] !== null) return;
+
+            mcqAnswers[mcqCurrentIdx] = chosenIdx;
+            calculateScore();
+
+            const q = mcqQuestions[mcqCurrentIdx];
+            const isCorrect = (chosenIdx === q.correct);
+
+            const buttons = document.querySelectorAll('.opt-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                buttons[chosenIdx].classList.add('correct');
+            } else {
+                buttons[chosenIdx].classList.add('wrong');
+                buttons[q.correct].classList.add('correct');
+            }
+
+            showExplanation(isCorrect, chosenIdx);
+
+            const statusIndicator = document.getElementById('qStatusIndicator');
+            statusIndicator.innerText = isCorrect ? "✅ إجابة صحيحة مسجلة" : "❌ إجابة خاطئة مسجلة";
+            statusIndicator.style.color = isCorrect ? "var(--success)" : "var(--danger)";
+
+            const answeredCount = mcqAnswers.filter(a => a !== null).length;
+            document.getElementById('progressBar').style.width = ((answeredCount / mcqQuestions.length) * 100) + '%';
+        }
+
+        function showExplanation(isCorrect, chosenIdx) {
+            const q = mcqQuestions[mcqCurrentIdx];
+            const expBox = document.getElementById('explanationText');
+
+            if (isCorrect) {
+                expBox.innerHTML = `
+                    <b>✅ إجابة نموذجية صحيحة / Correct!</b><br>
+                    <div>${q.exp_ar}</div>
+                    <div class="exp-en">${q.exp_en}</div>
+                `;
+                expBox.style.borderRightColor = 'var(--success)';
+            } else {
+                expBox.innerHTML = `
+                    <b>❌ إجابة غير دقيقة / Incorrect!</b><br>
+                    <div>الإجابة الصحيحة هي: <b>${q.options[q.correct].ar}</b></div>
+                    <div class="exp-en">Correct choice: <b>${q.options[q.correct].en}</b></div>
+                    <div style="margin-top: 6px;">${q.exp_ar}</div>
+                    <div class="exp-en">${q.exp_en}</div>
+                `;
+                expBox.style.borderRightColor = 'var(--danger)';
+            }
+            expBox.style.display = 'block';
+        }
+
+        function nextQuestion() {
+            if (mcqCurrentIdx < mcqQuestions.length - 1) {
+                mcqCurrentIdx++;
+                displayQuestion();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (mcqCurrentIdx > 0) {
+                mcqCurrentIdx--;
+                displayQuestion();
+            }
+        }
+
+        function openIndexModal() {
+            buildIndexGrid();
+            document.getElementById('indexModal').style.display = 'flex';
+        }
+
+        function closeIndexModal() {
+            document.getElementById('indexModal').style.display = 'none';
+        }
+
+        function closeIndexModalOnOutside(e) {
+            if (e.target.id === 'indexModal') {
+                closeIndexModal();
+            }
+        }
+
+        function buildIndexGrid() {
+            const grid = document.getElementById('gridIndexContainer');
+            grid.innerHTML = '';
+
+            for (let i = 0; i < mcqQuestions.length; i++) {
+                const pill = document.createElement('div');
+                pill.className = 'index-pill';
+                pill.innerText = (i + 1);
+
+                if (i === mcqCurrentIdx) {
+                    pill.classList.add('active');
+                }
+
+                if (mcqAnswers[i] !== null) {
+                    if (mcqAnswers[i] === mcqQuestions[i].correct) {
+                        pill.classList.add('solved-correct');
+                    } else {
+                        pill.classList.add('solved-wrong');
+                    }
+                }
+
+                pill.onclick = () => {
+                    mcqCurrentIdx = i;
+                    displayQuestion();
+                    closeIndexModal();
+                };
+
+                grid.appendChild(pill);
+            }
+        }
+
+        function showFinalResults() {
+            document.getElementById('quizCard').style.display = 'none';
+            document.getElementById('progressBar').style.width = '100%';
+
+            const resultsCard = document.getElementById('resultsCard');
+            resultsCard.style.display = 'block';
+
+            calculateScore();
+            document.getElementById('finalScore').innerText = score;
+            const res = saveScores(score);
+            const scores = loadScores();
+
+            const notice = document.getElementById('highScoreNotice');
+            const msg = document.getElementById('resultMsg');
+            const icon = document.getElementById('trophyIcon');
+
+            let textDetails = `🎯 أول محاولة مسجلة في الأسئلة الاختيارية: ${scores.first} من 25<br>`;
+            if (res.isNewHigh && score > 0) {
+                textDetails += `🏆 مبروك! حققت رقماً قياسياً جديداً: ${score} من 25!`;
+            } else {
+                textDetails += `🏆 أعلى نتيجة سابقة على هذا الجهاز: ${scores.high} من 25`;
+            }
+            notice.innerHTML = textDetails;
+
+            if (score >= 23) {
+                msg.innerText = "ممتاز وفوق العادة! إتقان شامل للمنهج / Outstanding Master!";
+                icon.innerText = "👑";
+            } else if (score >= 18) {
+                msg.innerText = "جيد جداً! استيعاب قوي لمفاهيم الأمان / Very Good!";
+                icon.innerText = "🎉";
+            } else if (score >= 13) {
+                msg.innerText = "مستوى متوسط، يُفضل مراجعة النقاط الصعبة / Needs Review!";
+                icon.innerText = "👍";
+            } else {
+                msg.innerText = "يُنصح بإعادة قراءة الدرس بتركيز / Re-study Recommended!";
+                icon.innerText = "💡";
+            }
+        }
+
+        function restartCurrentQuiz() {
+            mcqAnswers = new Array(25).fill(null);
+            mcqCurrentIdx = 0;
+            score = 0;
+            document.getElementById('score').innerText = '0';
+            document.getElementById('resultsCard').style.display = 'none';
+            document.getElementById('quizCard').style.display = 'block';
+            displayQuestion();
+        }
+
+        // بناء قائمة الأسئلة المقالية الـ 25
+        function renderEssayQuestions() {
+            const container = document.getElementById('essayList');
+            if (container.children.length > 0) return; // تم البناء بالفعل
+
+            essayQuestions.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'essay-item';
+                el.innerHTML = `
+                    <span class="essay-source">${item.source}</span>
+                    <div class="essay-q-text"><strong>س${index + 1}:</strong> ${item.q}</div>
+                    <textarea class="essay-textarea" placeholder="اكتب مسودة إجابتك وتحليلك هنا قبل مراجعة الإجابة النموذجية..."></textarea>
+                    <button class="btn-reveal-answer" onclick="toggleModelAnswer(${index}, this)">
+                        <span>👁️</span>
+                        <span>إظهار الإجابة النموذجية ومعايير التصحيح</span>
+                    </button>
+                    <div class="model-answer" id="modelAns_${index}">
+                        ${item.model}
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function toggleModelAnswer(index, btn) {
+            const answerBox = document.getElementById(`modelAns_${index}`);
+            const isVisible = answerBox.style.display === 'block';
+
+            if (isVisible) {
+                answerBox.style.display = 'none';
+                btn.innerHTML = `<span>👁️</span><span>إظهار الإجابة النموذجية ومعايير التصحيح</span>`;
+                btn.style.background = '#f1f5f9';
+            } else {
+                answerBox.style.display = 'block';
+                btn.innerHTML = `<span>🙈</span><span>إخفاء الإجابة النموذجية</span>`;
+                btn.style.background = '#dcfce7';
+            }
+        }
+
+        window.onload = function() {
+            runSimCipher();
+            loadScores();
+            displayQuestion();
+        };
+    </script>
+</body>
+</html>
