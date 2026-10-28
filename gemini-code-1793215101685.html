@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 2-3: الاستجابة للحوادث وإدارة المخاطر | المنصة التفاعلية الشاملة (شرح + 60 سؤالاً)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81; --primary-dark: #092c4c; --primary-light: #2563eb; --primary-soft: #eff6ff;
+            --accent: #f59e0b; --accent-dark: #d97706; --accent-soft: #fffbeb;
+            --bg: #f8fafc; --card-bg: #ffffff; --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0;
+            --success: #10b981; --success-soft: #dcfce7; --danger: #ef4444; --danger-soft: #fee2e2;
+            --teal: #0d9488; --teal-soft: #ccfbf1; --font-scale: 1;
+        }
+        body.dark-mode {
+            --bg: #0b1120; --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #334155;
+            --primary-soft: #1e3a8a; --accent-soft: #451a03; --success-soft: #064e3b; --danger-soft: #450a0a; --teal-soft: #134e4a;
+        }
+        body.projector-mode { --font-scale: 1.16; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.85; font-size: calc(1rem * var(--font-scale)); padding-bottom: 80px; transition: background-color 0.25s, color 0.25s; }
+        #top-progress-bar { position: fixed; top: 0; right: 0; height: 5px; background: linear-gradient(to left, var(--accent), var(--primary-light), var(--success)); width: 0%; z-index: 3000; }
+        .sticky-toolbar { position: sticky; top: 0; z-index: 1500; background: rgba(15, 30, 54, 0.95); backdrop-filter: blur(10px); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(245, 158, 11, 0.5); }
+        .toolbar-brand { font-weight: 900; font-size: 1rem; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .tool-pill { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); padding: 5px 13px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+        .tool-pill:hover, .tool-pill.active-tool { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        header { background: linear-gradient(135deg, #07192f 0%, #0f4c81 55%, #1e40af 100%); color: white; padding: 42px 20px 35px; text-align: center; border-bottom: 5px solid var(--accent); }
+        header h1 { font-size: calc(2.1rem * var(--font-scale)); margin-bottom: 10px; font-weight: 900; }
+        header p { font-size: calc(1.05rem * var(--font-scale)); color: #e2e8f0; max-width: 900px; margin: 0 auto 18px; }
+        .header-badges, .nav-shortcuts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .h-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 30px; font-size: 0.86rem; font-weight: 700; color: #fde68a; }
+        .shortcut-btn { background: rgba(255, 255, 255, 0.16); color: white; border: 1px solid rgba(255, 255, 255, 0.35); padding: 9px 18px; border-radius: 22px; text-decoration: none; font-size: 0.94rem; font-weight: 800; cursor: pointer; }
+        .shortcut-btn:hover { background: white; color: var(--primary); }
+        .shortcut-btn.highlight-hw { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .container { max-width: 1140px; margin: 28px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 28px; margin-bottom: 28px; border: 1px solid var(--border); box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.05); }
+        .badge { display: inline-block; background: var(--primary-soft); color: var(--primary-light); padding: 5px 15px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; border: 1px solid #93c5fd; }
+        body.dark-mode .badge { color: #93c5fd; }
+        h2 { color: var(--primary-light); font-size: calc(1.5rem * var(--font-scale)); margin-bottom: 14px; font-weight: 900; }
+        h3 { font-size: calc(1.18rem * var(--font-scale)); font-weight: 800; margin-bottom: 8px; }
+        .hook-box { background: var(--accent-soft); border-right: 6px solid var(--accent); padding: 18px; border-radius: 12px; margin: 16px 0; }
+        .hook-box strong { color: var(--accent-dark); display: block; margin-bottom: 5px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .info-panel { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; }
+        .real-world-box { background: linear-gradient(135deg, rgba(13, 148, 136, 0.07) 0%, rgba(37, 99, 235, 0.06) 100%); border: 2px solid rgba(13, 148, 136, 0.35); border-right: 6px solid var(--teal); border-radius: 16px; padding: 18px; margin: 16px 0; }
+        .real-world-title { color: var(--teal); font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .sim-box { background: rgba(37, 99, 235, 0.05); border: 2px solid #93c5fd; border-radius: 16px; padding: 22px; margin: 20px 0; }
+        .sim-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+        .sim-btn { background: var(--card-bg); color: var(--text-main); border: 2px solid var(--primary-light); padding: 9px 16px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; }
+        .sim-btn:hover, .sim-btn.active-sim { background: var(--primary-light); color: white; }
+        .sim-output { background: var(--card-bg); border-radius: 12px; padding: 16px; border-right: 6px solid var(--primary-light); margin-top: 12px; font-weight: 700; }
+        .stages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; margin: 16px 0; }
+        .stage-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .stage-card.active-stage { border-color: var(--primary-light); background: var(--primary-soft); transform: translateY(-3px); }
+        .stage-num { width: 34px; height: 34px; border-radius: 50%; background: var(--primary); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; margin-bottom: 6px; }
+        .matrix-grid { display: grid; grid-template-columns: 110px repeat(3, 1fr); gap: 8px; margin: 16px 0; text-align: center; }
+        .matrix-cell { padding: 12px 8px; border-radius: 12px; font-weight: 800; cursor: pointer; border: 2px solid transparent; }
+        .matrix-cell.selected-cell { border-color: #0f172a; transform: scale(1.03); }
+        .m-vh { background: #dc2626; color: white; }
+        .m-h { background: #f97316; color: white; }
+        .m-m { background: #facc15; color: #0f172a; }
+        .m-l { background: #4ade80; color: #064e3b; }
+        .m-vl { background: #bbf7d0; color: #064e3b; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; border-radius: 12px; overflow: hidden; }
+        table th, table td { border: 1px solid var(--border); padding: 12px 16px; text-align: right; }
+        table th { background: var(--primary); color: white; font-weight: 800; }
+        .book-activity { border: 2px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; background: var(--card-bg); }
+        .book-activity-header { padding: 14px 18px; background: rgba(15, 76, 129, 0.06); cursor: pointer; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary-light); }
+        .book-activity-body { padding: 18px; border-top: 1px solid var(--border); display: none; }
+        .book-activity.open .book-activity-body { display: block; }
+        .main-mode-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+        @media (max-width: 640px) { .main-mode-switcher { grid-template-columns: 1fr; } }
+        .mode-card-btn { background: var(--card-bg); border: 3px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; }
+        .mode-card-btn.active-mode-session { border-color: var(--primary-light); background: var(--primary-soft); }
+        .mode-card-btn.active-mode-homework { border-color: var(--accent); background: var(--accent-soft); }
+        .sub-tabs-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .quiz-tabs, .view-toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .view-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 13px; border-radius: 10px; font-size: 0.86rem; font-weight: 700; cursor: pointer; }
+        .view-btn.active-view { background: var(--teal); color: white; border-color: var(--teal); }
+        .stats-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; display: block; }
+        .stat-val { font-size: 1.25rem; font-weight: 900; color: var(--primary-light); }
+        .btn-index { background: var(--primary-soft); color: var(--primary-light); border: 2px solid #93c5fd; padding: 7px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 800; cursor: pointer; }
+        .progress-container { width: 100%; height: 7px; background: var(--border); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary-light), var(--accent)); transition: width 0.3s; }
+        .q-card, .essay-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+        .q-badge, .essay-source { background: var(--primary-soft); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 0.84rem; font-weight: 800; display: inline-block; margin-bottom: 6px; }
+        .q-text-ar, .essay-q-text { font-size: calc(1.14rem * var(--font-scale)); font-weight: 800; margin-bottom: 6px; }
+        .q-text-en, .exp-en { font-size: calc(0.94rem * var(--font-scale)); color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; border-left: 3px solid var(--primary-light); padding-left: 10px; margin-bottom: 12px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .opt-btn { background: var(--bg); border: 2px solid var(--border); padding: 12px 16px; border-radius: 12px; cursor: pointer; text-align: right; width: 100%; }
+        .opt-btn.correct { background: #dcfce7 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .opt-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        .opt-ar { font-weight: 700; color: var(--text-main); }
+        .opt-en { font-size: 0.86rem; color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; }
+        .explanation { margin-top: 14px; padding: 14px; border-radius: 12px; display: none; background: var(--bg); border-right: 5px solid var(--primary-light); }
+        .actions { display: flex; justify-content: space-between; margin-top: 18px; gap: 10px; }
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 9px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-nav:disabled { background: #94a3b8; cursor: not-allowed; }
+        .essay-textarea { width: 100%; height: 80px; padding: 10px; border-radius: 10px; border: 2px solid var(--border); background: var(--bg); color: var(--text-main); margin-bottom: 10px; }
+        .btn-reveal-answer { background: var(--bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-left: 6px; }
+        .hint-box { display: none; margin-top: 10px; padding: 10px 14px; background: var(--accent-soft); border-right: 4px solid var(--accent); border-radius: 10px; font-weight: 700; }
+        .model-answer { display: none; margin-top: 12px; padding: 14px; background: #f0fdf4; border-right: 5px solid var(--success); border-radius: 10px; color: #14532d; }
+        body.dark-mode .model-answer { background: #064e3b; color: #ecfdf5; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 2500; padding: 20px; }
+        .modal-content { background: var(--card-bg); color: var(--text-main); border-radius: 20px; width: 100%; max-width: 700px; padding: 24px; }
+        .grid-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 8px; margin-top: 10px; }
+        .index-pill { background: var(--bg); border: 2px solid var(--border); padding: 8px; border-radius: 10px; font-weight: 800; text-align: center; cursor: pointer; }
+        .index-pill.solved-correct { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+        .index-pill.solved-wrong { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+        .results-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 20px; padding: 32px 24px; text-align: center; display: none; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: var(--primary-soft); border: 5px solid var(--primary-light); display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 16px auto; }
+        .score-num { font-size: 2.1rem; font-weight: 900; color: var(--primary-light); }
+        .btn-restart { background: var(--accent); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="top-progress-bar"></div>
+    <div class="sticky-toolbar">
+        <div class="toolbar-brand"><span>🚨</span><span>منصة الدرس 2-3: الاستجابة للحوادث وإدارة المخاطر (60 سؤالاً + محاكيات تفاعلية)</span></div>
+        <div class="toolbar-actions">
+            <a href="#lesson-explanation" class="tool-pill">📖 الشرح</a>
+            <a href="#book-activities-sec" class="tool-pill">📗 أنشطة الكتاب</a>
+            <button class="tool-pill" onclick="jumpToQuiz('session','mcq')">🎯 سيشن (30 سؤالاً)</button>
+            <button class="tool-pill" onclick="jumpToQuiz('homework','mcq')">🏠 الواجب (30 سؤالاً)</button>
+            <button class="tool-pill" id="projectorBtn" onclick="toggleProjectorMode()">🔍 تكبير الخط</button>
+            <button class="tool-pill" id="darkBtn" onclick="toggleDarkMode()">🌙 الوضع الليلي</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-badges">
+            <span class="h-badge">الصف الثاني الثانوي (بكالوريا)</span>
+            <span class="h-badge">الوحدة الثانية: الأمن السيبراني</span>
+            <span class="h-badge">الدرس 2-3 (صفحات الكتاب 44 - 49)</span>
+        </div>
+        <h1>الدرس 2-3: الاستجابة للحوادث وإدارة المخاطر (Incident Response & Risk Management)</h1>
+        <p>شرح تفاعلي كامل لمنهج الكتاب المدرسي + محاكيات المراحل الست ومصفوفة المخاطر + 60 سؤالاً (30 للسيشن + 30 للواجب ثنائية اللغة)</p>
+        <div class="nav-shortcuts">
+            <a href="#lesson-explanation" class="shortcut-btn">📖 الشرح والمحاكيات التفاعلية</a>
+            <a href="#book-activities-sec" class="shortcut-btn">📗 جميع أسئلة وأنشطة الكتاب محلولة</a>
+            <button class="shortcut-btn" onclick="jumpToQuiz('session','mcq')">👨‍🏫 أسئلة السيشن (15 اختياري + 15 مقالي)</button>
+            <button class="shortcut-btn highlight-hw" onclick="jumpToQuiz('homework','mcq')">📝 أسئلة الواجب (15 اختياري + 15 مقالي)</button>
+        </div>
+    </header>
+
+    <div class="container" id="lesson-explanation">
+        <div class="card">
+            <span class="badge">خريطة الدرس وأهداف التعلم (كتاب ص 44 - 45)</span>
+            <h2>🧭 مدخل الدرس: من الوقاية والدفاع إلى الاستجابة للحوادث وإدارة المخاطر</h2>
+            <p>حتى مع استخدام تقنيات الحماية والدفاع في العمق، قد يقع حادث أمني مثل تسرب بيانات أو التلاعب بالملفات أو تعطل خدمة؛ لذلك ينتقل هذا الدرس من <strong>الوقاية</strong> إلى <strong>الاستجابة المنظمة للحوادث وإدارة المخاطر</strong>.</p>
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">🎯 أهداف التعلم الرسمية (ص 44)</h3>
+                    <ul style="margin-right: 18px; font-size: 0.95rem;">
+                        <li>شرح <strong>المراحل العامة للاستجابة للحوادث</strong> والغرض من كل مرحلة.</li>
+                        <li>استخدام <strong>التأثير والاحتمالية</strong> لتحديد أولويات المخاطر في النموذج المبسط للدرس.</li>
+                        <li>تصميم استجابة مبررة لحادث أمني، وربط إجراءات الاستجابة بالضوابط الوقائية المناسبة.</li>
+                    </ul>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--accent);">
+                    <h3 style="color: var(--accent-dark);">⭐ الفكرة الأساسية والمفاهيم الأربعة (ص 45)</h3>
+                    <p style="font-size: 0.94rem; margin-bottom: 8px;">تمثل مراحل الاستجابة الست تسلسلاً عاماً يساعد على تنظيم الاستجابة (مع إمكانية تداخل الأنشطة أو العودة لمرحلة سابقة)، ويحدد تقييم المخاطر الأولويات بناءً على <strong>التأثير × الاحتمالية</strong>.</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        <span class="badge" style="margin:0;">الحادث الأمني</span>
+                        <span class="badge" style="margin:0;">المراحل الست</span>
+                        <span class="badge" style="margin:0;">الاحتواء / الاستئصال</span>
+                        <span class="badge" style="margin:0;">المخاطرة = التأثير × الاحتمالية</span>
+                    </div>
+                </div>
+            </div>
+            <div class="real-world-box">
+                <div class="real-world-title"><span>🚒</span><span>تشبيه من الواقع: خطة طوارئ المستشفى وإطفاء الحريق!</span></div>
+                <p style="font-size: 0.95rem;">حتى المبنى المزود بأحدث أجهزة الإنذار قد يشهد حريقاً مفاجئاً (<strong>حادث أمني</strong>). عندها نطبق خطة استجابة من 6 مراحل: تدريب الفريق مسبقاً (<strong>التحضير</strong>)، رصد الدخان وتأكيد الحريق (<strong>الاكتشاف</strong>)، إغلاق الأبواب المقاومة للنار لمنع انتشار الحريق لباقي الغرف (<strong>الاحتواء</strong>)، إطفاء مصدر النار تماماً (<strong>الاستئصال</strong>)، إعادة العمل بأمان (<strong>الاستعادة</strong>)، ثم فحص سبب الحريق لمنع تكراره (<strong>الدروس المستفادة والتحسين</strong>)!</p>
+            </div>
+            <div class="hook-box">
+                <strong>❓ السؤال الرئيسي للدرس (ص 45):</strong>
+                عندما يقع حادث أمني، كيف ينبغي للمؤسسة أن تنظّم استجابتها عبر مراحلها العامة — وكيف تقرر أي المخاطر تعالجها أولاً؟
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="badge">المحور الأول (كتاب ص 45)</span>
+            <h2>🚨 1. ماهية الحادث الأمني (Security Incident) وأمثلة عليه</h2>
+            <p><strong>الحادث الأمني:</strong> حدث يؤثر في <strong>سرية المعلومات</strong> أو <strong>سلامتها</strong> أو <strong>توافرها</strong>، أو يهددها بجدية، أو يخالف سياسة أمنية.</p>
+            <table>
+                <thead><tr><th>النوع</th><th>الوصف (جدول الكتاب ص 45)</th><th>الركيزة المتأثرة</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>1. تسرب المعلومات</strong></td><td>تسرب المعلومات الشخصية أو السرية إلى الخارج</td><td>السرية (Confidentiality)</td></tr>
+                    <tr><td><strong>2. التلاعب بالبيانات</strong></td><td>تعديل البيانات داخل نظام ما دون تصريح</td><td>السلامة (Integrity)</td></tr>
+                    <tr><td><strong>3. انقطاع الخدمة</strong></td><td>تصبح الخدمة غير متاحة بسبب هجمات على الخادم، إلخ</td><td>التوافر (Availability)</td></tr>
+                </tbody>
+            </table>
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧪 محاكي تصنيف الحوادث الأمنية التفاعلي:</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runIncidentSim(1, this)">📂 تسريب بيانات العملاء للخارج</button>
+                    <button class="sim-btn" onclick="runIncidentSim(2, this)">✏️ تعديل درجات الطلاب دون تصريح</button>
+                    <button class="sim-btn" onclick="runIncidentSim(3, this)">🌐 توقف الخادم بسبب هجوم إغراق</button>
+                    <button class="sim-btn" onclick="runIncidentSim(4, this)">🔄 تحديث البرنامج لإضافة ميزات جديدة</button>
+                </div>
+                <div class="sim-output" id="incidentSimOutput" style="border-right-color: var(--danger);">
+                    🚨 <strong>التصنيف: حادث أمني (تسرب المعلومات)</strong> — يضرب ركيزة <strong>السرية</strong> لأن بيانات العملاء خرجت لجهات غير مصرح لها (ص 45).
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="badge">المحور الثاني (كتاب ص 45 - 46)</span>
+            <h2>🛠️ 2. تدفق الاستجابة للحوادث: المراحل الست (الشكل 2.3.1)</h2>
+            <p>يتكون النموذج التعليمي المبسط للاستجابة للحوادث من <strong>6 مراحل بالترتيب العام</strong>، مع إمكانية تداخل بعض الأنشطة أو العودة لمرحلة سابقة (مثلاً: قد يكشف الاسترداد عن بقايا للتهديد تستلزم العودة إلى الاحتواء أو إزالة التهديد).</p>
+            <div class="stages-grid">
+                <div class="stage-card active-stage" onclick="selectStageSim(0, this)"><div class="stage-num">1</div><h4>التحضير</h4><small>إعداد الإجراءات مسبقاً</small></div>
+                <div class="stage-card" onclick="selectStageSim(1, this)"><div class="stage-num">2</div><h4>الاكتشاف</h4><small>رصد وتأكيد الحادث</small></div>
+                <div class="stage-card" onclick="selectStageSim(2, this)"><div class="stage-num">3</div><h4>الاحتواء</h4><small>الحد من انتشار الضرر</small></div>
+                <div class="stage-card" onclick="selectStageSim(3, this)"><div class="stage-num">4</div><h4>إزالة التهديد</h4><small>الاستئصال وإزالة السبب</small></div>
+                <div class="stage-card" onclick="selectStageSim(4, this)"><div class="stage-num">5</div><h4>الاستعادة</h4><small>إعادة التشغيل الآمن</small></div>
+                <div class="stage-card" onclick="selectStageSim(5, this)"><div class="stage-num">6</div><h4>الدروس المستفادة</h4><small>التحسين ومنع التكرار</small></div>
+            </div>
+            <div class="sim-output" id="stageSimOutput">
+                <strong>المرحلة 1 — التحضير (Preparation):</strong> إنشاء إجراءات وهياكل استجابة مسبقاً، وإعداد النسخ الاحتياطية استعداداً للحوادث (ص 45).
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="badge">المحور الثالث (كتاب ص 46 - 47)</span>
+            <h2>📊 3. مفهوم تقييم المخاطر ومصفوفة الأولويات (الشكل 2.3.2)</h2>
+            <p><strong>الخطر:</strong> احتمال أن يقع حدث يسبب ضرراً، مع مراعاة احتمال وقوعه وحجم أثره.<br>
+            <strong>المعادلة:</strong> <code>درجة الخطر = درجة التأثير × درجة الاحتمالية</code> (حيث <strong>التأثير</strong> هو حجم الضرر إذا وقع الحدث، و<strong>الاحتمالية</strong> هي مدى احتمال وقوع الحدث).</p>
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧮 محاكي مصفوفة تقييم المخاطر التفاعلي (اضغط على أي خلية):</h3>
+                <div class="matrix-grid">
+                    <div style="font-weight:900; padding:8px;">التأثير \ الاحتمالية</div>
+                    <div style="font-weight:800; padding:8px; background:var(--bg); border-radius:8px;">احتمالية منخفضة</div>
+                    <div style="font-weight:800; padding:8px; background:var(--bg); border-radius:8px;">احتمالية متوسطة</div>
+                    <div style="font-weight:800; padding:8px; background:var(--bg); border-radius:8px;">احتمالية مرتفعة</div>
+
+                    <div style="font-weight:800; padding:8px; background:var(--bg); border-radius:8px;">تأثير مرتفع</div>
+                    <div class="matrix-cell m-m" onclick="selectMatrix('مرتفع','منخفضة','متوسط','تأثير كبير لكن نادر الحدوث — يُراقب وتُوضع له خطة احتياطية.', this)">متوسط</div>
+                    <div class="matrix-cell m-h" onclick="selectMatrix('مرتفع','متوسطة','مرتفع','أولوية عالية — يحتاج ضوابط وقائية قوية.', this)">مرتفع</div>
+                    <div class="matrix-cell m-vh selected-cell" onclick="selectMatrix('مرتفع','مرتفعة','مرتفع جداً (الأولوية القصوى!)','يجب معالجة المخاطر ذات التأثير المرتفع والاحتمالية المرتفعة أولاً!', this)">مرتفع جداً 🔥</div>
+
+                    <div style="font-weight:800; padding:8px; background:var(--bg); border-radius:8px;">تأثير متوسط</div>
+                    <div class="matrix-cell m-l" onclick="selectMatrix('متوسط','منخفضة','منخفض','خطر منخفض — يعالج بعد المخاطر الأعلى.', this)">منخفض</div>
+                    <div class="matrix-cell m-m" onclick="selectMatrix('متوسط','متوسطة','متوسط','خطر متوسط — يدرج في خطة التحسين.', this)">متوسط</div>
+                    <div class="matrix-cell m-h" onclick="selectMatrix('متوسط','مرتفعة','مرتفع','خطر مرتفع بسبب تكراره العالي.', this)">مرتفع</div>
+
+                    <div style="font-weight:800; padding:8px; background:var(--bg); border-radius:8px;">تأثير منخفض</div>
+                    <div class="matrix-cell m-vl" onclick="selectMatrix('منخفض','منخفضة','منخفض جداً','أقل أولوية في المصفوفة.', this)">منخفض جداً</div>
+                    <div class="matrix-cell m-l" onclick="selectMatrix('منخفض','متوسطة','منخفض','خطر منخفض.', this)">منخفض</div>
+                    <div class="matrix-cell m-m" onclick="selectMatrix('منخفض','مرتفعة','متوسط','تأثيره صغير لكنه كثير التكرار (مثل انقطاع كهرباء قصير).', this)">متوسط</div>
+                </div>
+                <div class="sim-output" id="matrixSimOutput" style="border-right-color: var(--danger);">
+                    🔥 <strong>التقييم المختار (تأثير مرتفع × احتمالية مرتفعة = مرتفع جداً):</strong> يجب معالجة المخاطر ذات التأثير العالي والاحتمالية العالية أولاً!
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="book-activities-sec">
+            <span class="badge">دليل المعلم والطالب الشامل (كتاب ص 44 - 49)</span>
+            <h2>📗 جميع أسئلة وأنشطة وتمارين الكتاب المدرسي محلولة بالتفصيل</h2>
+            <div class="book-activity open">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')"><span>💡 1. نشاط «توقّف وفكّر» (ص 46) + «مثال محلول» (ص 47)</span><span>▼</span></div>
+                <div class="book-activity-body">
+                    <p><strong>توقّف وفكّر (ص 46):</strong> لماذا يجب أن يأتي الاحتواء قبل الاستئصال؟ ⬅️ لعزل الجزء المتأثر ومنع انتشار الضرر إلى باقي الشبكة قبل البدء بإزالة السبب الجذري.</p>
+                    <p style="margin-top:8px;"><strong>مثال محلول (ص 47):</strong> (1) أ: <strong>○</strong> | ب: <strong>○</strong> | جـ (تحديد حجم المخاطرة بالتأثير وحده): <strong>×</strong> | د: <strong>○</strong>. — (2) أ: <strong>التحضير</strong> | ب: <strong>الاحتواء</strong> | جـ: <strong>الاستئصال</strong> | د: <strong>الدروس المستفادة والتحسين</strong>.</p>
+                </div>
+            </div>
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')"><span>📝 2. سؤال الامتحان [6 درجات] + «تدرّب 1 و 2» + «فكّر كمهندس» (ص 48)</span><span>▼</span></div>
+                <div class="book-activity-body">
+                    <p><strong>سؤال الامتحان [6 درجات]:</strong> يضمن التسلسل العام (الاحتواء ثم الاستئصال ثم الاستعادة) منع انتشار الضرر أولاً ثم إزالة البرمجية الخبيثة والثغرة قبل استعادة الأنظمة؛ وإذا بدأت الاستعادة قبل إزالة السبب ستصاب الأنظمة المستعادة مجدداً. وقد يلزم العودة لمرحلة سابقة إذا كشفت الاستعادة عن بقايا للتهديد.</p>
+                    <p style="margin-top:8px;"><strong>حل «تدرّب 1»:</strong> 1) الحادث الأمني | 2) التحضير ← الاكتشاف ← الاحتواء ← الاستئصال ← الاستعادة ← الدروس المستفادة والتحسين | 3) التأثير والاحتمالية.</p>
+                    <p style="margin-top:8px;"><strong>حل «تدرّب 2»:</strong> (1) الخيار غير المناسب لحادث أمني: <strong>(جـ) تم إجراء تحديث للبرنامج لإضافة ميزات جديدة</strong> | (2) تقييم المخاطر الأنسب: <strong>(جـ) ينبغي معالجة المخاطر ذات التأثير العالي والاحتمالية العالية أولاً</strong>.</p>
+                    <p style="margin-top:8px;"><strong>فكّر كمهندس (هجوم فدية بالمدرسة):</strong> المراحل المتبقية بعد الاكتشاف هي (الاحتواء ← الاستئصال ← الاستعادة ← الدروس المستفادة). يعالج خطر هجوم فدية آخر أولاً قبل انقطاع الكهرباء القصير، ونختار <strong>اتباع المراحل الست بالترتيب</strong> وليس الاستعادة الفورية.</p>
+                </div>
+            </div>
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')"><span>🏆 3. حل «طبّق ما تعلمته» + «تمارين نهاية الدرس» (ص 49)</span><span>▼</span></div>
+                <div class="book-activity-body">
+                    <p><strong>طبّق ما تعلمته (تسرب بيانات المتجر):</strong> المرحلتان التاليتان هما <strong>الاحتواء</strong> (لوقف التسريب فوراً) ثم <strong>الاستئصال</strong> (لإغلاق الثغرة)، والخطر الأعلى أولوية هو استغلال البيانات المسربة لاختراق حسابات العملاء.</p>
+                    <p style="margin-top:8px;"><strong>تمارين نهاية الدرس (ص 49):</strong> السؤال 2: (أ) <strong>الحادث الأمني</strong> | (ب) <strong>الاحتواء</strong> | (ج) <strong>الاستئصال</strong> | (د) <strong>الاستعادة</strong> | (هـ) <strong>الدروس المستفادة والتحسين</strong>. — السؤال 3-(1): الأعلى أولوية هو <strong>(أ)</strong>، ويتعادل <strong>(ب) و(جـ)</strong> في المستوى المتوسط، والأقل هو <strong>(د)</strong>. — السؤال 3-(2): الخيار <strong>(ب)</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-section">
+            <div class="card" style="border-top: 5px solid var(--primary-light);">
+                <span class="badge">بنك الأسئلة المتكامل (60 سؤالاً)</span>
+                <h2>🎯 منصة التدريب والامتحانات: 30 سؤالاً للسيشن + 30 سؤالاً للواجب</h2>
+                <div class="main-mode-switcher">
+                    <div class="mode-card-btn active-mode-session" id="modeBtnSession" onclick="switchMode('session')">
+                        <div style="font-size:2.2rem;">👨‍🏫</div>
+                        <div><h3 style="color:var(--primary-light);">القسم الأول: أسئلة السيشن (30 سؤالاً)</h3><p style="font-size:0.88rem; color:var(--text-muted);">15 اختياري + 15 مقالي للحل في الحصة</p></div>
+                    </div>
+                    <div class="mode-card-btn" id="modeBtnHomework" onclick="switchMode('homework')">
+                        <div style="font-size:2.2rem;">🏠</div>
+                        <div><h3 style="color:var(--accent-dark);">القسم الثاني: أسئلة الواجب (30 سؤالاً)</h3><p style="font-size:0.88rem; color:var(--text-muted);">15 اختياري + 15 مقالي للتدريب المنزلي</p></div>
+                    </div>
+                </div>
+
+                <div class="sub-tabs-bar">
+                    <div class="quiz-tabs">
+                        <button class="tab-btn active" id="tabMCQ" onclick="switchSubTab('mcq')"><span id="tabMCQLabel">🔘 الاختيار من متعدد (15 - السيشن)</span></button>
+                        <button class="tab-btn" id="tabEssay" onclick="switchSubTab('essay')"><span id="tabEssayLabel">✍️ الأسئلة المقالية (15 - السيشن)</span></button>
+                    </div>
+                    <div class="view-toggle-group" id="mcqViewToggleGroup">
+                        <button class="view-btn active-view" id="viewSingleBtn" onclick="setMcqViewMode('single')">🎯 سؤال بسؤال</button>
+                        <button class="view-btn" id="viewAllBtn" onclick="setMcqViewMode('all')">📋 عرض الـ 15 معاً</button>
+                    </div>
+                </div>
+
+                <div id="mcqContainer">
+                    <div class="stats-bar">
+                        <div><span class="stat-label">القسم</span><div class="stat-val" id="currentModeBadge" style="font-size:1rem;">👨‍🏫 السيشن</div></div>
+                        <div><span class="stat-label">السؤال</span><div><span class="stat-val" id="qCurrent">1</span> / 15</div></div>
+                        <div><span class="stat-label">أول محاولة 🎯</span><span class="stat-val" id="firstScore">--</span></div>
+                        <div><span class="stat-label">الدرجة</span><div><span class="stat-val" id="score">0</span> / 15</div></div>
+                        <div><span class="stat-label">أعلى نتيجة 🏆</span><span class="stat-val" id="highScore">0</span></div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="openIndexModal()">📑 فهرس</button>
+                            <button class="btn-index" style="border-color:var(--danger); color:var(--danger);" onclick="restartCurrentQuiz()">🔄 إعادة</button>
+                        </div>
+                        <div class="progress-container"><div class="progress-bar-fill" id="progressBar"></div></div>
+                    </div>
+
+                    <div class="q-card" id="quizCard">
+                        <div class="q-header">
+                            <span class="q-badge" id="topicBadge">الدرس 2-3</span>
+                            <span style="color:var(--text-muted); font-size:0.88rem; font-weight:700;" id="qStatusIndicator">لم يُجب بعد</span>
+                        </div>
+                        <div class="q-text-ar" id="questionTextAr"></div>
+                        <div class="q-text-en" id="questionTextEn"></div>
+                        <div class="options-list" id="optionsContainer"></div>
+                        <div class="explanation" id="explanationText"></div>
+                        <div class="actions">
+                            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()">➡️ السابق</button>
+                            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">التالي ⬅️</button>
+                        </div>
+                    </div>
+
+                    <div id="allMcqListContainer" style="display:none;"></div>
+
+                    <div class="results-card" id="resultsCard">
+                        <div style="font-size:3.5rem;">🎉</div>
+                        <h2>أحسنت صنعاً!</h2>
+                        <div class="score-circle"><div class="score-num" id="finalScore">0</div><span>من 15</span></div>
+                        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                            <button class="btn-restart" onclick="restartCurrentQuiz()">إعادة الاختبار 🔄</button>
+                            <button class="btn-restart" style="background:var(--primary); color:white;" onclick="switchSubTab('essay')">الأسئلة المقالية (15) ✍️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="essayContainer" style="display:none;">
+                    <div style="background:var(--primary-soft); border-right:5px solid var(--primary-light); padding:14px; border-radius:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <strong style="color:var(--primary-light);" id="essayBannerTitle">📝 الأسئلة المقالية (15 سؤالاً):</strong>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="toggleAllEssays(true)">👁️ إظهار الكل</button>
+                            <button class="btn-index" onclick="toggleAllEssays(false)">🙈 إخفاء الكل</button>
+                        </div>
+                    </div>
+                    <div id="essayList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="indexModal" onclick="if(event.target.id==='indexModal')closeIndexModal()">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>📑 فهرس الأسئلة (1 - 15)</h3>
+                <button class="btn-index" onclick="closeIndexModal()">✕</button>
+            </div>
+            <div class="grid-index" id="gridIndexContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("top-progress-bar").style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+        });
+        function toggleProjectorMode() { document.body.classList.toggle('projector-mode'); document.getElementById('projectorBtn').classList.toggle('active-tool'); }
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); document.getElementById('darkBtn').classList.toggle('active-tool'); }
+
+        function runIncidentSim(sc, btn) {
+            btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+            btn.classList.add('active-sim');
+            const out = document.getElementById('incidentSimOutput');
+            if (sc === 1) { out.style.borderRightColor = 'var(--danger)'; out.innerHTML = '🚨 <strong>التصنيف: حادث أمني (تسرب المعلومات)</strong> — يمس ركيزة <strong>السرية</strong> (ص 45).'; }
+            else if (sc === 2) { out.style.borderRightColor = 'var(--danger)'; out.innerHTML = '🚨 <strong>التصنيف: حادث أمني (التلاعب بالبيانات)</strong> — يمس ركيزة <strong>السلامة</strong> (ص 45).'; }
+            else if (sc === 3) { out.style.borderRightColor = 'var(--danger)'; out.innerHTML = '🚨 <strong>التصنيف: حادث أمني (انقطاع الخدمة)</strong> — يمس ركيزة <strong>التوافر</strong> (ص 45).'; }
+            else { out.style.borderRightColor = 'var(--success)'; out.innerHTML = '✅ <strong>التصنيف: ليس حادثاً أمنياً!</strong> — تحديث البرنامج لإضافة ميزات جديدة عمل طبيعي (ص 48).'; }
+        }
+
+        const stageDetails = [
+            "<strong>المرحلة 1 — التحضير (Preparation):</strong> إنشاء إجراءات وهياكل استجابة مسبقاً، وإعداد النسخ الاحتياطية استعداداً للحوادث (ص 45).",
+            "<strong>المرحلة 2 — الاكتشاف (Detection):</strong> اكتشاف وتأكيد وقوع حادث أمني فعلي (ص 45).",
+            "<strong>المرحلة 3 — الاحتواء (Containment):</strong> تحديد نطاق التأثير وعزل الجزء المتأثر بحيث لا ينتشر الضرر أكثر (ص 45).",
+            "<strong>المرحلة 4 — إزالة التهديد / الاستئصال (Eradication):</strong> إزالة التهديد ومسبباته مثل حذف البرمجيات الخبيثة ومعالجة الثغرة المستغلة (ص 46).",
+            "<strong>المرحلة 5 — الاستعادة (Recovery):</strong> إعادة الأنظمة والخدمات إلى حالة تشغيل آمنة وطبيعية (وقد تشمل الاستعادة من نسخة احتياطية سليمة) (ص 46).",
+            "<strong>المرحلة 6 — الدروس المستفادة والتحسين (Lessons Learned):</strong> تحليل ما حدث وتوثيق الدروس وتحسين الضوابط لتقليل احتمال التكرار وأثره (ص 46)."
+        ];
+        function selectStageSim(idx, el) {
+            el.parentElement.querySelectorAll('.stage-card').forEach(c => c.classList.remove('active-stage'));
+            el.classList.add('active-stage');
+            document.getElementById('stageSimOutput').innerHTML = stageDetails[idx];
+        }
+
+        function selectMatrix(imp, lik, level, desc, el) {
+            el.parentElement.querySelectorAll('.matrix-cell').forEach(c => c.classList.remove('selected-cell'));
+            el.classList.add('selected-cell');
+            document.getElementById('matrixSimOutput').innerHTML = `📊 <strong>التقييم (التأثير: ${imp} × الاحتمالية: ${lik} = ${level}):</strong> ${desc}`;
+        }
+
+        const quizData = {
+            session: {
+                mcq: [
+                    {tag:"ماهية الحادث الأمني (ص 45)", ar_q:"ما المصطلح الذي يُطلق على حدث يؤثر في سرية المعلومات أو سلامتها أو توافرها أو يخالف سياسة أمنية؟", en_q:"What term refers to an event affecting confidentiality, integrity, or availability, or violating security policy?", options:[{ar:"الحادث الأمني",en:"Security Incident"},{ar:"التحديث الدوري لنظام التشغيل",en:"Periodic OS Update"},{ar:"النسخ الاحتياطي المجدول",en:"Scheduled Backup"},{ar:"تحسين واجهة المستخدم",en:"UI Enhancement"}], correct:0, exp_ar:"الحادث الأمني هو حدث يؤثر في سرية المعلومات أو سلامتها أو توافرها أو يخالف سياسة أمنية (ص 45).", exp_en:"A security incident affects confidentiality, integrity, or availability (p. 45)."},
+                    {tag:"أنواع الحوادث (ص 45)", ar_q:"أي نوع من الحوادث الأمنية يحدث عند تعديل البيانات داخل نظام ما دون تصريح؟", en_q:"Which type of security incident occurs when data inside a system is modified without authorization?", options:[{ar:"انقطاع الخدمة",en:"Service Outage"},{ar:"التلاعب بالبيانات",en:"Data Tampering"},{ar:"الاحتواء المسبق",en:"Pre-containment"},{ar:"التحضير الوقائي",en:"Preventive Preparation"}], correct:1, exp_ar:"تعديل البيانات داخل نظام ما دون تصريح يُسمى التلاعب بالبيانات (ص 45).", exp_en:"Unauthorized data modification is Data Tampering (p. 45)."},
+                    {tag:"تدرب 2-(1) (ص 48)", ar_q:"أي من الخيارات التالية لا يمثل مثالاً مناسباً لحادث أمني؟", en_q:"Which of the following options does NOT represent an example of a security incident?", options:[{ar:"تم تشفير البيانات بسبب إصابة ببرنامج فدية",en:"Data was encrypted due to ransomware"},{ar:"تسربت معلومات العملاء إلى الخارج عبر وصول غير مصرح به",en:"Customer info leaked outside"},{ar:"تم إجراء تحديث للبرنامج لإضافة ميزات جديدة",en:"A software update was performed to add new features"},{ar:"أصبحت خدمة ويب غير متاحة بسبب هجوم على الخادم",en:"A web service became unavailable due to an attack"}], correct:2, exp_ar:"إجراء تحديث للبرنامج لإضافة ميزات جديدة هو عمل طبيعي وليس حادثاً أمنياً (ص 48).", exp_en:"Updating software to add features is normal maintenance, not a security incident (p. 48)."},
+                    {tag:"المراحل الست (ص 45)", ar_q:"ما المرحلة التي يتم فيها إنشاء إجراءات وهياكل استجابة مسبقاً استعداداً للحوادث؟", en_q:"In which stage are response procedures and structures established in advance?", options:[{ar:"التحضير",en:"Preparation"},{ar:"الاكتشاف",en:"Detection"},{ar:"الاحتواء",en:"Containment"},{ar:"الاستئصال",en:"Eradication"}], correct:0, exp_ar:"المرحلة الأولى هي التحضير: إنشاء إجراءات وهياكل استجابة مسبقاً (ص 45).", exp_en:"Stage 1 is Preparation (p. 45)."},
+                    {tag:"مثال محلول (2) (ص 47)", ar_q:"فصل حاسوب مصاب بالبرمجيات الخبيثة عن الشبكة لمنع انتشار الضرر ينتمي إلى مرحلة:", en_q:"Disconnecting a malware-infected computer from the network to stop damage spread belongs to:", options:[{ar:"التحضير",en:"Preparation"},{ar:"الاحتواء",en:"Containment"},{ar:"الاستعادة",en:"Recovery"},{ar:"الدروس المستفادة",en:"Lessons Learned"}], correct:1, exp_ar:"فصل حاسوب مصاب عن الشبكة لمنع انتشار الضرر هو الاحتواء (ص 47).", exp_en:"Disconnecting an infected PC to stop the spread is Containment (p. 47)."},
+                    {tag:"توقف وفكر (ص 46)", ar_q:"لماذا يجب أن يأتي الاحتواء قبل الاستئصال في نموذج الاستجابة للحوادث؟", en_q:"Why must Containment come before Eradication in incident response?", options:[{ar:"لأن الاحتواء يمنع انتشار الضرر إلى باقي الأنظمة قبل البدء بإزالة السبب",en:"Because containment prevents damage from spreading before removing the cause"},{ar:"لأن الاستئصال ينشر البرمجية الخبيثة في جميع الخوادم",en:"Because eradication spreads malware across servers"},{ar:"لأن الاحتواء يحذف النسخ الاحتياطية السليمة",en:"Because containment deletes clean backups"},{ar:"لإلغاء الحاجة إلى مرحلة الاكتشاف",en:"To eliminate the detection stage"}], correct:0, exp_ar:"يُجرى الاحتواء (منع انتشار الضرر) قبل الاستئصال (إزالة السبب) لحماية باقي الشبكة (ص 47).", exp_en:"Containment stops the spread before Eradication removes the root cause (p. 47)."},
+                    {tag:"المرحلة الرابعة (ص 46)", ar_q:"ما المرحلة التي يتم فيها حذف البرمجيات الخبيثة ومعالجة الثغرة المستغلة لإزالة التهديد؟", en_q:"In which stage is malware deleted and the exploited vulnerability patched?", options:[{ar:"الاكتشاف",en:"Detection"},{ar:"التحضير",en:"Preparation"},{ar:"إزالة التهديد (الاستئصال)",en:"Eradication"},{ar:"تقييم الاحتمالية",en:"Likelihood Assessment"}], correct:2, exp_ar:"المرحلة 4 هي إزالة التهديد (الاستئصال): حذف البرمجيات الخبيثة ومعالجة الثغرة (ص 46).", exp_en:"Stage 4 is Eradication (p. 46)."},
+                    {tag:"المرحلة الخامسة (ص 46)", ar_q:"إعادة الأنظمة والخدمات إلى حالة تشغيل آمنة وطبيعية تمثل مرحلة:", en_q:"Returning systems and services to a safe, normal operating state represents:", options:[{ar:"الاكتشاف",en:"Detection"},{ar:"الاحتواء",en:"Containment"},{ar:"الاستعادة",en:"Recovery"},{ar:"التحضير",en:"Preparation"}], correct:2, exp_ar:"المرحلة 5 هي الاستعادة (Recovery) (ص 46).", exp_en:"Stage 5 is Recovery (p. 46)."},
+                    {tag:"المرحلة السادسة (ص 46)", ar_q:"تحليل ما حدث وتوثيق الدروس وتحسين الضوابط لتقليل احتمال التكرار ينتمي إلى مرحلة:", en_q:"Analyzing what happened and improving controls to prevent recurrence belongs to:", options:[{ar:"الدروس المستفادة والتحسين",en:"Lessons Learned and Improvement"},{ar:"الاكتشاف المبكر",en:"Early Detection"},{ar:"الاحتواء المؤقت",en:"Temporary Containment"},{ar:"انقطاع الخدمة",en:"Service Outage"}], correct:0, exp_ar:"المرحلة 6 هي الدروس المستفادة والتحسين (ص 46).", exp_en:"Stage 6 is Lessons Learned and Improvement (p. 46)."},
+                    {tag:"تمارين 3-(2) (ص 49)", ar_q:"أي الخيارات التالية يصف التسلسل العام الأدق في نموذج الاستجابة للحوادث؟", en_q:"Which option accurately describes the general sequence of incident response?", options:[{ar:"الاكتشاف ← الاستئصال ← الاحتواء ← الاستعادة",en:"Detection -> Eradication -> Containment -> Recovery"},{ar:"التحضير ← الاكتشاف ← الاحتواء ← الاستئصال ← الاستعادة ← الدروس المستفادة والتحسين",en:"Preparation -> Detection -> Containment -> Eradication -> Recovery -> Lessons Learned"},{ar:"الاكتشاف ← الاستعادة ← الاحتواء ← الدروس المستفادة",en:"Detection -> Recovery -> Containment -> Lessons Learned"},{ar:"الاحتواء ← الاكتشاف ← الاستئصال ← التحضير",en:"Containment -> Detection -> Eradication -> Preparation"}], correct:1, exp_ar:"الترتيب العام هو: التحضير ← الاكتشاف ← الاحتواء ← الاستئصال ← الاستعادة ← الدروس المستفادة والتحسين (ص 49).", exp_en:"Preparation -> Detection -> Containment -> Eradication -> Recovery -> Lessons Learned (p. 49)."},
+                    {tag:"تقييم المخاطر (ص 46)", ar_q:"ما المعادلة المبسطة المستخدمة في الدرس لتقدير درجة الخطر؟", en_q:"What is the simplified formula used to estimate the risk score?", options:[{ar:"درجة الخطر = درجة التأثير × درجة الاحتمالية",en:"Risk Score = Impact × Likelihood"},{ar:"درجة الخطر = عدد الخوادم ÷ سرعة الإنترنت",en:"Risk Score = Servers / Speed"},{ar:"درجة الخطر = درجة التأثير فقط دون الاحتمالية",en:"Risk Score = Impact only"},{ar:"درجة الخطر = عدد الموظفين + الذاكرة",en:"Risk Score = Staff + Memory"}], correct:0, exp_ar:"درجة الخطر = درجة التأثير × درجة الاحتمالية (ص 46).", exp_en:"Risk Score = Impact × Likelihood (p. 46)."},
+                    {tag:"تدرب 2-(2) (ص 48)", ar_q:"أي الخيارات التالية يصف مفهوم تقييم المخاطر بأنسب طريقة؟", en_q:"Which option best describes the concept of risk assessment?", options:[{ar:"يكفي معالجة المخاطر ذات التأثير الكبير فقط",en:"Address only high-impact risks"},{ar:"يكفي معالجة المخاطر ذات الاحتمالية العالية فقط",en:"Address only high-likelihood risks"},{ar:"ينبغي معالجة المخاطر ذات التأثير العالي والاحتمالية العالية أولاً",en:"Risks with high impact and high likelihood should be addressed first"},{ar:"يجب معالجة جميع المخاطر في آن واحد",en:"All risks must be addressed simultaneously"}], correct:2, exp_ar:"ينبغي معالجة المخاطر ذات التأثير العالي والاحتمالية العالية أولاً (ص 48).", exp_en:"High impact and high likelihood risks come first (p. 48)."},
+                    {tag:"مثال محلول (1) (ص 47)", ar_q:"حدد العبارة الخاطئة من بين العبارات التالية وفق الدرس 2-3:", en_q:"Identify the FALSE statement based on Lesson 2-3:", options:[{ar:"الحادث الأمني يؤثر في سرية المعلومات أو سلامتها أو توافرها",en:"A security incident affects CIA"},{ar:"من المهم أولاً منع انتشار الضرر قبل إزالة السبب",en:"Stop the spread before removing the cause"},{ar:"يمكن تحديد حجم المخاطرة بالتأثير وحده",en:"Risk magnitude can be determined by impact alone"},{ar:"المرحلة الأخيرة هي الدروس المستفادة والتحسين",en:"The final stage is lessons learned"}], correct:2, exp_ar:"العبارة (ج) خاطئة لأن حجم المخاطرة يُحدد بالتأثير والاحتمالية معاً (ص 47).", exp_en:"Risk is determined by both Impact and Likelihood together (p. 47)."},
+                    {tag:"فكر كمهندس (ص 48)", ar_q:"ماذا يحدث إذا بدأت الاستعادة من النسخة الاحتياطية فوراً قبل إزالة التهديد في هجوم فدية؟", en_q:"What happens if restoration starts before Eradication during a ransomware attack?", options:[{ar:"تبقى البرمجية الخبيثة أو الثغرة وقد تُشفَّر الملفات المستعادة مجدداً",en:"Malware or vulnerability remains and may re-encrypt restored files"},{ar:"يُحذف فيروس الفدية تلقائياً",en:"Ransomware is deleted automatically"},{ar:"تختفي جميع الثغرات من الخادم",en:"All vulnerabilities disappear"},{ar:"لا نحتاج لمرحلة الاحتواء",en:"Containment is not needed"}], correct:0, exp_ar:"إذا بدأت الاستعادة قبل إزالة التهديد فقد تبقى البرمجية الخبيثة أو الثغرة المستغلة (ص 48).", exp_en:"Restoring before eradication leaves malware active (p. 48)."},
+                    {tag:"تداخل المراحل (ص 46)", ar_q:"متى قد تضطر المؤسسة للعودة من مرحلة الاستعادة إلى الاحتواء أو إزالة التهديد؟", en_q:"When might an organization return from Recovery to Containment or Eradication?", options:[{ar:"إذا كشفت مرحلة الاسترداد عن بقايا للتهديد لم تتم إزالتها",en:"If recovery reveals remnants of the threat"},{ar:"إذا كانت جميع الأنظمة سليمة تماماً",en:"If all systems are completely clean"},{ar:"عند الرغبة في إيقاف برامج الحماية",en:"When disabling security tools"},{ar:"لإلغاء خطة الطوارئ",en:"To cancel the emergency plan"}], correct:0, exp_ar:"قد يكشف الاسترداد عن بقايا للتهديد تستلزم العودة إلى الاحتواء أو إزالة التهديد (ص 46).", exp_en:"Recovery may uncover threat remnants requiring return to Containment/Eradication (p. 46)."}
+                ],
+                essay: [
+                    {source:"السؤال الرئيسي للدرس (ص 45 و 49)", q:"عندما يقع حادث أمني، كيف ينبغي للمؤسسة أن تنظّم استجابتها عبر مراحلها العامة — وكيف تقرر أي المخاطر تعالجها أولاً؟", en_q:"When a security incident occurs, how should an organization organize its response and prioritize risks?", hint:"اذكر المراحل الست ومعادلة (التأثير × الاحتمالية).", en_hint:"Mention the 6 stages and (Impact × Likelihood).", model:"تتبع المؤسسة التسلسل العام للمراحل الست: <b>التحضير ← الاكتشاف ← الاحتواء ← إزالة التهديد (الاستئصال) ← الاستعادة ← الدروس المستفادة والتحسين</b> (مع مرونة العودة لمرحلة سابقة عند الحاجة)، وتقدر درجة الخطر من (<b>التأثير × الاحتمالية</b>) لتعالج المخاطر ذات التأثير العالي والاحتمالية العالية أولاً.", en_model:"Follow the 6 stages: <b>Preparation -> Detection -> Containment -> Eradication -> Recovery -> Lessons Learned</b>, and prioritize risks using <b>Impact × Likelihood</b> (treating High Impact × High Likelihood first)."},
+                    {source:"سؤال الامتحان [6 درجات] (ص 48)", q:"اشرح أهمية التسلسل العام لمراحل الاستجابة للحوادث مستخدماً الاحتواء والاستئصال والاستعادة كمثال، ووضح لماذا قد نحتاج للعودة لمرحلة سابقة.", en_q:"Explain the importance of the general sequence using Containment, Eradication, and Recovery, and why returning to an earlier stage may be needed.", hint:"ماذا يحدث إذا استعدنا النظام قبل إزالة السبب؟", en_hint:"What happens if we recover before eradicating the root cause?", model:"يُجرى <b>الاحتواء</b> أولاً لعزل الجزء المصاب ومنع انتشار الضرر، ثم <b>الاستئصال</b> لحذف البرمجية الخبيثة وإغلاق الثغرة، ثم <b>الاستعادة</b> لإرجاع النظام؛ فلو استعدنا قبل الاستئصال ستصاب النسخة المستعادة مجدداً. وقد نعود لمرحلة سابقة إذا كشفت الاستعادة عن بقايا للتهديد.", en_model:"<b>Containment</b> isolates damage first, <b>Eradication</b> removes the root cause, and <b>Recovery</b> restores normal operation. Recovering before eradication risks re-infection. Finding threat remnants during recovery requires returning to Containment/Eradication."},
+                    {source:"توقّف وفكّر (ص 46)", q:"لماذا يجب أن يأتي الاحتواء قبل الاستئصال في الاستجابة ذات المراحل الست؟", en_q:"Why must Containment come before Eradication?", hint:"فكر في سرعة انتشار الضرر عبر الشبكة.", en_hint:"Think about stopping damage propagation across the network.", model:"لأن عزل الجزء المتأثر في <b>الاحتواء</b> يمنع انتشار البرمجية الخبيثة أو الضرر إلى باقي أجهزة الشبكة أثناء قيام الفريق بتحليل السبب الجذري وإزالته في مرحلة الاستئصال.", en_model:"Isolating affected systems in <b>Containment</b> stops malware from spreading to other devices while the team works on Eradication."},
+                    {source:"فكّر كمهندس - الخطوة 1 (ص 48)", q:"بعد اكتشاف هجوم فدية شفّر سجلات الطلاب بالمدرسة، اذكر المراحل الأربع المتبقية وبيّن ماذا تعني كل منها لهذا الحادث.", en_q:"After detecting a ransomware attack on student records, list the four remaining stages and what each means.", hint:"المراحل من 3 إلى 6.", en_hint:"Stages 3 through 6.", model:"1. <b>الاحتواء:</b> فصل الأجهزة المصابة عن شبكة المدرسة.<br>2. <b>الاستئصال:</b> حذف برمجية الفدية وإغلاق الثغرة.<br>3. <b>الاستعادة:</b> استرجاع السجلات من نسخة احتياطية سليمة.<br>4. <b>الدروس المستفادة:</b> تحليل الحادث وتقوية الحماية لمنع تكراره.", en_model:"1. <b>Containment:</b> Isolate infected machines.<br>2. <b>Eradication:</b> Remove ransomware and patch vulnerabilities.<br>3. <b>Recovery:</b> Restore records from clean backups.<br>4. <b>Lessons Learned:</b> Strengthen controls to prevent recurrence."},
+                    {source:"فكّر كمهندس - الخطوة 2 و 3 (ص 48)", q:"قارن بين (هجوم فدية آخر) و(انقطاع كهرباء قصير) من حيث الأولوية، ولماذا نختار اتباع المراحل الست بالترتيب بدلاً من الاستعادة الفورية؟", en_q:"Compare (another ransomware attack) vs. (brief power outage), and why follow the 6 stages instead of immediate backup restoration?", hint:"هجوم الفدية تأثيره مرتفع جداً.", en_hint:"Ransomware has very high impact.", model:"يعالج خطر <b>هجوم فدية آخر</b> أولاً لأن تأثيره مرتفع جداً واحتماليته قائمة، ونختار <b>اتباع المراحل الست بالترتيب</b> لأن الاستعادة الفورية قبل إزالة التهديد ستؤدي لتشفير النسخة الاحتياطية المستعادة أيضاً.", en_model:"Treat <b>another ransomware attack</b> first (very high impact), and follow the 6 stages in order because restoring before eradication will re-encrypt the backup."},
+                    {source:"طبّق ما تعلمته (ص 49)", q:"اكتشف متجر إلكتروني للتو تسرب بيانات العملاء. حدد المرحلتين التاليتين وسببهما، وخطراً واحداً له الأولوية بعد ذلك.", en_q:"An online store just detected a customer data leak. Identify the next two stages and one priority risk afterward.", hint:"ما المرحلتان 3 و 4 بعد الاكتشاف؟", en_hint:"Stages 3 and 4 after Detection.", model:"المرحلتان هما: <b>1) الاحتواء</b> (إيقاف قناة التسريب فوراً لمنع تسرب المزيد)، ثم <b>2) الاستئصال</b> (إغلاق الثغرة الأمنية). والخطر الأعلى أولوية بعدها هو استغلال البيانات المسربة لاختراق حسابات العملاء.", en_model:"Next stages: <b>1) Containment</b> (stop further leakage), then <b>2) Eradication</b> (patch the vulnerability). Top priority risk afterward: unauthorized account takeovers using leaked credentials."},
+                    {source:"تدرّب 1 (ص 48)", q:"عرف الحادث الأمني، واذكر المراحل الست بالترتيب، والعاملين المستخدمين لتحديد حجم المخاطرة.", en_q:"Define Security Incident, list the 6 stages in order, and name the two factors of risk magnitude.", hint:"راجع ص 45 و 46.", en_hint:"Review pages 45 and 46.", model:"1. <b>الحادث الأمني:</b> حدث يؤثر في سرية المعلومات أو سلامتها أو توافرها أو يخالف سياسة أمنية.<br>2. <b>المراحل الست:</b> التحضير ← الاكتشاف ← الاحتواء ← الاستئصال ← الاستعادة ← الدروس المستفادة والتحسين.<br>3. <b>العاملان:</b> التأثير والاحتمالية.", en_model:"1. <b>Security Incident:</b> Event affecting confidentiality, integrity, or availability.<br>2. <b>6 Stages:</b> Preparation -> Detection -> Containment -> Eradication -> Recovery -> Lessons Learned.<br>3. <b>Factors:</b> Impact and Likelihood."},
+                    {source:"تمارين الكتاب - السؤال 2 (ص 49)", q:"املأ الفراغات: يسمى الحدث الذي يؤثر في سرية أو سلامة أو توافر المعلومات ( أ )، ويستخدم ( ب ) للحد من انتشار الضرر، ثم ( ج ) لإزالة التهديد، وتليها ( د ) لإعادة الأنظمة، ثم ( هـ ) لتحليل ما حدث.", en_q:"Fill in blanks (A)-(E) from Exercise 2 on p. 49.", hint:"المصطلحات الخمسة الأساسية.", en_hint:"The five core terms.", model:"(أ) <b>الحادث الأمني</b> | (ب) <b>الاحتواء</b> | (ج) <b>الاستئصال (إزالة التهديد)</b> | (د) <b>الاستعادة</b> | (هـ) <b>الدروس المستفادة والتحسين</b>.", en_model:"(A) <b>Security Incident</b> | (B) <b>Containment</b> | (C) <b>Eradication</b> | (D) <b>Recovery</b> | (E) <b>Lessons Learned & Improvement</b>."},
+                    {source:"تمارين الكتاب - السؤال 3-(1) (ص 49)", q:"رتب أولوية المخاطر: (أ) تأثير كبير واحتمالية عالية، (ب) تأثير صغير واحتمالية عالية، (جـ) تأثير كبير واحتمالية منخفضة، (د) تأثير صغير واحتمالية منخفضة.", en_q:"Prioritize risks (A), (B), (C), and (D) using the lesson matrix.", hint:"قارن خلايا المصفوفة في ص 47.", en_hint:"Compare cells in Figure 2.3.2 on p. 47.", model:"1. الأعلى أولوية: <b>(أ) مرتفع جداً</b>.<br>2. يتعادل <b>(ب) و(جـ) في درجة (متوسط)</b>، ويعتمد ترتيبها على السياق والضوابط المتاحة.<br>3. الأقل أولوية: <b>(د) منخفض جداً</b>.", en_model:"1. Highest: <b>(A) Very High</b>.<br>2. Tied at <b>Medium: (B) and (C)</b> (context decides between them).<br>3. Lowest: <b>(D) Very Low</b>."},
+                    {source:"فكّر وتحدَّ نفسك - تأمّل (ص 49)", q:"ما المرحلة التي تعتقد أنها الأصعب لتنفيذها بشكل جيد تحت الضغط، ولماذا؟", en_q:"Which stage is hardest to execute under pressure, and why?", hint:"فكر في سرعة عزل الهجوم وتحديد الثغرة.", en_hint:"Think of isolating systems and finding root causes rapidly.", model:"مرحلتا <b>الاحتواء</b> و<b>الاستئصال</b>؛ لأن الفريق يعمل تحت ضغط زمني شديد لوقف انتشار الضرر دون تعطيل العمل الكلي، واكتشاف الثغرة الجذرية بدقة حتى لا يعود الهجوم.", en_model:"<b>Containment</b> and <b>Eradication</b>, due to intense time pressure to stop the spread and pinpoint the exact root vulnerability."},
+                    {source:"فكّر وتحدَّ نفسك - التحدي (ص 49)", q:"اقترح شيئاً واحداً يمكن لمؤسسة إعداده مسبقاً في (المرحلة 1: التحضير) يجعل المراحل الأخرى أسرع.", en_q:"Propose one item prepared in Stage 1 (Preparation) that speeds up the other stages.", hint:"فكر في النسخ الاحتياطية وخطة الطوارئ.", en_hint:"Think of clean backups and an incident playbook.", model:"تجهيز <b>نسخ احتياطية سليمة ومعزولة دورياً</b> مع <b>خطة استجابة واضحة الأدوار</b>؛ مما يسرع الاحتواء الفوري والاستعادة الآمنة.", en_model:"Maintaining <b>regular isolated clean backups</b> and a <b>clear response playbook</b>."},
+                    {source:"أنواع الحوادث الثلاثة (ص 45)", q:"قارن بين (تسرب المعلومات) و(التلاعب بالبيانات) و(انقطاع الخدمة) مع ذكر وصف كل منها.", en_q:"Compare Information Leakage, Data Tampering, and Service Outage.", hint:"راجع جدول ص 45.", en_hint:"Review table on p. 45.", model:"1. <b>تسرب المعلومات:</b> خروج البيانات الشخصية أو السرية للخارج.<br>2. <b>التلاعب بالبيانات:</b> تعديل البيانات داخل النظام دون تصريح.<br>3. <b>انقطاع الخدمة:</b> توقف إتاحة الخدمة بسبب هجمات على الخادم.", en_model:"1. <b>Information Leakage:</b> Confidential data leaked outside.<br>2. <b>Data Tampering:</b> Unauthorized data modification.<br>3. <b>Service Outage:</b> Service unavailable due to server attacks."},
+                    {source:"الاحتواء مقابل الاستئصال (ص 45-46)", q:"فرّق بين الغرض من (الاحتواء) والغرض من (الاستئصال) مع مثال لكل منهما.", en_q:"Distinguish between Containment and Eradication with examples.", hint:"الحد من الانتشار مقابل إزالة السبب.", en_hint:"Limiting spread vs. removing cause.", model:"• <b>الاحتواء:</b> الحد من انتشار الضرر (مثل فصل حاسوب مصاب عن الشبكة).<br>• <b>الاستئصال:</b> إزالة التهديد وسببه الجذري (مثل حذف الفيروس وترقيع الثغرة).", en_model:"• <b>Containment:</b> Limit damage spread (disconnect infected PC).<br>• <b>Eradication:</b> Remove threat and root cause (delete malware & patch)."},
+                    {source:"أهمية تقييم المخاطر (ص 45-47)", q:"لماذا لا تعالج المؤسسة جميع المخاطر في الوقت نفسه؟ وكيف تحدد أولوياتها؟", en_q:"Why can't an organization treat all risks simultaneously, and how does it set priorities?", hint:"محدودية الموارد والوقت.", en_hint:"Limited time and resources.", model:"لأن الفريق لا يستطيع معالجة كل المخاطر في وقت واحد لمحدودية الوقت والموارد؛ فيحدد الأولويات بضرب (<b>التأثير × الاحتمالية</b>) للبدء بالمخاطر الأخطر أولاً.", en_model:"Due to limited time and resources, teams prioritize by <b>Impact × Likelihood</b>."},
+                    {source:"خلاصة الدرس (ص 47 و 49)", q:"لخّص القاعدة الأساسية للتعامل مع الحوادث وتقييم المخاطر في جملتين.", en_q:"Summarize the core rule for incident response and risk assessment.", hint:"المراحل الست + معادلة المخاطرة.", en_hint:"6 stages + Risk formula.", model:"اتبع التسلسل العام للمراحل الست (تحضير ← اكتشاف ← احتواء ← استئصال ← استعادة ← الدروس المستفادة والتحسين) مع مرونة العودة لمرحلة سابقة، وحدد أولويات المخاطر بناءً على (التأثير × الاحتمالية).", en_model:"Follow the 6 stages (Prepare -> Detect -> Contain -> Eradicate -> Recover -> Learn) with flexibility, and prioritize risks by (Impact × Likelihood)."}
+                ]
+            },
+            homework: {
+                mcq: [
+                    {tag:"التأثير (ص 46)", ar_q:"ما المصطلح الذي يشير إلى 'حجم أو مقدار الضرر إذا وقع الحدث'؟", en_q:"What term refers to 'the amount of damage if the event occurs'?", options:[{ar:"التأثير (Impact)",en:"Impact"},{ar:"الاحتمالية (Likelihood)",en:"Likelihood"},{ar:"الاحتواء",en:"Containment"},{ar:"الاكتشاف",en:"Detection"}], correct:0, exp_ar:"التأثير هو حجم الضرر إذا وقع الحدث (ص 46).", exp_en:"Impact is the magnitude of damage (p. 46)."},
+                    {tag:"الاحتمالية (ص 46)", ar_q:"ما المصطلح الذي يشير إلى 'مدى احتمال وقوع الحدث أو المخاطرة'؟", en_q:"What term refers to 'the probability that the event will occur'?", options:[{ar:"الاستعادة",en:"Recovery"},{ar:"التأثير",en:"Impact"},{ar:"الاحتمالية (Likelihood)",en:"Likelihood"},{ar:"الاستئصال",en:"Eradication"}], correct:2, exp_ar:"الاحتمالية هي مدى احتمال وقوع الحدث (ص 46).", exp_en:"Likelihood is the probability of occurrence (p. 46)."},
+                    {tag:"انقطاع الخدمة (ص 45)", ar_q:"عندما تصبح خدمة الويب غير متاحة بسبب هجمات على الخادم، يُصنف الحادث كـ:", en_q:"When a web service becomes unavailable due to server attacks, it is classified as:", options:[{ar:"تسرب المعلومات",en:"Information Leakage"},{ar:"انقطاع الخدمة",en:"Service Outage"},{ar:"تحديث وقائي",en:"Preventive Update"},{ar:"تحضير مسبق",en:"Advance Preparation"}], correct:1, exp_ar:"عدم إتاحة الخدمة بسبب هجوم على الخادم هو انقطاع الخدمة (ص 45).", exp_en:"Service unavailability due to attack is Service Outage (p. 45)."},
+                    {tag:"تسرب المعلومات (ص 45)", ar_q:"خروج المعلومات الشخصية أو السرية إلى الخارج بدون تصريح يُسمى:", en_q:"Unauthorized exposure of personal or confidential information outside is called:", options:[{ar:"تسرب المعلومات",en:"Information Leakage"},{ar:"الاحتواء الأمني",en:"Security Containment"},{ar:"إزالة التهديد",en:"Threat Eradication"},{ar:"الدروس المستفادة",en:"Lessons Learned"}], correct:0, exp_ar:"خروج البيانات السرية للخارج هو تسرب المعلومات (ص 45).", exp_en:"Leaking confidential data outside is Information Leakage (p. 45)."},
+                    {tag:"الاكتشاف (ص 45)", ar_q:"في أي مرحلة يتم 'اكتشاف وتأكيد وقوع حادث أمني'؟", en_q:"In which stage does 'detecting and confirming an incident' occur?", options:[{ar:"المرحلة 1: التحضير",en:"Stage 1: Preparation"},{ar:"المرحلة 2: الاكتشاف",en:"Stage 2: Detection"},{ar:"المرحلة 5: الاستعادة",en:"Stage 5: Recovery"},{ar:"المرحلة 6: الدروس المستفادة",en:"Stage 6: Lessons Learned"}], correct:1, exp_ar:"المرحلة 2 هي الاكتشاف (Detection) (ص 45).", exp_en:"Stage 2 is Detection (p. 45)."},
+                    {tag:"مصفوفة المخاطر (ص 47)", ar_q:"ما درجة الخطر الناتجة عن اجتماع (تأثير منخفض) مع (احتمالية منخفضة)؟", en_q:"What risk level results from (Low Impact) × (Low Likelihood)?", options:[{ar:"مرتفع جداً",en:"Very High"},{ar:"مرتفع",en:"High"},{ar:"متوسط",en:"Medium"},{ar:"منخفض جداً",en:"Very Low"}], correct:3, exp_ar:"تأثير منخفض × احتمالية منخفضة = منخفض جداً (الشكل 2.3.2 ص 47).", exp_en:"Low Impact × Low Likelihood = Very Low (p. 47)."},
+                    {tag:"مصفوفة المخاطر (ص 47)", ar_q:"ما درجة الخطر الناتجة عن اجتماع (تأثير مرتفع) مع (احتمالية متوسطة)؟", en_q:"What risk level results from (High Impact) × (Medium Likelihood)?", options:[{ar:"منخفض جداً",en:"Very Low"},{ar:"منخفض",en:"Low"},{ar:"مرتفع",en:"High"},{ar:"معدوم",en:"None"}], correct:2, exp_ar:"تأثير مرتفع × احتمالية متوسطة = مرتفع (الشكل 2.3.2 ص 47).", exp_en:"High Impact × Medium Likelihood = High (p. 47)."},
+                    {tag:"الاستعادة (ص 46)", ar_q:"في أي مرحلة يتم 'الاسترداد من نسخة احتياطية سليمة' لإرجاع الخدمات؟", en_q:"In which stage is 'restoring from a clean backup' performed?", options:[{ar:"الاكتشاف",en:"Detection"},{ar:"الاحتواء",en:"Containment"},{ar:"الاستئصال",en:"Eradication"},{ar:"الاستعادة",en:"Recovery"}], correct:3, exp_ar:"الاستعادة من نسخة احتياطية سليمة تتم في المرحلة 5: الاستعادة (ص 46).", exp_en:"Restoring from backup happens in Stage 5: Recovery (p. 46)."},
+                    {tag:"الدروس المستفادة (ص 46)", ar_q:"ما الهدف الأساسي من المرحلة السادسة (الدروس المستفادة والتحسين)؟", en_q:"What is the primary goal of Stage 6 (Lessons Learned)?", options:[{ar:"تحليل ما حدث وتوثيق الدروس وتحسين الضوابط لمنع التكرار",en:"Analyzing what happened and improving controls to prevent recurrence"},{ar:"حذف سجلات المراقبة الأمنية",en:"Deleting security logs"},{ar:"إيقاف جدران الحماية",en:"Disabling firewalls"},{ar:"تأجيل إصلاح الثغرات",en:"Postponing patching"}], correct:0, exp_ar:"تهدف المرحلة 6 لتحليل ما حدث وتحسين الضوابط لتقليل احتمال التكرار (ص 46).", exp_en:"Stage 6 analyzes the incident and improves controls (p. 46)."},
+                    {tag:"المصطلحات الأساسية (ص 49)", ar_q:"ما المصطلحان اللذان يعني أحدهما 'الحد من انتشار الضرر' والآخر 'إزالة السبب'؟", en_q:"Which two terms mean 'limiting damage spread' and 'removing the cause'?", options:[{ar:"الاكتشاف والاستعادة",en:"Detection and Recovery"},{ar:"الاحتواء والاستئصال",en:"Containment and Eradication"},{ar:"التأثير والاحتمالية",en:"Impact and Likelihood"},{ar:"التحضير والتوثيق",en:"Preparation and Documentation"}], correct:1, exp_ar:"الاحتواء = الحد من انتشار الضرر، والاستئصال = إزالة السبب (ص 49).", exp_en:"Containment and Eradication (p. 49)."},
+                    {tag:"أهمية خطة الاستجابة (ص 45)", ar_q:"لماذا تحتاج المؤسسات لخطة استجابة للحوادث حتى مع تطبيق الدفاع في العمق؟", en_q:"Why do organizations need incident response even with Defense in Depth?", options:[{ar:"لأنه حتى النظام المحمي جيداً قد يتعرض لحادث أمني",en:"Because even a well-protected system can suffer a security incident"},{ar:"لأن الاستجابة تغني عن التشفير",en:"Because response replaces encryption"},{ar:"لأن الدفاع في العمق ينشر الفيروسات",en:"Because defense in depth spreads viruses"},{ar:"لإلغاء جدران الحماية",en:"To remove firewalls"}], correct:0, exp_ar:"حتى النظام المحمي جيداً قد يتعرض لحادث أمني (ص 45).", exp_en:"Even well-protected systems can experience incidents (p. 45)."},
+                    {tag:"تمارين 2 (ص 49)", ar_q:"في فقرة التمارين: 'يُستخدم ( ب ) للحد من انتشار الضرر، ثم تُنفذ ( ج ) لإزالة التهديد'؛ ما ( ب ) و ( ج )؟", en_q:"In Exercise 2: '(B) limits damage spread, then (C) removes the threat'; what are (B) and (C)?", options:[{ar:"التحضير والاكتشاف",en:"Preparation and Detection"},{ar:"الاحتواء والاستئصال",en:"Containment and Eradication"},{ar:"الاستعادة والتأثير",en:"Recovery and Impact"},{ar:"الاحتمالية والدروس",en:"Likelihood and Lessons"}], correct:1, exp_ar:"(ب) الاحتواء، و(ج) الاستئصال (ص 49).", exp_en:"(B) Containment, (C) Eradication (p. 49)."},
+                    {tag:"تعادل المخاطر (ص 47 و 49)", ar_q:"كيف نقارن بين خطر (تأثيره صغير واحتماليته عالية) وخطر (تأثيره كبير واحتماليته منخفضة)؟", en_q:"How do we compare (Low Impact, High Likelihood) vs. (High Impact, Low Likelihood)?", options:[{ar:"كلاهما 'متوسط' في المصفوفة، ويعتمد ترتيبها على السياق والضوابط المتاحة",en:"Both are 'Medium' in the matrix; ranking depends on context and available controls"},{ar:"كلاهما 'مرتفع جداً'",en:"Both are 'Very High'"},{ar:"كلاهما يهمل تماماً",en:"Both are ignored"},{ar:"يعالج المنخفض جداً قبلهما",en:"Very Low is treated before them"}], correct:0, exp_ar:"يتعادلان في درجة (متوسط) ويعتمد ترتيبهما على السياق والضوابط المتاحة (ص 47 و 49).", exp_en:"Both tie at Medium; context and controls determine priority (p. 47, 49)."},
+                    {tag:"الشكل 2.3.1 (ص 46)", ar_q:"ما الغرض من المرحلة 6 كما يوضحه الشكل 2.3.1 في الكتاب؟", en_q:"What is the purpose of Stage 6 as shown in Figure 2.3.1?", options:[{ar:"منع تكرار الحدث",en:"Preventing recurrence of the event"},{ar:"نشر الضرر",en:"Spreading damage"},{ar:"حذف النسخ الاحتياطية",en:"Deleting backups"},{ar:"تجاهل السبب",en:"Ignoring the cause"}], correct:0, exp_ar:"منع تكرار الحدث عبر الدروس المستفادة وتحسين الضوابط (ص 46).", exp_en:"Preventing recurrence of the event (p. 46)."},
+                    {tag:"ربط الاستجابة بالوقاية (ص 44)", ar_q:"إذا وقع تسرب بيانات بسبب كلمة مرور ضعيفة، فما الإجراء الأنسب في مرحلة الدروس المستفادة؟", en_q:"If a data leak occurred due to a weak password, what is the best action in Lessons Learned?", options:[{ar:"فرض كلمات مرور قوية وتفعيل المصادقة الثنائية (2FA)",en:"Enforcing strong passwords and enabling 2FA"},{ar:"إلغاء جميع كلمات المرور",en:"Removing all passwords"},{ar:"إغلاق قسم تقنية المعلومات",en:"Closing the IT department"},{ar:"ترك كلمات المرور الضعيفة كما هي",en:"Leaving weak passwords unchanged"}], correct:0, exp_ar:"تحسين الضوابط الوقائية بفرض كلمات مرور قوية والمصادقة الثنائية (2FA) يمنع تكرار الحادث.", exp_en:"Strengthening controls with 2FA and strong passwords prevents recurrence."}
+                ],
+                essay: [
+                    {source:"واجب منزلي 1 - الحوادث والركائز (ص 45)", q:"عرّف الحادث الأمني، واذكر أمثلته الثلاثة مع ربط كل مثال بالركيزة الأمنية المتأثرة.", en_q:"Define Security Incident and link its three examples to the affected security pillars.", hint:"السرية، السلامة، التوافر.", en_hint:"Confidentiality, Integrity, Availability.", model:"الحادث الأمني حدث يؤثر في سرية أو سلامة أو توافر المعلومات. أمثلته: 1) <b>تسرب المعلومات</b> (يمس السرية)، 2) <b>التلاعب بالبيانات</b> (يمس السلامة)، 3) <b>انقطاع الخدمة</b> (يمس التوافر).", en_model:"1) <b>Information Leakage</b> (Confidentiality), 2) <b>Data Tampering</b> (Integrity), 3) <b>Service Outage</b> (Availability)."},
+                    {source:"واجب منزلي 2 - مرحلة التحضير (ص 45)", q:"اشرح لماذا تُعد المرحلة الأولى (التحضير) حجر الأساس لنجاح استجابة المؤسسة لأي حادث أمني.", en_q:"Why is Stage 1 (Preparation) the cornerstone of successful incident response?", hint:"ماذا نجهز قبل وقوع الحادث؟", en_hint:"What do we prepare before an incident?", model:"لأنها تنشئ خطط وإجراءات الاستجابة والنسخ الاحتياطية السليمة مسبقاً قبل وقوع الحادث، مما يمنع الارتباك ويسرّع الاحتواء والاستعادة.", en_model:"It establishes response procedures, teams, and clean backups in advance, enabling fast containment and recovery."},
+                    {source:"واجب منزلي 3 - الاستئصال والاستعادة (ص 46)", q:"قارن بين مرحلتي (الاستئصال) و(الاستعادة) ولماذا يجب أن يسبق الاستئصالُ الاستعادةَ؟", en_q:"Compare Eradication and Recovery, and why must Eradication come first?", hint:"إزالة السبب قبل إعادة التشغيل.", en_hint:"Remove root cause before restoring.", model:"<b>الاستئصال</b> يحذف البرمجية الخبيثة ويعالج الثغرة، بينما <b>الاستعادة</b> تعيد تشغيل الأنظمة من نسخة سليمة. ويجب أن يسبق الاستئصالُ الاستعادةَ حتى لا تصاب الأنظمة المستعادة مجدداً.", en_model:"Eradication removes malware/vulnerabilities; Recovery restores systems. Eradicating first prevents immediate re-infection."},
+                    {source:"واجب منزلي 4 - معادلة المخاطر (ص 46-47)", q:"كيف يستخدم فريق الأمن معادلة (درجة الخطر = التأثير × الاحتمالية) لتحديد أولوياته؟", en_q:"How does a security team use (Risk = Impact × Likelihood) to set priorities?", hint:"مصفوفة المخاطر ص 47.", en_hint:"Risk matrix on p. 47.", model:"يقيم الفريق حجم الضرر (التأثير) واحتمال وقوعه (الاحتمالية)، ويعطي الأولوية القصوى للمخاطر ذات <b>التأثير المرتفع والاحتمالية المرتفعة</b>.", en_model:"By evaluating both Impact and Likelihood, prioritizing <b>High Impact × High Likelihood</b> risks first."},
+                    {source:"واجب منزلي 5 - سيناريو مستشفى (ص 45-48)", q:"أُصيب حاسوب الاستقبال في مستشفى بفيروس. صف خطوات الاحتواء والاستئصال والاستعادة.", en_q:"A hospital reception PC was infected with a virus. Describe Containment, Eradication, and Recovery.", hint:"عزل ثم تطهير ثم استرجاع.", en_hint:"Isolate, clean, restore.", model:"1) <b>الاحتواء:</b> فصل الحاسوب عن الشبكة فوراً. 2) <b>الاستئصال:</b> حذف الفيروس وتحديث النظام. 3) <b>الاستعادة:</b> استرجاع البيانات من نسخة احتياطية وإعادة توصيله بأمان.", en_model:"1) <b>Containment:</b> Disconnect PC from network. 2) <b>Eradication:</b> Delete virus and patch OS. 3) <b>Recovery:</b> Restore files from clean backup."},
+                    {source:"واجب منزلي 6 - مرونة المراحل (ص 46)", q:"علل: قد لا تسير الاستجابة الفعلية للحادث في خط مستقيم دائماً من المرحلة 1 إلى 6.", en_q:"Why doesn't actual incident response always move in a strict straight line from Stage 1 to 6?", hint:"ظهور بقايا للتهديد أثناء الاسترداد.", en_hint:"Threat remnants discovered during recovery.", model:"لأن بعض الأنشطة قد تتداخل أو تتكرر؛ فمثلاً قد تكشف مرحلة الاستعادة عن بقايا للتهديد تستلزم العودة إلى الاحتواء أو إزالة التهديد.", en_model:"Activities can overlap or repeat; discovering threat remnants during Recovery requires returning to Containment or Eradication."},
+                    {source:"واجب منزلي 7 - تكامل الوحدة الثانية", q:"كيف تتكامل دروس الوحدة الثانية الثلاثة (2-1، 2-2، 2-3) في حماية المؤسسة؟", en_q:"How do Lessons 2-1, 2-2, and 2-3 integrate to protect an organization?", hint:"تشفير ومصادقة + دفاع في العمق + استجابة للحوادث.", en_hint:"Encryption/Auth + Defense in Depth + Incident Response.", model:"الدرس 2-1 يحمي الاتصال والحسابات، والدرس 2-2 يحمي تصميم الشبكة بطبقات الدفاع في العمق وانعدام الثقة، والدرس 2-3 ينظم الاستجابة للحوادث وتقييم المخاطر عند وقوع أي اختراق.", en_model:"2-1 secures connections/accounts, 2-2 secures network design via Defense in Depth & Zero Trust, and 2-3 manages incident response and risk prioritization."},
+                    {source:"واجب منزلي 8 - التلاعب بالبيانات (ص 45-46)", q:"تم تعديل درجات طلاب في قاعدة بيانات مدرسة دون تصريح. ما نوع الحادث؟ وكيف نطبق الاحتواء والاستعادة؟", en_q:"Student grades were modified without authorization. What incident type is this, and how do we apply Containment and Recovery?", hint:"جدول ص 45.", en_hint:"Table on p. 45.", model:"نوع الحادث: <b>التلاعب بالبيانات</b>. <b>الاحتواء:</b> إيقاف الحساب المخترق وعزل قاعدة البيانات. <b>الاستعادة:</b> استرجاع الدرجات الصحيحة من النسخة الاحتياطية السليمة.", en_model:"Type: <b>Data Tampering</b>. <b>Containment:</b> Suspend breached account. <b>Recovery:</b> Restore verified grades from clean backup."},
+                    {source:"واجب منزلي 9 - قصور العامل الواحد (ص 47)", q:"لماذا لا يكفي الاعتماد على (التأثير وحده) أو (الاحتمالية وحدها) عند تقييم المخاطر؟", en_q:"Why is relying on Impact alone or Likelihood alone insufficient?", hint:"الموازنة بين حجم الضرر وتكراره.", en_hint:"Balancing damage severity and frequency.", model:"لأن الاعتماد على التأثير وحده قد يهدر الموارد على خطر نادر جداً، والاعتماد على الاحتمالية وحدها قد يشغل الفريق بأعطال تافهة متكررة ويهمل خطراً مدمراً.", en_model:"Impact alone over-prioritizes rare events; Likelihood alone focuses on minor frequent glitches while missing catastrophic threats."},
+                    {source:"واجب منزلي 10 - دور النسخ الاحتياطية (ص 45-46)", q:"ترتبط النسخة الاحتياطية السليمة بمرحلتين من المراحل الست. اذكرهما ووضح العلاقة.", en_q:"Clean backups relate to two stages of the six stages. Name and explain them.", hint:"المرحلة 1 والمرحلة 5.", en_hint:"Stage 1 and Stage 5.", model:"في <b>المرحلة 1 (التحضير)</b> يتم إنشاء وحفظ النسخ الاحتياطية دورياً، وفي <b>المرحلة 5 (الاستعادة)</b> تُستخدم هذه النسخ لإرجاع الأنظمة والبيانات بعد إزالة التهديد.", en_model:"Created in advance during <b>Stage 1 (Preparation)</b> and used to restore data in <b>Stage 5 (Recovery)</b>."},
+                    {source:"واجب منزلي 11 - نقد تصرف خاطئ (ص 46-48)", q:"مهندس أعاد تهيئة خادم مصاب واسترجع النسخة الاحتياطية فوراً دون فصله عن الشبكة ودون معرفة الثغرة. ما الخطآن اللذان ارتكبهما؟", en_q:"An engineer restored an infected server immediately without disconnecting it or finding the vulnerability. What two mistakes were made?", hint:"إهمال الاحتواء والاستئصال.", en_hint:"Skipping Containment and Eradication.", model:"1) إهمال <b>الاحتواء</b> (ترك الخادم متصلاً سمح بانتشار الإصابة). 2) إهمال <b>الاستئصال</b> (عدم إغلاق الثغرة سيجعل الخادم يُخترق مجدداً).", en_model:"1) Skipped <b>Containment</b> (allowing spread). 2) Skipped <b>Eradication</b> (leaving the vulnerability open for re-infection)."},
+                    {source:"واجب منزلي 12 - تمييز الحوادث (ص 45 و 48)", q:"هل يعد (تحديث البرنامج لإضافة ميزة جديدة) حادثاً أمنياً؟ قارنه بـ (نشر ملف بيانات العملاء بالخطأ).", en_q:"Is updating software to add features a security incident? Compare it with accidentally publishing customer data.", hint:"تدرب 2 ص 48.", en_hint:"Practice 2 on p. 48.", model:"تحديث البرنامج لإضافة ميزات <b>ليس حادثاً أمنياً</b>، بينما نشر بيانات العملاء بالخطأ <b>حادث أمني (تسرب معلومات)</b> لأنه أخل بسرية البيانات.", en_model:"Software updates are <b>not</b> security incidents; publishing customer data <b>is a security incident (Information Leakage)</b>."},
+                    {source:"واجب منزلي 13 - استجابة لانقطاع الخدمة (ص 45-46)", q:"تعرض موقع بنك لهجوم إغراق أوقف الخدمة. كيف يطبق الفريق مراحل الاكتشاف والاحتواء والدروس المستفادة؟", en_q:"A bank site suffered a flooding attack. How are Detection, Containment, and Lessons Learned applied?", hint:"رصد الهجوم، تصفية الحركة، تقوية الضوابط.", en_hint:"Detect spike, filter traffic, upgrade defenses.", model:"<b>الاكتشاف:</b> رصد الهجوم وتوقف الخدمة. <b>الاحتواء:</b> حظر وتصفية الحركة الخبيثة عبر جدار الحماية. <b>الدروس المستفادة:</b> تعزيز قدرات الحماية ضد هجمات الإغراق مستقبلاً.", en_model:"<b>Detection:</b> Spot traffic flood. <b>Containment:</b> Filter malicious traffic at firewall. <b>Lessons Learned:</b> Upgrade anti-DDoS controls."},
+                    {source:"واجب منزلي 14 - قراءة المصفوفة (ص 47)", q:"اذكر الحالات الثلاث في مصفوفة تقييم المخاطر (الشكل 2.3.2) التي تكون فيها المخاطرة (مرتفعة) أو (مرتفعة جداً).", en_q:"List the three cells in Figure 2.3.2 where risk is High or Very High.", hint:"أعلى خلايا المصفوفة.", en_hint:"Top-right cells of the matrix.", model:"1) <b>مرتفع جداً:</b> تأثير مرتفع × احتمالية مرتفعة.<br>2) <b>مرتفع:</b> تأثير مرتفع × احتمالية متوسطة.<br>3) <b>مرتفع:</b> تأثير متوسط × احتمالية مرتفعة.", en_model:"1) <b>Very High:</b> High Impact × High Likelihood.<br>2) <b>High:</b> High Impact × Medium Likelihood.<br>3) <b>High:</b> Medium Impact × High Likelihood."},
+                    {source:"واجب منزلي 15 - تلخيص العلاقة بين الوقاية والاستجابة", q:"اشرح كيف تغذي المرحلة السادسة (الدروس المستفادة والتحسين) إجراءات الوقاية في المؤسسة.", en_q:"Explain how Stage 6 (Lessons Learned) feeds back into preventive security controls.", hint:"تحليل السبب وتقوية الدفاعات.", en_hint:"Root-cause analysis strengthens defenses.", model:"من خلال تحليل سبب الحادث وتوثيق الثغرات التي استغلها المهاجم، تقوم المؤسسة بتحديث جدران الحماية وبرامجها وتدريب موظفيها، مما يقلل احتمال تكرار الحادث وأثره.", en_model:"By analyzing the root cause and documenting exploited gaps, the organization upgrades its firewalls, patches, and policies to prevent recurrence."}
+                ]
+            }
+        };
+
+        let currentMode = 'session', currentSubTab = 'mcq', mcqViewMode = 'single';
+        let state = { session: { answers: new Array(15).fill(null), currentIdx: 0 }, homework: { answers: new Array(15).fill(null), currentIdx: 0 } };
+
+        function safeGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+        function safeSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        function getPrefix() { return 'cs_u2_l3_' + currentMode; }
+
+        function jumpToQuiz(m, sub) { switchMode(m); switchSubTab(sub); document.getElementById('quiz-section').scrollIntoView({behavior:'smooth'}); }
+
+        function switchMode(m) {
+            currentMode = m;
+            document.getElementById('modeBtnSession').className = m === 'session' ? 'mode-card-btn active-mode-session' : 'mode-card-btn';
+            document.getElementById('modeBtnHomework').className = m === 'homework' ? 'mode-card-btn active-mode-homework' : 'mode-card-btn';
+            const lbl = m === 'session' ? 'السيشن' : 'الواجب';
+            document.getElementById('tabMCQLabel').innerText = `🔘 الاختيار من متعدد (15 - ${lbl})`;
+            document.getElementById('tabEssayLabel').innerText = `✍️ الأسئلة المقالية (15 - ${lbl})`;
+            document.getElementById('currentModeBadge').innerText = m === 'session' ? '👨‍🏫 السيشن' : '🏠 الواجب';
+            document.getElementById('essayBannerTitle').innerText = `📝 الأسئلة المقالية والتحليلية لقسم ${lbl} (15 سؤالاً):`;
+            document.getElementById('resultsCard').style.display = 'none';
+            loadScores(); displayQuestion(); renderAllMcqList(); renderEssayQuestions();
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            document.getElementById('tabMCQ').classList.toggle('active', sub === 'mcq');
+            document.getElementById('tabEssay').classList.toggle('active', sub === 'essay');
+            document.getElementById('mcqContainer').style.display = sub === 'mcq' ? 'block' : 'none';
+            document.getElementById('essayContainer').style.display = sub === 'essay' ? 'block' : 'none';
+            document.getElementById('mcqViewToggleGroup').style.display = sub === 'mcq' ? 'flex' : 'none';
+        }
+
+        function setMcqViewMode(vm) {
+            mcqViewMode = vm;
+            document.getElementById('viewSingleBtn').classList.toggle('active-view', vm === 'single');
+            document.getElementById('viewAllBtn').classList.toggle('active-view', vm === 'all');
+            document.getElementById('quizCard').style.display = vm === 'single' ? 'block' : 'none';
+            document.getElementById('allMcqListContainer').style.display = vm === 'all' ? 'block' : 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+            if (vm === 'single') displayQuestion(); else renderAllMcqList();
+        }
+
+        function calculateScore() {
+            const qs = quizData[currentMode].mcq, ans = state[currentMode].answers;
+            let s = 0, answered = 0;
+            qs.forEach((q, i) => { if (ans[i] !== null) { answered++; if (ans[i] === q.correct) s++; } });
+            document.getElementById('score').innerText = s;
+            document.getElementById('progressBar').style.width = ((answered / qs.length) * 100) + '%';
+            return s;
+        }
+
+        function loadScores() {
+            const p = getPrefix();
+            document.getElementById('highScore').innerText = safeGet(p + '_high') || '0';
+            document.getElementById('firstScore').innerText = safeGet(p + '_first') !== null ? safeGet(p + '_first') : '--';
+            calculateScore();
+        }
+
+        function displayQuestion() {
+            const qs = quizData[currentMode].mcq, ans = state[currentMode].answers, idx = state[currentMode].currentIdx, q = qs[idx];
+            document.getElementById('qCurrent').innerText = idx + 1;
+            document.getElementById('topicBadge').innerText = q.tag;
+            document.getElementById('questionTextAr').innerText = (idx + 1) + '. ' + q.ar_q;
+            document.getElementById('questionTextEn').innerText = 'Q' + (idx + 1) + ': ' + q.en_q;
+            calculateScore();
+            const box = document.getElementById('optionsContainer'); box.innerHTML = '';
+            const exp = document.getElementById('explanationText'), st = document.getElementById('qStatusIndicator'), prev = ans[idx];
+            if (prev === null) { st.innerText = 'لم يُجب بعد'; exp.style.display = 'none'; }
+            else {
+                const ok = prev === q.correct;
+                st.innerText = ok ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة';
+                exp.style.display = 'block';
+                exp.style.borderRightColor = ok ? 'var(--success)' : 'var(--danger)';
+                exp.innerHTML = `<b>${ok ? '✅ أحسنت!' : '❌ الإجابة الصحيحة: (' + ['أ','ب','ج','د'][q.correct] + ') ' + q.options[q.correct].ar}</b><div>${q.exp_ar}</div><div class="exp-en">${q.exp_en}</div>`;
+            }
+            q.options.forEach((opt, oi) => {
+                const b = document.createElement('button'); b.className = 'opt-btn';
+                b.innerHTML = `<div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${opt.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${opt.en}</div>`;
+                if (prev !== null) { b.disabled = true; if (oi === q.correct) b.classList.add('correct'); else if (oi === prev) b.classList.add('wrong'); }
+                else b.onclick = () => { state[currentMode].answers[idx] = oi; displayQuestion(); };
+                box.appendChild(b);
+            });
+            document.getElementById('prevBtn').disabled = idx === 0;
+            document.getElementById('nextBtn').innerText = idx === qs.length - 1 ? 'إنهاء وعرض النتيجة 🏁' : 'السؤال التالي ⬅️';
+        }
+
+        function nextQuestion() {
+            const qs = quizData[currentMode].mcq;
+            if (state[currentMode].currentIdx < qs.length - 1) { state[currentMode].currentIdx++; displayQuestion(); }
+            else {
+                document.getElementById('quizCard').style.display = 'none';
+                document.getElementById('resultsCard').style.display = 'block';
+                const s = calculateScore(), p = getPrefix();
+                document.getElementById('finalScore').innerText = s;
+                if (safeGet(p + '_first') === null) safeSet(p + '_first', s);
+                if (s > parseInt(safeGet(p + '_high') || '0')) safeSet(p + '_high', s);
+                loadScores();
+            }
+        }
+        function prevQuestion() { if (state[currentMode].currentIdx > 0) { state[currentMode].currentIdx--; displayQuestion(); } }
+
+        function renderAllMcqList() {
+            const box = document.getElementById('allMcqListContainer'), qs = quizData[currentMode].mcq, ans = state[currentMode].answers;
+            box.innerHTML = '';
+            qs.forEach((q, qi) => {
+                const prev = ans[qi], ok = prev === q.correct, card = document.createElement('div'); card.className = 'q-card';
+                let opts = '';
+                q.options.forEach((o, oi) => {
+                    let cls = 'opt-btn' + (prev !== null ? (oi === q.correct ? ' correct' : (oi === prev ? ' wrong' : '')) : '');
+                    opts += `<button class="${cls}" ${prev !== null ? 'disabled' : ''} onclick="state[currentMode].answers[${qi}]=${oi};calculateScore();renderAllMcqList()"><div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${o.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${o.en}</div></button>`;
+                });
+                card.innerHTML = `<div class="q-header"><span class="q-badge">${q.tag}</span><span>${prev === null ? 'لم يُجب' : (ok ? '✅ صحيحة' : '❌ خاطئة')}</span></div><div class="q-text-ar">${qi+1}. ${q.ar_q}</div><div class="q-text-en">Q${qi+1}: ${q.en_q}</div><div class="options-list">${opts}</div>${prev !== null ? `<div class="explanation" style="display:block;"><div>${q.exp_ar}</div><div class="exp-en">${q.exp_en}</div></div>` : ''}`;
+                box.appendChild(card);
+            });
+        }
+
+        function openIndexModal() {
+            const g = document.getElementById('gridIndexContainer'), qs = quizData[currentMode].mcq, ans = state[currentMode].answers;
+            g.innerHTML = '';
+            qs.forEach((q, i) => {
+                const d = document.createElement('div');
+                d.className = 'index-pill' + (ans[i] !== null ? (ans[i] === q.correct ? ' solved-correct' : ' solved-wrong') : '');
+                d.innerText = i + 1;
+                d.onclick = () => { state[currentMode].currentIdx = i; setMcqViewMode('single'); closeIndexModal(); };
+                g.appendChild(d);
+            });
+            document.getElementById('indexModal').style.display = 'flex';
+        }
+        function closeIndexModal() { document.getElementById('indexModal').style.display = 'none'; }
+        function restartCurrentQuiz() { state[currentMode].answers = new Array(15).fill(null); state[currentMode].currentIdx = 0; setMcqViewMode(mcqViewMode); calculateScore(); }
+
+        function renderEssayQuestions() {
+            const box = document.getElementById('essayList'), list = quizData[currentMode].essay;
+            box.innerHTML = '';
+            list.forEach((it, i) => {
+                const d = document.createElement('div'); d.className = 'essay-item';
+                d.innerHTML = `<span class="essay-source">${it.source}</span><div class="essay-q-text"><strong>س${i+1}:</strong> ${it.q}</div><div class="q-text-en"><strong>Q${i+1}:</strong> ${it.en_q}</div><textarea class="essay-textarea" placeholder="اكتب إجابتك وتحليلك هنا..."></textarea><div><button class="btn-reveal-answer" onclick="const h=document.getElementById('h_${i}');h.style.display=h.style.display==='block'?'none':'block'">💡 تلميح / Hint</button><button class="btn-reveal-answer" onclick="const m=document.getElementById('m_${i}');m.style.display=m.style.display==='block'?'none':'block'">👁️ الإجابة النموذجية / Model Answer</button></div><div class="hint-box" id="h_${i}"><div>💡 ${it.hint}</div><div class="exp-en">💡 ${it.en_hint}</div></div><div class="model-answer" id="m_${i}"><div>${it.model}</div><hr style="margin:8px 0;opacity:0.3;"><div class="exp-en" style="color:inherit;">${it.en_model}</div></div>`;
+                box.appendChild(d);
+            });
+        }
+        function toggleAllEssays(show) { quizData[currentMode].essay.forEach((_, i) => { const m = document.getElementById('m_' + i); if (m) m.style.display = show ? 'block' : 'none'; }); }
+
+        window.onload = () => { loadScores(); displayQuestion(); renderEssayQuestions(); };
+    </script>
+</body>
+</html>
