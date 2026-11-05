@@ -547,6 +547,29 @@
       saveConfigLocally(true);
     }
 
+    // حساب رقم الترتيب التالي (اللي عليه الدور) داخل الفولدر المحدد أو الشاشة الرئيسية
+    function getNextOrderInFolder(targetFolderId, excludeFilename = null) {
+      const target = targetFolderId || "";
+      const excluded = excludeFilename ? decodeURIComponent(excludeFilename) : null;
+      let maxOrder = 0;
+      let countInFolder = 0;
+
+      lessonsList.forEach(item => {
+        const decName = decodeURIComponent(item.name);
+        if (excluded && decName === excluded) return;
+        const meta = getLessonMeta(decName);
+        const itemFolder = meta.folderId || "";
+        if (itemFolder === target) {
+          countInFolder++;
+          if (typeof meta.order === "number" && meta.order > maxOrder) {
+            maxOrder = meta.order;
+          }
+        }
+      });
+
+      return Math.max(maxOrder, countInFolder) + 1;
+    }
+
     function detectRepoFromUrl() {
       let user = (teacherLocalSettings.ghUser || DEFAULT_GITHUB_USER).trim();
       let repo = (teacherLocalSettings.ghRepo || DEFAULT_GITHUB_REPO).trim();
@@ -618,7 +641,6 @@
       const swapIdx = idx + direction;
       if (swapIdx < 0 || swapIdx >= listNames.length) return;
 
-      // تبديل الموقعين في المصفوفة ثم إعطاء أرقام ترتيب متسلسلة (1، 2، 3...) لكل العناصر المعروضة
       const temp = listNames[idx];
       listNames[idx] = listNames[swapIdx];
       listNames[swapIdx] = temp;
@@ -629,7 +651,6 @@
         portalConfig.fileMeta[name] = { ...current, order: i + 1 };
       });
 
-      // تأكد أن خيار الفرز مضبوط على "الترتيب المنظم" ليرى المعلم النتيجة فوراً
       document.getElementById("sortSelect").value = "custom";
       saveConfigLocally(true);
       showToast("تم تحديث ترتيب الدرس", "↕️");
@@ -957,8 +978,9 @@
           sel.addEventListener("change", () => {
             const file = sel.getAttribute("data-move-lesson");
             const targetFolderId = sel.value;
-            setLessonMeta(file, { folderId: targetFolderId });
-            showToast(`تم نقل "${getLessonMeta(file).title || formatLessonName(file)}" بنجاح`, "📂");
+            const nextOrder = getNextOrderInFolder(targetFolderId, file);
+            setLessonMeta(file, { folderId: targetFolderId, order: nextOrder });
+            showToast(`تم نقل "${getLessonMeta(file).title || formatLessonName(file)}" وأخذ الترتيب #${nextOrder}`, "📂");
             renderPortal();
           });
         });
@@ -1091,6 +1113,9 @@
 
     function saveLessonFromModal() {
       if (!editingFileName) return;
+      const prevMeta = getLessonMeta(editingFileName);
+      const prevFolderId = prevMeta.folderId || "";
+
       const newTitle = document.getElementById("editLessonTitleInput").value.trim();
       const newFolderId = document.getElementById("editLessonFolderSelect").value;
       const orderVal = document.getElementById("editLessonOrderInput").value.trim();
@@ -1103,16 +1128,19 @@
         hidden: isHidden
       };
 
-      if (parsedOrder !== null && !isNaN(parsedOrder)) {
+      // إذا انتقل الدرس لفولدر جديد ولم يحدد المعلم رقماً يدوياً مختلفاً، يأخذ الترتيب الذي عليه الدور في الفولدر الجديد
+      if (newFolderId !== prevFolderId && (parsedOrder === null || parsedOrder === prevMeta.order)) {
+        updatedProps.order = getNextOrderInFolder(newFolderId, editingFileName);
+      } else if (parsedOrder !== null && !isNaN(parsedOrder)) {
         updatedProps.order = parsedOrder;
       } else {
-        updatedProps.order = undefined;
+        updatedProps.order = getNextOrderInFolder(newFolderId, editingFileName);
       }
 
       setLessonMeta(editingFileName, updatedProps);
 
       closeLessonEditModal();
-      showToast("تم حفظ اسم الملف وترتيبه بنجاح", "✅");
+      showToast(`تم الحفظ وأخذ الدرس الترتيب #${updatedProps.order}`, "✅");
       renderPortal();
     }
 
