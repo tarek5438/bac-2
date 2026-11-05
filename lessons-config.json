@@ -26,28 +26,52 @@
   ],
   "fileMeta": {
     "lesson1.html": {
-      "folderId": "folder_1793899909195"
+      "folderId": "folder_1793899909195",
+      "title": "lesson1",
+      "hidden": false,
+      "order": 1
     },
     "lesson2.html": {
-      "folderId": "folder_1793899909195"
+      "folderId": "folder_1793899909195",
+      "title": "lesson2",
+      "hidden": false,
+      "order": 2
     },
     "lesson3.html": {
-      "folderId": "folder_1793899909195"
+      "folderId": "folder_1793899909195",
+      "title": "lesson3",
+      "hidden": false,
+      "order": 3
     },
     "lesson4.html": {
-      "folderId": "folder_1793899909195"
+      "folderId": "folder_1793899909195",
+      "title": "lesson4",
+      "hidden": false,
+      "order": 4
     },
     "2-1.html": {
-      "folderId": "folder_1793899918958"
+      "folderId": "folder_1793899918958",
+      "title": "lesson1",
+      "hidden": false,
+      "order": 1
     },
     "2-2.html": {
-      "folderId": "folder_1793899918958"
+      "folderId": "folder_1793899918958",
+      "title": "lesson2",
+      "hidden": false,
+      "order": 2
     },
     "2-3.html": {
-      "folderId": "folder_1793899918958"
+      "folderId": "folder_1793899918958",
+      "title": "lesson3",
+      "hidden": false,
+      "order": 3
     },
     "unit1 300Q.html": {
-      "folderId": "folder_1793899909195"
+      "folderId": "folder_1793899909195",
+      "title": "unit1 300Q",
+      "hidden": false,
+      "order": 5
     },
     "test1.html": {
       "folderId": "folder_1793899918958"
