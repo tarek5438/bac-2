@@ -224,9 +224,9 @@
     <!-- Empty State -->
     <div id="emptyState" class="text-center py-16 surface-card bg-white rounded-3xl border border-slate-200 shadow-sm p-6 hidden">
       <div class="text-5xl mb-3">📂</div>
-      <h3 class="text-lg font-extrabold mb-1" id="emptyStateTitle">لا توجد دروس مرفوعة حالياً</h3>
+      <h3 class="text-lg font-extrabold mb-1" id="emptyStateTitle">لا توجد دروس في هذا القسم حالياً</h3>
       <p id="emptyStateSub" class="text-slate-500 muted-text text-sm max-w-md mx-auto leading-relaxed mb-4">
-        بمجرد وضع أي ملف درس بصيغة <code>.html</code> بجانب ملف <code>index.html</code> ورفعه، سيظهر الرابط الخاص به هنا تلقائياً باسمه.
+        يمكنك الرجوع للشاشة الرئيسية لاستعراض باقي الفولدرات أو إضافة دروس جديدة هنا من وضع المعلم.
       </p>
       <button id="emptyBackRootBtn" type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-extrabold px-5 py-2.5 rounded-xl transition">
         🏠 العودة لجميع الفولدرات والدروس
@@ -499,11 +499,25 @@
       }, 3200);
     }
 
+    // دالة موحدة لفتح أي فولدر بشكل مباشر ومضمون
+    function openFolderView(folderId) {
+      activeFolderId = String(folderId);
+      const filterSelect = document.getElementById("folderFilterSelect");
+      if (filterSelect) {
+        populateFolderDropdowns();
+        filterSelect.value = activeFolderId;
+      }
+      renderPortal();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     // دالة موحدة للرجوع السريع إلى الشاشة الرئيسية (كل الفولدرات)
     function goBackToRoot() {
       activeFolderId = "ROOT";
-      document.getElementById("folderFilterSelect").value = "ALL";
-      document.getElementById("searchInput").value = "";
+      const filterSelect = document.getElementById("folderFilterSelect");
+      if (filterSelect) filterSelect.value = "ALL";
+      const searchInput = document.getElementById("searchInput");
+      if (searchInput) searchInput.value = "";
       renderPortal();
     }
 
@@ -579,7 +593,7 @@
 
     // حساب رقم الترتيب التالي (اللي عليه الدور) داخل الفولدر المحدد أو الشاشة الرئيسية
     function getNextOrderInFolder(targetFolderId, excludeFilename = null) {
-      const target = targetFolderId || "";
+      const target = targetFolderId ? String(targetFolderId) : "";
       const excluded = excludeFilename ? decodeURIComponent(excludeFilename) : null;
       let maxOrder = 0;
       let countInFolder = 0;
@@ -588,7 +602,7 @@
         const decName = decodeURIComponent(item.name);
         if (excluded && decName === excluded) return;
         const meta = getLessonMeta(decName);
-        const itemFolder = meta.folderId || "";
+        const itemFolder = meta.folderId ? String(meta.folderId) : "";
         if (itemFolder === target) {
           countInFolder++;
           if (typeof meta.order === "number" && meta.order > maxOrder) {
@@ -623,30 +637,36 @@
       const filterSelect = document.getElementById("folderFilterSelect");
       const editFolderSelect = document.getElementById("editLessonFolderSelect");
 
-      const currentFilterVal = filterSelect.value;
+      const previousFilterVal = filterSelect.value;
       filterSelect.innerHTML = `<option value="ALL">🏠 الشاشة الرئيسية (الفولدرات والدروس العامة)</option><option value="ALL_FLAT">📚 عرض جميع الدروس معاً</option>`;
       editFolderSelect.innerHTML = `<option value="">🏠 بدون فولدر (في الشاشة الرئيسية)</option>`;
 
       (portalConfig.folders || []).forEach(folder => {
+        const fId = String(folder.id);
         const opt1 = document.createElement("option");
-        opt1.value = folder.id;
+        opt1.value = fId;
         opt1.textContent = `${folder.icon || "📁"} ${folder.name}`;
         filterSelect.appendChild(opt1);
 
         const opt2 = document.createElement("option");
-        opt2.value = folder.id;
+        opt2.value = fId;
         opt2.textContent = `${folder.icon || "📁"} ${folder.name}`;
         editFolderSelect.appendChild(opt2);
       });
 
-      if (Array.from(filterSelect.options).some(o => o.value === currentFilterVal)) {
-        filterSelect.value = currentFilterVal;
+      // الحفاظ على الفولدر المفتوح حالياً في القائمة المنسدلة
+      if (activeFolderId !== "ROOT" && Array.from(filterSelect.options).some(o => o.value === String(activeFolderId))) {
+        filterSelect.value = String(activeFolderId);
+      } else if (Array.from(filterSelect.options).some(o => o.value === previousFilterVal)) {
+        filterSelect.value = previousFilterVal;
+      } else {
+        filterSelect.value = "ALL";
       }
     }
 
     function moveFolderOrder(folderId, direction) {
       if (!Array.isArray(portalConfig.folders)) return;
-      const idx = portalConfig.folders.findIndex(f => f.id === folderId);
+      const idx = portalConfig.folders.findIndex(f => String(f.id) === String(folderId));
       if (idx === -1) return;
       const targetIdx = idx + direction;
       if (targetIdx < 0 || targetIdx >= portalConfig.folders.length) return;
@@ -701,7 +721,7 @@
       bc.appendChild(rootBtn);
 
       if (activeFolderId !== "ROOT") {
-        const folder = (portalConfig.folders || []).find(f => f.id === activeFolderId);
+        const folder = (portalConfig.folders || []).find(f => String(f.id) === String(activeFolderId));
         if (folder) {
           const sep = document.createElement("span");
           sep.className = "text-slate-400 px-1";
@@ -715,9 +735,8 @@
 
           badge.textContent = `داخل فولدر: ${folder.name}`;
 
-          // إظهار زر الرجوع السريع وشريط الفولدر البارز
           topQuickBackBtn.classList.remove("hidden");
-          topQuickBackBtn.classList.add(" inline-flex");
+          topQuickBackBtn.classList.add("inline-flex");
 
           activeFolderBanner.classList.remove("hidden");
           activeFolderBanner.classList.add("flex");
@@ -769,13 +788,14 @@
 
       lessonCountEl.textContent = visibleLessons.length;
 
-      // 1. Render Folders Grid
+      // 1. Render Folders Grid (Show only when at ROOT, no search query, and filter is ALL)
       if (activeFolderId === "ROOT" && !searchVal && filterFolderVal === "ALL" && folders.length > 0) {
         foldersSection.classList.remove("hidden");
         foldersGrid.innerHTML = "";
 
         folders.forEach((folder, fIdx) => {
-          const countInFolder = visibleLessons.filter(l => getLessonMeta(l.name).folderId === folder.id).length;
+          const fId = String(folder.id);
+          const countInFolder = visibleLessons.filter(l => String(getLessonMeta(l.name).folderId || "") === fId).length;
           const theme = FOLDER_COLOR_THEMES[folder.color] || FOLDER_COLOR_THEMES.indigo;
 
           const fCard = document.createElement("div");
@@ -795,10 +815,10 @@
                 </div>
                 ${isTeacherMode ? `
                   <div class="flex items-center gap-1 flex-wrap justify-end" data-folder-actions="true">
-                    <button type="button" data-move-folder-up="${folder.id}" ${fIdx === 0 ? "disabled" : ""} class="bg-white/90 hover:bg-white disabled:opacity-40 text-slate-800 px-2 py-1 rounded-lg text-xs font-black shadow-sm border border-slate-200" title="تحريك الفولدر للأعلى / التقدم">⬆️</button>
-                    <button type="button" data-move-folder-down="${folder.id}" ${fIdx === folders.length - 1 ? "disabled" : ""} class="bg-white/90 hover:bg-white disabled:opacity-40 text-slate-800 px-2 py-1 rounded-lg text-xs font-black shadow-sm border border-slate-200" title="تحريك الفولدر للأسفل / التأخير">⬇️</button>
-                    <button type="button" data-edit-folder="${folder.id}" class="bg-white/90 hover:bg-white text-slate-800 p-1.5 rounded-lg text-xs font-bold shadow-sm border border-slate-200" title="تعديل اسم أو لون الفولدر">✏️</button>
-                    <button type="button" data-del-folder="${folder.id}" class="bg-white/90 hover:bg-red-50 text-red-600 p-1.5 rounded-lg text-xs font-bold shadow-sm border border-slate-200" title="حذف الفولدر (تبقى الدروس محفوظة)">🗑️</button>
+                    <button type="button" data-move-folder-up="${fId}" ${fIdx === 0 ? "disabled" : ""} class="bg-white/90 hover:bg-white disabled:opacity-40 text-slate-800 px-2 py-1 rounded-lg text-xs font-black shadow-sm border border-slate-200" title="تحريك الفولدر للأعلى / التقدم">⬆️</button>
+                    <button type="button" data-move-folder-down="${fId}" ${fIdx === folders.length - 1 ? "disabled" : ""} class="bg-white/90 hover:bg-white disabled:opacity-40 text-slate-800 px-2 py-1 rounded-lg text-xs font-black shadow-sm border border-slate-200" title="تحريك الفولدر للأسفل / التأخير">⬇️</button>
+                    <button type="button" data-edit-folder="${fId}" class="bg-white/90 hover:bg-white text-slate-800 p-1.5 rounded-lg text-xs font-bold shadow-sm border border-slate-200" title="تعديل اسم أو لون الفولدر">✏️</button>
+                    <button type="button" data-del-folder="${fId}" class="bg-white/90 hover:bg-red-50 text-red-600 p-1.5 rounded-lg text-xs font-bold shadow-sm border border-slate-200" title="حذف الفولدر (تبقى الدروس محفوظة)">🗑️</button>
                   </div>
                 ` : ""}
               </div>
@@ -812,10 +832,7 @@
 
           fCard.addEventListener("click", (e) => {
             if (e.target.closest("[data-folder-actions]")) return;
-            activeFolderId = folder.id;
-            document.getElementById("folderFilterSelect").value = folder.id;
-            renderPortal();
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            openFolderView(fId);
           });
 
           foldersGrid.appendChild(fCard);
@@ -851,12 +868,13 @@
       }
 
       // 2. Filter Lessons to Display
-      const validFolderIds = new Set(folders.map(f => f.id));
-      let effectiveFolderFilter = activeFolderId !== "ROOT" ? activeFolderId : filterFolderVal;
+      const validFolderIds = new Set(folders.map(f => String(f.id)));
+      let effectiveFolderFilter = activeFolderId !== "ROOT" ? String(activeFolderId) : filterFolderVal;
 
       let filteredLessons = visibleLessons.filter(item => {
         const meta = getLessonMeta(item.name);
-        const assignedFolder = (meta.folderId && validFolderIds.has(meta.folderId)) ? meta.folderId : "";
+        const rawFolderId = meta.folderId ? String(meta.folderId) : "";
+        const assignedFolder = (rawFolderId && validFolderIds.has(rawFolderId)) ? rawFolderId : "";
         const displayName = (meta.title || formatLessonName(item.name)).toLowerCase();
         const matchesSearch = displayName.includes(searchVal) || decodeURIComponent(item.name).toLowerCase().includes(searchVal);
         if (!matchesSearch) return false;
@@ -868,13 +886,13 @@
         } else if (effectiveFolderFilter === "ALL_FLAT") {
           return true;
         } else {
-          return assignedFolder === effectiveFolderFilter;
+          return assignedFolder === String(effectiveFolderFilter);
         }
       });
 
       const lessonsSection = document.getElementById("lessonsSection");
       if (activeFolderId !== "ROOT") {
-        const fObj = folders.find(f => f.id === activeFolderId);
+        const fObj = folders.find(f => String(f.id) === String(activeFolderId));
         lessonsSectionTitle.innerHTML = `<span>📚</span><span>الدروس المتاحة داخل ${fObj ? fObj.name : "الفولدر"}</span>`;
       } else if (searchVal) {
         lessonsSectionTitle.innerHTML = `<span>🔍</span><span>نتائج البحث (${filteredLessons.length})</span>`;
@@ -932,14 +950,14 @@
         const decodedName = decodeURIComponent(item.name);
         const meta = getLessonMeta(item.name);
         const displayTitle = meta.title || formatLessonName(item.name);
-        const parentFolder = folders.find(f => f.id === meta.folderId);
+        const parentFolder = folders.find(f => String(f.id) === String(meta.folderId || ""));
 
         const card = document.createElement("div");
         card.className = `lesson-card surface-card bg-white rounded-2xl border ${meta.hidden ? "border-dashed border-amber-400 opacity-75" : "border-slate-200 hover:border-indigo-400"} p-5 shadow-sm hover:shadow-md flex flex-col justify-between gap-4 group relative`;
 
         let folderOptionsHtml = `<option value="">🏠 بدون فولدر (الشاشة الرئيسية)</option>`;
         folders.forEach(f => {
-          folderOptionsHtml += `<option value="${f.id}" ${meta.folderId === f.id ? "selected" : ""}>${f.icon || "📁"} ${f.name}</option>`;
+          folderOptionsHtml += `<option value="${f.id}" ${String(meta.folderId || "") === String(f.id) ? "selected" : ""}>${f.icon || "📁"} ${f.name}</option>`;
         });
 
         const hasHeaderTags = (parentFolder && activeFolderId === "ROOT") || meta.hidden || typeof meta.order === "number";
@@ -1061,7 +1079,7 @@
       const descInput = document.getElementById("folderDescInput");
 
       if (folderId) {
-        const f = (portalConfig.folders || []).find(x => x.id === folderId);
+        const f = (portalConfig.folders || []).find(x => String(x.id) === String(folderId));
         if (!f) return;
         titleEl.innerHTML = `<span>✏️</span><span>تعديل الفولدر</span>`;
         nameInput.value = f.name || "";
@@ -1102,7 +1120,7 @@
       if (!Array.isArray(portalConfig.folders)) portalConfig.folders = [];
 
       if (editingFolderId) {
-        const idx = portalConfig.folders.findIndex(f => f.id === editingFolderId);
+        const idx = portalConfig.folders.findIndex(f => String(f.id) === String(editingFolderId));
         if (idx !== -1) {
           portalConfig.folders[idx] = { ...portalConfig.folders[idx], name, icon, color, desc };
         }
@@ -1119,18 +1137,18 @@
     }
 
     function deleteFolder(folderId) {
-      const f = (portalConfig.folders || []).find(x => x.id === folderId);
+      const f = (portalConfig.folders || []).find(x => String(x.id) === String(folderId));
       if (!f) return;
 
-      portalConfig.folders = portalConfig.folders.filter(x => x.id !== folderId);
+      portalConfig.folders = portalConfig.folders.filter(x => String(x.id) !== String(folderId));
       if (portalConfig.fileMeta) {
         Object.keys(portalConfig.fileMeta).forEach(k => {
-          if (portalConfig.fileMeta[k].folderId === folderId) {
+          if (String(portalConfig.fileMeta[k].folderId || "") === String(folderId)) {
             portalConfig.fileMeta[k].folderId = "";
           }
         });
       }
-      if (activeFolderId === folderId) activeFolderId = "ROOT";
+      if (String(activeFolderId) === String(folderId)) activeFolderId = "ROOT";
       saveConfigLocally(true);
       showToast(`تم حذف الفولدر "${f.name}" وإرجاع دروسه للرئيسية`, "🗑️");
       renderPortal();
@@ -1143,7 +1161,7 @@
 
       document.getElementById("editModalOriginalFile").textContent = filename;
       document.getElementById("editLessonTitleInput").value = meta.title || formatLessonName(filename);
-      document.getElementById("editLessonFolderSelect").value = meta.folderId || "";
+      document.getElementById("editLessonFolderSelect").value = meta.folderId ? String(meta.folderId) : "";
       document.getElementById("editLessonOrderInput").value = typeof meta.order === "number" ? meta.order : "";
       document.getElementById("editLessonHiddenCheck").checked = Boolean(meta.hidden);
 
@@ -1163,7 +1181,7 @@
     function saveLessonFromModal() {
       if (!editingFileName) return;
       const prevMeta = getLessonMeta(editingFileName);
-      const prevFolderId = prevMeta.folderId || "";
+      const prevFolderId = prevMeta.folderId ? String(prevMeta.folderId) : "";
 
       const newTitle = document.getElementById("editLessonTitleInput").value.trim();
       const newFolderId = document.getElementById("editLessonFolderSelect").value;
@@ -1386,7 +1404,7 @@
         if (val === "ALL" || val === "ALL_FLAT") {
           activeFolderId = "ROOT";
         } else {
-          activeFolderId = val;
+          activeFolderId = String(val);
         }
         renderPortal();
       });
