@@ -101,7 +101,7 @@
             <span>🎓</span>
             <span id="portalSubtitleBadge">بوابة الدروس والاختبارات التفاعلية</span>
           </div>
-          <h1 id="portalMainTitle" class="text-2xl sm:text-4xl font-black tracking-tight leading-snug">
+          <h1 id="portalMainTitle" class="text-2xl sm:text-4xl font-black tracking-tight leading-snug cursor-pointer hover:text-amber-300 transition" title="العودة للشاشة الرئيسية">
             دروس المجموعة
           </h1>
           <p class="text-indigo-100/90 text-sm sm:text-base mt-1.5 max-w-xl">
@@ -163,10 +163,32 @@
       </div>
 
       <div class="flex items-center gap-2">
+        <button id="topQuickBackBtn" type="button" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-extrabold px-3.5 py-1.5 rounded-xl shadow-sm transition items-center gap-1.5">
+          <span>↪️</span>
+          <span>رجوع للرئيسية</span>
+        </button>
         <span id="currentViewBadge" class="text-xs font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full border border-indigo-200">
           عرض الفولدرات والدروس
         </span>
       </div>
+    </div>
+
+    <!-- Active Folder Prominent Return Banner (Shown ONLY when inside a folder) -->
+    <div id="activeFolderBanner" class="hidden mb-6 surface-card bg-gradient-to-l from-indigo-50 via-white to-indigo-50 border-2 border-indigo-200 rounded-2xl p-4 sm:px-6 shadow-sm items-center justify-between flex-wrap gap-4 animate-fade">
+      <div class="flex items-center gap-3.5">
+        <span id="activeFolderBannerIcon" class="text-3xl sm:text-4xl bg-white p-2.5 rounded-2xl shadow-sm border border-indigo-100">📁</span>
+        <div>
+          <span class="text-[11px] font-extrabold text-indigo-600 block">أنت تتصفح الآن محتويات فولدر:</span>
+          <h2 id="activeFolderBannerTitle" class="text-lg sm:text-xl font-black text-slate-900"></h2>
+          <p id="activeFolderBannerDesc" class="text-xs text-slate-500 muted-text mt-0.5 hidden"></p>
+        </div>
+      </div>
+
+      <button id="bannerBackToRootBtn" type="button" class="w-full sm:w-auto justify-center bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs sm:text-sm font-black px-5 py-3 rounded-xl shadow-md hover:shadow-lg transition flex items-center gap-2">
+        <span>🏠</span>
+        <span>رجوع للشاشة الرئيسية (كل الفولدرات)</span>
+        <span>←</span>
+      </button>
     </div>
 
     <!-- Loading Box -->
@@ -207,7 +229,7 @@
         بمجرد وضع أي ملف درس بصيغة <code>.html</code> بجانب ملف <code>index.html</code> ورفعه، سيظهر الرابط الخاص به هنا تلقائياً باسمه.
       </p>
       <button id="emptyBackRootBtn" type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-extrabold px-5 py-2.5 rounded-xl transition">
-        🏠 العودة لجميع الدروس
+        🏠 العودة لجميع الفولدرات والدروس
       </button>
     </div>
 
@@ -477,6 +499,14 @@
       }, 3200);
     }
 
+    // دالة موحدة للرجوع السريع إلى الشاشة الرئيسية (كل الفولدرات)
+    function goBackToRoot() {
+      activeFolderId = "ROOT";
+      document.getElementById("folderFilterSelect").value = "ALL";
+      document.getElementById("searchInput").value = "";
+      renderPortal();
+    }
+
     function loadInitialConfig() {
       try {
         const embeddedEl = document.getElementById("embeddedLessonsConfig");
@@ -614,7 +644,6 @@
       }
     }
 
-    // تحريك الفولدر لأعلى أو لأسفل في القائمة
     function moveFolderOrder(folderId, direction) {
       if (!Array.isArray(portalConfig.folders)) return;
       const idx = portalConfig.folders.findIndex(f => f.id === folderId);
@@ -631,7 +660,6 @@
       renderPortal();
     }
 
-    // تحريك الدرس لأعلى أو لأسفل ضمن القائمة المعروضة حالياً
     function moveLessonOrder(filename, direction, currentDisplayedLessons) {
       const decodedTarget = decodeURIComponent(filename);
       const listNames = currentDisplayedLessons.map(item => decodeURIComponent(item.name));
@@ -660,17 +688,16 @@
     function renderBreadcrumbs() {
       const bc = document.getElementById("breadcrumbContainer");
       const badge = document.getElementById("currentViewBadge");
+      const topQuickBackBtn = document.getElementById("topQuickBackBtn");
+      const activeFolderBanner = document.getElementById("activeFolderBanner");
+
       bc.innerHTML = "";
 
       const rootBtn = document.createElement("button");
       rootBtn.type = "button";
-      rootBtn.className = `flex items-center gap-1.5 transition ${activeFolderId === "ROOT" ? "text-indigo-700 font-black" : "text-slate-500 hover:text-indigo-600"}`;
-      rootBtn.innerHTML = `<span>🏠</span><span>الرئيسية (كل المحتويات)</span>`;
-      rootBtn.addEventListener("click", () => {
-        activeFolderId = "ROOT";
-        document.getElementById("folderFilterSelect").value = "ALL";
-        renderPortal();
-      });
+      rootBtn.className = `flex items-center gap-1.5 transition ${activeFolderId === "ROOT" ? "text-indigo-700 font-black" : "text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1 rounded-xl font-extrabold"}`;
+      rootBtn.innerHTML = `<span>🏠</span><span>الرئيسية (كل الفولدرات)</span>`;
+      rootBtn.addEventListener("click", goBackToRoot);
       bc.appendChild(rootBtn);
 
       if (activeFolderId !== "ROOT") {
@@ -682,15 +709,36 @@
           bc.appendChild(sep);
 
           const currentSpan = document.createElement("span");
-          currentSpan.className = "text-indigo-700 font-black flex items-center gap-1.5";
+          currentSpan.className = "text-slate-900 font-black flex items-center gap-1.5";
           currentSpan.innerHTML = `<span>${folder.icon || "📁"}</span><span>${folder.name}</span>`;
           bc.appendChild(currentSpan);
 
           badge.textContent = `داخل فولدر: ${folder.name}`;
+
+          // إظهار زر الرجوع السريع وشريط الفولدر البارز
+          topQuickBackBtn.classList.remove("hidden");
+          topQuickBackBtn.classList.add(" inline-flex");
+
+          activeFolderBanner.classList.remove("hidden");
+          activeFolderBanner.classList.add("flex");
+          document.getElementById("activeFolderBannerIcon").textContent = folder.icon || "📁";
+          document.getElementById("activeFolderBannerTitle").textContent = folder.name;
+          const descEl = document.getElementById("activeFolderBannerDesc");
+          if (folder.desc) {
+            descEl.textContent = folder.desc;
+            descEl.classList.remove("hidden");
+          } else {
+            descEl.classList.add("hidden");
+          }
+          return;
         }
-      } else {
-        badge.textContent = "عرض الفولدرات والدروس";
       }
+
+      badge.textContent = "عرض الفولدرات والدروس";
+      topQuickBackBtn.classList.add("hidden");
+      topQuickBackBtn.classList.remove("inline-flex");
+      activeFolderBanner.classList.add("hidden");
+      activeFolderBanner.classList.remove("flex");
     }
 
     function renderPortal() {
@@ -767,6 +815,7 @@
             activeFolderId = folder.id;
             document.getElementById("folderFilterSelect").value = folder.id;
             renderPortal();
+            window.scrollTo({ top: 0, behavior: "smooth" });
           });
 
           foldersGrid.appendChild(fCard);
@@ -826,7 +875,7 @@
       const lessonsSection = document.getElementById("lessonsSection");
       if (activeFolderId !== "ROOT") {
         const fObj = folders.find(f => f.id === activeFolderId);
-        lessonsSectionTitle.innerHTML = `<span>${fObj ? fObj.icon : "📁"}</span><span>ملفات ودروس: ${fObj ? fObj.name : "الفولدر"}</span>`;
+        lessonsSectionTitle.innerHTML = `<span>📚</span><span>الدروس المتاحة داخل ${fObj ? fObj.name : "الفولدر"}</span>`;
       } else if (searchVal) {
         lessonsSectionTitle.innerHTML = `<span>🔍</span><span>نتائج البحث (${filteredLessons.length})</span>`;
       } else if (effectiveFolderFilter === "ALL_FLAT") {
@@ -1128,7 +1177,6 @@
         hidden: isHidden
       };
 
-      // إذا انتقل الدرس لفولدر جديد ولم يحدد المعلم رقماً يدوياً مختلفاً، يأخذ الترتيب الذي عليه الدور في الفولدر الجديد
       if (newFolderId !== prevFolderId && (parsedOrder === null || parsedOrder === prevMeta.order)) {
         updatedProps.order = getNextOrderInFolder(newFolderId, editingFileName);
       } else if (parsedOrder !== null && !isNaN(parsedOrder)) {
@@ -1348,11 +1396,22 @@
         loadSiblingHtmlFiles();
       });
 
-      document.getElementById("emptyBackRootBtn").addEventListener("click", () => {
-        activeFolderId = "ROOT";
-        document.getElementById("folderFilterSelect").value = "ALL";
-        document.getElementById("searchInput").value = "";
-        renderPortal();
+      // أزرار الرجوع السريع للشاشة الرئيسية
+      document.getElementById("emptyBackRootBtn").addEventListener("click", goBackToRoot);
+      document.getElementById("bannerBackToRootBtn").addEventListener("click", goBackToRoot);
+      document.getElementById("topQuickBackBtn").addEventListener("click", goBackToRoot);
+      document.getElementById("portalMainTitle").addEventListener("click", goBackToRoot);
+
+      // الرجوع للشاشة الرئيسية عند الضغط على زر Escape في لوحة المفاتيح
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && activeFolderId !== "ROOT") {
+          const anyModalOpen = ["loginModal", "folderModal", "lessonEditModal", "settingsModal"].some(
+            id => !document.getElementById(id).classList.contains("hidden")
+          );
+          if (!anyModalOpen) {
+            goBackToRoot();
+          }
+        }
       });
 
       document.getElementById("toggleDarkBtn").addEventListener("click", () => {
