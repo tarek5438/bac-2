@@ -1,6 +1,59 @@
 {
   "portalTitle": "دروس المجموعة",
   "teacherPin": "2468",
-  "folders": [],
-  "fileMeta": {}
+  "folders": [
+    {
+      "id": "folder_1793899909195",
+      "name": "الوحدة الأولى",
+      "icon": "📁",
+      "color": "indigo",
+      "desc": ""
+    },
+    {
+      "id": "folder_1793899918958",
+      "name": "الوحدة الثانية",
+      "icon": "📁",
+      "color": "indigo",
+      "desc": ""
+    },
+    {
+      "id": "folder_1793899937334",
+      "name": "الوحدة الثالثة",
+      "icon": "📁",
+      "color": "indigo",
+      "desc": ""
+    }
+  ],
+  "fileMeta": {
+    "lesson1.html": {
+      "folderId": "folder_1793899909195"
+    },
+    "lesson2.html": {
+      "folderId": "folder_1793899909195"
+    },
+    "lesson3.html": {
+      "folderId": "folder_1793899909195"
+    },
+    "lesson4.html": {
+      "folderId": "folder_1793899909195"
+    },
+    "2-1.html": {
+      "folderId": "folder_1793899918958"
+    },
+    "2-2.html": {
+      "folderId": "folder_1793899918958"
+    },
+    "2-3.html": {
+      "folderId": "folder_1793899918958"
+    },
+    "unit1 300Q.html": {
+      "folderId": "folder_1793899909195"
+    },
+    "test1.html": {
+      "folderId": "folder_1793899918958"
+    },
+    "3-1.html": {
+      "folderId": "folder_1793899937334"
+    }
+  }
 }
