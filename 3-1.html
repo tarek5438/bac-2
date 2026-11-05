@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 3-1: البنية العامة لتطبيقات الويب | المنصة التفاعلية الشاملة (شرح + محاكيات + 60 سؤالاً)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81; --primary-dark: #092c4c; --primary-light: #2563eb; --primary-soft: #eff6ff;
+            --accent: #f59e0b; --accent-dark: #d97706; --accent-soft: #fffbeb;
+            --bg: #f8fafc; --card-bg: #ffffff; --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0;
+            --success: #10b981; --success-soft: #dcfce7; --danger: #ef4444; --danger-soft: #fee2e2;
+            --teal: #0d9488; --teal-soft: #ccfbf1; --purple: #8b5cf6; --purple-soft: #ede9fe; --font-scale: 1;
+        }
+        body.dark-mode {
+            --bg: #0b1120; --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #334155;
+            --primary-soft: #1e3a8a; --accent-soft: #451a03; --success-soft: #064e3b; --danger-soft: #450a0a;
+            --teal-soft: #134e4a; --purple-soft: #3b0764;
+        }
+        body.projector-mode { --font-scale: 1.16; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.85; font-size: calc(1rem * var(--font-scale)); padding-bottom: 80px; transition: background-color 0.25s, color 0.25s; }
+        #top-progress-bar { position: fixed; top: 0; right: 0; height: 5px; background: linear-gradient(to left, var(--accent), var(--primary-light), var(--teal), var(--success)); width: 0%; z-index: 3000; }
+        .sticky-toolbar { position: sticky; top: 0; z-index: 1500; background: rgba(15, 30, 54, 0.95); backdrop-filter: blur(10px); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(245, 158, 11, 0.5); }
+        .toolbar-brand { font-weight: 900; font-size: 1rem; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .tool-pill { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); padding: 5px 13px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .tool-pill:hover, .tool-pill.active-tool { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        header { background: linear-gradient(135deg, #07192f 0%, #0f4c81 55%, #1e40af 100%); color: white; padding: 42px 20px 35px; text-align: center; border-bottom: 5px solid var(--accent); }
+        header h1 { font-size: calc(2.1rem * var(--font-scale)); margin-bottom: 10px; font-weight: 900; }
+        header p { font-size: calc(1.05rem * var(--font-scale)); color: #e2e8f0; max-width: 900px; margin: 0 auto 18px; }
+        .header-badges, .nav-shortcuts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .h-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 30px; font-size: 0.86rem; font-weight: 700; color: #fde68a; }
+        .shortcut-btn { background: rgba(255, 255, 255, 0.16); color: white; border: 1px solid rgba(255, 255, 255, 0.35); padding: 9px 18px; border-radius: 22px; text-decoration: none; font-size: 0.94rem; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .shortcut-btn:hover { background: white; color: var(--primary); }
+        .shortcut-btn.highlight-hw { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .container { max-width: 1140px; margin: 28px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 28px; margin-bottom: 28px; border: 1px solid var(--border); box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.05); }
+        .badge { display: inline-block; background: var(--primary-soft); color: var(--primary-light); padding: 5px 15px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; border: 1px solid #93c5fd; }
+        body.dark-mode .badge { color: #93c5fd; }
+        h2 { color: var(--primary-light); font-size: calc(1.5rem * var(--font-scale)); margin-bottom: 14px; font-weight: 900; }
+        h3 { font-size: calc(1.18rem * var(--font-scale)); font-weight: 800; margin-bottom: 8px; }
+        .hook-box { background: var(--accent-soft); border-right: 6px solid var(--accent); padding: 18px; border-radius: 12px; margin: 16px 0; }
+        .hook-box strong { color: var(--accent-dark); display: block; margin-bottom: 5px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+        @media (max-width: 850px) { .grid-3 { grid-template-columns: 1fr; } }
+        .info-panel { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; }
+        .real-world-box { background: linear-gradient(135deg, rgba(13, 148, 136, 0.07) 0%, rgba(37, 99, 235, 0.06) 100%); border: 2px solid rgba(13, 148, 136, 0.35); border-right: 6px solid var(--teal); border-radius: 16px; padding: 18px; margin: 16px 0; }
+        .real-world-title { color: var(--teal); font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .sim-box { background: rgba(37, 99, 235, 0.04); border: 2px solid #93c5fd; border-radius: 16px; padding: 22px; margin: 20px 0; }
+        .sim-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+        .sim-btn { background: var(--card-bg); color: var(--text-main); border: 2px solid var(--primary-light); padding: 9px 16px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; transition: 0.2s; }
+        .sim-btn:hover, .sim-btn.active-sim { background: var(--primary-light); color: white; }
+        .sim-output { background: var(--card-bg); border-radius: 12px; padding: 16px; border-right: 6px solid var(--primary-light); margin-top: 12px; font-weight: 700; }
+        .stages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0; }
+        .stage-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .stage-card.active-stage { border-color: var(--primary-light); background: var(--primary-soft); transform: translateY(-3px); }
+        .stage-num { width: 34px; height: 34px; border-radius: 50%; background: var(--primary); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; margin-bottom: 6px; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; border-radius: 12px; overflow: hidden; }
+        table th, table td { border: 1px solid var(--border); padding: 12px 16px; text-align: right; }
+        table th { background: var(--primary); color: white; font-weight: 800; }
+        .flow-visual-box { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 16px 0; padding: 14px; background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; text-align: center; }
+        .flow-node { flex: 1; min-width: 130px; padding: 14px 10px; border-radius: 12px; border: 2px solid var(--border); font-weight: 800; transition: 0.25s; }
+        .flow-node.active-node { border-color: var(--primary-light); background: var(--primary-soft); transform: scale(1.04); }
+        .flow-arrow { font-size: 1.4rem; color: var(--primary-light); font-weight: 900; }
+        .book-activity { border: 2px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; background: var(--card-bg); }
+        .book-activity-header { padding: 14px 18px; background: rgba(15, 76, 129, 0.06); cursor: pointer; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary-light); }
+        .book-activity-body { padding: 18px; border-top: 1px solid var(--border); display: none; }
+        .book-activity.open .book-activity-body { display: block; }
+        .main-mode-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+        @media (max-width: 640px) { .main-mode-switcher { grid-template-columns: 1fr; } }
+        .mode-card-btn { background: var(--card-bg); border: 3px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: 0.2s; }
+        .mode-card-btn.active-mode-session { border-color: var(--primary-light); background: var(--primary-soft); }
+        .mode-card-btn.active-mode-homework { border-color: var(--accent); background: var(--accent-soft); }
+        .sub-tabs-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .quiz-tabs, .view-toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .view-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 13px; border-radius: 10px; font-size: 0.86rem; font-weight: 700; cursor: pointer; }
+        .view-btn.active-view { background: var(--teal); color: white; border-color: var(--teal); }
+        .stats-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; display: block; }
+        .stat-val { font-size: 1.25rem; font-weight: 900; color: var(--primary-light); }
+        .btn-index { background: var(--primary-soft); color: var(--primary-light); border: 2px solid #93c5fd; padding: 7px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 800; cursor: pointer; }
+        .progress-container { width: 100%; height: 7px; background: var(--border); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary-light), var(--accent)); transition: width 0.3s; }
+        .q-card, .essay-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+        .q-badge, .essay-source { background: var(--primary-soft); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 0.84rem; font-weight: 800; display: inline-block; margin-bottom: 6px; }
+        .q-text-ar, .essay-q-text { font-size: calc(1.14rem * var(--font-scale)); font-weight: 800; margin-bottom: 6px; }
+        .q-text-en, .exp-en { font-size: calc(0.94rem * var(--font-scale)); color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; border-left: 3px solid var(--primary-light); padding-left: 10px; margin-bottom: 12px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .opt-btn { background: var(--bg); border: 2px solid var(--border); padding: 12px 16px; border-radius: 12px; cursor: pointer; text-align: right; width: 100%; transition: 0.2s; }
+        .opt-btn:hover:not(:disabled) { border-color: var(--primary-light); background: var(--primary-soft); }
+        .opt-btn.correct { background: #dcfce7 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .opt-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        .opt-ar { font-weight: 700; color: var(--text-main); }
+        .opt-en { font-size: 0.86rem; color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; }
+        .explanation { margin-top: 14px; padding: 14px; border-radius: 12px; display: none; background: var(--bg); border-right: 5px solid var(--primary-light); }
+        .actions { display: flex; justify-content: space-between; margin-top: 18px; gap: 10px; }
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 9px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-nav:disabled { background: #94a3b8; cursor: not-allowed; }
+        .essay-textarea { width: 100%; height: 80px; padding: 10px; border-radius: 10px; border: 2px solid var(--border); background: var(--bg); color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem; }
+        .btn-reveal-answer { background: var(--bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-left: 6px; margin-bottom: 6px; }
+        .hint-box { display: none; margin-top: 10px; padding: 10px 14px; background: var(--accent-soft); border-right: 4px solid var(--accent); border-radius: 10px; font-weight: 700; }
+        .model-answer { display: none; margin-top: 12px; padding: 14px; background: #f0fdf4; border-right: 5px solid var(--success); border-radius: 10px; color: #14532d; }
+        body.dark-mode .model-answer { background: #064e3b; color: #ecfdf5; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 2500; padding: 20px; }
+        .modal-content { background: var(--card-bg); color: var(--text-main); border-radius: 20px; width: 100%; max-width: 700px; padding: 24px; max-height: 85vh; overflow-y: auto; }
+        .grid-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 8px; margin-top: 10px; }
+        .index-pill { background: var(--bg); border: 2px solid var(--border); padding: 8px; border-radius: 10px; font-weight: 800; text-align: center; cursor: pointer; }
+        .index-pill.solved-correct { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+        .index-pill.solved-wrong { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+        .results-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 20px; padding: 32px 24px; text-align: center; display: none; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: var(--primary-soft); border: 5px solid var(--primary-light); display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 16px auto; }
+        .score-num { font-size: 2.1rem; font-weight: 900; color: var(--primary-light); }
+        .btn-restart { background: var(--accent); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="top-progress-bar"></div>
+    <div class="sticky-toolbar">
+        <div class="toolbar-brand"><span>🌐</span><span>منصة الدرس 3-1: البنية العامة لتطبيقات الويب (60 سؤالاً + محاكيات تفاعلية)</span></div>
+        <div class="toolbar-actions">
+            <a href="#lesson-explanation" class="tool-pill">📖 الشرح والمحاكيات</a>
+            <a href="#book-activities-sec" class="tool-pill">📗 أنشطة الكتاب</a>
+            <button class="tool-pill" onclick="jumpToQuiz('session','mcq')">🎯 سيشن (30 سؤالاً)</button>
+            <button class="tool-pill" onclick="jumpToQuiz('homework','mcq')">🏠 الواجب (30 سؤالاً)</button>
+            <button class="tool-pill" id="projectorBtn" onclick="toggleProjectorMode()">🔍 تكبير الخط</button>
+            <button class="tool-pill" id="darkBtn" onclick="toggleDarkMode()">🌙 الوضع الليلي</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-badges">
+            <span class="h-badge">الصف الثاني الثانوي (بكالوريا مصرية)</span>
+            <span class="h-badge">الوحدة الثالثة: تطبيقات الويب</span>
+            <span class="h-badge">الدرس 3-1 (صفحات الكتاب 50 - 55)</span>
+        </div>
+        <h1>الدرس 3-1: البنية العامة لتطبيقات الويب (General Architecture of Web Applications)</h1>
+        <p>شرح تفاعلي كامل وشامل لمنهج الكتاب المدرسي + محاكيات توزيع الأدوار وتدفق الطلبات والخدمات الكبرى + 60 سؤالاً (30 للسيشن + 30 للواجب ثنائية اللغة)</p>
+        <div class="nav-shortcuts">
+            <a href="#lesson-explanation" class="shortcut-btn">📖 الشرح والمحاكيات التفاعلية</a>
+            <a href="#book-activities-sec" class="shortcut-btn">📗 جميع أسئلة وأنشطة الكتاب محلولة</a>
+            <button class="shortcut-btn" onclick="jumpToQuiz('session','mcq')">👨‍🏫 أسئلة السيشن (15 اختياري + 15 مقالي)</button>
+            <button class="shortcut-btn highlight-hw" onclick="jumpToQuiz('homework','mcq')">📝 أسئلة الواجب (15 اختياري + 15 مقالي)</button>
+        </div>
+    </header>
+
+    <div class="container" id="lesson-explanation">
+        <!-- Card 1: خريطة الدرس والمدخل -->
+        <div class="card">
+            <span class="badge">خريطة الدرس وأهداف التعلم (كتاب ص 50 - 51)</span>
+            <h2>🧭 مدخل الدرس: كيف تُبنى تطبيقات الويب وكيف تعمل من الداخل؟</h2>
+            <p>عندما تبحث في موقع فيديو، أو تتسوق عبر الإنترنت، أو تستخدم بريداً إلكترونياً على الويب، فأنت تستخدم <strong>تطبيق ويب (Web Application)</strong>. وخلف ما تراه على الشاشة، تعمل أجزاء مختلفة معاً بنظام متقن يحول إجراءاتك إلى نتائج ملموسة عبر نموذج تعليمي ثلاثي الطبقات.</p>
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">🎯 أهداف التعلم الرسمية (ص 50)</h3>
+                    <ul style="margin-right: 18px; font-size: 0.95rem;">
+                        <li><strong>ميّز</strong> بين أدوار الواجهة الأمامية والواجهة الخلفية وطبقة البيانات في نموذج تطبيق ويب مبسط.</li>
+                        <li><strong>تتبّع</strong> تدفق طلب المستخدم عبر طبقات تطبيق الويب حتى ظهور النتيجة خطوة بخطوة.</li>
+                        <li><strong>صمّم</strong> توزيعاً مناسباً لمسؤوليات تطبيق ويب، وبرّر قراراتك الهندسية بالأدلة.</li>
+                    </ul>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--accent);">
+                    <h3 style="color: var(--accent-dark);">⭐ الفكرة الأساسية والمفاهيم الخمسة (ص 51)</h3>
+                    <p style="font-size: 0.94rem; margin-bottom: 8px;">يُبنى تطبيق الويب من ثلاث طبقات — <strong>الواجهة الأمامية</strong>، و<strong>الواجهة الخلفية</strong>، و<strong>قاعدة البيانات</strong> — تتعاون معاً لتحويل إجراء المستخدم (User Action) إلى نتيجة فعلية.</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        <span class="badge" style="margin:0;">تطبيق الويب</span>
+                        <span class="badge" style="margin:0;">الواجهة الأمامية</span>
+                        <span class="badge" style="margin:0;">الواجهة الخلفية</span>
+                        <span class="badge" style="margin:0;">قاعدة البيانات</span>
+                        <span class="badge" style="margin:0;">بنية الطبقات الثلاث</span>
+                    </div>
+                </div>
+            </div>
+            <div class="real-world-box">
+                <div class="real-world-title"><span>🍽️</span><span>تشبيه من الواقع: معمارية المطعم الراقي وتطبيق الويب!</span></div>
+                <p style="font-size: 0.95rem;">لكي تتخيل الطبقات الثلاث، فكّر في تجربة زيارة مطعم راقٍ:<br>
+                1. <strong>صالة الطعام وقائمة الطعام والويتر (الواجهة الأمامية Front-end):</strong> هي ما تراه بعينيك وتتفاعل معه مباشرة؛ تختار طلبك وتسلمه للويتر، وهو الذي يقدم لك الطبق النهائي.<br>
+                2. <strong>المطبخ والشيف المحترف (الواجهة الخلفية Back-end):</strong> يعمل في الداخل بعيداً عن عينيك؛ يستقبل تفاصيل طلبك، يطبق معايير الطهي والتحضير، ويتأكد من توفر المكونات قبل البدء.<br>
+                3. <strong>مستودع المكونات والثلاجات وسجل الوصفات (قاعدة البيانات Database):</strong> المكان الذي تُحفظ فيه المواد الخام واللحوم والخضار وسجلات الفواتير بدقة، ويزود الشيف بما يطلبه فوراً لإعداد الوجبة!</p>
+            </div>
+            <div class="hook-box">
+                <strong>❓ السؤال الرئيسي للدرس (ص 51):</strong>
+                كيف يُبنى تطبيق الويب، وكيف تعمل طبقاته الثلاث معاً للاستجابة لما يفعله المستخدم؟
+            </div>
+        </div>
+
+        <!-- Card 2: المحور الأول: ماهية تطبيق الويب والطبقات الثلاث -->
+        <div class="card">
+            <span class="badge">المحور الأول (كتاب ص 51)</span>
+            <h2>🧱 1. ماهية تطبيق الويب ومعمارية الطبقات الثلاث (Three-Tier Architecture)</h2>
+            <p><strong>تطبيق الويب (Web Application):</strong> تطبيق يُستخدم عادةً من خلال متصفح الويب (Web Browser)، وقد يكون بعضه قابلاً للتثبيت على الجهاز (مثل تطبيقات PWA). ومن أمثلته خدمات الفيديو، والتسوق الإلكتروني، والبريد الإلكتروني، والخرائط على الويب.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 18%;">الطبقة</th>
+                        <th style="width: 20%;">الدور الأساسي</th>
+                        <th style="width: 32%;">الوصف المفصل وبيئة التشغيل (ص 51)</th>
+                        <th style="width: 30%;">أمثلة المنهج المعتمدة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>الواجهة الأمامية<br>(Front-End)</strong></td>
+                        <td>العرض والتفاعل<br>(Presentation)</td>
+                        <td>الجزء الذي يراه المستخدم ويتعامل معه مباشرة داخل المتصفح؛ يعرض المحتوى ويستقبل ما يكتبه المستخدم أو يختاره.</td>
+                        <td>شاشة البحث، صفحات عرض المنتجات، نماذج إدخال البيانات، شاشات سلة التسوق.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الواجهة الخلفية<br>(Back-End)</strong></td>
+                        <td>المعالجة والتحكم<br>(Processing)</td>
+                        <td>الجزء الذي يعمل على الخادم (Server)؛ يعالج الطلبات الواردة، يطبق قواعد التطبيق ومنطقه التجاري والأمني.</td>
+                        <td>البحث عن منتجات تطابق معايير البحث، التحقق من تسجيل الدخول والمصادقة، معالجة الدفع، التحقق من المخزون.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>قاعدة البيانات<br>(Database)</strong></td>
+                        <td>التخزين والإدارة<br>(Data Storage)</td>
+                        <td>طبقة تحفظ البيانات وتوفرها عند الحاجة؛ قد تشمل قواعد بيانات، تخزين ملفات وكائنات، ذاكرة مخبأة، أو خدمات بيانات خارجية.</td>
+                        <td>معلومات وتفاصيل المنتجات، معلومات وسجلات المستخدمين، سجل الطلبات، رسائل ومنشورات التواصل.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧪 محاكي فرز وتوزيع مسؤوليات تطبيق الويب (اضغط على أي مهمة لاختبار تصنيفها):</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runTierSim(1, this)">🛒 عرض صفحة سلة المشتريات والأزرار</button>
+                    <button class="sim-btn" onclick="runTierSim(2, this)">🔐 التحقق من كلمة المرور ومطابقتها للمستخدم</button>
+                    <button class="sim-btn" onclick="runTierSim(3, this)">📦 التحقق من توفر الكمية المطلوبة في المخزون</button>
+                    <button class="sim-btn" onclick="runTierSim(4, this)">💾 حفظ السجل التاريخي لفواتير العملاء</button>
+                    <button class="sim-btn" onclick="runTierSim(5, this)">🔍 استلام عبارة البحث المكتوبة من المستخدم</button>
+                    <button class="sim-btn" onclick="runTierSim(6, this)">💳 معالجة تفاصيل الدفع والتواصل مع البنك</button>
+                </div>
+                <div class="sim-output" id="tierSimOutput">
+                    🎨 <strong>الطبقة المسؤولة: الواجهة الأمامية (Front-End)</strong> — تعمل داخل <strong>متصفح العميل</strong>؛ دورها العرض والتفاعل وتنسيق شاشات سلة المشتريات للمستخدم (ص 51 و ص 54).
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: المحور الثاني: تدفق التعاون بين الطبقات الثلاث -->
+        <div class="card">
+            <span class="badge">المحور الثاني (كتاب ص 52)</span>
+            <h2>🔄 2. تدفق تعاون الطبقات الثلاث (الشكل 3.1.1 و الشكل 3.1.2)</h2>
+            <p>لا تعمل أي طبقة بمعزل عن الأخرى؛ بل ينتقل الطلب عبر الطبقات وتعود الاستجابة بعد معالجتها. ويوضح الكتاب هذا التدفق العملي عبر سيناريو <strong>البحث عن منتج في متجر إلكتروني</strong> من خلال 6 خطوات متتابعة:</p>
+
+            <div class="flow-visual-box">
+                <div class="flow-node active-node" id="fnode-front">
+                    <div style="font-size:1.8rem;">💻</div>
+                    <div><strong>الواجهة الأمامية</strong></div>
+                    <small style="color:var(--text-muted);">المتصفح (العرض)</small>
+                </div>
+                <div class="flow-arrow">⇄</div>
+                <div class="flow-node" id="fnode-back">
+                    <div style="font-size:1.8rem;">⚙️</div>
+                    <div><strong>الواجهة الخلفية</strong></div>
+                    <small style="color:var(--text-muted);">الخادم (المعالجة)</small>
+                </div>
+                <div class="flow-arrow">⇄</div>
+                <div class="flow-node" id="fnode-db">
+                    <div style="font-size:1.8rem;">🗄️</div>
+                    <div><strong>قاعدة البيانات</strong></div>
+                    <small style="color:var(--text-muted);">التخزين المستمر</small>
+                </div>
+            </div>
+
+            <div class="stages-grid">
+                <div class="stage-card active-stage" onclick="selectFlowStep(1, this)"><div class="stage-num">1</div><h4>استقبال البحث</h4><small>الأمامية تستقبل الكلمات</small></div>
+                <div class="stage-card" onclick="selectFlowStep(2, this)"><div class="stage-num">2</div><h4>إرسال الطلب</h4><small>الأمامية ترسل للخلفية</small></div>
+                <div class="stage-card" onclick="selectFlowStep(3, this)"><div class="stage-num">3</div><h4>طلب البيانات</h4><small>الخلفية تستعلم من القاعدة</small></div>
+                <div class="stage-card" onclick="selectFlowStep(4, this)"><div class="stage-num">4</div><h4>إعادة النتائج</h4><small>القاعدة تعيد البيانات للخلفية</small></div>
+                <div class="stage-card" onclick="selectFlowStep(5, this)"><div class="stage-num">5</div><h4>تجهيز الرد</h4><small>الخلفية تجهز النتائج للإرسال</small></div>
+                <div class="stage-card" onclick="selectFlowStep(6, this)"><div class="stage-num">6</div><h4>عرض النتائج</h4><small>الأمامية تعرض على الشاشة</small></div>
+            </div>
+
+            <div class="sim-output" id="flowStepOutput">
+                <strong>الخطوة 1:</strong> تستقبل <strong>الواجهة الأمامية</strong> كلمات البحث التي أدخلها المستخدم في مربع البحث داخل المتصفح (كتاب ص 52).
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:10px;">
+                <button class="btn-index" onclick="prevFlowStep()">السابق ➡️</button>
+                <button class="btn-index" style="background:var(--primary); color:white;" onclick="nextFlowStep()">الخطوة التالية ⬅️</button>
+            </div>
+        </div>
+
+        <!-- Card 4: المحور الثالث: إعدادات تطبيقات الويب المألوفة -->
+        <div class="card">
+            <span class="badge">المحور الثالث (كتاب ص 53)</span>
+            <h2>🏢 3. إعدادات تطبيقات الويب المألوفة (الفيديو، التواصل، التسوق)</h2>
+            <p>تُبنى تقريباً كل خدمة عبر الإنترنت على نفس معمارية الطبقات الثلاث؛ <strong>واجهة أمامية تعرض وتجمع، وواجهة خلفية تقرر وتعالج، وقاعدة بيانات تخزن وتسترجع</strong>. والجدول التالي يوضح توزيع المهام في أشهر نماذج تطبيقات الويب وفق جدول الكتاب المدرسي (ص 53):</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>الخدمة</th>
+                        <th>الواجهة الأمامية (العرض والتفاعل)</th>
+                        <th>الواجهة الخلفية (المعالجة والتحكم)</th>
+                        <th>قاعدة البيانات (التخزين والإدارة)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>موقع مشاركة الفيديو<br>(Video Sharing)</strong></td>
+                        <td>عرض شاشات تشغيل الفيديو والبحث؛ استقبال إجراءات المستخدم ونقراته.</td>
+                        <td>اختيار الفيديوهات الموصى بها؛ تجميع عدد المشاهدات وتحديث العدادات.</td>
+                        <td>تخزين بيانات الفيديو، ومعلومات المستخدمين، وسجل المشاهدة التاريخي.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>شبكة التواصل الاجتماعي<br>(Social Network)</strong></td>
+                        <td>عرض الخط الزمني (Timeline) وشاشات النشر؛ إرسال المحتوى المُدخل.</td>
+                        <td>تحديد الجمهور المستهدف للمنشورات؛ التحكم في الإشعارات الفورية والتنبيهات.</td>
+                        <td>تخزين بيانات المنشورات، وعلاقات المتابعة والصداقة، والرسائل الخاصة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>موقع تجارة إلكترونية<br>(E-Commerce)</strong></td>
+                        <td>عرض قوائم المنتجات وشاشات سلة التسوق؛ استقبال عمليات وإجراءات الطلب.</td>
+                        <td>التحقق من المخزون؛ إرسال طلبات الدفع والتعامل مع نتائج بوابات الدفع.</td>
+                        <td>تخزين معلومات وتفاصيل المنتجات، وسجل الطلبات، ومعلومات العملاء.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">📱 محاكي مقارنة معمارية الخدمات الكبرى والعيادة الطبية:</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="showAppArch('ecommerce', this)">🛒 موقع تجارة إلكترونية</button>
+                    <button class="sim-btn" onclick="showAppArch('social', this)">💬 شبكة تواصل اجتماعي</button>
+                    <button class="sim-btn" onclick="showAppArch('video', this)">🎥 موقع مشاركة فيديو</button>
+                    <button class="sim-btn" onclick="showAppArch('clinic', this)">🏥 عيادة حجز مواعيد (فكر كمهندس)</button>
+                </div>
+                <div id="appArchDisplay" class="grid-3"></div>
+            </div>
+        </div>
+
+        <!-- Card 5: دليل المعلم وأنشطة الكتاب محلولة -->
+        <div class="card" id="book-activities-sec">
+            <span class="badge">دليل المعلم والطالب الشامل (كتاب ص 50 - 55)</span>
+            <h2>📗 جميع أسئلة وأنشطة وتمارين الكتاب المدرسي محلولة بالتفصيل</h2>
+
+            <div class="book-activity open">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>💡 1. أنشطة «توقّف وفكّر» (ص 52 و ص 53) + «المثال المحلول» (ص 53)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>توقّف وفكّر (ص 52):</strong> عندما تكتب في مربع البحث وترى النتائج، أي طبقة جمعت المدخلات، وأي طبقة وجدت الإجابة؟<br>
+                    ⬅️ <strong>الإجابة:</strong> الواجهة الأمامية (Front-end) هي التي جمعت المدخلات عبر مربع البحث في المتصفح، بينما قاعدة البيانات (Database) بالتعاون مع معالجة واستعلام الواجهة الخلفية (Back-end) هي التي وجدت الإجابة المطابقة.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>توقّف وفكّر (ص 53):</strong> في الجدول، تستخدم كل خدمة نفس الطبقات الثلاث — فما الذي يتغير من خدمة إلى أخرى؟<br>
+                    ⬅️ <strong>الإجابة:</strong> تتطابق المعمارية الأساسية ثلاثية الطبقات، ولكن يتغير: 1) شكل وتصميم الواجهة الأمامية بما يخدم الوظيفة، 2) قواعد ومنطق المعالجة في الواجهة الخلفية (خوارزميات توصية vs بوابات دفع vs خصوصية منشورات)، 3) هيكلية وطبيعة البيانات المخزنة في قاعدة البيانات (فيديوهات vs سلع vs أصدقاء ومحادثات).</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>المثال المحلول (ص 53):</strong><br>
+                    (1) ضع علامة ○ أو ×:<br>
+                    • <strong>أ: ○</strong> (الواجهة الأمامية هي مكوّن الشاشة الذي يراه المستخدمون مباشرة).<br>
+                    • <strong>ب: ×</strong> (الواجهة الخلفية هي الجزء الذي يعمل على الخادم، لا على المتصفح).<br>
+                    • <strong>جـ: ○</strong> (تعريف صحيح لقاعدة البيانات: نظام ينظم البيانات ويخزنها ويديرها).<br>
+                    • <strong>د: ×</strong> (يعمل تطبيق الويب بثلاث طبقات متعاونة: الأمامية والخلفية وقاعدة البيانات، وليس بالأمامية وحدها).<br>
+                    (2) المطابقة:<br>
+                    • 1: المعالجة من جانب الخادم التي لا يراها المستخدمون ⬅️ <strong>(ب) الواجهة الخلفية</strong>.<br>
+                    • 2: مكوّن الشاشة الذي يتفاعل معه المستخدمون مباشرة ⬅️ <strong>(أ) الواجهة الأمامية</strong>.<br>
+                    • 3: نظام ينظم البيانات ويخزنها ويديرها ⬅️ <strong>(جـ) قاعدة البيانات</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>📝 2. سؤال الامتحان [6 درجات] (ص 54) + «تدرّب 1 و 2» (ص 54) + «فكّر كمهندس» (ص 54)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>سؤال على نمط الامتحان [6 درجات] (ص 54):</strong> اشرح كيف تتعاون الطبقات الثلاث لتطبيق الويب عندما ينشر المستخدم صورة على تطبيق تواصل اجتماعي:<br>
+                    ⬅️ <strong>الإجابة النموذجية:</strong><br>
+                    1. <strong>الواجهة الأمامية (2 درجة):</strong> توفر واجهة لاختيار الصورة من جهاز المستخدم وكتابة التعليق، ثم ترسل ملف الصورة والبيانات كطلب للواجهة الخلفية.<br>
+                    2. <strong>الواجهة الخلفية (2 درجة):</strong> تستقبل الصورة، وتتحقق من صحتها وتنسيقها، وتقوم بضغطها، وتطبق قواعد الخصوصية لتحديد الجمهور المستهدف للمنشور، وتتحكم في إرسال الإشعارات الفورية للأصدقاء.<br>
+                    3. <strong>قاعدة البيانات (2 درجة):</strong> تستقبل مسار الصورة المخزنة وبيانات المنشور ومعرّف المستخدم وتاريخ النشر، وتقوم بتخزينها وربطها بملف المستخدم لتظهر في الخط الزمني لاحقاً.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 1 (ص 54):</strong><br>
+                    1) تطبيق الويب | 2) الواجهة الأمامية | 3) الواجهة الخلفية | 4) قاعدة البيانات.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 2 (ص 54):</strong><br>
+                    (1) المسؤول عن البحث في البيانات هو: <strong>(ب) الواجهة الخلفية</strong> (التي تعالج الطلب وتستعلم من قاعدة البيانات).<br>
+                    (2) تصنيف مهام موقع التجارة الإلكترونية:<br>
+                    1 صفحة عرض المنتجات ⬅️ <strong>أ (الواجهة الأمامية)</strong><br>
+                    2 معالجة التحقق من المخزون ⬅️ <strong>ب (الواجهة الخلفية)</strong><br>
+                    3 تخزين معلومات العملاء ⬅️ <strong>جـ (قاعدة البيانات)</strong><br>
+                    4 شاشة سلة التسوق ⬅️ <strong>أ (الواجهة الأمامية)</strong><br>
+                    5 معالجة الدفع ⬅️ <strong>ب (الواجهة الخلفية)</strong><br>
+                    6 تخزين سجل الطلبات ⬅️ <strong>جـ (قاعدة البيانات)</strong></p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل نشاط «فكّر كمهندس: ابحث ثم قرر» (عيادة حجز المواعيد ص 54):</strong><br>
+                    1. <strong>توزيع المهام:</strong> نموذج الحجز ⬅️ الواجهة الأمامية (واجهة إدخال يراها المريض). التحقق من الأوقات المتاحة ⬅️ الواجهة الخلفية (تطبق قواعد عدم التعارض بالخادم). تخزين الزيارات السابقة ⬅️ قاعدة البيانات (حفظ السجلات الطبية الدائمة).<br>
+                    2. <strong>تشخيص العطل:</strong> عند فتح صفحة الحجز وعدم ظهور أوقات، قد يكون العطل في: الواجهة الخلفية (فشل معالجة الطلب)، أو قاعدة البيانات (جدول المواعيد فارغ أو مقطوع الاتصال بها)، أو الواجهة الأمامية (فشل كود عرض البيانات الواردة). والمعلومة المطلوبة للتأكد هي <strong>فحص سجلات أخطاء الخادم (Server logs) واستجابة الشبكة للتأكد من وجود مواعيد مسجلة أصلاً</strong>.<br>
+                    3. <strong>القرار:</strong> نوصي بـ <strong>تنظيم مسؤوليات العرض والمعالجة والبيانات في طبقات واضحة</strong>؛ لأن ذلك يسهل صيانة وتطوير كل جزء دون إفساد البقية، ويعزز أمان بيانات المرضى بمنع الوصول المباشر لقاعدة البيانات من المتصفح.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>🏆 3. حل «طبّق ما تعلمته» (ص 55) + إجابة السؤال الرئيسي والتمارين وخلاصة الدرس (ص 55)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>حل «طبّق ما تعلمته» - تطبيق الطقس (ص 55):</strong><br>
+                    • أخذ اسم المدينة ⬅️ <strong>الواجهة الأمامية</strong>.<br>
+                    • البحث عن بيانات التوقعات ⬅️ <strong>الواجهة الخلفية</strong> (بالاستعلام ومعالجة الرد).<br>
+                    • تخزين التوقعات السابقة ⬅️ <strong>قاعدة البيانات</strong>.<br>
+                    • مهمة واحدة لا يمكن للأمامية القيام بها وحدها: <strong>جلب توقعات الطقس الحية من خوادم الأرصاد الخارجية وتخزين سجل التوقعات بصورة دائمة وآمنة</strong> دون وجود خادم وقاعدة بيانات.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>إجابة السؤال الرئيسي (ص 55):</strong> يُستخدم تطبيق الويب عادة من خلال المتصفح، ويمكن شرح كثير من التطبيقات بنموذج مبسط من ثلاث طبقات: واجهة أمامية تعرض المحتوى وتستقبل مدخلات المستخدم، وواجهة خلفية تعالج الطلبات وتطبق قواعد التطبيق، وطبقة بيانات تحفظ البيانات وتوفرها. تنتقل الطلبات والنتائج بين هذه الأجزاء لتنفيذ مهمة المستخدم. وهذا نموذج للتعلم وليس بنية إلزامية لكل تطبيق؛ فقد تختلف البنية وقد لا توجد قاعدة بيانات تقليدية أصلاً.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تمارين نهاية الدرس (ص 55):</strong><br>
+                    • <strong>سؤال 2 (إكمال الفقرة):</strong> (1) <strong>الواجهة الأمامية</strong> | (2) <strong>الواجهة الخلفية</strong> | (3) <strong>قاعدة البيانات</strong>.<br>
+                    • <strong>سؤال 3-(1) (تصنيف مهام شبكة التواصل):</strong><br>
+                    1 شاشة الخط الزمني ⬅️ <strong>أ (الواجهة الأمامية)</strong><br>
+                    2 معالجة تحديد الجمهور المستهدف ⬅️ <strong>ب (الواجهة الخلفية)</strong><br>
+                    3 تخزين بيانات المنشورات ⬅️ <strong>جـ (قاعدة البيانات)</strong><br>
+                    4 شاشة النشر ⬅️ <strong>أ (الواجهة الأمامية)</strong><br>
+                    5 معالجة الإشعارات ⬅️ <strong>ب (الواجهة الخلفية)</strong><br>
+                    6 تخزين علاقات المتابعة ⬅️ <strong>جـ (قاعدة البيانات)</strong><br>
+                    • <strong>سؤال 3-(2) (اختيار من متعدد):</strong> الخيار الصحيح هو <strong>(جـ) استجابة لإجراءات المستخدم، تتعاون الواجهة الأمامية والواجهة الخلفية وقاعدة البيانات لتنفيذ المعالجة</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>فكر وتحدَّ نفسك (ص 55):</strong><br>
+                    • <strong>تأمّل:</strong> أي طبقة تعتقد أن فشلها يكون أكثر وضوحاً للمستخدم عندما يحدث خطأ ما، ولماذا؟ ⬅️ <strong>الواجهة الأمامية</strong>، لأنها السطح المرئي المباشر الذي يراه المستخدم؛ فأي عطل فيها يظهر فوراً كشاشة فارغة أو تشوه في العناصر وتوقف استجابة الأزرار.<br>
+                    • <strong>الخلاصة:</strong> تذكّر أن: <strong>الواجهة الأمامية تعرض وتجمع، والواجهة الخلفية تقرر وتعالج، وقاعدة البيانات تخزن وتسترجع</strong> — ثلاث طبقات متعاونة تجعل تطبيق الويب يعمل.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6: بنك الأسئلة المتكامل (60 سؤالاً) -->
+        <div id="quiz-section">
+            <div class="card" style="border-top: 5px solid var(--primary-light);">
+                <span class="badge">بنك الأسئلة المتكامل (60 سؤالاً)</span>
+                <h2>🎯 منصة التدريب والامتحانات: 30 سؤالاً للسيشن + 30 سؤالاً للواجب</h2>
+                <div class="main-mode-switcher">
+                    <div class="mode-card-btn active-mode-session" id="modeBtnSession" onclick="switchMode('session')">
+                        <div style="font-size:2.2rem;">👨‍🏫</div>
+                        <div>
+                            <h3 style="color:var(--primary-light);">القسم الأول: أسئلة السيشن (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتحليلياً للشرح والحصة</p>
+                        </div>
+                    </div>
+                    <div class="mode-card-btn" id="modeBtnHomework" onclick="switchMode('homework')">
+                        <div style="font-size:2.2rem;">🏠</div>
+                        <div>
+                            <h3 style="color:var(--accent-dark);">القسم الثاني: أسئلة الواجب (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتطبيقياً للتدريب المنزلي</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-tabs-bar">
+                    <div class="quiz-tabs">
+                        <button class="tab-btn active" id="tabMCQ" onclick="switchSubTab('mcq')"><span id="tabMCQLabel">🔘 الاختيار من متعدد (15 - السيشن)</span></button>
+                        <button class="tab-btn" id="tabEssay" onclick="switchSubTab('essay')"><span id="tabEssayLabel">✍️ الأسئلة المقالية (15 - السيشن)</span></button>
+                    </div>
+                    <div class="view-toggle-group" id="mcqViewToggleGroup">
+                        <button class="view-btn active-view" id="viewSingleBtn" onclick="setMcqViewMode('single')">🎯 سؤال بسؤال</button>
+                        <button class="view-btn" id="viewAllBtn" onclick="setMcqViewMode('all')">📋 عرض الـ 15 معاً</button>
+                    </div>
+                </div>
+
+                <!-- MCQ Container -->
+                <div id="mcqContainer">
+                    <div class="stats-bar">
+                        <div><span class="stat-label">القسم</span><div class="stat-val" id="currentModeBadge" style="font-size:1rem;">👨‍🏫 السيشن</div></div>
+                        <div><span class="stat-label">السؤال</span><div><span class="stat-val" id="qCurrent">1</span> / 15</div></div>
+                        <div><span class="stat-label">أول محاولة 🎯</span><span class="stat-val" id="firstScore">--</span></div>
+                        <div><span class="stat-label">الدرجة الحالية</span><div><span class="stat-val" id="score">0</span> / 15</div></div>
+                        <div><span class="stat-label">أعلى نتيجة 🏆</span><span class="stat-val" id="highScore">0</span></div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="openIndexModal()">📑 فهرس</button>
+                            <button class="btn-index" style="border-color:var(--danger); color:var(--danger);" onclick="restartCurrentQuiz()">🔄 إعادة</button>
+                        </div>
+                        <div class="progress-container"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
+                    </div>
+
+                    <!-- Single Question Card -->
+                    <div class="q-card" id="quizCard">
+                        <div class="q-header">
+                            <span class="q-badge" id="topicBadge">ماهية تطبيق الويب</span>
+                            <span style="color:var(--text-muted); font-size:0.88rem; font-weight:700;" id="qStatusIndicator">لم يُجب بعد</span>
+                        </div>
+                        <div class="q-text-ar" id="questionTextAr">نص السؤال العربي هنا...</div>
+                        <div class="q-text-en" id="questionTextEn">English question text here...</div>
+                        <div class="options-list" id="optionsContainer"></div>
+                        <div class="explanation" id="explanationText" style="display: none;"></div>
+                        <div class="actions">
+                            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled>➡️ السابق</button>
+                            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
+                        </div>
+                    </div>
+
+                    <!-- All 15 MCQ List Container -->
+                    <div id="allMcqListContainer" style="display:none;"></div>
+
+                    <!-- Results Card -->
+                    <div class="results-card" id="resultsCard">
+                        <div style="font-size:3.5rem;">🎉</div>
+                        <h2>أحسنت صنعاً! اكتمل الاختبار بنجاح</h2>
+                        <div class="score-circle"><div class="score-num" id="finalScore">0</div><span>من 15</span></div>
+                        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                            <button class="btn-restart" onclick="restartCurrentQuiz()">إعادة الاختبار 🔄</button>
+                            <button class="btn-restart" style="background:var(--primary); color:white;" onclick="switchSubTab('essay')">الانتقال للمقالي (15) ✍️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Essay Container -->
+                <div id="essayContainer" style="display:none;">
+                    <div style="background:var(--primary-soft); border-right:5px solid var(--primary-light); padding:14px; border-radius:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <strong style="color:var(--primary-light);" id="essayBannerTitle">📝 الأسئلة المقالية والتحليلية لقسم السيشن (15 سؤالاً):</strong>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="toggleAllEssays(true)">👁️ إظهار كل الإجابات</button>
+                            <button class="btn-index" onclick="toggleAllEssays(false)">🙈 إخفاء كل الإجابات</button>
+                        </div>
+                    </div>
+                    <div id="essayList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Index Modal -->
+    <div class="modal-overlay" id="indexModal" onclick="if(event.target.id==='indexModal')closeIndexModal()">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>📑 فهرس أسئلة الاختيار من متعدد (1 - 15)</h3>
+                <button class="btn-index" onclick="closeIndexModal()">✕</button>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:10px;">اضغط على أي رقم للانتقال السريع إلى السؤال:</p>
+            <div class="grid-index" id="gridIndexContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("top-progress-bar").style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+        });
+
+        function toggleProjectorMode() {
+            document.body.classList.toggle('projector-mode');
+            document.getElementById('projectorBtn').classList.toggle('active-tool');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('darkBtn').classList.toggle('active-tool');
+        }
+
+        // Simulator 1: Tier Classifier
+        const tierTasks = [
+            {
+                title: "🛒 عرض صفحة سلة المشتريات والأزرار",
+                tier: "الواجهة الأمامية (Front-End)",
+                role: "العرض والتفاعل في المتصفح",
+                desc: "تعمل داخل متصفح المستخدم؛ دورها عرض شاشات سلة التسوق وقوائم المنتجات واستقبال مدخلات المشتري (ص 51 و 53).",
+                color: "var(--primary-light)"
+            },
+            {
+                title: "🔐 التحقق من كلمة المرور ومطابقتها للمستخدم",
+                tier: "الواجهة الخلفية (Back-End)",
+                role: "المعالجة والتحكم في الخادم",
+                desc: "تعمل على الخادم؛ تتحقق من صحة بيانات الدخول، تطبق معايير الأمان والتشفير، وتتخذ قرار منح صلاحية الدخول (ص 51).",
+                color: "var(--accent)"
+            },
+            {
+                title: "📦 التحقق من توفر الكمية المطلوبة في المخزون",
+                tier: "الواجهة الخلفية (Back-End)",
+                role: "تطبيق قواعد العمل (Business Logic)",
+                desc: "تتأكد من مطابقة طلب الشراء للكميات المتبقية في المخزن الفعلي قبل إتمام وإرسال طلب الدفع (ص 53 و 54).",
+                color: "var(--accent)"
+            },
+            {
+                title: "💾 حفظ السجل التاريخي لفواتير العملاء",
+                tier: "قاعدة البيانات (Database)",
+                role: "التخزين والإدارة الدائمة",
+                desc: "تحفظ سجل الطلبات والمشتريات وتفاصيل العملاء في جداول دائمة لتوفيرها عند الحاجة والرجوع إليها لاحقاً (ص 51 و 53).",
+                color: "var(--teal)"
+            },
+            {
+                title: "🔍 استلام عبارة البحث المكتوبة من المستخدم",
+                tier: "الواجهة الأمامية (Front-End)",
+                role: "استقبال المدخلات في المتصفح",
+                desc: "تستقبل ما يكتبه المستخدم في مربع البحث داخل المتصفح لتجهيزه وإرساله كطلب إلى الخادم (الخطوة 1، ص 52).",
+                color: "var(--primary-light)"
+            },
+            {
+                title: "💳 معالجة تفاصيل الدفع والتواصل مع البنك",
+                tier: "الواجهة الخلفية (Back-End)",
+                role: "معالجة المدفوعات والاتصال الخارجي",
+                desc: "ترسل طلبات الدفع الآمنة إلى بوابات الدفع الإلكترونية وتتعامل مع نتائج العملية بنجاح أو رفض (ص 53 و 54).",
+                color: "var(--accent)"
+            }
+        ];
+
+        function runTierSim(idx, btn) {
+            btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+            btn.classList.add('active-sim');
+            const t = tierTasks[idx - 1];
+            const out = document.getElementById('tierSimOutput');
+            out.style.borderRightColor = t.color;
+            out.innerHTML = `<strong>الطبقة المسؤولة: ${t.tier}</strong> [${t.role}]<br>${t.desc}`;
+        }
+
+        // Simulator 2: 6-Step Flow
+        let currentFlowStep = 1;
+        const flowStepsData = [
+            { step: 1, text: "<strong>الخطوة 1:</strong> تستقبل <strong>الواجهة الأمامية</strong> كلمات البحث التي أدخلها المستخدم في مربع البحث داخل المتصفح (ص 52).", activeNode: "front" },
+            { step: 2, text: "<strong>الخطوة 2:</strong> ترسل <strong>الواجهة الأمامية</strong> كلمات البحث كطلب عبر الشبكة إلى الواجهة الخلفية (ص 52).", activeNode: "back" },
+            { step: 3, text: "<strong>الخطوة 3:</strong> تطلب <strong>الواجهة الخلفية</strong> من طبقة البيانات (قاعدة البيانات) المنتجات التي تطابق عبارة البحث (ص 52).", activeNode: "db" },
+            { step: 4, text: "<strong>الخطوة 4:</strong> تعيد <strong>طبقة البيانات</strong> النتائج والبيانات المطلوبة إلى الواجهة الخلفية (ص 52).", activeNode: "back" },
+            { step: 5, text: "<strong>الخطوة 5:</strong> تجهز <strong>الواجهة الخلفية</strong> النتائج وتنسقها لإرسالها في صورة استجابة إلى الواجهة الأمامية (ص 52).", activeNode: "front" },
+            { step: 6, text: "<strong>الخطوة 6:</strong> تعرض <strong>الواجهة الأمامية</strong> نتائج البحث وقوائم المنتجات وصورها على شاشة المستخدم (ص 52).", activeNode: "front" }
+        ];
+
+        function selectFlowStep(step, cardEl) {
+            currentFlowStep = step;
+            if (cardEl) {
+                cardEl.parentElement.querySelectorAll('.stage-card').forEach(c => c.classList.remove('active-stage'));
+                cardEl.classList.add('active-stage');
+            } else {
+                const cards = document.querySelectorAll('.stage-card');
+                cards.forEach((c, i) => c.classList.toggle('active-stage', i === step - 1));
+            }
+            const data = flowStepsData[step - 1];
+            document.getElementById('flowStepOutput').innerHTML = data.text;
+            document.getElementById('fnode-front').classList.toggle('active-node', data.activeNode === 'front');
+            document.getElementById('fnode-back').classList.toggle('active-node', data.activeNode === 'back');
+            document.getElementById('fnode-db').classList.toggle('active-node', data.activeNode === 'db');
+        }
+
+        function nextFlowStep() {
+            if (currentFlowStep < 6) selectFlowStep(currentFlowStep + 1, null);
+            else selectFlowStep(1, null);
+        }
+
+        function prevFlowStep() {
+            if (currentFlowStep > 1) selectFlowStep(currentFlowStep - 1, null);
+            else selectFlowStep(6, null);
+        }
+
+        // Simulator 3: App Architectures
+        const appArchs = {
+            ecommerce: {
+                title: "🛒 موقع التجارة الإلكترونية (E-Commerce)",
+                front: "عرض قوائم المنتجات، صور السلع، أزرار الشراء، وشاشات سلة التسوق التفاعلية.",
+                back: "التحقق من كميات المخزون، حساب الضرائب والشحن، وإرسال طلبات بوابات الدفع.",
+                db: "جداول السلع والأسعار، سجل الطلبات، وحسابات العملاء وعناوين الشحن.",
+                challenge: "⚠️ السيناريو: نفاد سلعة أثناء الشراء ⬅️ الواجهة الخلفية تكتشف ذلك فوراً وتطلب من الأمامية تنبيه المشتري."
+            },
+            social: {
+                title: "💬 شبكة التواصل الاجتماعي (Social Network)",
+                front: "عرض الخط الزمني (Timeline)، شاشات كتابة المنشورات، وأزرار الإعجاب والتعليقات.",
+                back: "تحديد الجمهور المستهدف لكل منشور (عام/أصدقاء)، والتحكم في إرسال الإشعارات اللحظية.",
+                db: "تخزين نصوص المنشورات ومسارات الصور، علاقات المتابعة والصداقة، وسجلات المحادثات.",
+                challenge: "⚠️ السيناريو: نشر صورة جديدة ⬅️ الأمامية ترفع الصورة، الخلفية تضغطها، وقاعدة البيانات تربطها بالحساب."
+            },
+            video: {
+                title: "🎥 موقع مشاركة الفيديو (Video Sharing)",
+                front: "مشغل الفيديو المتجاوب، مربع البحث، قائمة المقترحات الجانبية، وقسم التعليقات.",
+                back: "خوارزمية اقتراح الفيديوهات المناسبة للمستخدم، وتجميع وتحديث عداد المشاهدات.",
+                db: "ملفات الفيديو وبيانات الجودة، معلومات القنوات، وسجل المشاهدة لكل مستخدم.",
+                challenge: "⚠️ السيناريو: ارتفاع المشاهدات ⬅️ الواجهة الخلفية تجمع آلاف المشاهدات في الذاكرة لتحديث قاعدة البيانات بكفاءة."
+            },
+            clinic: {
+                title: "🏥 عيادة حجز المواعيد (نشاط فكر كمهندس)",
+                front: "نموذج حجز الموعد، قائمة اختيار التخصص والطبيب، وشاشة استعراض الزيارات السابقة.",
+                back: "فحص تضارب المواعيد، التحقق من الأوقات المتاحة للأطباء، وتأكيد حجز المريض.",
+                db: "حفظ السجلات الطبية للمرضى، جداول أوقات دوام الأطباء، وسجل الزيارات السابقة.",
+                challenge: "⚠️ السيناريو: عدم ظهور مواعيد ⬅️ تشخيص العطل بفحص سجلات الواجهة الخلفية وقاعدة البيانات لتحديد سبب الفراغ."
+            }
+        };
+
+        function showAppArch(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const a = appArchs[key];
+            const box = document.getElementById('appArchDisplay');
+            box.innerHTML = `
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <div style="font-size:1.5rem; margin-bottom:6px;">💻</div>
+                    <h4 style="color:var(--primary-light); margin-bottom:6px;">الواجهة الأمامية (Front-End)</h4>
+                    <p style="font-size:0.92rem;">${a.front}</p>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--accent);">
+                    <div style="font-size:1.5rem; margin-bottom:6px;">⚙️</div>
+                    <h4 style="color:var(--accent-dark); margin-bottom:6px;">الواجهة الخلفية (Back-End)</h4>
+                    <p style="font-size:0.92rem;">${a.back}</p>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--teal);">
+                    <div style="font-size:1.5rem; margin-bottom:6px;">🗄️</div>
+                    <h4 style="color:var(--teal); margin-bottom:6px;">قاعدة البيانات (Database)</h4>
+                    <p style="font-size:0.92rem;">${a.db}</p>
+                </div>
+                <div style="grid-column: 1 / -1; background:var(--accent-soft); padding:12px; border-radius:10px; font-weight:700; color:var(--accent-dark);">
+                    ${a.challenge}
+                </div>
+            `;
+        }
+
+        // Quiz Engine Data
+        const quizData = {"session": {"mcq": [{"tag": "ماهية تطبيق الويب (ص 51)", "ar_q": "ما المصطلح الذي يُطلق على تطبيق يُستخدم عادة عبر متصفح الويب وقد يكون بعضه قابلاً للتثبيت على الجهاز؟", "en_q": "What term refers to an application typically accessed via a web browser and sometimes installable on a device?", "options": [{"ar": "تطبيق الويب", "en": "Web Application"}, {"ar": "نظام التشغيل الأساسي", "en": "Operating System"}, {"ar": "مترجم لغة الآلة", "en": "Machine Code Compiler"}, {"ar": "بروتوكول توجيه الحزم", "en": "Packet Routing Protocol"}], "correct": 0, "exp_ar": "تطبيق الويب: تطبيق يُستخدم عادةً من خلال متصفح الويب، وقد يكون بعضه قابلاً للتثبيت على الجهاز، ومن أمثلته خدمات الفيديو والتسوق والبريد والخرائط (كتاب ص 51).", "exp_en": "Web Application: An application accessed via a web browser and sometimes installable on a device, like video, shopping, email, and maps services (p. 51)."}, {"tag": "الواجهة الأمامية (ص 51)", "ar_q": "ما المصطلح الخاص بمكوّن الشاشة الذي يراه المستخدمون ويتعاملون معه مباشرة في متصفح الويب؟", "en_q": "What term refers to the screen component that users see and interact with directly in the browser?", "options": [{"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "طبقة إدارة قواعد البيانات", "en": "Database Management Layer"}, {"ar": "خادم المعالجة البعيد", "en": "Remote Processing Server"}], "correct": 1, "exp_ar": "الواجهة الأمامية (Front-end): هي الجزء الذي يراه المستخدم ويتعامل معه في المتصفح؛ يعرض المحتوى ويستقبل ما يكتبه المستخدم أو يختاره (ص 51).", "exp_en": "Front-End: The part users see and interact with in the browser; it displays content and receives user input or choices (p. 51)."}, {"tag": "الواجهة الخلفية (ص 51)", "ar_q": "ما المصطلح الخاص بالجزء المسؤول عن المعالجة والتحكم وتطبيق قواعد العمل من جانب الخادم؟", "en_q": "What term refers to the server-side component responsible for processing, control, and business rules?", "options": [{"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "لغة ترميز النصوص", "en": "Markup Language"}, {"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "وسائط التخزين المؤقتة", "en": "Cache Media"}], "correct": 2, "exp_ar": "الواجهة الخلفية (Back-end): هي الجزء الذي يعمل على الخادم، ويعالج الطلبات ويطبق قواعد التطبيق (ص 51).", "exp_en": "Back-End: The part running on the server that processes requests and applies application logic (p. 51)."}, {"tag": "قاعدة البيانات (ص 51)", "ar_q": "ما المصطلح الخاص بالطبقة المسؤولة عن حفظ البيانات وتخزينها وتوفيرها عند الحاجة؟", "en_q": "What term refers to the layer that stores, maintains, and provides data when needed?", "options": [{"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "متصفح الويب", "en": "Web Browser"}, {"ar": "قاعدة البيانات", "en": "Database"}, {"ar": "بطاقة الشبكة", "en": "Network Interface Card"}], "correct": 2, "exp_ar": "قاعدة البيانات (Database): طبقة تحفظ البيانات وتوفرها عند الحاجة؛ وتشمل قواعد البيانات وتخزين الملفات وسجلات الطلبات (ص 51).", "exp_en": "Database: A layer that persists data and provides it upon request, including DBMS, file stores, and request logs (p. 51)."}, {"tag": "مثال محلول 1-(ب) (ص 53)", "ar_q": "أين تعمل الواجهة الخلفية (Back-end) لتطبيق الويب؟", "en_q": "Where does the Back-End of a web application execute?", "options": [{"ar": "على متصفح جهاز المستخدم فقط", "en": "In the user's browser only"}, {"ar": "على الخادم (Server)", "en": "On the Server"}, {"ar": "داخل شاشة العرض", "en": "Inside the display hardware"}, {"ar": "في ذاكرة الوصول العشوائي للعميل", "en": "In the client's RAM"}], "correct": 1, "exp_ar": "الواجهة الخلفية هي الجزء الذي يعمل على الخادم، لا على المتصفح؛ بينما الواجهة الأمامية هي التي تعمل على المتصفح (ص 53).", "exp_en": "The Back-End operates on the server, not in the browser; whereas the Front-End runs in the browser (p. 53)."}, {"tag": "تدفق التعاون - خطوة 1 و 2 (ص 52)", "ar_q": "عند البحث عن منتج في متجر إلكتروني، ما أول إجراء تقوم به الواجهة الأمامية؟", "en_q": "When searching for a product in an online store, what is the initial action of the Front-End?", "options": [{"ar": "الاستعلام المباشر من قاعدة البيانات دون خادم", "en": "Directly querying the database without server"}, {"ar": "استقبال كلمات البحث التي أدخلها المستخدم ثم إرسالها إلى الواجهة الخلفية", "en": "Receiving search terms entered by the user and sending them to the Back-End"}, {"ar": "فحص المخزون الفعلي بالمستودع", "en": "Checking warehouse inventory"}, {"ar": "خصم قيمة الشراء من بطاقة العميل", "en": "Deducting purchase funds"}], "correct": 1, "exp_ar": "الخطوة 1: تستقبل الواجهة الأمامية كلمات البحث، والخطوة 2: ترسلها إلى الواجهة الخلفية (ص 52).", "exp_en": "Step 1: Front-end receives search terms; Step 2: Front-end sends them to the back-end (p. 52)."}, {"tag": "تدفق التعاون - خطوة 3 و 4 (ص 52)", "ar_q": "في سيناريو البحث عن منتج، أي طبقة تطلب المنتجات المطابقة من طبقة البيانات؟", "en_q": "In the product search scenario, which layer requests matching products from the Data layer?", "options": [{"ar": "الواجهة الأمامية مباشرة", "en": "Front-End directly"}, {"ar": "شاشة المتصفح", "en": "Browser display"}, {"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "بطاقة الرسوميات", "en": "Graphics card"}], "correct": 2, "exp_ar": "الخطوة 3: تطلب الواجهة الخلفية من طبقة البيانات المنتجات التي تطابق عبارة البحث، ثم تعيد طبقة البيانات النتائج إليها (ص 52).", "exp_en": "Step 3: The back-end requests matching products from the data layer, which returns results in step 4 (p. 52)."}, {"tag": "تدفق التعاون - خطوة 5 و 6 (ص 52)", "ar_q": "ما الخطوة الأخيرة في تدفق البحث عن منتج عبر تطبيق الويب؟", "en_q": "What is the final step in the web application product search flow?", "options": [{"ar": "تخزين كلمة البحث في المتصفح فقط", "en": "Storing keyword in browser only"}, {"ar": "تعرض الواجهة الأمامية نتائج البحث على شاشة المستخدم", "en": "Front-End renders search results on the user's screen"}, {"ar": "إيقاف خادم الويب لتوفير الطاقة", "en": "Stopping server to save energy"}, {"ar": "إعادة توجيه المستخدم لصفحة تسجيل الخروج", "en": "Redirecting user to logout"}], "correct": 1, "exp_ar": "الخطوة 6: تعرض الواجهة الأمامية نتائج البحث على شاشة المستخدم بعد أن جهزتها الواجهة الخلفية في الخطوة 5 (ص 52).", "exp_en": "Step 6: The Front-End renders the search results on the user screen after the Back-End prepared them in step 5 (p. 52)."}, {"tag": "موقع مشاركة الفيديو (ص 53)", "ar_q": "أي مما يلي يعد من مسؤوليات الواجهة الخلفية في موقع مشاركة الفيديو (مثل يوتيوب)؟", "en_q": "Which of the following is a Back-End responsibility in a video sharing site?", "options": [{"ar": "عرض شاشات تشغيل الفيديو والبحث", "en": "Rendering video player screens and search UI"}, {"ar": "اختيار الفيديوهات الموصى بها وتجميع عدد المشاهدات", "en": "Selecting recommended videos and aggregating view counts"}, {"ar": "استقبال نقرات المستخدم على زر التشغيل", "en": "Receiving user play button clicks"}, {"ar": "تزيين الأزرار بألوان مخصصة", "en": "Styling buttons with custom colors"}], "correct": 1, "exp_ar": "في موقع مشاركة الفيديو، تتولى الواجهة الخلفية: اختيار الفيديوهات الموصى بها، وتجميع عدد المشاهدات (ص 53).", "exp_en": "In video platforms, the Back-End selects recommended videos and aggregates views (p. 53)."}, {"tag": "شبكة التواصل الاجتماعي (ص 53)", "ar_q": "في شبكات التواصل الاجتماعي، ما الطبقة المسؤولة عن تخزين بيانات المنشورات وعلاقات المتابعة والرسائل؟", "en_q": "In social media networks, which layer stores posts data, follower relationships, and messages?", "options": [{"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "قاعدة البيانات", "en": "Database"}, {"ar": "بطاقة الشبكة اللاسلكية", "en": "Wi-Fi Card"}], "correct": 2, "exp_ar": "قاعدة البيانات هي المسؤولة عن تخزين بيانات المنشورات، وعلاقات المتابعة، والرسائل (جدول ص 53).", "exp_en": "The Database is responsible for storing post data, follow relationships, and messages (p. 53)."}, {"tag": "موقع التجارة الإلكترونية (ص 53)", "ar_q": "في موقع التجارة الإلكترونية، ما الدور الرئيسي للواجهة الخلفية عند إتمام عملية الشراء؟", "en_q": "In an e-commerce website, what is the main Back-End role during checkout?", "options": [{"ar": "عرض سلة التسوق للمستخدم في المتصفح", "en": "Displaying shopping cart in browser"}, {"ar": "التحقق من المخزون وإرسال طلبات الدفع والتعامل مع نتائجها", "en": "Verifying inventory and processing payment requests/results"}, {"ar": "تغيير خطوط النصوص وألوان القوائم", "en": "Modifying fonts and menu colors"}, {"ar": "تخزين سجل المشتريات بشكل دائم دون خادم", "en": "Storing purchases permanently without server"}], "correct": 1, "exp_ar": "الواجهة الخلفية في التجارة الإلكترونية تتحقق من المخزون، وترسل طلبات الدفع وتتعامل مع نتائجها (ص 53).", "exp_en": "The Back-End verifies inventory and sends payment requests and handles their outcomes (p. 53)."}, {"tag": "تدرب 2-(1) (ص 54)", "ar_q": "عند البحث عن منتج على موقع تسوق، أي مما يلي مسؤول عن البحث في البيانات عن المنتجات المطابقة؟", "en_q": "When searching for a product, which component is responsible for searching the data for matching items?", "options": [{"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "شاشة العرض الخاصة بالعميل", "en": "Client Display Screen"}, {"ar": "نظام التشغيل المحلي", "en": "Local Operating System"}], "correct": 1, "exp_ar": "الواجهة الخلفية هي المسؤولة عن معالجة طلب البحث والبحث في البيانات عن المنتجات المطابقة لمعايير البحث (ص 54).", "exp_en": "The Back-End is responsible for executing the search logic and querying data for matches (p. 54)."}, {"tag": "تدرب 2-(2) (ص 54)", "ar_q": "تصنيف مهمة 'شاشة سلة التسوق' في موقع التجارة الإلكترونية ينتمي إلى:", "en_q": "Classifying the 'Shopping Cart Screen' task in an e-commerce site belongs to:", "options": [{"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "قاعدة البيانات", "en": "Database"}, {"ar": "خادم المعالجة الخفي", "en": "Hidden Processing Server"}], "correct": 0, "exp_ar": "شاشة سلة التسوق وشاشة عرض المنتجات من مهام الواجهة الأمامية لأنها تمثل واجهة العرض والتفاعل (ص 54).", "exp_en": "The shopping cart screen belongs to the Front-End as it is part of the presentation/UI (p. 54)."}, {"tag": "تمارين 3-(2) (ص 55)", "ar_q": "أي الخيارات التالية يصف بنية الطبقات الثلاث لتطبيق الويب بأنسب شكل؟", "en_q": "Which option best describes the three-tier web application architecture?", "options": [{"ar": "الواجهة الأمامية لها دور تخزين البيانات وإدارتها", "en": "Front-End is responsible for data storage"}, {"ar": "الواجهة الخلفية هي الجزء الذي يتفاعل معه المستخدمون مباشرة", "en": "Back-End is what users directly interact with"}, {"ar": "استجابة لإجراءات المستخدم، تتعاون الواجهة الأمامية والخلفية وقاعدة البيانات لتنفيذ المعالجة", "en": "In response to user actions, Front-End, Back-End, and Database collaborate to execute processing"}, {"ar": "قاعدة البيانات لها دور عرض الشاشات للمستخدمين", "en": "Database is responsible for rendering screens"}], "correct": 2, "exp_ar": "استجابة لإجراءات المستخدم، تتعاون الواجهة الأمامية والواجهة الخلفية وقاعدة البيانات لتنفيذ المعالجة (تمرين 3-(2) ص 55).", "exp_en": "Front-End, Back-End, and Database work together in response to user actions (p. 55)."}, {"tag": "طبيعة النموذج الثلاثي (ص 55)", "ar_q": "وفقاً لما ورد في إجابة السؤال الرئيسي بالكتاب المدرسي، هل تُعد بنية الطبقات الثلاث قالباً إلزامياً صارماً لكل تطبيق ويب؟", "en_q": "According to the main question answer, is the three-tier model a strict mandatory architecture for all web apps?", "options": [{"ar": "نعم، هي بنية إلزامية مطبقة بنفس التفاصيل في كل المواقع بلا استثناء", "en": "Yes, it is strictly mandatory in every website"}, {"ar": "لا، بل هو نموذج للتعلم وليس بنية إلزامية؛ فقد تختلف البنية وقد لا توجد قاعدة بيانات تقليدية أصلاً", "en": "No, it is a learning model and not mandatory; architecture varies and traditional DB may not exist"}, {"ar": "لا، لأن تطبيقات الويب تعمل كلها بطبقة واحدة فقط دائماً", "en": "No, because all web apps use one tier only"}, {"ar": "نعم، ويشترط وجود خادمين وقاعدتي بيانات على الأقل لكل تطبيق", "en": "Yes, requiring at least two servers and two databases"}], "correct": 1, "exp_ar": "نص الكتاب ص 55: 'وهذا نموذج للتعلم وليس بنية إلزامية لكل تطبيق؛ فقد تختلف البنية وقد لا توجد قاعدة بيانات تقليدية أصلاً'.", "exp_en": "Textbook p. 55: 'This is a model for learning, not a mandatory architecture for every app; structures vary and traditional databases may not even exist.'"}], "essay": [{"source": "السؤال الرئيسي للدرس (ص 51 و ص 55)", "q": "كيف يُبنى تطبيق الويب، وكيف تعمل طبقاته الثلاث معاً للاستجابة لما يفعله المستخدم؟", "en_q": "How is a web application built, and how do its three tiers work together to respond to user actions?", "hint": "اذكر الطبقات الثلاث (الأمامية، الخلفية، قاعدة البيانات) ودور كل طبقة وتدفق الطلبات بينها.", "en_hint": "Mention the three tiers (Front-End, Back-End, Database), their roles, and request flow.", "model": "يُبنى تطبيق الويب عادةً من ثلاث طبقات رئيسية: <b>1) الواجهة الأمامية</b> (تعرض المحتوى وتستقبل مدخلات المستخدم بالمتصفح)، <b>2) الواجهة الخلفية</b> (تعمل على الخادم وتعالج الطلبات وتطبق قواعد التطبيق)، و<b>3) قاعدة البيانات</b> (تحفظ البيانات وتوفرها عند الحاجة). تنتقل الطلبات من الواجهة الأمامية للخلفية التي تستعلم من قاعدة البيانات ثم تجهز النتائج لتعرضها الواجهة الأمامية للمستخدم.", "en_model": "A web app is built from three tiers: <b>1) Front-End</b> (presents content and receives inputs in the browser), <b>2) Back-End</b> (processes requests and executes business logic on the server), and <b>3) Database</b> (stores and provides data). Requests flow from Front-End to Back-End, which queries the Database and returns formatted results to the Front-End."}, {"source": "سؤال الامتحان [6 درجات] (ص 54)", "q": "اشرح كيف تتعاون الطبقات الثلاث لتطبيق الويب عندما ينشر المستخدم صورة على تطبيق تواصل اجتماعي (أشر إلى دور الواجهة الأمامية، والخلفية، وقاعدة البيانات).", "en_q": "Explain how the three tiers collaborate when a user posts an image on social media (highlight Front-End, Back-End, and Database roles).", "hint": "تتبّع من اختيار الصورة حتى ظهورها في الخط الزمني.", "en_hint": "Trace from image selection to its appearance in the timeline.", "model": "1. <b>الواجهة الأمامية:</b> تتيح للمستخدم اختيار الصورة وكتابة الوصف، ثم ترسل ملف الصورة والبيانات كطلب للواجهة الخلفية.<br>2. <b>الواجهة الخلفية:</b> تستقبل الصورة، وتتحقق من نوعها وحجمها، وتضغطها وتعالجها، وتحدد الجمهور المستهدف وترسل إشعارات فورية للأصدقاء.<br>3. <b>قاعدة البيانات:</b> تستقبل مسار الصورة المخزنة وبيانات المنشور ومعرّف المستخدم وتاريخ النشر، وتقوم بتخزينها وربطها بملف المستخدم لتظهر في الخط الزمني لاحقاً.", "en_model": "1. <b>Front-End:</b> Lets user select image/caption and uploads it to the server.<br>2. <b>Back-End:</b> Validates format/size, compresses image, applies audience permissions, and triggers notifications.<br>3. <b>Database:</b> Stores image metadata, post details, timestamp, and user association for timeline retrieval."}, {"source": "توقّف وفكّر (ص 52)", "q": "عندما تكتب في مربع البحث وترى النتائج، أي طبقة جمعت المدخلات، وأي طبقة وجدت الإجابة؟", "en_q": "When you type in a search box and see results, which tier collected inputs and which found the answer?", "hint": "المتصفح مقابل الخادم وقاعدة البيانات.", "en_hint": "Browser vs. Server & Database.", "model": "الطبقة التي جمعت المدخلات هي <b>الواجهة الأمامية (Front-end)</b> عبر مربع البحث ونماذج الإدخال، بينما الطبقة التي وجدت الإجابة المطابقة وخزنتها هي <b>قاعدة البيانات (Database)</b> بالتعاون مع معالجة <b>الواجهة الخلفية (Back-end)</b>.", "en_model": "The <b>Front-End</b> collected inputs through the UI search box, while the <b>Database</b> (queried and filtered by the <b>Back-End</b>) found the matching answer."}, {"source": "توقّف وفكّر (ص 53)", "q": "تستخدم خدمات الفيديو، والتواصل، والتسوق نفس الطبقات الثلاث، فما الذي يتغير عملياً من خدمة إلى أخرى؟", "en_q": "Video, social, and shopping services all use three tiers. What actually changes between them?", "hint": "قواعد المعالجة ونوع البيانات المخزنة وتصميم الواجهة.", "en_hint": "Business logic, database schema, and interface design.", "model": "الذي يتغير هو: <b>1) تصميم الواجهة الأمامية</b> وشاشاتها بما يناسب طبيعة الخدمة، <b>2) منطق وقواعد المعالجة في الواجهة الخلفية</b> (مثل خوارزميات التوصية بالفيديو مقابل بوابات الدفع بالتسوق)، و<b>3) نوع وهيكلية البيانات المخزنة في قاعدة البيانات</b> (ملفات فيديو وسجلات مشاهدة مقابل سلع وسلات شراء).", "en_model": "What changes: <b>1) Front-End UI design</b> suited to the service, <b>2) Back-End business logic</b> (e.g. video recommendations vs payment processing), and <b>3) Database schema/content</b> (video files & views vs. product catalogs & shopping carts)."}, {"source": "فكّر كمهندس - الخطوة 1 (ص 54)", "q": "تريد عيادة تطبيق ويب يحجز فيه المرضى المواعيد ويتحققون من الأوقات المتاحة ويطلعون على زياراتهم السابقة. وزع هذه المهام الثلاث على الطبقات مع التعليل.", "en_q": "A clinic needs a web app for booking, checking availability, and viewing past visits. Assign these three tasks to the tiers with justification.", "hint": "نموذج الحجز، التحقق من الأوقات، تخزين الزيارات.", "en_hint": "Booking form, availability check, past visits storage.", "model": "• <b>نموذج الحجز:</b> الواجهة الأمامية (لأنه واجهة إدخال يراها المريض ويتفاعل معها).<br>• <b>التحقق من الأوقات المتاحة:</b> الواجهة الخلفية (لأنها تطبق قواعد الحجز وتفحص التعارضات في الخادم).<br>• <b>تخزين الزيارات السابقة:</b> قاعدة البيانات (لأنها المسؤولة عن الحفظ الدائم لسجلات المرضى وتوفيرها عند الطلب).", "en_model": "• <b>Booking Form:</b> Front-End (user input and presentation UI).<br>• <b>Checking Availability:</b> Back-End (processes rules, prevents conflicting slots).<br>• <b>Past Visits Storage:</b> Database (safely persists patient history records)."}, {"source": "فكّر كمهندس - الخطوة 2 (ص 54)", "q": "في تطبيق العيادة، تفتح صفحة الحجز لكن لا تظهر أوقات متاحة. ما الأجزاء التي قد تكون سبب المشكلة؟ وما المعلومة التي تحتاجها للتأكد؟", "en_q": "The booking page opens, but no available time slots appear. What components could cause this, and what info do you need?", "hint": "فحص اتصال الواجهة الخلفية، واستعلام قاعدة البيانات، وسجلات الأخطاء.", "en_hint": "Back-End connection, DB query, server error logs.", "model": "الأجزاء المحتملة: 1) <b>الواجهة الخلفية</b> (فشل استرجاع الأوقات أو توقف خدمة الحجز)، أو 2) <b>قاعدة البيانات</b> (جدول المواعيد فارغ أو الاتصال بها مقطوع)، أو 3) <b>الواجهة الأمامية</b> (خطأ في عرض الأوقات الواردة).<br>المعلومة المطلوبة للتأكد: فحص <b>رسائل الخطأ وسجلات الخادم (Server Logs)</b>، ومعرفة ما إذا كانت قاعدة البيانات تحتوي على مواعيد مسجلة أصلاً.", "en_model": "Possible causes: 1) <b>Back-End</b> (query failure or service error), 2) <b>Database</b> (empty appointment table or broken connection), 3) <b>Front-End</b> (script rendering bug).<br>Info needed: <b>Server error logs & network responses</b>, plus verifying whether available slots exist in the database."}, {"source": "فكّر كمهندس - الخطوة 3 (ص 54)", "q": "أوصِ بما إذا كان ينبغي للعيادة تنظيم مسؤوليات العرض والمعالجة والبيانات في طبقات واضحة، وبرر فائدة فصل المسؤوليات بسببين.", "en_q": "Recommend whether the clinic should organize responsibilities into clear tiers, and justify separation with two reasons.", "hint": "تنظيم الطبقات يسهل الصيانة والتحديث واستبدال المكونات.", "en_hint": "Tiering simplifies maintenance, updates, and scalability.", "model": "نوصي بـ: <b>تنظيم مسؤوليات العرض والمعالجة والبيانات في طبقات واضحة</b>.<br>السببان: 1) <b>سهولة الصيانة والتطوير:</b> يمكن تعديل واجهة المستخدم أو تحديث قاعدة البيانات دون المساس بمنطق العمل.<br>2) <b>الأمان والموثوقية:</b> عزل قواعد البيانات خلف الواجهة الخلفية يمنع وصول المستخدمين المباشر إليها ويقلل الأخطاء.", "en_model": "Recommendation: <b>Organize responsibilities into distinct tiers</b>.<br>Reasons: 1) <b>Maintainability & Scalability:</b> UI can be redesigned or DB upgraded without breaking business logic.<br>2) <b>Security & Reliability:</b> Isolating data behind the Back-End protects patient records from direct external exposure."}, {"source": "طبّق ما تعلمته (ص 55)", "q": "يتيح تطبيق طقس كتابة اسم مدينة ورؤية التوقعات. سمّ أي طبقة تقوم بكل مهمة، وحدد مهمة لا يمكن للواجهة الأمامية القيام بها وحدها.", "en_q": "A weather app lets users enter a city and see forecasts. Name the tier for each task and identify a task Front-End cannot do alone.", "hint": "أخذ اسم المدينة، البحث عن التوقعات، تخزين التوقعات السابقة.", "en_hint": "Input city name, query forecast, store past forecasts.", "model": "• <b>أخذ اسم المدينة:</b> الواجهة الأمامية.<br>• <b>البحث عن بيانات التوقعات:</b> الواجهة الخلفية (بالتواصل مع خدمات الأرصاد وقاعدة البيانات).<br>• <b>تخزين التوقعات السابقة:</b> قاعدة البيانات.<br>• <b>مهمة لا تستطيع الواجهة الأمامية القيام بها وحدها:</b> جلب توقعات الطقس الحقيقية من خوادم الأرصاد الخارجية وحفظ السجلات بشكل آمن ودائم دون خادم وقاعدة بيانات.", "en_model": "• <b>Taking city name:</b> Front-End.<br>• <b>Searching forecast:</b> Back-End.<br>• <b>Storing past forecasts:</b> Database.<br>• <b>Task Front-End cannot do alone:</b> Securely fetching live meteorological data from external APIs and permanently storing historical logs without a server and database."}, {"source": "تدرّب 1 (ص 54)", "q": "عرّف المصطلحات الأربعة الأساسية الواردة في تدرب 1: (تطبيق الويب، الواجهة الأمامية، الواجهة الخلفية، قاعدة البيانات).", "en_q": "Define the four core terms in Practice 1: (Web App, Front-End, Back-End, Database).", "hint": "راجع تعريفات ص 51 و ص 54.", "en_hint": "Review definitions on p. 51 and p. 54.", "model": "1. <b>تطبيق الويب:</b> تطبيق يُستخدم عبر متصفح الويب وقد يكون بعضه قابلاً للتثبيت.<br>2. <b>الواجهة الأمامية:</b> مكوّن الشاشة الذي يراه المستخدمون مباشرة ويتفاعلون معه.<br>3. <b>الواجهة الخلفية:</b> الجزء المسؤول عن المعالجة وتطبيق القواعد من جانب الخادم ولا يراها المستخدمون.<br>4. <b>قاعدة البيانات:</b> نظام ينظم البيانات ويخزنها ويوفرها ويديرها.", "en_model": "1. <b>Web App:</b> App accessed via a browser, sometimes installable.<br>2. <b>Front-End:</b> UI component users directly see and interact with.<br>3. <b>Back-End:</b> Server-side processing engine enforcing business rules unseen by users.<br>4. <b>Database:</b> System that organizes, persists, and manages data."}, {"source": "تدرّب 2 - تصنيف متجر إلكتروني (ص 54)", "q": "صنف المهام الست التالية لمتجر إلكتروني إلى طبقاتها: (صفحة عرض المنتجات، معالجة التحقق من المخزون، تخزين معلومات العملاء، شاشة سلة التسوق، معالجة الدفع، تخزين سجل الطلبات).", "en_q": "Classify the 6 e-commerce tasks into tiers: (Product display page, inventory check, customer info storage, shopping cart screen, payment processing, orders log storage).", "hint": "أمامي، خلفي، قاعدة بيانات.", "en_hint": "Front-End, Back-End, Database.", "model": "1. صفحة عرض المنتجات: <b>الواجهة الأمامية</b><br>2. معالجة التحقق من المخزون: <b>الواجهة الخلفية</b><br>3. تخزين معلومات العملاء: <b>قاعدة البيانات</b><br>4. شاشة سلة التسوق: <b>الواجهة الأمامية</b><br>5. معالجة الدفع: <b>الواجهة الخلفية</b><br>6. تخزين سجل الطلبات: <b>قاعدة البيانات</b>", "en_model": "1. Product display: <b>Front-End</b><br>2. Inventory verification: <b>Back-End</b><br>3. Customer data storage: <b>Database</b><br>4. Shopping cart screen: <b>Front-End</b><br>5. Payment processing: <b>Back-End</b><br>6. Order history storage: <b>Database</b>"}, {"source": "تمارين الكتاب - تصنيف شبكة تواصل (ص 55)", "q": "صنف المهام الست التالية لشبكة تواصل اجتماعي إلى طبقاتها: (شاشة الخط الزمني، معالجة تحديد الجمهور المستهدف، تخزين بيانات المنشورات، شاشة النشر، معالجة الإشعارات، تخزين علاقات المتابعة).", "en_q": "Classify the 6 social network tasks into tiers: (Timeline screen, target audience processing, posts storage, publishing screen, notifications processing, follower relations storage).", "hint": "راجع تمرين 3-(1) ص 55.", "en_hint": "Review Exercise 3-(1) on p. 55.", "model": "1. شاشة الخط الزمني: <b>الواجهة الأمامية</b><br>2. معالجة تحديد الجمهور المستهدف للمنشور: <b>الواجهة الخلفية</b><br>3. تخزين بيانات المنشورات: <b>قاعدة البيانات</b><br>4. شاشة النشر: <b>الواجهة الأمامية</b><br>5. معالجة الإشعارات: <b>الواجهة الخلفية</b><br>6. تخزين علاقات المتابعة: <b>قاعدة البيانات</b>", "en_model": "1. Timeline screen: <b>Front-End</b><br>2. Target audience processing: <b>Back-End</b><br>3. Posts storage: <b>Database</b><br>4. Publishing screen: <b>Front-End</b><br>5. Notifications processing: <b>Back-End</b><br>6. Follower relations storage: <b>Database</b>"}, {"source": "تمارين الكتاب - إكمال الفقرة (ص 55)", "q": "املأ الفراغات بالترتيب: يمكن شرح كثير من تطبيقات الويب بنموذج مبسط من ثلاث طبقات؛ تسمى الواجهة التي يراها المستخدم ويتعامل معها ( 1 )، ويسمى الجزء الذي يعمل على الخادم ويعالج الطلبات ( 2 )، وتسمى الطبقة التي تحفظ البيانات وتوفرها ( 3 ).", "en_q": "Fill in the blanks: (1) Interface users see and interact with, (2) Part running on server processing requests, (3) Layer persisting and providing data.", "hint": "المصطلحات الثلاثة الأساسية.", "en_hint": "The three core tier terms.", "model": "(1) <b>الواجهة الأمامية (Front-end)</b><br>(2) <b>الواجهة الخلفية (Back-end)</b><br>(3) <b>قاعدة البيانات (Database)</b>.", "en_model": "(1) <b>Front-End</b><br>(2) <b>Back-End</b><br>(3) <b>Database</b>."}, {"source": "فكّر وتحدَّ نفسك - تأمّل (ص 55)", "q": "أي طبقة تعتقد أن فشلها يكون أكثر وضوحاً للمستخدم عندما يحدث خطأ ما، ولماذا؟", "en_q": "Which tier's failure do you think is most immediately visible to the user when an error occurs, and why?", "hint": "الطبقة المرئية المباشرة في المتصفح.", "en_hint": "The directly visible layer in the browser.", "model": "<b>الواجهة الأمامية (Front-end)</b>؛ لأنها نقطة الاتصال المرئية المباشرة مع المستخدم؛ فإذا تعطلت تظهر الصفحة بيضاء أو تتشوه العناصر وتتوقف الأزرار عن الاستجابة فوراً، مع ملاحظة أن أخطاء الواجهة الخلفية أو قاعدة البيانات تنعكس غالباً كرسائل خطأ في الواجهة الأمامية أيضاً.", "en_model": "The <b>Front-End</b>, because it is the immediate visible contact point. A failure causes blank pages, broken layout, or unresponsive buttons. However, Back-End and Database failures also surface as error messages through the Front-End."}, {"source": "فكّر وتحدَّ نفسك - تحدّ (ص 55)", "q": "اذكر خدمة واحدة عبر الإنترنت تستخدمها، وصف ما تقوم به واجهتها الأمامية وواجهتها الخلفية وقاعدة بياناتها.", "en_q": "Name an online service you use and describe what its Front-End, Back-End, and Database do.", "hint": "مثل خرائط جوجل (Google Maps) أو البريد الإلكتروني (Gmail).", "en_hint": "E.g., Google Maps or Gmail.", "model": "<b>مثال: خرائط جوجل (Google Maps)</b>:<br>• <b>الواجهة الأمامية:</b> عرض الخريطة التفاعلية، أزرار التكبير/التصغير، ومربع إدخال الوجهة.<br>• <b>الواجهة الخلفية:</b> حساب أقصر مسار، تقدير زمن الرحلة وفق الازدحام المروري، وتحديث بيانات الحركة.<br>• <b>قاعدة البيانات:</b> حفظ الخرائط المتجهية (Spatial Data)، إحداثيات المباني والأماكن، وبيانات السرعات القانونية للطرق.", "en_model": "<b>Example: Google Maps</b>:<br>• <b>Front-End:</b> Interactive map canvas, zoom buttons, destination search bar.<br>• <b>Back-End:</b> Computes shortest path routing, analyzes real-time traffic congestion, and predicts ETA.<br>• <b>Database:</b> Persists spatial geospatial coordinates, road network topologies, and business place profiles."}, {"source": "خلاصة الدرس (ص 53 و ص 55)", "q": "لخّص في عبارة واحدة متناسقة الوظيفة الذهبية لكل طبقة من الطبقات الثلاث لتطبيقات الويب.", "en_q": "Summarize in one cohesive sentence the golden role of each of the three web tiers.", "hint": "تعرض وتجمع، تقرر وتعالج، تخزن وتسترجع.", "en_hint": "Present & collect, decide & process, store & retrieve.", "model": "<b>الواجهة الأمامية تعرض وتجمع</b>، و<b>الواجهة الخلفية تقرر وتعالج</b>، و<b>قاعدة البيانات تخزن وتسترجع</b> — ثلاث طبقات متعاونة تجعل تطبيق الويب يعمل بكفاءة وتناغم.", "en_model": "<b>Front-End presents and collects</b>, <b>Back-End decides and processes</b>, and <b>Database stores and retrieves</b> — three cooperating tiers making the web application function smoothly."}]}, "homework": {"mcq": [{"tag": "حدود الواجهة الأمامية (ص 51)", "ar_q": "تشمل وظائف الواجهة الأمامية (Front-end) كل ما يلي ما عدا:", "en_q": "Front-End responsibilities include all of the following EXCEPT:", "options": [{"ar": "عرض نصوص وصور المنتجات للمستخدم", "en": "Displaying product texts and images to users"}, {"ar": "استقبال نقرات المستخدم ومدخلاته في المتصفح", "en": "Receiving user clicks and form inputs in browser"}, {"ar": "معالجة الاستعلامات المعقدة وتطبيق قواعد العمل الأمنية على الخادم", "en": "Executing complex queries and server security rules"}, {"ar": "توفير أزرار التنقل وشاشات العرض", "en": "Providing navigation buttons and display screens"}], "correct": 2, "exp_ar": "معالجة الاستعلامات وتطبيق قواعد العمل الأمنية مسؤولية الواجهة الخلفية والخادم، وليست من مهام الواجهة الأمامية (ص 51).", "exp_en": "Executing complex queries and server rules is the role of Back-End, not Front-End (p. 51)."}, {"tag": "مهام الواجهة الخلفية (ص 51)", "ar_q": "أي من المهام التالية يعد مثالاً صريحاً على مهام الواجهة الخلفية (Back-end)؟", "en_q": "Which of the following tasks is a clear example of Back-End duties?", "options": [{"ar": "التحقق من صحة بيانات تسجيل الدخول وتطبيق قواعد الأمان", "en": "Authenticating user login credentials and enforcing security rules"}, {"ar": "رسم وتلوين زر إضافة إلى السلة في المتصفح", "en": "Styling and coloring 'Add to Cart' button"}, {"ar": "استرجاع الملفات المخزنة مباشرة دون برمجيات خادم", "en": "Direct file recovery without server software"}, {"ar": "تتبع لمسات أصابع المستخدم على الشاشة", "en": "Tracking touchscreen gestures on device"}], "correct": 0, "exp_ar": "التحقق من تسجيل الدخول وتطبيق قواعد التطبيق هو صلب عمل الواجهة الخلفية على الخادم (ص 51).", "exp_en": "Verifying login and applying app rules is the core duty of the Back-End on the server (p. 51)."}, {"tag": "اختصاص قاعدة البيانات (ص 51)", "ar_q": "أي مما يلي يقع بالكامل ضمن اختصاص طبقة قاعدة البيانات (Database Tier)؟", "en_q": "Which of the following falls entirely under the Database Tier scope?", "options": [{"ar": "التحقق من كتابة المستخدم للبريد الإلكتروني بصيغة صحيحة", "en": "Checking email regex syntax on client side"}, {"ar": "حفظ وتخزين سجل طلبات العملاء ومعلومات الحسابات وتوفيرها عند الطلب", "en": "Storing customer orders history and account data, providing them upon request"}, {"ar": "إرسال تنبيهات صوتية للمتصفح", "en": "Playing audio alerts in browser"}, {"ar": "معالجة الرسوميات ثلاثية الأبعاد في شاشة الموقع", "en": "Rendering 3D graphics in the web page"}], "correct": 1, "exp_ar": "قاعدة البيانات هي المسؤولة عن حفظ البيانات وتخزين معلومات العملاء وسجل الطلبات وتوفيرها عند الحاجة (ص 51).", "exp_en": "The Database persists data, customer information, and order logs, providing them when requested (p. 51)."}, {"tag": "منصة مشاركة الفيديو (ص 53)", "ar_q": "ما الدور الأساسي للواجهة الأمامية في منصات مشاركة الفيديو (مثل يوتيوب) وفق جدول الكتاب؟", "en_q": "What is the primary role of the Front-End in video platforms according to the textbook?", "options": [{"ar": "تخزين ملفات الفيديو بصيغة مضغوطة في السحابة", "en": "Storing compressed video files in cloud storage"}, {"ar": "عرض شاشات تشغيل الفيديو والبحث واستقبال إجراءات المستخدم", "en": "Displaying video player screens and search UI, receiving user actions"}, {"ar": "حساب عدد الأرباح لمنتجي المحتوى", "en": "Calculating monetization for creators"}, {"ar": "إدارة الخوادم الموزعة جغرافياً", "en": "Managing distributed edge servers"}], "correct": 1, "exp_ar": "الواجهة الأمامية في منصات الفيديو: عرض شاشات تشغيل الفيديو والبحث؛ واستقبال إجراءات المستخدم (ص 53).", "exp_en": "Front-End in video platforms renders playback and search screens and receives user actions (p. 53)."}, {"tag": "بيانات منصة الفيديو (ص 53)", "ar_q": "في منصة مشاركة الفيديو، ماذا تخزن طبقة البيانات تحديداً وفق جدول الكتاب المدرسي؟", "en_q": "In a video platform, what exactly does the Database tier store according to the textbook?", "options": [{"ar": "فقط نصوص الأزرار والقوائم المترجمة", "en": "Only translated button labels"}, {"ar": "بيانات الفيديو، ومعلومات المستخدمين، وسجل المشاهدة", "en": "Video data, user information, and watch history"}, {"ar": "أكواد جافا سكريبت الخاصة بتشغيل المتصفح", "en": "Browser JavaScript runtime code"}, {"ar": "تعريفات بطاقة الشاشة والعتاد المادي", "en": "Hardware GPU drivers"}], "correct": 1, "exp_ar": "تخزن قاعدة البيانات في منصات الفيديو: بيانات الفيديو، ومعلومات المستخدمين، وسجل المشاهدة (ص 53).", "exp_en": "The Database stores video metadata/files, user profiles, and viewing history logs (p. 53)."}, {"tag": "شبكة التواصل - خلفية (ص 53)", "ar_q": "ما المهمة التي تتولاها الواجهة الخلفية في شبكة التواصل الاجتماعي عند قيام المستخدم بنشر منشور جديد؟", "en_q": "What Back-End task occurs when a user publishes a post on social media?", "options": [{"ar": "رسم شكل المنشور في متصفح المستخدم", "en": "Rendering post CSS in browser"}, {"ar": "تحديد الجمهور المستهدف للمنشور والتحكم في الإشعارات الفورية", "en": "Determining target audience and controlling instant notifications"}, {"ar": "تخزين المنشور في القرص الصلب للمستخدم مباشرة", "en": "Saving post directly to client hard disk"}, {"ar": "النقر التلقائي على أزرار التفاعل", "en": "Auto-clicking reaction buttons"}], "correct": 1, "exp_ar": "الواجهة الخلفية في شبكة التواصل مسؤولة عن: تحديد الجمهور المستهدف للمنشورات؛ والتحكم في الإشعارات الفورية (ص 53).", "exp_en": "Back-End in social media determines post target audience and manages instant notifications (p. 53)."}, {"tag": "شبكة التواصل - أمامية (ص 53)", "ar_q": "في شبكات التواصل الاجتماعي، ما الشاشات التي تقع مسؤوليتها على الواجهة الأمامية وفق المنهج؟", "en_q": "In social media, which screens are the responsibility of the Front-End?", "options": [{"ar": "شاشات إعدادات قواعد البيانات الداخلية للخادم", "en": "Internal database server administration screens"}, {"ar": "عرض الخط الزمني (Timeline) وشاشات النشر واستقبال المحتوى", "en": "Displaying Timeline, publishing screens, and sending input content"}, {"ar": "لوحة تحكم خادم نظام التشغيل السحابي", "en": "Cloud OS server console"}, {"ar": "نظام إدارة طاقة مركز البيانات", "en": "Data center power management"}], "correct": 1, "exp_ar": "الواجهة الأمامية في شبكة التواصل تعرض الخط الزمني وشاشات النشر وترسل المحتوى المُدخل (ص 53).", "exp_en": "Front-End displays the timeline, publishing interface, and dispatches entered content (p. 53)."}, {"tag": "التجارة الإلكترونية - المخزون (ص 53 و 54)", "ar_q": "عملية 'التحقق من المخزون' عند طلب شراء سلعة معينة تقع تحت مسؤولية:", "en_q": "The task of 'verifying stock/inventory' when an item is ordered belongs to:", "options": [{"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "متصفح الويب الخاص بالمشتري", "en": "Buyer's web browser"}, {"ar": "شركة الشحن الخارجي", "en": "External courier company"}], "correct": 1, "exp_ar": "معالجة التحقق من المخزون تقع على عاتق الواجهة الخلفية التي تفحص توفر السلعة قبل تأكيد الطلب (ص 53 وص 54).", "exp_en": "Inventory check logic is handled by the Back-End before confirming the order (p. 53, 54)."}, {"tag": "التجارة الإلكترونية - سلة التسوق (ص 53)", "ar_q": "ما الطبقة المسؤولة عن عرض شاشات سلة التسوق واستقبال عمليات الطلب؟", "en_q": "Which tier displays shopping cart screens and receives order checkout operations?", "options": [{"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "الواجهة الخلفية", "en": "Back-End"}, {"ar": "محرك قاعدة البيانات", "en": "Database Engine"}, {"ar": "خادم الذاكرة المؤقتة", "en": "Cache Server"}], "correct": 0, "exp_ar": "عرض قوائم المنتجات وشاشات سلة التسوق واستقبال عمليات الطلب يقع ضمن الواجهة الأمامية (ص 53).", "exp_en": "Presenting product catalogs, cart screens, and checkout interactions is Front-End (p. 53)."}, {"tag": "تطبيق الطقس - إدخال البيانات (ص 55)", "ar_q": "في تطبيق الطقس، من المسؤول عن أخذ اسم المدينة الذي كتبه المستخدم؟", "en_q": "In a weather app, which component captures the city name typed by the user?", "options": [{"ar": "الواجهة الخلفية وحدها", "en": "Back-End alone"}, {"ar": "الواجهة الأمامية", "en": "Front-End"}, {"ar": "قمر الأرصاد الجوية", "en": "Weather satellite"}, {"ar": "محرك قاعدة البيانات المركزي", "en": "Central database engine"}], "correct": 1, "exp_ar": "أخذ اسم المدينة يتم بواسطة الواجهة الأمامية عبر حقل الإدخال في المتصفح (طبق ما تعلمته ص 55).", "exp_en": "Capturing city name input is done by the Front-End via the browser UI input field (p. 55)."}, {"tag": "تطبيق الطقس - قيود الأمامية (ص 55)", "ar_q": "ما المهمة التي لا يمكن للواجهة الأمامية في تطبيق الطقس القيام بها بمفردها بأمان وموثوقية؟", "en_q": "What task can the Front-End NOT perform alone reliably in a weather app?", "options": [{"ar": "عرض اسم المدينة على الشاشة", "en": "Displaying city name on screen"}, {"ar": "تغيير لون خلفية الصفحة", "en": "Changing page background color"}, {"ar": "جلب بيانات التوقعات من خوادم الأرصاد وتخزين السجلات الدائمة بأمان", "en": "Fetching forecast data from weather servers and permanently storing logs securely"}, {"ar": "استقبال نقرة زر الفأرة على زر البحث", "en": "Receiving mouse click on search button"}], "correct": 2, "exp_ar": "الواجهة الأمامية لا تستطيع وحدها استرداد بيانات الطقس من خوادم الأرصاد الرسمية أو حفظ السجلات بأمان دون خادم وقاعدة بيانات (ص 55).", "exp_en": "Front-End cannot independently fetch live meteorological data or securely persist history without Back-End/DB (p. 55)."}, {"tag": "فكر كمهندس - عطل العيادة (ص 54)", "ar_q": "إذا فتح المريض صفحة الحجز ولم تظهر أي مواعيد متاحة، فأي مما يلي قد يكون سبباً محتملاً للمشكلة؟", "en_q": "If the booking page opens but no slots appear, which of the following is a likely cause?", "options": [{"ar": "عطل في استعلام الواجهة الخلفية أو عدم وجود مواعيد مسجلة بقاعدة البيانات", "en": "Back-End query failure or no available slots in the database"}, {"ar": "فأرة المستخدم غير متصلة بالجهاز", "en": "User mouse is unplugged"}, {"ar": "بطارية شاشة العرض منخفضة", "en": "Monitor battery is low"}, {"ar": "عدم وجود طابعة متصلة بجهاز المريض", "en": "Printer is disconnected"}], "correct": 0, "exp_ar": "عدم ظهور المواعيد قد يرجع لخلل في معالجة واستعلام الواجهة الخلفية، أو فراغ جدول المواعيد في قاعدة البيانات (ص 54).", "exp_en": "Lack of slots stems from Back-End query logic issues or empty/unreachable appointment tables in Database (p. 54)."}, {"tag": "فائدة الفصل بين الطبقات (ص 54)", "ar_q": "ما الفائدة الهندسية الرئيسية لفصل مسؤوليات تطبيق الويب إلى طبقات واضحة ومنظمة؟", "en_q": "What is the primary engineering benefit of separating web responsibilities into clear tiers?", "options": [{"ar": "زيادة تعقيد النظام وصعوبة إصلاح الأخطاء", "en": "Increasing system complexity and bug difficulty"}, {"ar": "سهولة الصيانة والتطوير وإمكانية تحديث أو استبدال أي طبقة دون هدم بقية النظام", "en": "Ease of maintenance/development, updating or replacing a tier without breaking others"}, {"ar": "إلغاء الحاجة لوجود متصفح ويب لدى العميل", "en": "Eliminating client web browser necessity"}, {"ar": "إجبار المستخدمين على استخدام أجهزة محددة فقط", "en": "Restricting users to specific hardware only"}], "correct": 1, "exp_ar": "فصل المسؤوليات يسهل صيانة النظام، وتطويره، واختباره، واستبدال أي طبقة دون التأثير على الطبقات الأخرى (ص 54).", "exp_en": "Separation of concerns eases maintenance, testing, and allows upgrading a tier independently (p. 54)."}, {"tag": "التواصل بين الطبقات (ص 51 و 52)", "ar_q": "كيف تتواصل الواجهة الأمامية مع الواجهة الخلفية لتنفيذ مهام المستخدم؟", "en_q": "How does the Front-End communicate with the Back-End to execute user tasks?", "options": [{"ar": "عن طريق إرسال طلب (Request) عبر الشبكة وتلقي استجابة (Response)", "en": "By dispatching a Request over the network and receiving a Response"}, {"ar": "عبر التوصيل المباشر بكابل الشاشة", "en": "Direct physical display cable link"}, {"ar": "عن طريق مشاركة الذاكرة العشوائية للجهاز المحلي", "en": "Direct client RAM sharing"}, {"ar": "دون الحاجة لأي بروتوكول اتصال شبكي", "en": "Without any networking protocols"}], "correct": 0, "exp_ar": "يرسل العميل (المتصفح/الواجهة الأمامية) طلباً عبر الشبكة إلى الخادم (الواجهة الخلفية)، ويعيد الخادم استجابة محملة بالبيانات (ص 52).", "exp_en": "Front-End dispatches a network Request to the server Back-End and receives a formatted Response (p. 52)."}, {"tag": "تنوع بنية تطبيقات الويب (ص 55)", "ar_q": "تشترك تطبيقات الويب المختلفة في بنية الطبقات الثلاث، ولكنها تختلف عملياً في:", "en_q": "Different web applications share three-tier architecture, but practically differ in:", "options": [{"ar": "نوع البيانات المخزنة، وقواعد المعالجة، والتصميم المرئي بما يناسب غرض التطبيق", "en": "Data stored, processing business logic, and UI design matching application purpose"}, {"ar": "ضرورة حذف إحدى الطبقات الثلاث في بعض المواقع", "en": "Mandatory removal of one tier in some sites"}, {"ar": "استحالة تشغيلها على الهواتف الذكية", "en": "Inability to run on mobile smartphones"}, {"ar": "اقتصار تطبيقات الويب على التجارة فقط دون غيرها", "en": "Restricting web applications to e-commerce only"}], "correct": 0, "exp_ar": "تختلف التطبيقات في طبيعة البيانات المخزنة، وقواعد المعالجة والتحكم، وتصميم شاشات الواجهة الأمامية وفق الهدف منها (ص 53 و 55).", "exp_en": "Applications vary in their data types, back-end business logic rules, and UI layouts to serve their unique purpose (p. 53, 55)."}], "essay": [{"source": "واجب منزلي 1 - مقارنة الطبقتين الأساسيتين (ص 51)", "q": "فرّق بدقة بين الواجهة الأمامية (Frontend) والواجهة الخلفية (Backend) من حيث: بيئة التشغيل، والهدف الأساسي، ومثالين لكل منهما.", "en_q": "Distinguish between Front-End and Back-End regarding: execution environment, main purpose, and two examples each.", "hint": "متصفح مقابل خادم، عرض مقابل معالجة.", "en_hint": "Browser vs Server, UI vs Logic.", "model": "• <b>الواجهة الأمامية (Front-end):</b> تعمل في <b>متصفح العميل</b>؛ هدفها <b>العرض والتفاعل</b> واستقبال مدخلات المستخدم؛ أمثلتها: شاشة البحث، ونماذج إدخال البيانات.<br>• <b>الواجهة الخلفية (Back-end):</b> تعمل على <b>الخادم (Server)</b>؛ هدفها <b>المعالجة والتحكم</b> وتطبيق قواعد العمل؛ أمثلتها: التحقق من تسجيل الدخول، ومعالجة الدفع المالي.", "en_model": "• <b>Front-End:</b> Runs in the <b>client browser</b>; purpose is <b>presentation & interaction</b>; examples: search bar UI, registration forms.<br>• <b>Back-End:</b> Runs on the <b>server</b>; purpose is <b>processing & business logic</b>; examples: login authentication, payment transaction processing."}, {"source": "واجب منزلي 2 - أهمية طبقة البيانات (ص 51-52)", "q": "لماذا نحتاج إلى طبقة قاعدة البيانات (Database Tier) في تطبيقات الويب؟ وما أنواع البيانات أو المكونات التي قد تشملها؟", "en_q": "Why do web apps need a Database Tier, and what types of data/components might it include?", "hint": "الحفظ الدائم للبيانات بدلاً من ضياعها بإغلاق المتصفح.", "en_hint": "Persistent storage vs losing data when closing the tab.", "model": "نحتاج إليها لأن تطبيقات الويب تتطلب <b>حفظ البيانات واسترجاعها بشكل دائم وآمن</b> عند الحاجة، بدلاً من فقدانها عند إغلاق المتصفح.<br>قد تشمل: أنظمة إدارة قواعد البيانات (DBMS)، تخزين الملفات والكائنات (مثل الصور والفيديوهات)، الذاكرة المخبأة (Cache)، أو خدمات البيانات الخارجية.", "en_model": "Needed to <b>persistently and securely store, retrieve, and manage data</b> across user sessions. It includes relational/NoSQL databases, file/object storage (images/videos), in-memory cache, and external data services."}, {"source": "واجب منزلي 3 - تتبع تدفق البحث خطوة بخطوة (ص 52)", "q": "تتبّع بالتفصيل الخطوات الست التي تحدث في تطبيق متجر إلكتروني منذ لحظة كتابة المستخدم لكلمة بحث حتى ظهور المنتجات أمامه.", "en_q": "Detail the 6 steps occurring in an online store from typing a search keyword to displaying results.", "hint": "الخطوات الست المرتبة في كتاب الوزارة ص 52.", "en_hint": "The 6 ordered steps from textbook p. 52.", "model": "1. تستقبل الواجهة الأمامية كلمات البحث من المستخدم.<br>2. ترسل الواجهة الأمامية كلمات البحث كطلب إلى الواجهة الخلفية.<br>3. تطلب الواجهة الخلفية من قاعدة البيانات المنتجات المطابقة للبحث.<br>4. تعيد قاعدة البيانات النتائج المطلوبة إلى الواجهة الخلفية.<br>5. تجهز الواجهة الخلفية النتائج وتنسقها لإرسالها للأمامية.<br>6. تعرض الواجهة الأمامية نتائج البحث على شاشة المستخدم.", "en_model": "1. Front-End captures search keywords from the user.<br>2. Front-End dispatches the request to the Back-End.<br>3. Back-End queries the Database for matching products.<br>4. Database returns query records to the Back-End.<br>5. Back-End formats and prepares the response.<br>6. Front-End renders the final results on the user display."}, {"source": "واجب منزلي 4 - مقارنة التطبيقات الشهيرة (ص 53)", "q": "قارن في جدول منظم بين دور كل من (الواجهة الأمامية، الواجهة الخلفية، قاعدة البيانات) في موقع تجارة إلكترونية مقابل شبكة تواصل اجتماعي.", "en_q": "Compare in a table the roles of Front-End, Back-End, and Database in E-Commerce vs. Social Media.", "hint": "راجع جدول إعدادات تطبيقات الويب المألوفة ص 53.", "en_hint": "Review the common configurations table on p. 53.", "model": "• <b>التجارة الإلكترونية:</b><br>- الأمامية: عرض قوائم المنتجات وسلة التسوق واستقبال الطلبات.<br>- الخلفية: التحقق من المخزون ومعالجة طلبات الدفع.<br>- البيانات: تخزين معلومات المنتجات وسجل الطلبات وبيانات العملاء.<br>• <b>شبكة التواصل:</b><br>- الأمامية: عرض الخط الزمني وشاشات النشر وإرسال المحتوى.<br>- الخلفية: تحديد الجمهور المستهدف والتحكم بالإشعارات.<br>- البيانات: تخزين المنشورات وعلاقات المتابعة والرسائل.", "en_model": "• <b>E-Commerce:</b> Front-End (catalogs & cart UI), Back-End (stock check & payments), Database (products, order history, customer accounts).<br>• <b>Social Media:</b> Front-End (timeline & post creator), Back-End (audience filtering & push notifications), Database (posts, follower graph, messages)."}, {"source": "واجب منزلي 5 - سيناريو مشاهدة وتفاعل فيديو (ص 53)", "q": "في منصة مشاركة الفيديو، وضّح كيف تتعاون الطبقات الثلاث عند قيام مستخدم بمشاهدة مقطع فيديو وتسجيل إعجاب به.", "en_q": "In a video platform, how do the three tiers collaborate when a user watches a video and likes it?", "hint": "عرض الفيديو، زيادة العداد، حفظ سجل التفاعل.", "en_hint": "Stream video, increment counter, record engagement.", "model": "1. <b>الواجهة الأمامية:</b> تعرض مشغل الفيديو وتستقبل نقرة زر 'إعجاب' وترسل الإجراء للخادم.<br>2. <b>الواجهة الخلفية:</b> تعالج نقرة الإعجاب وتحدث إجمالي عدد المشاهدات والتفاعلات وتتحقق من عدم تكراره من نفس الحساب.<br>3. <b>قاعدة البيانات:</b> تحدث عداد الإعجابات وتخزن المقطع ضمن سجل مشاهدات المستخدم وقائمة فيديوهاته المعجب بها.", "en_model": "1. <b>Front-End:</b> Streams video playback, captures the 'Like' click, and dispatches the action.<br>2. <b>Back-End:</b> Processes the engagement, prevents duplicate likes, and increments metrics.<br>3. <b>Database:</b> Updates like tallies and logs the interaction to user watch history."}, {"source": "واجب منزلي 6 - تصميم نظام عيادة (ص 54)", "q": "في نشاط 'فكّر كمهندس'، أرادت عيادة طبية إنشاء تطبيق ويب. اشرح بالتفصيل كيف يتم توزيع المهام الثلاث (نموذج الحجز، فحص الأوقات المتاحة، وسجل الزيارات السابقة) مبرراً اختيارك لكل طبقة.", "en_q": "Explain the 3-tier distribution for a clinic app (booking form, availability check, visit history) with justifications.", "hint": "العرض يذهب للأمامية، المنطق للخلفية، التخزين لقاعدة البيانات.", "en_hint": "UI to Front-End, Logic to Back-End, Storage to Database.", "model": "• <b>نموذج الحجز:</b> يُسند لـ <b>الواجهة الأمامية</b> لأن المريض يحتاج لشاشة سهلة لإدخال اسمه وتخصصه المطلوب.<br>• <b>فحص الأوقات المتاحة:</b> يُسند لـ <b>الواجهة الخلفية</b> لتطبيق قواعد العيادة وفحص تضارب المواعيد قبل التأكيد.<br>• <b>سجل الزيارات السابقة:</b> يُسند لـ <b>قاعدة البيانات</b> لضمان سرية التاريخ الطبي وحفظه الدائم واسترجاعه بدقة.", "en_model": "• <b>Booking Form:</b> <b>Front-End</b> (intuitive patient input UI).<br>• <b>Availability Check:</b> <b>Back-End</b> (validates schedule conflicts and business rules).<br>• <b>Visit History:</b> <b>Database</b> (confidential, permanent medical records storage)."}, {"source": "واجب منزلي 7 - تشخيص أعطال وتصحيحها (ص 54)", "q": "واجه مطور مشكلة في تطبيق العيادة: صفحة الحجز تفتح للمريض لكنها فارغة من أية مواعيد متاحة. اقترح خطة منهجية من خطوتين لتشخيص العطل وتحديد الطبقة المسببة له.", "en_q": "Clinic booking page opens, but slots list is empty. Propose a 2-step methodology to diagnose which tier is failing.", "hint": "فحص الشبكة والاستجابات، وفحص محتوى قاعدة البيانات.", "en_hint": "Inspect network response codes, inspect database records.", "model": "<b>الخطوة 1: فحص استجابة الشبكة من المتصفح (Inspect Network):</b> التحقق مما إذا كان طلب المواعيد يعود برمز نجاح ومحمل ببيانات؛ فإن كان الخطأ 500 فالمشكلة في الخادم الخلفي، وإن كان 200 والبيانات موجودة فالخلل في كود العرض بالأمامية.<br><b>الخطوة 2: فحص استعلام قاعدة البيانات (Database Query):</b> التأكد مباشرة من وجود مواعيد مسجلة للأطباء في جدول المواعيد وسلامة اتصال الخادم بالقاعدة.", "en_model": "<b>Step 1: Network Inspection:</b> Check HTTP status in browser dev tools. A 500 error indicates Back-End/DB crash; 200 with data indicates a Front-End rendering bug.<br><b>Step 2: Database Direct Query:</b> Verify whether appointment slots exist in DB tables and confirm server connectivity."}, {"source": "واجب منزلي 8 - مخاطر خلط المسؤوليات (ص 54)", "q": "ما المخاطر والعيوب التقنية الناتجة عن 'خلط مسؤوليات العرض والمعالجة والبيانات دون فصل واضح' داخل تطبيق الويب؟", "en_q": "What technical risks arise from mixing presentation, processing, and data without clean separation?", "hint": "صعوبة الصيانة، مخاطر أمنية، صعوبة التوسع.", "en_hint": "Spaghetti code, security holes, impossible scaling.", "model": "1) <b>صعوبة الصيانة واكتشاف الأخطاء (Spaghetti Code):</b> أي تعديل بسيط في شكل الموقع قد يفسد كود المعالجة أو قواعد البيانات.<br>2) <b>مخاطر أمنية جسيمة:</b> خلط البيانات والعرض قد يعرض بيانات الاعتماد والاستعلامات لمتصفح المستخدم مباشرة.<br>3) <b>انعدام قابلية التوسع:</b> يستحيل استبدال أو تسريع طبقة (كقاعدة البيانات) دون إعادة كتابة التطبيق بالكامل.", "en_model": "1) <b>Maintenance Nightmare:</b> Changing UI styles risks breaking business logic and DB transactions.<br>2) <b>Security Vulnerabilities:</b> Exposing queries/logic to client scripts invites data breaches.<br>3) <b>Zero Scalability:</b> Independent scaling or modernizing a single component becomes impossible."}, {"source": "واجب منزلي 9 - تحليل تطبيق الطقس (ص 55)", "q": "في تطبيق توقعات الطقس، اشرح دور كل طبقة من الطبقات الثلاث، وبيّن لماذا يستحيل على الواجهة الأمامية جلب التوقعات وتخزينها بمفردها دون مساعدة.", "en_q": "In a weather app, explain each tier's role and why Front-End cannot fetch and store forecasts alone.", "hint": "مفاتيح API السرية والتخزين الدائم.", "en_hint": "Secret API keys and persistent data storage.", "model": "• الواجهة الأمامية تستقبل اسم المدينة وتعرض درجات الحرارة والأيقونات.<br>• الواجهة الخلفية تتصل بخوادم الأرصاد العالمية باستخدام مفاتيح أمنية وتتحقق من صحة المدينة.<br>• قاعدة البيانات تحتفظ بسجل التوقعات والمدن المفضلة.<br>• يستحيل على الأمامية العمل وحدها لأنها تعمل في بيئة متصفح محدودة الصلاحيات لا تملك وسائل تخزين دائمة آمنة، ولا يمكنها تخزين مفاتيح الاتصال السرية دون كشفها للمستخدمين.", "en_model": "• Front-End captures city and renders weather graphics.<br>• Back-End securely queries weather meteorological APIs with hidden keys.<br>• Database caches forecasts and saves favorite cities.<br>• Front-End cannot do this alone because browser sandbox lacks secure server-side storage and cannot safely store secret API credentials."}, {"source": "واجب منزلي 10 - فلسفة المنهج التعليمية (ص 55)", "q": "ناقش العبارة التالية من الكتاب المدرسي مبيناً مدى صحتها: 'نموذج الطبقات الثلاث هو نموذج تعليمي للتعلم وليس بنية إلزامية لكل تطبيق'.", "en_q": "Discuss the textbook statement: 'The 3-tier model is for learning and not mandatory for every app.'", "hint": "تنوع المعماريات الحديثة مثل التطبيقات الثابتة والمصغرة.", "en_hint": "Modern architectures: Jamstack, microservices, serverless.", "model": "العبارة <b>صحيحة تماماً</b>؛ فالهدف من نموذج الطبقات الثلاث هو تبسيط استيعاب كيفية تدفق البيانات وتوزيع الأدوار للطلاب، بينما في الواقع العملي تختلف معماريات الويب؛ فبعض التطبيقات البسيطة (مثل الصفحات التعريفية) لا تحتاج لقاعدة بيانات أصلاً، والبعض الآخر يعتمد على خدمات سحابية لا خادومية (Serverless) أو معماريات الخدمات المصغرة (Microservices).", "en_model": "<b>Completely accurate</b>: The 3-tier model is a pedagogical construct to help students grasp separation of concerns and data flow. In reality, modern architectures vary: static sites need no database, while enterprise apps employ microservices, event-driven, or serverless models."}, {"source": "واجب منزلي 11 - وضوح أعطال الواجهات (ص 55)", "q": "تأمّل في أعطال الويب: لماذا يكون فشل الواجهة الأمامية أكثر وضوحاً وفجاجة للمستخدم مقارنة بفشل جزئي في خادم قاعدة البيانات؟", "en_q": "Why is Front-End failure more immediately jarring to the user than a partial database glitch?", "hint": "الاتصال الحسي المباشر بالمتصفح.", "en_hint": "Direct sensory visual contact in the browser.", "model": "لأن الواجهة الأمامية تمثل <b>السطح الحسي والبصري المباشر</b> الذي يتعامل معه المستخدم؛ فتعطلها يؤدي لتشوه فوري في التصميم أو تجمد الأزرار أو شاشة فارغة تماماً، بينما الفشل الجزئي في قاعدة البيانات قد تتعامل معه الواجهة الخلفية مؤقتاً عبر عرض بيانات مخبأة (Cached Data) دون أن يشعر المستخدم فوراً.", "en_model": "Because the Front-End is the <b>immediate sensory surface</b>. A client-side failure manifests as frozen clicks, distorted layout, or blank screens. Conversely, a partial DB issue can often be masked by cached responses without immediate disruption to user navigation."}, {"source": "واجب منزلي 12 - فرز الجمهور المستهدف في التواصل (ص 53)", "q": "كيف تساهم الواجهة الخلفية في شبكة التواصل الاجتماعي في تحديد الجمهور المستهدف لكل منشور (عام، أصدقاء، خاص)؟ وما دور قاعدة البيانات في ذلك؟", "en_q": "How does Back-End filter post target audience (public, friends, private), and what is the Database role?", "hint": "قواعد الصلاحيات وقوائم علاقات الصداقة.", "en_hint": "Authorization rules and friendship graphs.", "model": "تتولى الواجهة الخلفية تطبيق <b>قواعد الخصوصية والصلاحيات</b> عند طلب عرض المنشورات؛ فتفحص العلاقة بين الناشر والمشاهد. وتقوم قاعدة البيانات بتخزين <b>جدول علاقات المتابعة والصداقة وقوائم الحظر</b>، وتستجيب لاستعلام الواجهة الخلفية لجلب المنشورات فقط لمن يملكون حق رؤيتها.", "en_model": "The Back-End evaluates <b>access control lists & privacy logic</b>. The Database stores the <b>social graph, friendship statuses, and privacy tags</b>, allowing the Back-End to query and serve posts exclusively to authorized recipients."}, {"source": "واجب منزلي 13 - انقطاع الاتصال بين الخادم وقاعدة البيانات (ص 52)", "q": "ماذا يحدث إذا انقطع الاتصال بين الواجهة الخلفية وقاعدة البيانات أثناء محاولة المستخدم إتمام عملية شراء في متجر إلكتروني؟ وكيف يجب أن تتصرف الواجهة الأمامية لإعلام المستخدم؟", "en_q": "What happens if Back-End loses DB connectivity during checkout? How should Front-End communicate this?", "hint": "فشل المعالجة ورسائل الخطأ الواضحة.", "en_hint": "Failed transaction, graceful error handling.", "model": "يتعذر على الواجهة الخلفية التحقق من المخزون أو تسجيل الطلب في قاعدة البيانات، فتلغي المعالجة لمنع سحب الأموال دون تسجيل الطلب، وترسل رمز خطأ (مثل 500). ويجب على الواجهة الأمامية عرض <b>رسالة واضحة ومهذبة</b> تشرح حدوث تعذر مؤقت في الخدمة وتطلب إعادة المحاولة لاحقاً دون إرباك المستخدم بأكواد برمجية مبهمة.", "en_model": "The Back-End fails to verify inventory or persist order records, aborting the transaction to prevent unrecorded payments, returning an error (e.g. 500). The Front-End must display a <b>user-friendly error message</b> explaining the temporary outage and advising retry without exposing raw code stack traces."}, {"source": "واجب منزلي 14 - تشريح تطبيق خرائط جوجل (ص 51 و 53)", "q": "حلل تطبيق خرائط جوجل (Google Maps) وفق معمارية الطبقات الثلاث: ما الذي يديره المتصفح، وما الذي يعالجه الخادم، وما الذي تحتفظ به قاعدة البيانات؟", "en_q": "Deconstruct Google Maps into three tiers: What runs in browser, what is processed on server, what is kept in DB?", "hint": "عرض الخريطة، حساب المسار، تخزين الإحداثيات.", "en_hint": "Rendering tiles, routing algorithms, spatial vector storage.", "model": "• <b>الواجهة الأمامية:</b> عرض طبقات الخريطة والصور، تحريك وتكبير الخريطة بسلاسة، واستقبال نقطة البداية والوجهة.<br>• <b>الواجهة الخلفية:</b> تشغيل خوارزميات إيجاد أقصر مسار (Routing)، تحليل حركة المرور اللحظية، وتحديث وقت الوصول.<br>• <b>قاعدة البيانات:</b> حفظ الخرائط المتجهية (Spatial Data)، إحداثيات المباني والأماكن، وبيانات السرعات القانونية للطرق.", "en_model": "• <b>Front-End:</b> Renders vector tiles, smooth pan/zoom controls, and destination input UI.<br>• <b>Back-End:</b> Computes shortest path routing, analyzes real-time traffic congestion, and predicts ETA.<br>• <b>Database:</b> Persists spatial geospatial coordinates, road network topologies, and business place profiles."}, {"source": "واجب منزلي 15 - الربط بين دروس الوحدة الثالثة (ص 50-67)", "q": "اكتب فقرة متكاملة توضح كيف تمهد دراسة 'البنية العامة لتطبيقات الويب' (الدرس 3-1) للدرسين التاليين في الوحدة (3-2: طرق الاتصال و 3-3: أساسيات الواجهة الأمامية).", "en_q": "Explain how studying 'Web App Architecture' (Lesson 3-1) paves the way for Lessons 3-2 (Communication) and 3-3 (Front-End Basics).", "hint": "التكامل بين البنية العامة وطرق الاتصال والتقنيات.", "en_hint": "Connecting general architecture, protocols, and front-end languages.", "model": "يؤسس الدرس 3-1 <b>الهيكل الإطاري الكلي</b> لتطبيقات الويب (الطبقات الثلاث: عرض، معالجة، تخزين). ثم يأتي <b>الدرس 3-2 (طرق الاتصال)</b> ليشرح تفصيلياً البروتوكول الذي يربط بين العميل والخادم (HTTP/HTTPS وطلبات GET وPOST وتنسيق JSON). وأخيراً يتعمق <b>الدرس 3-3 (أساسيات الواجهة الأمامية)</b> في الأدوات والتقنيات الفعلية التي تبني الطبقة الأولى (HTML للهيكل، CSS للمظهر، وJavaScript للسلوك التفاعلي)؛ ليكتمل لدى الطالب الفهم الشامل لمنظومة الويب المتكاملة.", "en_model": "Lesson 3-1 establishes the <b>macro architectural foundation</b> (the 3 tiers). Then <b>Lesson 3-2 (Communication Methods)</b> dives into how the client and server exchange requests via HTTP/HTTPS, GET/POST, and JSON. Finally, <b>Lesson 3-3 (Front-End Basics)</b> zooms into the technologies that craft Tier 1 (HTML for structure, CSS for presentation, JS for dynamic behavior), completing the full picture of modern web systems."}]}};
+
+        let currentMode = 'session';
+        let currentSubTab = 'mcq';
+        let mcqViewMode = 'single';
+        let state = {
+            session: { answers: new Array(15).fill(null), currentIdx: 0 },
+            homework: { answers: new Array(15).fill(null), currentIdx: 0 }
+        };
+
+        function safeGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+        function safeSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        function getPrefix() { return 'cs_u3_l1_' + currentMode; }
+
+        function jumpToQuiz(m, sub) {
+            switchMode(m);
+            switchSubTab(sub);
+            document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchMode(m) {
+            currentMode = m;
+            document.getElementById('modeBtnSession').className = m === 'session' ? 'mode-card-btn active-mode-session' : 'mode-card-btn';
+            document.getElementById('modeBtnHomework').className = m === 'homework' ? 'mode-card-btn active-mode-homework' : 'mode-card-btn';
+            const lbl = m === 'session' ? 'السيشن' : 'الواجب';
+            document.getElementById('tabMCQLabel').innerText = `🔘 الاختيار من متعدد (15 - ${lbl})`;
+            document.getElementById('tabEssayLabel').innerText = `✍️ الأسئلة المقالية (15 - ${lbl})`;
+            document.getElementById('currentModeBadge').innerText = m === 'session' ? '👨‍🏫 السيشن' : '🏠 الواجب';
+            document.getElementById('essayBannerTitle').innerText = `📝 الأسئلة المقالية والتحليلية لقسم ${lbl} (15 سؤالاً):`;
+            document.getElementById('resultsCard').style.display = 'none';
+            loadScores();
+            displayQuestion();
+            renderAllMcqList();
+            renderEssayQuestions();
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            document.getElementById('tabMCQ').classList.toggle('active', sub === 'mcq');
+            document.getElementById('tabEssay').classList.toggle('active', sub === 'essay');
+            document.getElementById('mcqContainer').style.display = sub === 'mcq' ? 'block' : 'none';
+            document.getElementById('essayContainer').style.display = sub === 'essay' ? 'block' : 'none';
+            document.getElementById('mcqViewToggleGroup').style.display = sub === 'mcq' ? 'flex' : 'none';
+        }
+
+        function setMcqViewMode(vm) {
+            mcqViewMode = vm;
+            document.getElementById('viewSingleBtn').classList.toggle('active-view', vm === 'single');
+            document.getElementById('viewAllBtn').classList.toggle('active-view', vm === 'all');
+            document.getElementById('quizCard').style.display = vm === 'single' ? 'block' : 'none';
+            document.getElementById('allMcqListContainer').style.display = vm === 'all' ? 'block' : 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+            if (vm === 'single') displayQuestion();
+            else renderAllMcqList();
+        }
+
+        function calculateScore() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            let s = 0, answered = 0;
+            qs.forEach((q, i) => {
+                if (ans[i] !== null) {
+                    answered++;
+                    if (ans[i] === q.correct) s++;
+                }
+            });
+            document.getElementById('score').innerText = s;
+            document.getElementById('progressBar').style.width = ((answered / qs.length) * 100) + '%';
+            return s;
+        }
+
+        function loadScores() {
+            const p = getPrefix();
+            document.getElementById('highScore').innerText = safeGet(p + '_high') || '0';
+            document.getElementById('firstScore').innerText = safeGet(p + '_first') !== null ? safeGet(p + '_first') : '--';
+            calculateScore();
+        }
+
+        function displayQuestion() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const idx = state[currentMode].currentIdx;
+            const q = qs[idx];
+
+            document.getElementById('qCurrent').innerText = idx + 1;
+            document.getElementById('topicBadge').innerText = q.tag;
+            document.getElementById('questionTextAr').innerText = (idx + 1) + '. ' + q.ar_q;
+            document.getElementById('questionTextEn').innerText = 'Q' + (idx + 1) + ': ' + q.en_q;
+            calculateScore();
+
+            const box = document.getElementById('optionsContainer');
+            box.innerHTML = '';
+            const exp = document.getElementById('explanationText');
+            const st = document.getElementById('qStatusIndicator');
+            const prev = ans[idx];
+
+            if (prev === null) {
+                st.innerText = 'لم يُجب بعد';
+                exp.style.display = 'none';
+            } else {
+                const ok = prev === q.correct;
+                st.innerText = ok ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة';
+                exp.style.display = 'block';
+                exp.style.borderRightColor = ok ? 'var(--success)' : 'var(--danger)';
+                exp.innerHTML = `<b>${ok ? '✅ أحسنت!' : '❌ الإجابة الصحيحة: (' + ['أ','ب','ج','د'][q.correct] + ') ' + q.options[q.correct].ar}</b><div style="margin-top:6px;">${q.exp_ar}</div><div class="exp-en" style="margin-top:6px;">${q.exp_en}</div>`;
+            }
+
+            q.options.forEach((opt, oi) => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.innerHTML = `<div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${opt.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${opt.en}</div>`;
+                if (prev !== null) {
+                    b.disabled = true;
+                    if (oi === q.correct) b.classList.add('correct');
+                    else if (oi === prev) b.classList.add('wrong');
+                } else {
+                    b.onclick = () => {
+                        state[currentMode].answers[idx] = oi;
+                        displayQuestion();
+                    };
+                }
+                box.appendChild(b);
+            });
+
+            document.getElementById('prevBtn').disabled = (idx === 0);
+            document.getElementById('nextBtn').innerText = (idx === qs.length - 1) ? 'إنهاء وعرض النتيجة 🏁' : 'السؤال التالي ⬅️';
+        }
+
+        function nextQuestion() {
+            const qs = quizData[currentMode].mcq;
+            if (state[currentMode].currentIdx < qs.length - 1) {
+                state[currentMode].currentIdx++;
+                displayQuestion();
+            } else {
+                document.getElementById('quizCard').style.display = 'none';
+                document.getElementById('resultsCard').style.display = 'block';
+                const s = calculateScore();
+                const p = getPrefix();
+                document.getElementById('finalScore').innerText = s;
+                if (safeGet(p + '_first') === null) safeSet(p + '_first', s);
+                if (s > parseInt(safeGet(p + '_high') || '0')) safeSet(p + '_high', s);
+                loadScores();
+            }
+        }
+
+        function prevQuestion() {
+            if (state[currentMode].currentIdx > 0) {
+                state[currentMode].currentIdx--;
+                displayQuestion();
+            }
+        }
+
+        function renderAllMcqList() {
+            const box = document.getElementById('allMcqListContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            box.innerHTML = '';
+
+            qs.forEach((q, qi) => {
+                const prev = ans[qi];
+                const ok = prev === q.correct;
+                const card = document.createElement('div');
+                card.className = 'q-card';
+                let opts = '';
+                q.options.forEach((o, oi) => {
+                    let cls = 'opt-btn' + (prev !== null ? (oi === q.correct ? ' correct' : (oi === prev ? ' wrong' : '')) : '');
+                    opts += `<button class="${cls}" ${prev !== null ? 'disabled' : ''} onclick="state[currentMode].answers[${qi}]=${oi};calculateScore();renderAllMcqList()"><div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${o.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${o.en}</div></button>`;
+                });
+                card.innerHTML = `
+                    <div class="q-header">
+                        <span class="q-badge">${q.tag}</span>
+                        <span>${prev === null ? 'لم يُجب' : (ok ? '✅ صحيحة' : '❌ خاطئة')}</span>
+                    </div>
+                    <div class="q-text-ar">${qi+1}. ${q.ar_q}</div>
+                    <div class="q-text-en">Q${qi+1}: ${q.en_q}</div>
+                    <div class="options-list">${opts}</div>
+                    ${prev !== null ? `<div class="explanation" style="display:block; border-right-color:${ok ? 'var(--success)' : 'var(--danger)'};"><div>${q.exp_ar}</div><div class="exp-en">${q.exp_en}</div></div>` : ''}
+                `;
+                box.appendChild(card);
+            });
+        }
+
+        function openIndexModal() {
+            const g = document.getElementById('gridIndexContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            g.innerHTML = '';
+            qs.forEach((q, i) => {
+                const d = document.createElement('div');
+                d.className = 'index-pill' + (ans[i] !== null ? (ans[i] === q.correct ? ' solved-correct' : ' solved-wrong') : '');
+                d.innerText = i + 1;
+                d.onclick = () => {
+                    state[currentMode].currentIdx = i;
+                    setMcqViewMode('single');
+                    closeIndexModal();
+                };
+                g.appendChild(d);
+            });
+            document.getElementById('indexModal').style.display = 'flex';
+        }
+
+        function closeIndexModal() {
+            document.getElementById('indexModal').style.display = 'none';
+        }
+
+        function restartCurrentQuiz() {
+            state[currentMode].answers = new Array(15).fill(null);
+            state[currentMode].currentIdx = 0;
+            setMcqViewMode(mcqViewMode);
+            calculateScore();
+        }
+
+        function renderEssayQuestions() {
+            const box = document.getElementById('essayList');
+            const list = quizData[currentMode].essay;
+            box.innerHTML = '';
+            list.forEach((it, i) => {
+                const d = document.createElement('div');
+                d.className = 'essay-item';
+                d.innerHTML = `
+                    <span class="essay-source">${it.source}</span>
+                    <div class="essay-q-text"><strong>س${i+1}:</strong> ${it.q}</div>
+                    <div class="q-text-en"><strong>Q${i+1}:</strong> ${it.en_q}</div>
+                    <textarea class="essay-textarea" placeholder="اكتب إجابتك وتحليلك الهندسي هنا..."></textarea>
+                    <div>
+                        <button class="btn-reveal-answer" onclick="const h=document.getElementById('h_${i}');h.style.display=h.style.display==='block'?'none':'block'">💡 تلميح / Hint</button>
+                        <button class="btn-reveal-answer" onclick="const m=document.getElementById('m_${i}');m.style.display=m.style.display==='block'?'none':'block'">👁️ الإجابة النموذجية / Model Answer</button>
+                    </div>
+                    <div class="hint-box" id="h_${i}">
+                        <div>💡 ${it.hint}</div>
+                        <div class="exp-en" style="margin-top:4px;">💡 ${it.en_hint}</div>
+                    </div>
+                    <div class="model-answer" id="m_${i}">
+                        <div>${it.model}</div>
+                        <hr style="margin:8px 0;opacity:0.3;">
+                        <div class="exp-en" style="color:inherit;">${it.en_model}</div>
+                    </div>
+                `;
+                box.appendChild(d);
+            });
+        }
+
+        function toggleAllEssays(show) {
+            quizData[currentMode].essay.forEach((_, i) => {
+                const m = document.getElementById('m_' + i);
+                if (m) m.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        window.onload = () => {
+            showAppArch('ecommerce', null);
+            loadScores();
+            displayQuestion();
+            renderEssayQuestions();
+        };
+    </script>
+</body>
+</html>
