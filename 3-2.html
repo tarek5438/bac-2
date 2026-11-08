@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 3-2: طرق اتصال تطبيقات الويب | المنصة التفاعلية الشاملة (شرح + محاكيات + 60 سؤالاً)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81; --primary-dark: #092c4c; --primary-light: #2563eb; --primary-soft: #eff6ff;
+            --accent: #f59e0b; --accent-dark: #d97706; --accent-soft: #fffbeb;
+            --bg: #f8fafc; --card-bg: #ffffff; --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0;
+            --success: #10b981; --success-soft: #dcfce7; --danger: #ef4444; --danger-soft: #fee2e2;
+            --teal: #0d9488; --teal-soft: #ccfbf1; --purple: #8b5cf6; --purple-soft: #ede9fe; --font-scale: 1;
+        }
+        body.dark-mode {
+            --bg: #0b1120; --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #334155;
+            --primary-soft: #1e3a8a; --accent-soft: #451a03; --success-soft: #064e3b; --danger-soft: #450a0a;
+            --teal-soft: #134e4a; --purple-soft: #3b0764;
+        }
+        body.projector-mode { --font-scale: 1.16; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.85; font-size: calc(1rem * var(--font-scale)); padding-bottom: 80px; transition: background-color 0.25s, color 0.25s; }
+        #top-progress-bar { position: fixed; top: 0; right: 0; height: 5px; background: linear-gradient(to left, var(--accent), var(--primary-light), var(--teal), var(--success)); width: 0%; z-index: 3000; }
+        .sticky-toolbar { position: sticky; top: 0; z-index: 1500; background: rgba(15, 30, 54, 0.95); backdrop-filter: blur(10px); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(245, 158, 11, 0.5); }
+        .toolbar-brand { font-weight: 900; font-size: 1rem; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .tool-pill { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); padding: 5px 13px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .tool-pill:hover, .tool-pill.active-tool { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        header { background: linear-gradient(135deg, #07192f 0%, #0f4c81 55%, #1e40af 100%); color: white; padding: 42px 20px 35px; text-align: center; border-bottom: 5px solid var(--accent); }
+        header h1 { font-size: calc(2.1rem * var(--font-scale)); margin-bottom: 10px; font-weight: 900; }
+        header p { font-size: calc(1.05rem * var(--font-scale)); color: #e2e8f0; max-width: 900px; margin: 0 auto 18px; }
+        .header-badges, .nav-shortcuts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .h-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 30px; font-size: 0.86rem; font-weight: 700; color: #fde68a; }
+        .shortcut-btn { background: rgba(255, 255, 255, 0.16); color: white; border: 1px solid rgba(255, 255, 255, 0.35); padding: 9px 18px; border-radius: 22px; text-decoration: none; font-size: 0.94rem; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .shortcut-btn:hover { background: white; color: var(--primary); }
+        .shortcut-btn.highlight-hw { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .container { max-width: 1140px; margin: 28px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 28px; margin-bottom: 28px; border: 1px solid var(--border); box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.05); }
+        .badge { display: inline-block; background: var(--primary-soft); color: var(--primary-light); padding: 5px 15px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; border: 1px solid #93c5fd; }
+        body.dark-mode .badge { color: #93c5fd; }
+        h2 { color: var(--primary-light); font-size: calc(1.5rem * var(--font-scale)); margin-bottom: 14px; font-weight: 900; }
+        h3 { font-size: calc(1.18rem * var(--font-scale)); font-weight: 800; margin-bottom: 8px; }
+        .hook-box { background: var(--accent-soft); border-right: 6px solid var(--accent); padding: 18px; border-radius: 12px; margin: 16px 0; }
+        .hook-box strong { color: var(--accent-dark); display: block; margin-bottom: 5px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+        @media (max-width: 850px) { .grid-3 { grid-template-columns: 1fr; } }
+        .info-panel { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; }
+        .real-world-box { background: linear-gradient(135deg, rgba(13, 148, 136, 0.07) 0%, rgba(37, 99, 235, 0.06) 100%); border: 2px solid rgba(13, 148, 136, 0.35); border-right: 6px solid var(--teal); border-radius: 16px; padding: 18px; margin: 16px 0; }
+        .real-world-title { color: var(--teal); font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .sim-box { background: rgba(37, 99, 235, 0.04); border: 2px solid #93c5fd; border-radius: 16px; padding: 22px; margin: 20px 0; }
+        .sim-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+        .sim-btn { background: var(--card-bg); color: var(--text-main); border: 2px solid var(--primary-light); padding: 9px 16px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; transition: 0.2s; }
+        .sim-btn:hover, .sim-btn.active-sim { background: var(--primary-light); color: white; }
+        .sim-output { background: var(--card-bg); border-radius: 12px; padding: 16px; border-right: 6px solid var(--primary-light); margin-top: 12px; font-weight: 700; }
+        .stages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0; }
+        .stage-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .stage-card.active-stage { border-color: var(--primary-light); background: var(--primary-soft); transform: translateY(-3px); }
+        .stage-num { width: 34px; height: 34px; border-radius: 50%; background: var(--primary); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; margin-bottom: 6px; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; border-radius: 12px; overflow: hidden; }
+        table th, table td { border: 1px solid var(--border); padding: 12px 16px; text-align: right; }
+        table th { background: var(--primary); color: white; font-weight: 800; }
+        .flow-visual-box { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 16px 0; padding: 14px; background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; text-align: center; }
+        .flow-node { flex: 1; min-width: 130px; padding: 14px 10px; border-radius: 12px; border: 2px solid var(--border); font-weight: 800; transition: 0.25s; }
+        .flow-node.active-node { border-color: var(--primary-light); background: var(--primary-soft); transform: scale(1.04); }
+        .flow-arrow { font-size: 1.4rem; color: var(--primary-light); font-weight: 900; }
+        .code-block-ltr { direction: ltr; text-align: left; background: #0f172a; color: #38bdf8; font-family: 'Inter', monospace; padding: 16px; border-radius: 12px; font-size: 0.94rem; line-height: 1.65; overflow-x: auto; border: 2px solid #334155; margin: 12px 0; }
+        .json-key { color: #fbbf24; font-weight: 700; }
+        .json-val { color: #34d399; font-weight: 700; }
+        .book-activity { border: 2px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; background: var(--card-bg); }
+        .book-activity-header { padding: 14px 18px; background: rgba(15, 76, 129, 0.06); cursor: pointer; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary-light); }
+        .book-activity-body { padding: 18px; border-top: 1px solid var(--border); display: none; }
+        .book-activity.open .book-activity-body { display: block; }
+        .main-mode-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+        @media (max-width: 640px) { .main-mode-switcher { grid-template-columns: 1fr; } }
+        .mode-card-btn { background: var(--card-bg); border: 3px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: 0.2s; }
+        .mode-card-btn.active-mode-session { border-color: var(--primary-light); background: var(--primary-soft); }
+        .mode-card-btn.active-mode-homework { border-color: var(--accent); background: var(--accent-soft); }
+        .sub-tabs-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .quiz-tabs, .view-toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .view-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 13px; border-radius: 10px; font-size: 0.86rem; font-weight: 700; cursor: pointer; }
+        .view-btn.active-view { background: var(--teal); color: white; border-color: var(--teal); }
+        .stats-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; display: block; }
+        .stat-val { font-size: 1.25rem; font-weight: 900; color: var(--primary-light); }
+        .btn-index { background: var(--primary-soft); color: var(--primary-light); border: 2px solid #93c5fd; padding: 7px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 800; cursor: pointer; }
+        .progress-container { width: 100%; height: 7px; background: var(--border); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary-light), var(--accent)); transition: width 0.3s; }
+        .q-card, .essay-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+        .q-badge, .essay-source { background: var(--primary-soft); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 0.84rem; font-weight: 800; display: inline-block; margin-bottom: 6px; }
+        .q-text-ar, .essay-q-text { font-size: calc(1.14rem * var(--font-scale)); font-weight: 800; margin-bottom: 6px; }
+        .q-text-en, .exp-en { font-size: calc(0.94rem * var(--font-scale)); color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; border-left: 3px solid var(--primary-light); padding-left: 10px; margin-bottom: 12px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .opt-btn { background: var(--bg); border: 2px solid var(--border); padding: 12px 16px; border-radius: 12px; cursor: pointer; text-align: right; width: 100%; transition: 0.2s; }
+        .opt-btn:hover:not(:disabled) { border-color: var(--primary-light); background: var(--primary-soft); }
+        .opt-btn.correct { background: #dcfce7 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .opt-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991c1c !important; }
+        .opt-ar { font-weight: 700; color: var(--text-main); }
+        .opt-en { font-size: 0.86rem; color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; }
+        .explanation { margin-top: 14px; padding: 14px; border-radius: 12px; display: none; background: var(--bg); border-right: 5px solid var(--primary-light); }
+        .actions { display: flex; justify-content: space-between; margin-top: 18px; gap: 10px; }
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 9px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-nav:disabled { background: #94a3b8; cursor: not-allowed; }
+        .essay-textarea { width: 100%; height: 80px; padding: 10px; border-radius: 10px; border: 2px solid var(--border); background: var(--bg); color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem; }
+        .btn-reveal-answer { background: var(--bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-left: 6px; margin-bottom: 6px; }
+        .hint-box { display: none; margin-top: 10px; padding: 10px 14px; background: var(--accent-soft); border-right: 4px solid var(--accent); border-radius: 10px; font-weight: 700; }
+        .model-answer { display: none; margin-top: 12px; padding: 14px; background: #f0fdf4; border-right: 5px solid var(--success); border-radius: 10px; color: #14532d; }
+        body.dark-mode .model-answer { background: #064e3b; color: #ecfdf5; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 2500; padding: 20px; }
+        .modal-content { background: var(--card-bg); color: var(--text-main); border-radius: 20px; width: 100%; max-width: 700px; padding: 24px; max-height: 85vh; overflow-y: auto; }
+        .grid-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 8px; margin-top: 10px; }
+        .index-pill { background: var(--bg); border: 2px solid var(--border); padding: 8px; border-radius: 10px; font-weight: 800; text-align: center; cursor: pointer; }
+        .index-pill.solved-correct { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+        .index-pill.solved-wrong { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+        .results-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 20px; padding: 32px 24px; text-align: center; display: none; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: var(--primary-soft); border: 5px solid var(--primary-light); display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 16px auto; }
+        .score-num { font-size: 2.1rem; font-weight: 900; color: var(--primary-light); }
+        .btn-restart { background: var(--accent); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="top-progress-bar"></div>
+    <div class="sticky-toolbar">
+        <div class="toolbar-brand"><span>🔗</span><span>منصة الدرس 3-2: طرق اتصال تطبيقات الويب (60 سؤالاً + محاكيات تفاعلية)</span></div>
+        <div class="toolbar-actions">
+            <a href="#lesson-explanation" class="tool-pill">📖 الشرح والمحاكيات</a>
+            <a href="#book-activities-sec" class="tool-pill">📗 أنشطة الكتاب</a>
+            <button class="tool-pill" onclick="jumpToQuiz('session','mcq')">🎯 سيشن (30 سؤالاً)</button>
+            <button class="tool-pill" onclick="jumpToQuiz('homework','mcq')">🏠 الواجب (30 سؤالاً)</button>
+            <button class="tool-pill" id="projectorBtn" onclick="toggleProjectorMode()">🔍 تكبير الخط</button>
+            <button class="tool-pill" id="darkBtn" onclick="toggleDarkMode()">🌙 الوضع الليلي</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-badges">
+            <span class="h-badge">الصف الثاني الثانوي (بكالوريا مصرية)</span>
+            <span class="h-badge">الوحدة الثالثة: تطبيقات الويب</span>
+            <span class="h-badge">الدرس 3-2 (صفحات الكتاب 56 - 61)</span>
+        </div>
+        <h1>الدرس 3-2: طرق اتصال تطبيقات الويب (Web Application Communication Methods)</h1>
+        <p>شرح تفاعلي كامل لمنهج الكتاب المدرسي + محاكيات العميل والخادم وطلبات HTTP/HTTPS ورموز الحالة وAPI/JSON + 60 سؤالاً (30 للسيشن + 30 للواجب ثنائية اللغة)</p>
+        <div class="nav-shortcuts">
+            <a href="#lesson-explanation" class="shortcut-btn">📖 الشرح والمحاكيات التفاعلية</a>
+            <a href="#book-activities-sec" class="shortcut-btn">📗 جميع أسئلة وأنشطة الكتاب محلولة</a>
+            <button class="shortcut-btn" onclick="jumpToQuiz('session','mcq')">👨‍🏫 أسئلة السيشن (15 اختياري + 15 مقالي)</button>
+            <button class="shortcut-btn highlight-hw" onclick="jumpToQuiz('homework','mcq')">📝 أسئلة الواجب (15 اختياري + 15 مقالي)</button>
+        </div>
+    </header>
+
+    <div class="container" id="lesson-explanation">
+        <!-- Card 1: خريطة الدرس والمدخل -->
+        <div class="card">
+            <span class="badge">خريطة الدرس وأهداف التعلم (كتاب ص 56 - 57)</span>
+            <h2>🧭 مدخل الدرس: كيف تنتقل الطلبات والاستجابات بين العميل والخادم؟</h2>
+            <p>في الدرس 3-1 تعلمت أن الواجهة الأمامية والواجهة الخلفية تتعاونان لتنفيذ طلب المستخدم. عندما تنقر على رابط أو تبدأ بحثاً، يطلب المتصفح غالباً البيانات التي يحتاجها من خدمة على خادم عبر الشبكة. المتصفح هنا <strong>عميل (Client)</strong> يرسل طلباً، ويعيد <strong>الخادم (Server)</strong> استجابة. وتحدد بروتوكولات مثل <strong>HTTP / HTTPS</strong> قواعد هذا التبادل.</p>
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">🎯 أهداف التعلم الرسمية (ص 56)</h3>
+                    <ul style="margin-right: 18px; font-size: 0.95rem;">
+                        <li><strong>اشرح</strong> نموذج العميل والخادم ودورة الطلب والاستجابة.</li>
+                        <li><strong>ميّز</strong> بين HTTP وHTTPS، واستخدم GET وPOST في سياقات مناسبة.</li>
+                        <li><strong>فسّر</strong> رموز حالة HTTP الشائعة، واشرح دور API وJSON في تبادل البيانات.</li>
+                        <li><strong>صمّم</strong> طريقة اتصال مناسبة لمهمة في تطبيق ويب، وبرّر اختيارك.</li>
+                    </ul>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--accent);">
+                    <h3 style="color: var(--accent-dark);">⭐ الفكرة الأساسية والمفاهيم الخمسة (ص 57)</h3>
+                    <p style="font-size: 0.94rem; margin-bottom: 8px;">تعمل تطبيقات الويب من خلال إرسال العميل للطلبات وإرجاع الخادم للاستجابات، باستخدام بروتوكولات <strong>(HTTP/HTTPS)</strong> وغالباً واجهات برمجة تطبيقات <strong>(API)</strong> تتبادل البيانات بصيغ مثل <strong>JSON</strong>.</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        <span class="badge" style="margin:0;">العميل / الخادم</span>
+                        <span class="badge" style="margin:0;">HTTP / HTTPS</span>
+                        <span class="badge" style="margin:0;">طريقة طلب HTTP</span>
+                        <span class="badge" style="margin:0;">رمز حالة HTTP</span>
+                        <span class="badge" style="margin:0;">API / JSON</span>
+                    </div>
+                </div>
+            </div>
+            <div class="real-world-box">
+                <div class="real-world-title"><span>📦</span><span>تشبيه من الواقع: طلب توصيل وجبة أو طرد بريدي!</span></div>
+                <p style="font-size: 0.95rem;">تخيل دورة الاتصال في الويب مثل طلب وجبة عبر الهاتف أو التطبيق:<br>
+                1. <strong>أنت وهاتفك (العميل Client):</strong> الطرف الذي يبدأ بطلب الخدمة أو البيانات.<br>
+                2. <strong>مركز الطلبات والمطعم (الخادم Server):</strong> الطرف الذي يستقبل الطلبات من العملاء، يعالجها، ويعيد الوجبة (الاستجابة).<br>
+                3. <strong>نوع الطلب (GET مقابل POST):</strong> إذا اتصلت لتسأل «ما هي قائمة أسعار اليوم؟» فأنت تسترجع معلومات (<strong>GET</strong>)، أما إذا أرسلت «بيانات عنوانك وتفاصيل طلبك وبطاقة الدفع» ليتم تسجيلها ومعالجتها فأنت ترسل بيانات (<strong>POST</strong>).<br>
+                4. <strong>إشعار حالة الطلب (رمز الحالة Status Code):</strong> الرقم <strong>200</strong> يعني «تم تجهيز طلبك بنجاح»، الرقم <strong>404</strong> يعني «الصنف الذي طلبته غير موجود في القائمة»، والرقم <strong>500</strong> يعني «حدث عطل داخلي طارئ في فرن المطعم منعه من إكمال الطلب»!</p>
+            </div>
+            <div class="hook-box">
+                <strong>❓ السؤال الرئيسي للدرس (ص 57):</strong>
+                كيف يتواصل العميل والخادم لتشغيل تطبيق الويب، وما القواعد والرسائل التي يستخدمانها؟
+            </div>
+        </div>
+
+        <!-- Card 2: المحور الأول والثاني: العميل والخادم + HTTP و HTTPS -->
+        <div class="card">
+            <span class="badge">المحور الأول والثاني (كتاب ص 57 - 58)</span>
+            <h2>🖥️ 1. العميل والخادم (Client & Server) وبروتوكولات HTTP و HTTPS</h2>
+            <p>يُعد نموذج <strong>الطلب والاستجابة (Request-Response Model)</strong> أساسياً في كثير من تطبيقات الويب (الشكل 3.2.1 ص 57)، حيث يرسل العميل طلباً مثل <em>«أرني هذه الصفحة»</em>، ويعالج الخادم الطلب ويعيد استجابة تتضمن البيانات المطلوبة.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">المفهوم / البروتوكول</th>
+                        <th style="width: 48%;">التعريف والدور الأساسي (كتاب ص 57 - 58)</th>
+                        <th style="width: 30%;">أمثلة وخصائص</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>العميل<br>(Client)</strong></td>
+                        <td>الجانب الذي يطلب البيانات أو المعالجة؛ وهو برنامج أو جهاز يرسل طلباً إلى خدمة أخرى عبر الشبكة.</td>
+                        <td>متصفح الويب (Web Browser)، وتطبيق الهاتف المحمول.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الخادم<br>(Server)</strong></td>
+                        <td>الجانب الذي يستقبل الطلبات من العملاء، ويعالجها، ويعيد الاستجابات المناسبة.</td>
+                        <td>خادم الويب (Web Server)، وخادم التطبيقات.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>بروتوكول HTTP</strong></td>
+                        <td><strong>بروتوكول نقل النص التشعبي (Hypertext Transfer Protocol):</strong> بروتوكول يُستخدم لتبادل الرسائل بين عميل وخادم على الويب بدون تشفير.</td>
+                        <td>تبدأ عناوينه بـ <code>http://</code>؛ البيانات فيه غير مشفرة أثناء النقل.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>بروتوكول HTTPS</strong></td>
+                        <td>استخدام HTTP عبر اتصال <strong>TLS (Transport Layer Security)</strong> آمن. يساعد TLS على حماية <strong>سرية الاتصال وسلامته</strong>، وعلى <strong>مصادقة الخادم</strong>، بحيث لا يستطيع المتجسس قراءة المحتوى أو تعديله بسهولة أثناء النقل.</td>
+                        <td>تبدأ عناوينه بـ <code>https://</code>؛ ضروري لصفحات تسجيل الدخول والدفع والبيانات الحساسة.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🔐 محاكي مقارنة نقل البيانات عبر HTTP العادي مقابل HTTPS المحمي بـ TLS:</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runProtoSim('https', this)">🔒 إرسال بيانات تسجيل دخول عبر HTTPS (محمي بـ TLS)</button>
+                    <button class="sim-btn" onclick="runProtoSim('http', this)">🔓 إرسال بيانات تسجيل دخول عبر HTTP العادي (غير مشفر)</button>
+                </div>
+                <div class="flow-visual-box" id="protoVisualFlow">
+                    <div class="flow-node active-node">
+                        <div style="font-size:1.6rem;">💻</div>
+                        <div><strong>العميل (المتصفح)</strong></div>
+                        <small id="protoClientSub" style="color:var(--text-muted);">https://school.edu.eg</small>
+                    </div>
+                    <div class="flow-arrow" id="protoChannelBox" style="flex:1.2; padding:10px; border-radius:10px; background:var(--success-soft); color:#065f46; font-size:0.9rem;">
+                        🛡️ قناة TLS مشفرة: <code>a9F#x8!kL9@mP2$q</code><br><small>المتجسس لا يستطيع قراءة أو تعديل كلمة المرور</small>
+                    </div>
+                    <div class="flow-node active-node">
+                        <div style="font-size:1.6rem;">🗄️</div>
+                        <div><strong>الخادم (Server)</strong></div>
+                        <small id="protoServerSub" style="color:var(--text-muted);">تم التحقق من هوية الخادم</small>
+                    </div>
+                </div>
+                <div class="sim-output" id="protoSimOutput" style="border-right-color: var(--success);">
+                    ✅ <strong>اتصال HTTPS آمن (ص 58):</strong> يعمل HTTP فوق اتصال TLS آمن؛ فيضمن 1) سرية البيانات بالتشفير، 2) سلامة البيانات من التعديل، 3) مصادقة الخادم للتأكد من هويته الحقيقية.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: المحور الثالث: طلبات HTTP والاستجابات (GET/POST + 200/404/500) -->
+        <div class="card">
+            <span class="badge">المحور الثالث (كتاب ص 58)</span>
+            <h2>📡 2. طلبات HTTP (GET و POST) ورموز حالة الاستجابة (200، 404، 500)</h2>
+            <p>تتضمن الطلبات المرسلة من العميل إلى الخادم معلومات تسمى <strong>طريقة طلب HTTP (HTTP Request Method)</strong> توضح «نوع العملية المطلوبة». وتتضمن الاستجابات المرسلة من الخادم إلى العميل رقماً يشير إلى نتيجة المعالجة يسمى <strong>رمز حالة HTTP (HTTP Status Code)</strong>.</p>
+
+            <div class="grid-2">
+                <div>
+                    <h3 style="color:var(--primary-light);">📥 أولاً: طرق طلب HTTP الشائعة (ص 58)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الأسلوب</th>
+                                <th>الدور الأساسي</th>
+                                <th>أمثلة الكتاب المدرسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>GET</strong></td>
+                                <td>يُستخدم عادةً <strong>لطلب مورد أو استرجاع بيانات</strong> من الخادم.</td>
+                                <td>عرض صفحة ويب، استرجاع نتائج البحث، تحميل سجل درجات.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>POST</strong></td>
+                                <td>يُستخدم عادةً <strong>لإرسال بيانات ليعالجها</strong> الخادم.</td>
+                                <td>إرسال معلومات تسجيل الدخول، إرسال محتويات نموذج تواصل.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3 style="color:var(--accent-dark);">📊 ثانياً: رموز حالة HTTP النموذجية (ص 58)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>رمز الحالة</th>
+                                <th>المعنى الدقيق في المنهج (ص 58)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style="color:var(--success);">200</strong></td>
+                                <td><strong>نجاح:</strong> تمت معالجة الطلب بنجاح وإعادة النتيجة.</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:var(--accent-dark);">404</strong></td>
+                                <td><strong>غير موجود:</strong> المورد المطلوب غير موجود بهذا العنوان (مثل صفحة مفقودة أو رابط خطأ).</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:var(--danger);">500</strong></td>
+                                <td><strong>خطأ داخلي في الخادم:</strong> منعه من إكمال الطلب؛ ولا يحدد الرمز وحده السبب التفصيلي.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧪 محاكي مختبر طلبات HTTP ورموز الحالة (اضغط لتجربة كل سيناريو عملي):</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runHttpLab(1, this)">🔍 1. عرض صفحة ويب أو نتائج بحث</button>
+                    <button class="sim-btn" onclick="runHttpLab(2, this)">🔐 2. إرسال نموذج تسجيل الدخول</button>
+                    <button class="sim-btn" onclick="runHttpLab(3, this)">❓ 3. طلب رابط صفحة تم حذفها أو عنوانها خطأ</button>
+                    <button class="sim-btn" onclick="runHttpLab(4, this)">💥 4. تعطل قاعدة البيانات داخل الخادم أثناء الطلب</button>
+                </div>
+                <div class="sim-output" id="httpLabOutput">
+                    📡 <strong>طريقة الطلب: <code>GET</code></strong> (استرجاع مورد/بيانات) ⬅️ <strong>رمز الحالة المُعاد: <span style="color:var(--success);">200 OK</span></strong><br>
+                    <strong>التفسير:</strong> العميل طلب استرجاع صفحة الويب، والخادم وجدها وعالج الطلب بنجاح وأعاد الصفحة للمتصفح (ص 58).
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: المحور الرابع: واجهة برمجة التطبيقات API وصيغة JSON -->
+        <div class="card">
+            <span class="badge">المحور الرابع (كتاب ص 58 و ص 60)</span>
+            <h2>🧩 3. واجهة برمجة التطبيقات (API) وتنسيق البيانات (JSON)</h2>
+            <p>لا يقتصر التواصل في الويب على طلب صفحات كاملة؛ بل تتبادل البرمجيات البيانات المنظمة مباشرة عبر <strong>واجهات برمجة التطبيقات (APIs)</strong> باستخدام صيغ نصية قياسية خفيفة مثل <strong>JSON</strong>.</p>
+
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--teal);">
+                    <h3 style="color: var(--teal);">🔌 واجهة برمجة التطبيقات (API)</h3>
+                    <p style="font-size:0.95rem;"><strong>Application Programming Interface:</strong> مجموعة قواعد واضحة (واجهة أو عقد محدد) تسمح لبرنامج بطلب بيانات أو وظائف من برنامج آخر.<br>
+                    • قد ترسل الواجهة الأمامية طلبات إلى خدمة خلفية عبر API وتستقبل منها البيانات.<br>
+                    • مثال من الكتاب (ص 60): طلب الجدول الدراسي لليوم من نظام مدرسة أخرى، أو خدمة طقس تعيد توقعات اليوم.</p>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--purple);">
+                    <h3 style="color: var(--purple);">📄 صيغة بيانات JSON</h3>
+                    <p style="font-size:0.95rem;"><strong>JavaScript Object Notation:</strong> صيغة نصية شائعة وقابلة للقراءة لتمثيل وتبادل البيانات المهيكلة باستخدام <strong>كائنات (Objects) ومصفوفات (Arrays) وقيم بسيطة</strong>.<br>
+                    • <strong>أهم مميزاتها:</strong> خفيفة، سهلة القراءة للبشر والآلات، وتدعمها لغات وأدوات برمجية كثيرة.<br>
+                    • تتكون من أزواج: <strong>المفتاح (Key)</strong> ومقابله <strong>القيمة (Value)</strong>.</p>
+                </div>
+            </div>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🔬 محاكي قارئ ومحلل بيانات JSON التفاعلي (شامل نشاط الكتاب ص 60):</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="loadJsonExample('weather', this)">☀️ 1. بيانات الطقس (نشاط الكتاب ص 60)</button>
+                    <button class="sim-btn" onclick="loadJsonExample('grades', this)">🎓 2. سجل درجات طالب (نشاط المدرسة ص 60)</button>
+                    <button class="sim-btn" onclick="loadJsonExample('schedule', this)">📅 3. جدول حصص عبر API مدرسة أخرى</button>
+                </div>
+                <div class="grid-2" style="align-items: center;">
+                    <div class="code-block-ltr" id="jsonCodeView">
+{
+  <span class="json-key">"city"</span>: <span class="json-val">"Cairo"</span>,
+  <span class="json-key">"temperature"</span>: <span class="json-val">31</span>
+}
+                    </div>
+                    <div class="info-panel" id="jsonAnalysisView" style="border-right: 5px solid var(--accent);">
+                        <h4 style="color:var(--accent-dark); margin-bottom:8px;">🔍 تحليل أزواج المفتاح (Key) والقيمة (Value):</h4>
+                        <ul style="margin-right:18px; font-size:0.93rem;">
+                            <li>المفتاح الأول (Key 1): <code>"city"</code> ⬅️ القيمة المقابلة (Value): <code>"Cairo"</code> (نص).</li>
+                            <li>المفتاح الثاني (Key 2): <code>"temperature"</code> ⬅️ القيمة المقابلة (Value): <code>31</code> (رقم).</li>
+                            <li><strong>طريقة الطلب المناسبة:</strong> <code>GET</code> عبر بروتوكول <code>HTTPS</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: دليل المعلم وأنشطة الكتاب محلولة -->
+        <div class="card" id="book-activities-sec">
+            <span class="badge">دليل المعلم والطالب الشامل (كتاب ص 56 - 61)</span>
+            <h2>📗 جميع أسئلة وأنشطة وتمارين الكتاب المدرسي محلولة بالتفصيل</h2>
+
+            <div class="book-activity open">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>💡 1. أنشطة «توقّف وفكّر» (ص 58 و ص 59) + «المثال المحلول» (ص 59)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>توقّف وفكّر (ص 58):</strong> لماذا يجب أن تستخدم صفحة تسجيل الدخول HTTPS بدلاً من HTTP العادي؟<br>
+                    ⬅️ <strong>الإجابة:</strong> لأن صفحة تسجيل الدخول ترسل بيانات حساسة (مثل اسم المستخدم وكلمة المرور)؛ ويوفر بروتوكول HTTPS عبر اتصال TLS آمن تشفير المحتوى لحماية سريته وسلامته ومصادقة الخادم، فلا يستطيع المتجسس قراءة كلمة المرور أو تعديلها أثناء النقل عبر الشبكة، على عكس HTTP العادي الذي ينقلها مكشوفة.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>توقّف وفكّر (ص 59):</strong> إذا استقبل المتصفح رمز حالة HTTP 404، ماذا يجب أن يخبر المستخدم — وأي جانب كانت به المشكلة؟<br>
+                    ⬅️ <strong>الإجابة:</strong> يجب أن يخبر المستخدم برسالة واضحة بأن <strong>«الصفحة أو المورد المطلوب غير موجود بهذا العنوان»</strong> (مع اقتراح العودة للصفحة الرئيسية أو التحقق من صحة الرابط). والجانب المرتبط بالمشكلة هو <strong>طلب العميل لعنوان غير موجود على الخادم</strong> (فئة أخطاء طلب العميل 4xx حيث لم يجد الخادم المورد في ذلك المسار).</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>المثال المحلول (ص 59):</strong><br>
+                    (1) ضع علامة ○ أو ×:<br>
+                    • <strong>أ: ○</strong> (وصف صحيح لأدوار العميل الذي يطلب البيانات والخادم الذي يعيد الاستجابة).<br>
+                    • <strong>ب: ○</strong> (يستخدم HTTPS بروتوكول HTTP عبر اتصال محمي بـ TLS).<br>
+                    • <strong>جـ: ×</strong> (يُستخدم GET عادةً لطلب مورد أو بيانات، ويُستخدم POST عادةً لإرسال بيانات إلى الخادم لمعالجتها؛ فالعبارة تعكس الاستخدام المعتاد).<br>
+                    • <strong>د: ○</strong> (404 رمز حالة يشير إلى أن المورد المطلوب غير موجود، مثل صفحة مفقودة).<br>
+                    (2) المطابقة:<br>
+                    • 1: بروتوكول اتصال لتبادل البيانات بين متصفحات الويب والخوادم ⬅️ <strong>(أ) HTTP</strong>.<br>
+                    • 2: واجهة أو مجموعة قواعد محددة تتيح لبرنامج طلب بيانات أو وظائف من برنامج أو خدمة أخرى ⬅️ <strong>(ب) API</strong>.<br>
+                    • 3: بروتوكول اتصال يضيف تشفيراً إلى HTTP ⬅️ <strong>(جـ) HTTPS</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>📝 2. سؤال الامتحان [6 درجات] (ص 59) + «تدرّب 1 و 2» (ص 59 - 60)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>سؤال على نمط الامتحان [6 درجات] (ص 59):</strong> اشرح خطوة بخطوة ما يحدث عندما يطلب المتصفح صفحة ويب ويستجيب الخادم (أشر إلى: العميل، الطلب، طريقة طلب HTTP، الاستجابة، رمز حالة HTTP):<br>
+                    ⬅️ <strong>الإجابة النموذجية:</strong><br>
+                    1. يعمل المتصفح بوصفه <strong>العميل (Client)</strong>، فيقوم بإنشاء وإرسال <strong>طلب (Request)</strong> عبر الشبكة إلى الخادم.<br>
+                    2. يتضمن هذا الطلب <strong>طريقة طلب HTTP</strong> مناسبة وهي <strong>GET</strong> لأن الهدف هو استرجاع وعرض صفحة ويب من الخادم.<br>
+                    3. يستقبل <strong>الخادم (Server)</strong> الطلب ويعالجه، ثم يعيد <strong>استجابة (Response)</strong> إلى المتصفح تحتوي على محتوى الصفحة المطلوبة مرفقة بـ <strong>رمز حالة HTTP</strong> (مثل الرمز <strong>200</strong> الذي يدل على نجاح معالجة الطلب، أو <strong>404</strong> إذا لم تكن الصفحة موجودة).</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 1 (ص 59):</strong><br>
+                    1) <strong>العميل (Client)</strong> | 2) <strong>الخادم (Server)</strong> | 3) <strong>HTTPS</strong> | 4) <strong>GET</strong> | 5) <strong>واجهة برمجة التطبيقات (API)</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 2 (ص 59 - 60):</strong><br>
+                    (1) التركيبة غير المناسبة بين رمز حالة HTTP والمعنى هي: <strong>(جـ) 500 — تمت معالجة الطلب بنجاح</strong> (لأن 500 يعني خطأ داخلي في الخادم، بينما 200 هو رمز النجاح).<br>
+                    (2) الخيار الذي يصف واجهة برمجة التطبيقات (API) بأنسب شكل هو: <strong>(ب) نظام لتبادل البيانات بين برمجيات مختلفة</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>⚙️ 3. حل «فكّر كمهندس» (ص 60) + «اقرأ البيانات JSON» (ص 60) + «طبّق ما تعلمته» (ص 60)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>حل نشاط «فكّر كمهندس: ابحث ثم قرر» (تطبيق المدرسة ص 60):</strong><br>
+                    1. <strong>اختيار الأسلوب:</strong><br>
+                    • تحميل سجل درجات الطالب ⬅️ <strong>GET</strong> (لأنه استرجاع بيانات وعرض ملف من الخادم).<br>
+                    • إرسال نموذج تسجيل الدخول ⬅️ <strong>POST</strong> (لأنه إرسال بيانات سرية ليعالجها الخادم ويتحقق منها).<br>
+                    • طلب الجدول الدراسي لليوم من نظام مدرسة أخرى ⬅️ <strong>GET</strong>، ونعم <strong>تكون واجهة برمجة التطبيقات (API) متضمنة</strong> لأن النظام يطلب بيانات مهيكلة من برنامج/نظام مدرسة أخرى.<br>
+                    2. <strong>اختيار البروتوكول:</strong> يجب أن يستخدم تسجيل الدخول بروتوكول <strong>HTTPS</strong>؛ لحماية سرية بيانات الدخول (كلمة المرور) وسلامتها عبر تشفير TLS ومصادقة خادم المدرسة.<br>
+                    3. <strong>القرار:</strong> نوصي بـ ☑️ <strong>استخدام HTTPS والأسلوب المناسب لكل إجراء</strong>؛ لأن(1) HTTPS يحمي كلمات المرور ودرجات الطلاب من التنصت والتلاعب، و(2) التفرقة بين GET للاسترجاع وPOST للإرسال تضمن عمل التطبيق وفق القواعد القياسية السليمة للويب.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل نشاط «اقرأ البيانات (JSON)» (ص 60):</strong><br>
+                    في الكود: <code>{ "city": "Cairo", "temperature": 31 }</code>:<br>
+                    • مثال1: المفتاح (Key) هو <code>"city"</code>، والقيمة المقابلة له (Value) هي <code>"Cairo"</code>.<br>
+                    • مثال2: المفتاح (Key) هو <code>"temperature"</code>، والقيمة المقابلة له (Value) هي <code>31</code>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل نشاط «طبّق ما تعلمته» - خدمة الطقس (ص 60):</strong><br>
+                    • <strong>طريقة طلب HTTP:</strong> سيستخدم العميل أسلوب <strong>GET</strong> لأنه يطلب استرجاع بيانات توقعات الطقس من الخادم.<br>
+                    • <strong>لماذا تستخدم الخدمة HTTPS:</strong> لتأمين الاتصال عبر TLS، مما يضمن مصادقة خادم الطقس الحقيقي وعدم تلاعب أي طرف ثالث ببيانات الأرصاد أثناء النقل.<br>
+                    • <strong>ميزة واحدة لاستقبال البيانات بصيغة JSON:</strong> أنها صيغة نصية مهيكلة خفيفة وسهلة القراءة والفرز البرمجي، وتدعمها لغات وأدوات برمجية كثيرة لعرض درجات الحرارة فوراً في التطبيق.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>🏆 4. إجابة السؤال الرئيسي + حل تمارين نهاية الدرس + «فكّر وتحدَّ نفسك» (ص 61)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>إجابة السؤال الرئيسي (ص 61):</strong> في كثير من الحالات يرسل العميل طلباً ويعيد الخادم استجابة وفق قواعد HTTP، وقد تستخدم التطبيقات وسائل أخرى عند الحاجة. يحدد HTTP طريقة تبادل الرسائل، ويستخدم HTTPS اتصال TLS آمناً. وتوضح طريقة HTTP الغرض من الطلب؛ فيُستخدم GET عادةً لطلب مورد أو بيانات، وPOST لإرسال بيانات ليعالجها الخادم. وتبين رموز الحالة نتيجة معالجة الطلب. وقد تستخدم التطبيقات واجهة برمجة تطبيقات (API) وقواعد واضحة لتبادل البيانات، وربما تمثلها بصيغة JSON النصية المهيكلة.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تمارين نهاية الدرس (ص 61):</strong><br>
+                    • <strong>سؤال 2 (إكمال الفقرة):</strong> (1) <strong>العميل</strong> | (2) <strong>الخادم</strong> | (3) <strong>HTTP</strong> | (4) <strong>HTTPS</strong>.<br>
+                    • <strong>سؤال 3-(1) (تحديد طريقة طلب HTTP: أ GET، ب POST):</strong><br>
+                    1 عرض صفحة ويب ⬅️ <strong>أ (GET)</strong><br>
+                    2 إدخال معرّف وكلمة مرور في نموذج تسجيل الدخول وإرسالهما ⬅️ <strong>ب (POST)</strong><br>
+                    3 عرض نتائج البحث ⬅️ <strong>أ (GET)</strong><br>
+                    4 إرسال محتويات نموذج التواصل ⬅️ <strong>ب (POST)</strong><br>
+                    • <strong>سؤال 3-(2) (اختيار من متعدد):</strong> الخيار الذي يصف HTTPS بأنسب شكل هو <strong>(جـ) بروتوكول يستخدم HTTP عبر اتصال محمي بـ TLS</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>فكر وتحدَّ نفسك (ص 61):</strong><br>
+                    • <strong>تأمّل:</strong> عندما تفشل صفحة في التحميل، أي رمز حالة سيساعدك أكثر على فهم السبب، وماذا سيخبرك؟ ⬅️ التمييز بين الرمز <strong>404</strong> (يخبرني أن الرابط الذي كتبته خطأ أو الصفحة حُذفت من الموقع) والرمز <strong>500</strong> (يخبرني أن الرابط صحيح ولكن خادم الموقع نفسه يواجه عطلاً داخلياً منعه من إتمام الطلب).<br>
+                    • <strong>تحدٍّ:</strong> اذكر تطبيقاً واحداً تستخدمه وصف طلباً واحداً يرسله والاستجابة التي يتوقعها ⬅️ في <strong>تطبيق متجر إلكتروني</strong>: يرسل التطبيق طلب <code>GET</code> عبر HTTPS لاستعراض تفاصيل منتج، ويتوقع استجابة برمز حالة <code>200</code> محملة ببيانات المنتج وسعره بصيغة <code>JSON</code>.<br>
+                    • <strong>الخلاصة:</strong> تذكّر أن: <strong>العميل يطلب، والخادم يستجيب — عبر HTTP/HTTPS، بأسلوب (GET/POST)، ورمز حالة، وغالباً واجهة برمجة تطبيقات تعيد بيانات JSON</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6: بنك الأسئلة المتكامل (60 سؤالاً) -->
+        <div id="quiz-section">
+            <div class="card" style="border-top: 5px solid var(--primary-light);">
+                <span class="badge">بنك الأسئلة المتكامل (60 سؤالاً)</span>
+                <h2>🎯 منصة التدريب والامتحانات: 30 سؤالاً للسيشن + 30 سؤالاً للواجب</h2>
+                <div class="main-mode-switcher">
+                    <div class="mode-card-btn active-mode-session" id="modeBtnSession" onclick="switchMode('session')">
+                        <div style="font-size:2.2rem;">👨‍🏫</div>
+                        <div>
+                            <h3 style="color:var(--primary-light);">القسم الأول: أسئلة السيشن (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتحليلياً للشرح والحصة</p>
+                        </div>
+                    </div>
+                    <div class="mode-card-btn" id="modeBtnHomework" onclick="switchMode('homework')">
+                        <div style="font-size:2.2rem;">🏠</div>
+                        <div>
+                            <h3 style="color:var(--accent-dark);">القسم الثاني: أسئلة الواجب (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتطبيقياً للتدريب المنزلي</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-tabs-bar">
+                    <div class="quiz-tabs">
+                        <button class="tab-btn active" id="tabMCQ" onclick="switchSubTab('mcq')"><span id="tabMCQLabel">🔘 الاختيار من متعدد (15 - السيشن)</span></button>
+                        <button class="tab-btn" id="tabEssay" onclick="switchSubTab('essay')"><span id="tabEssayLabel">✍️ الأسئلة المقالية (15 - السيشن)</span></button>
+                    </div>
+                    <div class="view-toggle-group" id="mcqViewToggleGroup">
+                        <button class="view-btn active-view" id="viewSingleBtn" onclick="setMcqViewMode('single')">🎯 سؤال بسؤال</button>
+                        <button class="view-btn" id="viewAllBtn" onclick="setMcqViewMode('all')">📋 عرض الـ 15 معاً</button>
+                    </div>
+                </div>
+
+                <!-- MCQ Container -->
+                <div id="mcqContainer">
+                    <div class="stats-bar">
+                        <div><span class="stat-label">القسم</span><div class="stat-val" id="currentModeBadge" style="font-size:1rem;">👨‍🏫 السيشن</div></div>
+                        <div><span class="stat-label">السؤال</span><div><span class="stat-val" id="qCurrent">1</span> / 15</div></div>
+                        <div><span class="stat-label">أول محاولة 🎯</span><span class="stat-val" id="firstScore">--</span></div>
+                        <div><span class="stat-label">الدرجة الحالية</span><div><span class="stat-val" id="score">0</span> / 15</div></div>
+                        <div><span class="stat-label">أعلى نتيجة 🏆</span><span class="stat-val" id="highScore">0</span></div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="openIndexModal()">📑 فهرس</button>
+                            <button class="btn-index" style="border-color:var(--danger); color:var(--danger);" onclick="restartCurrentQuiz()">🔄 إعادة</button>
+                        </div>
+                        <div class="progress-container"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
+                    </div>
+
+                    <!-- Single Question Card -->
+                    <div class="q-card" id="quizCard">
+                        <div class="q-header">
+                            <span class="q-badge" id="topicBadge">العميل والخادم</span>
+                            <span style="color:var(--text-muted); font-size:0.88rem; font-weight:700;" id="qStatusIndicator">لم يُجب بعد</span>
+                        </div>
+                        <div class="q-text-ar" id="questionTextAr">نص السؤال العربي هنا...</div>
+                        <div class="q-text-en" id="questionTextEn">English question text here...</div>
+                        <div class="options-list" id="optionsContainer"></div>
+                        <div class="explanation" id="explanationText" style="display: none;"></div>
+                        <div class="actions">
+                            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled>➡️ السابق</button>
+                            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
+                        </div>
+                    </div>
+
+                    <!-- All 15 MCQ List Container -->
+                    <div id="allMcqListContainer" style="display:none;"></div>
+
+                    <!-- Results Card -->
+                    <div class="results-card" id="resultsCard">
+                        <div style="font-size:3.5rem;">🎉</div>
+                        <h2>أحسنت صنعاً! اكتمل الاختبار بنجاح</h2>
+                        <div class="score-circle"><div class="score-num" id="finalScore">0</div><span>من 15</span></div>
+                        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                            <button class="btn-restart" onclick="restartCurrentQuiz()">إعادة الاختبار 🔄</button>
+                            <button class="btn-restart" style="background:var(--primary); color:white;" onclick="switchSubTab('essay')">الانتقال للمقالي (15) ✍️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Essay Container -->
+                <div id="essayContainer" style="display:none;">
+                    <div style="background:var(--primary-soft); border-right:5px solid var(--primary-light); padding:14px; border-radius:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <strong style="color:var(--primary-light);" id="essayBannerTitle">📝 الأسئلة المقالية والتحليلية لقسم السيشن (15 سؤالاً):</strong>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="toggleAllEssays(true)">👁️ إظهار كل الإجابات</button>
+                            <button class="btn-index" onclick="toggleAllEssays(false)">🙈 إخفاء كل الإجابات</button>
+                        </div>
+                    </div>
+                    <div id="essayList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Index Modal -->
+    <div class="modal-overlay" id="indexModal" onclick="if(event.target.id==='indexModal')closeIndexModal()">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>📑 فهرس أسئلة الاختيار من متعدد (1 - 15)</h3>
+                <button class="btn-index" onclick="closeIndexModal()">✕</button>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:10px;">اضغط على أي رقم للانتقال السريع إلى السؤال:</p>
+            <div class="grid-index" id="gridIndexContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Top Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("top-progress-bar").style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+        });
+
+        function toggleProjectorMode() {
+            document.body.classList.toggle('projector-mode');
+            document.getElementById('projectorBtn').classList.toggle('active-tool');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('darkBtn').classList.toggle('active-tool');
+        }
+
+        // Simulator 1: HTTP vs HTTPS
+        function runProtoSim(type, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const ch = document.getElementById('protoChannelBox');
+            const out = document.getElementById('protoSimOutput');
+            const cSub = document.getElementById('protoClientSub');
+            const sSub = document.getElementById('protoServerSub');
+            if (type === 'https') {
+                cSub.innerText = "https://school.edu.eg";
+                sSub.innerText = "تم التحقق من هوية الخادم";
+                ch.style.background = "var(--success-soft)";
+                ch.style.color = "#065f46";
+                ch.innerHTML = "🛡️ قناة TLS مشفرة: <code>a9F#x8!kL9@mP2$q</code><br><small>المتجسس لا يستطيع قراءة أو تعديل كلمة المرور</small>";
+                out.style.borderRightColor = "var(--success)";
+                out.innerHTML = "✅ <strong>اتصال HTTPS آمن (ص 58):</strong> يعمل HTTP فوق اتصال TLS آمن؛ فيضمن 1) سرية البيانات بالتشفير، 2) سلامة البيانات من التعديل، 3) مصادقة الخادم للتأكد من هويته الحقيقية.";
+            } else {
+                cSub.innerText = "http://school.edu.eg";
+                sSub.innerText = "لا توجد مصادقة TLS";
+                ch.style.background = "var(--danger-soft)";
+                ch.style.color = "#991b1b";
+                ch.innerHTML = "⚠️ نص مكشوف غير مشفر: <code>user=ahmed&pass=123456</code><br><small>يسهل على المتجسس قراءة المحتوى أو تعديله أثناء النقل!</small>";
+                out.style.borderRightColor = "var(--danger)";
+                out.innerHTML = "❌ <strong>اتصال HTTP عادي غير مشفر (ص 58):</strong> يتبادل الرسائل بدون TLS؛ ولذلك لا يصلح لصفحات تسجيل الدخول أو الدفع لأن البيانات تنتقل قابلة للقراءة أو التعديل.";
+            }
+        }
+
+        // Simulator 2: HTTP Methods & Status Codes Lab
+        const httpScenarios = [
+            {
+                method: "GET",
+                code: "200 OK",
+                color: "var(--success)",
+                desc: "العميل طلب استرجاع وعرض صفحة الويب أو نتائج البحث، والخادم عالج الطلب بنجاح وأعاد البيانات المطلوبة (ص 58)."
+            },
+            {
+                method: "POST",
+                code: "200 OK",
+                color: "var(--primary-light)",
+                desc: "العميل أرسل بيانات نموذج تسجيل الدخول (المعرّف وكلمة المرور) عبر HTTPS ليعالجها الخادم ويتحقق من صحتها، وتمت المعالجة بنجاح (ص 58 و 61)."
+            },
+            {
+                method: "GET",
+                code: "404 Not Found",
+                color: "var(--accent)",
+                desc: "العميل طلب عنوان مورد أو صفحة ويب غير موجودة على الخادم؛ فأعاد الخادم الرمز 404 لإبلاغ المتصفح بأن المورد المطلوب غير موجود بهذا العنوان (ص 58 و 59)."
+            },
+            {
+                method: "POST / GET",
+                code: "500 Internal Server Error",
+                color: "var(--danger)",
+                desc: "حدث خطأ داخلي في جانب الخادم منعه من إكمال الطلب؛ ولا يحدد الرمز 500 وحده السبب التفصيلي للمشكلة (ص 58)."
+            }
+        ];
+
+        function runHttpLab(idx, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const item = httpScenarios[idx - 1];
+            const out = document.getElementById('httpLabOutput');
+            out.style.borderRightColor = item.color;
+            out.innerHTML = `📡 <strong>طريقة الطلب: <code>${item.method}</code></strong> ⬅️ <strong>رمز الحالة المُعاد: <span style="color:${item.color};">${item.code}</span></strong><br><strong>التفسير:</strong> ${item.desc}`;
+        }
+
+        // Simulator 3: JSON Explorer
+        const jsonExamples = {
+            weather: {
+                code: `{\n  <span class="json-key">"city"</span>: <span class="json-val">"Cairo"</span>,\n  <span class="json-key">"temperature"</span>: <span class="json-val">31</span>\n}`,
+                analysis: `<h4 style="color:var(--accent-dark); margin-bottom:8px;">🔍 تحليل بيانات الطقس (نشاط الكتاب ص 60):</h4>
+                <ul style="margin-right:18px; font-size:0.93rem;">
+                    <li>المفتاح الأول (Key 1): <code>"city"</code> ⬅️ القيمة المقابلة (Value): <code>"Cairo"</code>.</li>
+                    <li>المفتاح الثاني (Key 2): <code>"temperature"</code> ⬅️ القيمة المقابلة (Value): <code>31</code>.</li>
+                    <li><strong>الأسلوب والبروتوكول:</strong> طلب <code>GET</code> عبر <code>HTTPS</code> من واجهة برمجة تطبيقات (API) خدمة الطقس.</li>
+                </ul>`
+            },
+            grades: {
+                code: `{\n  <span class="json-key">"student"</span>: <span class="json-val">"Sara Ahmed"</span>,\n  <span class="json-key">"subject"</span>: <span class="json-val">"Programming & AI"</span>,\n  <span class="json-key">"score"</span>: <span class="json-val">98</span>\n}`,
+                analysis: `<h4 style="color:var(--accent-dark); margin-bottom:8px;">🔍 تحليل سجل درجات الطالب (نشاط المدرسة ص 60):</h4>
+                <ul style="margin-right:18px; font-size:0.93rem;">
+                    <li>المفتاح <code>"student"</code> ⬅️ القيمة: <code>"Sara Ahmed"</code>.</li>
+                    <li>المفتاح <code>"subject"</code> ⬅️ القيمة: <code>"Programming & AI"</code>.</li>
+                    <li>المفتاح <code>"score"</code> ⬅️ القيمة: <code>98</code>.</li>
+                    <li><strong>الأسلوب والبروتوكول:</strong> <code>GET</code> لتحميل واستعراض الدرجات عبر <code>HTTPS</code> لحماية خصوصية الطالب.</li>
+                </ul>`
+            },
+            schedule: {
+                code: `{\n  <span class="json-key">"day"</span>: <span class="json-val">"Sunday"</span>,\n  <span class="json-key">"classes"</span>: [<span class="json-val">"Web Apps"</span>, <span class="json-val">"Cybersecurity"</span>],\n  <span class="json-key">"status"</span>: <span class="json-val">200</span>\n}`,
+                analysis: `<h4 style="color:var(--accent-dark); margin-bottom:8px;">🔍 تحليل طلب جدول دراسي من نظام مدرسة أخرى عبر API:</h4>
+                <ul style="margin-right:18px; font-size:0.93rem;">
+                    <li>المفتاح <code>"day"</code> ⬅️ القيمة: <code>"Sunday"</code>.</li>
+                    <li>المفتاح <code>"classes"</code> ⬅️ القيمة: مصفوفة <code>["Web Apps", "Cybersecurity"]</code>.</li>
+                    <li><strong>دور API و JSON:</strong> تسمح API لنظام المدرسة بطلب البيانات من نظام المدرسة الأخرى، وتعود البيانات بصيغة <code>JSON</code> المهيكلة (ص 58 و 60).</li>
+                </ul>`
+            }
+        };
+
+        function loadJsonExample(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const ex = jsonExamples[key];
+            document.getElementById('jsonCodeView').innerHTML = ex.code;
+            document.getElementById('jsonAnalysisView').innerHTML = ex.analysis;
+        }
+
+        // Quiz Engine Data (60 Questions: 30 Session + 30 Homework)
+        const quizData = {
+            session: {
+                mcq: [
+                    {
+                        tag: "العميل والخادم (ص 57 و 59)",
+                        ar_q: "ما المصطلح الخاص بالجانب الذي يطلب البيانات أو المعالجة من الخادم (مثل متصفح الويب وتطبيق الهاتف)؟",
+                        en_q: "What term refers to the side that requests data or processing from the server (such as a web browser or mobile app)?",
+                        options: [
+                            { ar: "العميل", en: "Client" },
+                            { ar: "الخادم", en: "Server" },
+                            { ar: "رمز الحالة", en: "Status Code" },
+                            { ar: "المفتاح العام", en: "Public Key" }
+                        ],
+                        correct: 0,
+                        exp_ar: "العميل (Client): هو الجانب الذي يطلب البيانات أو المعالجة، وهو برنامج أو جهاز يرسل طلباً إلى خدمة أخرى مثل متصفح الويب وتطبيق الهاتف (ص 57 و 59).",
+                        exp_en: "Client: The side that requests data or processing—a program or device sending a request to another service, like a web browser or mobile app (p. 57, 59)."
+                    },
+                    {
+                        tag: "العميل والخادم (ص 57 و 59)",
+                        ar_q: "ما المصطلح الخاص بالجانب الذي يستقبل الطلبات من العملاء، ويعالجها، ويعيد الاستجابات؟",
+                        en_q: "What term refers to the side that receives requests from clients, processes them, and returns responses?",
+                        options: [
+                            { ar: "العميل", en: "Client" },
+                            { ar: "الخادم", en: "Server" },
+                            { ar: "المتصفح المحلي", en: "Local Browser" },
+                            { ar: "طريقة الطلب", en: "Request Method" }
+                        ],
+                        correct: 1,
+                        exp_ar: "الخادم (Server): هو الجانب الذي يستقبل الطلبات من العملاء، ويعالجها، ويعيد الاستجابات (ص 57 و 59).",
+                        exp_en: "Server: The side that receives requests from clients, processes them, and sends back responses (p. 57, 59)."
+                    },
+                    {
+                        tag: "HTTP و HTTPS (ص 57 و 59)",
+                        ar_q: "ما البروتوكول الأساسي المستخدم لتبادل الرسائل بين عميل وخادم على الويب (بروتوكول نقل النص التشعبي)؟",
+                        en_q: "What is the foundational protocol used to exchange messages between a client and a server on the web (Hypertext Transfer Protocol)?",
+                        options: [
+                            { ar: "JSON", en: "JSON" },
+                            { ar: "HTTP", en: "HTTP" },
+                            { ar: "API", en: "API" },
+                            { ar: "HTML", en: "HTML" }
+                        ],
+                        correct: 1,
+                        exp_ar: "HTTP (بروتوكول نقل النص التشعبي): هو بروتوكول اتصال يُستخدم لتبادل الرسائل والبيانات بين متصفحات الويب (العملاء) والخوادم (ص 57 و 59).",
+                        exp_en: "HTTP (Hypertext Transfer Protocol): A communication protocol used to exchange messages between web browsers and servers (p. 57, 59)."
+                    },
+                    {
+                        tag: "بروتوكول HTTPS (ص 58 و 61)",
+                        ar_q: "أي من الخيارات التالية يصف بروتوكول HTTPS بأنسب شكل وفق الكتاب المدرسي؟",
+                        en_q: "Which of the following options best describes the HTTPS protocol according to the textbook?",
+                        options: [
+                            { ar: "أسلوب لاسترجاع البيانات من الخادم", en: "A method for retrieving data from the server" },
+                            { ar: "نظام لتبادل البيانات بين برمجيات مختلفة", en: "A system for exchanging data between different software" },
+                            { ar: "بروتوكول يستخدم HTTP عبر اتصال محمي بـ TLS", en: "A protocol that uses HTTP over a TLS-protected connection" },
+                            { ar: "رمز حالة يشير إلى حدوث مشكلة في جانب الخادم", en: "A status code indicating a server-side problem" }
+                        ],
+                        correct: 2,
+                        exp_ar: "HTTPS هو استخدام بروتوكول HTTP عبر اتصال TLS (Transport Layer Security) آمن لحماية سرية الاتصال وسلامته ومصادقة الخادم (ص 58 وتمرين 3-(2) ص 61).",
+                        exp_en: "HTTPS is the use of HTTP over a secure TLS connection to protect confidentiality, integrity, and server authentication (p. 58, 61)."
+                    },
+                    {
+                        tag: "طريقة طلب GET (ص 58 و 59)",
+                        ar_q: "ما المصطلح الخاص بطريقة طلب HTTP التي تُستخدم عادةً لطلب مورد أو استرجاع بيانات من الخادم (مثل عرض صفحة ويب أو نتائج بحث)؟",
+                        en_q: "What HTTP request method is typically used to request a resource or retrieve data from the server (e.g., displaying a web page or search results)?",
+                        options: [
+                            { ar: "POST", en: "POST" },
+                            { ar: "GET", en: "GET" },
+                            { ar: "TLS", en: "TLS" },
+                            { ar: "500", en: "500" }
+                        ],
+                        correct: 1,
+                        exp_ar: "الأسلوب GET يُستخدم عادةً لطلب مورد أو استرجاع بيانات من الخادم، مثل عرض صفحة ويب أو استرجاع نتائج البحث (ص 58 و 59).",
+                        exp_en: "GET is typically used to request a resource or retrieve data from the server, such as viewing a web page or search results (p. 58, 59)."
+                    },
+                    {
+                        tag: "طريقة طلب POST (ص 58 و 61)",
+                        ar_q: "ما طريقة طلب HTTP التي تُستخدم عادةً لإرسال بيانات ليعالجها الخادم (مثل إرسال معلومات تسجيل الدخول أو محتويات نموذج)؟",
+                        en_q: "Which HTTP request method is typically used to send data for the server to process (e.g., login credentials or form contents)?",
+                        options: [
+                            { ar: "GET", en: "GET" },
+                            { ar: "POST", en: "POST" },
+                            { ar: "404", en: "404" },
+                            { ar: "JSON", en: "JSON" }
+                        ],
+                        correct: 1,
+                        exp_ar: "الأسلوب POST يُستخدم عادةً لإرسال بيانات ليعالجها الخادم، مثل إرسال معلومات تسجيل الدخول أو إرسال محتويات نموذج (ص 58 و 61).",
+                        exp_en: "POST is typically used to submit data to be processed by the server, like login details or form submissions (p. 58, 61)."
+                    },
+                    {
+                        tag: "رمز الحالة 200 (ص 58)",
+                        ar_q: "إلى ماذا يشير رمز حالة HTTP الرقم (200) عند عودته في استجابة الخادم إلى العميل؟",
+                        en_q: "What does the HTTP status code (200) indicate when returned in the server's response to the client?",
+                        options: [
+                            { ar: "المورد المطلوب غير موجود بهذا العنوان", en: "The requested resource was not found at this address" },
+                            { ar: "خطأ داخلي في الخادم منعه من إكمال الطلب", en: "An internal server error prevented completing the request" },
+                            { ar: "نجاح (تمت معالجة الطلب بنجاح)", en: "Success (the request was processed successfully)" },
+                            { ar: "انتهاء صلاحية شهادة الموقع الرقمية", en: "The website's digital certificate has expired" }
+                        ],
+                        correct: 2,
+                        exp_ar: "رمز الحالة 200 يعني: نجاح (تمت معالجة الطلب بنجاح) (جدول رموز الحالة ص 58).",
+                        exp_en: "Status code 200 means Success: the request was successfully processed by the server (p. 58)."
+                    },
+                    {
+                        tag: "رمز الحالة 404 (ص 58 و 59)",
+                        ar_q: "إلى ماذا يشير رمز حالة HTTP الرقم (404)؟",
+                        en_q: "What does the HTTP status code (404) indicate?",
+                        options: [
+                            { ar: "تمت معالجة الطلب بنجاح", en: "The request was processed successfully" },
+                            { ar: "المورد المطلوب غير موجود بهذا العنوان (مثل صفحة مفقودة)", en: "The requested resource is not found at this address (e.g., missing page)" },
+                            { ar: "خطأ داخلي في الخادم", en: "Internal server error" },
+                            { ar: "نجاح تشفير الاتصال عبر TLS", en: "Successful TLS connection encryption" }
+                        ],
+                        correct: 1,
+                        exp_ar: "رمز الحالة 404 يشير إلى أن المورد المطلوب غير موجود بهذا العنوان، وقد تكون صفحة مفقودة مثالاً على ذلك (ص 58 و 59).",
+                        exp_en: "Status code 404 indicates that the requested resource was not found at the given address (p. 58, 59)."
+                    },
+                    {
+                        tag: "رمز الحالة 500 (ص 58)",
+                        ar_q: "ما معنى ظهور رمز حالة HTTP الرقم (500)؟",
+                        en_q: "What is the meaning of HTTP status code (500)?",
+                        options: [
+                            { ar: "نجاح تحميل الصفحة بالكامل", en: "Page loaded completely and successfully" },
+                            { ar: "المستخدم كتب عنوان رابط غير موجود", en: "User typed a non-existent URL" },
+                            { ar: "خطأ داخلي في الخادم منعه من إكمال الطلب؛ ولا يحدد الرمز وحده السبب التفصيلي", en: "Internal server error that prevented completing the request, without specifying the exact cause alone" },
+                            { ar: "تم تحويل البيانات إلى صيغة JSON بنجاح", en: "Data was converted to JSON format successfully" }
+                        ],
+                        correct: 2,
+                        exp_ar: "رمز الحالة 500 يعني: خطأ داخلي في الخادم منعه من إكمال الطلب؛ ولا يحدد الرمز وحده السبب التفصيلي (ص 58).",
+                        exp_en: "Status code 500 indicates an internal server error that prevented request completion; the code alone doesn't specify the detailed cause (p. 58)."
+                    },
+                    {
+                        tag: "تدرّب 2-(1) (ص 59)",
+                        ar_q: "من بين الخيارات التالية، اختر التركيبة غير المناسبة (الخاطئة) بين رمز حالة HTTP والمعنى:",
+                        en_q: "From the following options, choose the inappropriate (incorrect) combination of HTTP status code and meaning:",
+                        options: [
+                            { ar: "200 — تمت معالجة الطلب بنجاح", en: "200 — Request processed successfully" },
+                            { ar: "404 — المورد المطلوب غير موجود", en: "404 — Requested resource not found" },
+                            { ar: "500 — تمت معالجة الطلب بنجاح", en: "500 — Request processed successfully" },
+                            { ar: "500 — حدثت مشكلة في جانب الخادم", en: "500 — A problem occurred on the server side" }
+                        ],
+                        correct: 2,
+                        exp_ar: "التركيبة غير المناسبة هي (جـ) «500 — تمت معالجة الطلب بنجاح»، لأن الرمز 500 يشير إلى حدوث مشكلة/خطأ داخلي في جانب الخادم (سؤال تدرب 2-(1) ص 59).",
+                        exp_en: "Option C is inappropriate because 500 indicates a server-side error, whereas 200 indicates success (Practice 2-(1), p. 59)."
+                    },
+                    {
+                        tag: "تدرّب 2-(2) - API (ص 60)",
+                        ar_q: "أي من الخيارات التالية يصف واجهة برمجة التطبيقات (API) بأنسب شكل؟",
+                        en_q: "Which of the following options best describes an Application Programming Interface (API)?",
+                        options: [
+                            { ar: "تقنية لتعديل مظهر وألوان صفحات الويب", en: "A technology for styling web page appearance and colors" },
+                            { ar: "نظام أو مجموعة قواعد واضحة لتبادل البيانات والوظائف بين برمجيات مختلفة", en: "A system or set of clear rules for exchanging data and functions between different software" },
+                            { ar: "تقنية لتشفير البيانات وإرسالها بأمان عبر TLS", en: "A technology for encrypting data over TLS" },
+                            { ar: "طريقة طلب HTTP لاسترجاع البيانات من الخادم", en: "An HTTP request method for retrieving data from the server" }
+                        ],
+                        correct: 1,
+                        exp_ar: "واجهة برمجة التطبيقات (API): مجموعة قواعد واضحة تسمح لبرنامج بطلب بيانات أو وظائف من برنامج آخر، أي نظام لتبادل البيانات بين برمجيات مختلفة (ص 58 و 60).",
+                        exp_en: "API is a set of clear rules allowing one program to request data or functions from another—a system for data exchange between different software (p. 58, 60)."
+                    },
+                    {
+                        tag: "صيغة JSON (ص 58 و 60)",
+                        ar_q: "ما الصيغة النصية الشائعة القابلة للقراءة التي تُستخدم لتمثيل وتبادل البيانات المهيكلة (باستخدام كائنات ومصفوفات وقيم بسيطة) وتعيدها غالباً واجهات API؟",
+                        en_q: "What is the common readable text format used to represent and exchange structured data (using objects, arrays, and simple values) often returned by APIs?",
+                        options: [
+                            { ar: "TLS", en: "TLS" },
+                            { ar: "JSON (JavaScript Object Notation)", en: "JSON (JavaScript Object Notation)" },
+                            { ar: "HTTP 404", en: "HTTP 404" },
+                            { ar: "POST", en: "POST" }
+                        ],
+                        correct: 1,
+                        exp_ar: "صيغة JSON (JavaScript Object Notation) هي صيغة نصية شائعة وقابلة للقراءة لتمثيل وتبادل البيانات المهيكلة وتدعمها لغات وأدوات برمجية كثيرة (ص 58 و 60).",
+                        exp_en: "JSON is a common readable text format for representing and exchanging structured data using objects, arrays, and simple values (p. 58, 60)."
+                    },
+                    {
+                        tag: "اقرأ البيانات JSON (ص 60)",
+                        ar_q: "في بيانات JSON التالية: { \"city\": \"Cairo\", \"temperature\": 31 }، ماذا يمثل العنصر \"city\" وماذا يمثل \"Cairo\"؟",
+                        en_q: "In the JSON data { \"city\": \"Cairo\", \"temperature\": 31 }, what do \"city\" and \"Cairo\" represent?",
+                        options: [
+                            { ar: "\"city\" هو المفتاح (key)، و \"Cairo\" هي القيمة (value) المقابلة له", en: "\"city\" is the key, and \"Cairo\" is its corresponding value" },
+                            { ar: "\"city\" هو رمز حالة HTTP، و \"Cairo\" هي طريقة الطلب", en: "\"city\" is the HTTP status code, and \"Cairo\" is the request method" },
+                            { ar: "كلاهما يمثلان عناوين خوادم مشفرة بـ TLS", en: "Both represent TLS-encrypted server addresses" },
+                            { ar: "\"Cairo\" هو المفتاح (key)، و \"city\" هي القيمة (value)", en: "\"Cairo\" is the key, and \"city\" is the value" }
+                        ],
+                        correct: 0,
+                        exp_ar: "في صيغة JSON، يمثل \"city\" المفتاح (key)، بينما تمثل \"Cairo\" القيمة (value) المقابلة له، وكذلك \"temperature\" مفتاح وقيمته 31 (نشاط ص 60).",
+                        exp_en: "In JSON key-value pairs, \"city\" is the key and \"Cairo\" is its corresponding value (p. 60)."
+                    },
+                    {
+                        tag: "تمارين 3-(1) (ص 61)",
+                        ar_q: "عند القيام بعملية «إدخال معرّف وكلمة مرور في نموذج تسجيل الدخول وإرسالهما»، ما طريقة طلب HTTP الأنسب؟",
+                        en_q: "When entering an ID and password in a login form and submitting them, which HTTP request method is most appropriate?",
+                        options: [
+                            { ar: "GET", en: "GET" },
+                            { ar: "POST", en: "POST" },
+                            { ar: "404", en: "404" },
+                            { ar: "200", en: "200" }
+                        ],
+                        correct: 1,
+                        exp_ar: "إدخال معرّف وكلمة مرور في نموذج تسجيل الدخول وإرسالهما يتطلب أسلوب POST لأنه إرسال بيانات ليعالجها الخادم (تمرين 3-(1) ص 61).",
+                        exp_en: "Submitting a login form with ID and password uses POST because it sends data for the server to process (Exercise 3-(1), p. 61)."
+                    },
+                    {
+                        tag: "فكر كمهندس (ص 60)",
+                        ar_q: "تريد مدرسة طلب الجدول الدراسي لليوم من نظام مدرسة أخرى تلقائياً وعرضه للطلاب. ما الأسلوب المعتمد هنا؟ وهل تتضمن العملية واجهة برمجة تطبيقات (API)؟",
+                        en_q: "A school wants to request today's class schedule from another school's system automatically. Which method is used, and is an API involved?",
+                        options: [
+                            { ar: "الأسلوب GET، ونعم تتضمن واجهة برمجة تطبيقات (API) لتبادل البيانات بين النظامين", en: "GET method, and yes an API is involved to exchange data between the two systems" },
+                            { ar: "الأسلوب POST عبر HTTP غير المشفر وبدون استخدام API", en: "POST method over unencrypted HTTP without an API" },
+                            { ar: "إرجاع رمز الخطأ 500 من المتصفح إلى الخادم", en: "Returning error code 500 from browser to server" },
+                            { ar: "استخدام بروتوكول صوتي تناظري بدون إنترنت", en: "Using an analog voice protocol without internet" }
+                        ],
+                        correct: 0,
+                        exp_ar: "بما أن المدرسة تطلب استرجاع بيانات الجدول من نظام مدرسة أخرى، فإن الأسلوب الأنسب هو GET، وتتضمن العملية واجهة برمجة تطبيقات (API) لأنها تتيح لبرمجيات مختلفة تبادل البيانات (ص 60).",
+                        exp_en: "Retrieving schedule data uses GET, and an API is involved because one software system is requesting data from another system (p. 60)."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "السؤال الرئيسي للدرس (ص 57 و ص 61)",
+                        q: "كيف يتواصل العميل والخادم لتشغيل تطبيق الويب، وما القواعد والرسائل التي يستخدمانها؟",
+                        en_q: "How do the client and server communicate to run a web application, and what rules and messages do they use?",
+                        hint: "اذكر دور العميل والخادم، وبروتوكول HTTP/HTTPS، وطرق الطلب GET/POST، ورموز الحالة، وAPI وJSON.",
+                        en_hint: "Mention Client/Server roles, HTTP/HTTPS, GET/POST methods, status codes, API, and JSON.",
+                        model: "في كثير من الحالات يرسل <b>العميل</b> طلباً ويعيد <b>الخادم</b> استجابة وفق قواعد بروتوكول <b>HTTP</b>، ويستخدم <b>HTTPS</b> اتصال TLS آمناً لحماية البيانات. وتوضح <b>طريقة طلب HTTP</b> الغرض من الطلب؛ فيُستخدم <b>GET</b> عادةً لطلب مورد أو بيانات، و<b>POST</b> لإرسال بيانات ليعالجها الخادم. وتبين <b>رموز الحالة</b> (مثل 200، 404، 500) نتيجة معالجة الطلب. كما تستخدم التطبيقات <b>واجهة برمجة تطبيقات (API)</b> لتبادل البيانات بين البرمجيات، وغالباً تمثلها بصيغة <b>JSON</b> النصية المهيكلة.",
+                        en_model: "The <b>Client</b> sends a request and the <b>Server</b> returns a response governed by <b>HTTP</b> (or <b>HTTPS</b> over secure TLS). <b>HTTP request methods</b> specify the purpose: <b>GET</b> retrieves resources/data, while <b>POST</b> submits data for server processing. <b>HTTP status codes</b> (200, 404, 500) report the outcome. Applications also use <b>APIs</b> to exchange structured data, typically formatted in <b>JSON</b>."
+                    },
+                    {
+                        source: "سؤال على نمط الامتحان [6 درجات] (ص 59)",
+                        q: "اشرح خطوة بخطوة ما يحدث عندما يطلب المتصفح صفحة ويب ويستجيب الخادم. (أشر في إجابتك إلى: العميل، الطلب، طريقة طلب HTTP، الاستجابة، رمز حالة HTTP).",
+                        en_q: "Explain step by step what happens when a browser requests a web page and the server responds. (Refer to: Client, Request, HTTP request method, Response, HTTP status code).",
+                        hint: "رتب الخطوات من نقرة المستخدم في المتصفح (العميل) حتى عودة الاستجابة ورمز الحالة.",
+                        en_hint: "Order the steps from the browser (Client) sending a GET request to the server returning a response and status code.",
+                        model: "1. يعمل متصفح الويب بوصفه <b>العميل (Client)</b>، فيرسل <b>طلباً (Request)</b> إلى الخادم عبر الشبكة.<br>2. يتضمن الطلب <b>طريقة طلب HTTP</b> مناسبة وهي <b>GET</b> لأن المطلوب هو استرجاع وعرض صفحة ويب.<br>3. يستقبل <b>الخادم (Server)</b> الطلب ويعالجه، ثم يعيد <b>استجابة (Response)</b> إلى العميل تشتمل على محتوى الصفحة المطلوبة بالإضافة إلى <b>رمز حالة HTTP</b> يوضح نتيجة المعالجة (مثل <b>200</b> عند النجاح، أو <b>404</b> إذا كان المورد غير موجود).",
+                        en_model: "1. The browser acts as the <b>Client</b> and sends a <b>Request</b> over the network to the server.<br>2. The request includes the <b>HTTP request method</b> <b>GET</b> to retrieve the web page.<br>3. The <b>Server</b> processes the request and sends back a <b>Response</b> containing the page content along with an <b>HTTP status code</b> (e.g., <b>200</b> for success or <b>404</b> if not found)."
+                    },
+                    {
+                        source: "توقّف وفكّر (ص 58)",
+                        q: "لماذا يجب أن تستخدم صفحة تسجيل الدخول بروتوكول HTTPS بدلاً من HTTP العادي؟",
+                        en_q: "Why must a login page use HTTPS instead of standard HTTP?",
+                        hint: "فكر في سرية كلمة المرور، سلامة البيانات، ومصادقة الخادم عبر TLS.",
+                        en_hint: "Think about password confidentiality, data integrity, and server authentication via TLS.",
+                        model: "لأن صفحة تسجيل الدخول تتضمن إرسال بيانات حساسة (مثل اسم المستخدم وكلمة المرور). وعند استخدام <b>HTTPS</b> يتم نقل HTTP عبر اتصال <b>TLS آمن</b>، مما يحمي <b>سرية الاتصال وسلامته</b> بالتشفير، ويضمن <b>مصادقة الخادم</b>، بحيث لا يستطيع المتجسس قراءة كلمة المرور أو تعديل البيانات بسهولة أثناء النقل.",
+                        en_model: "Because a login page transmits sensitive credentials (username and password). <b>HTTPS</b> runs HTTP over a secure <b>TLS</b> connection, ensuring <b>confidentiality, data integrity, and server authentication</b> so eavesdroppers cannot read or tamper with passwords in transit."
+                    },
+                    {
+                        source: "توقّف وفكّر (ص 59)",
+                        q: "إذا استقبل المتصفح رمز حالة HTTP 404، ماذا يجب أن يخبر المستخدم — وأي جانب كانت به المشكلة؟",
+                        en_q: "If the browser receives HTTP status code 404, what should it tell the user—and which side had the problem?",
+                        hint: "معنى 404 هو أن المورد المطلوب غير موجود بهذا العنوان.",
+                        en_hint: "404 means the requested resource does not exist at that URL.",
+                        model: "• <b>ماذا يخبر المستخدم:</b> يعرض رسالة واضحة تفيد بأن <b>الصفحة أو المورد المطلوب غير موجود بهذا العنوان</b> (وقد يقترح التحقق من صحة الرابط أو العودة للصفحة الرئيسية).<br>• <b>أي جانب كانت به المشكلة:</b> المشكلة في <b>الطلب المرسل من جانب العميل</b> (حيث طلب العميل عنوان URL غير صحيح أو مورداً لم يعد موجوداً على الخادم).",
+                        en_model: "• <b>What to tell the user:</b> Display a clear message stating that the <b>requested page or resource was not found at this address</b>.<br>• <b>Which side had the problem:</b> It is a <b>client-side request error (4xx)</b> because the client requested a non-existent or mistyped URL."
+                    },
+                    {
+                        source: "المقارنة الأساسية (ص 57)",
+                        q: "قارن بين العميل (Client) والخادم (Server) من حيث الدور الأساسي مع ذكر مثالين لكل منهما.",
+                        en_q: "Compare the Client and the Server in terms of their primary role, giving two examples of each.",
+                        hint: "الجانب الطالب مقابل الجانب المعالج والمستجيب.",
+                        en_hint: "Requesting side vs. processing and responding side.",
+                        model: "• <b>العميل (Client):</b> هو الجانب الذي يطلب البيانات أو المعالجة ويرسل طلباً إلى خدمة أخرى. <b>أمثلته:</b> متصفح الويب، وتطبيق الهاتف.<br>• <b>الخادم (Server):</b> هو الجانب الذي يستقبل الطلبات من العملاء، ويعالجها، ويعيد الاستجابات. <b>أمثلته:</b> خادم الويب، وخادم التطبيقات.",
+                        en_model: "• <b>Client:</b> The side that requests data or processing and sends requests. <b>Examples:</b> Web browser, mobile application.<br>• <b>Server:</b> The side that receives client requests, processes them, and returns responses. <b>Examples:</b> Web server, application server."
+                    },
+                    {
+                        source: "طرق طلب HTTP (ص 58)",
+                        q: "وازن بين طريقتي طلب HTTP: الأسلوب GET والأسلوب POST من حيث الدور الأساسي ومثالين لكل أسلوب.",
+                        en_q: "Compare the HTTP request methods GET and POST in terms of primary role and two examples for each.",
+                        hint: "استرجاع مورد مقابل إرسال بيانات للمعالجة.",
+                        en_hint: "Retrieving a resource vs. sending data for processing.",
+                        model: "• <b>الأسلوب GET:</b> يُستخدم عادةً <b>لطلب مورد أو استرجاع بيانات</b> من الخادم. <b>أمثلته:</b> (1) عرض صفحة ويب، (2) استرجاع وعرض نتائج البحث.<br>• <b>الأسلوب POST:</b> يُستخدم عادةً <b>لإرسال بيانات ليعالجها</b> الخادم. <b>أمثلته:</b> (1) إرسال معلومات تسجيل الدخول، (2) إرسال محتويات نموذج التواصل.",
+                        en_model: "• <b>GET:</b> Typically used to <b>request a resource or retrieve data</b> from the server. <b>Examples:</b> (1) Viewing a web page, (2) Retrieving search results.<br>• <b>POST:</b> Typically used to <b>send data for the server to process</b>. <b>Examples:</b> (1) Submitting login credentials, (2) Submitting a contact form."
+                    },
+                    {
+                        source: "رموز حالة HTTP (ص 58)",
+                        q: "اشرح دلالة كل رمز من رموز حالة HTTP التالية: (200، 404، 500)، ولماذا لا يكفي الرمز 500 وحده لإصلاح عطل الخادم؟",
+                        en_q: "Explain the meaning of HTTP status codes (200, 404, 500), and why code 500 alone is insufficient to fix a server bug.",
+                        hint: "راجع جدول رموز حالة HTTP ص 58.",
+                        en_hint: "Review the HTTP status codes table on p. 58.",
+                        model: "• <b>الرمز 200:</b> نجاح (تمت معالجة الطلب بنجاح).<br>• <b>الرمز 404:</b> المورد المطلوب غير موجود بهذا العنوان.<br>• <b>الرمز 500:</b> خطأ داخلي في الخادم منعه من إكمال الطلب.<br>• <b>لماذا لا يكفي 500 وحده:</b> لأن الرمز 500 يعلن فقط عن وقوع خطأ داخلي عام في الخادم، ولكنه <b>لا يحدد وحده السبب التفصيلي للمشكلة</b> (فيحتاج المطور لفحص سجلات الخادم لمعرفة السبب الدقيق).",
+                        en_model: "• <b>200:</b> Success (request processed successfully).<br>• <b>404:</b> Requested resource not found at this address.<br>• <b>500:</b> Internal server error prevented completing the request.<br>• <b>Why 500 alone isn't enough:</b> It only signals a generic server failure and <b>does not specify the detailed cause alone</b>, requiring server log inspection."
+                    },
+                    {
+                        source: "واجهة برمجة التطبيقات API وصيغة JSON (ص 58)",
+                        q: "ما المقصود بواجهة برمجة التطبيقات (API)؟ وكيف تتكامل مع صيغة JSON في تطبيقات الويب الحديثة؟",
+                        en_q: "What is meant by an API, and how does it integrate with JSON in modern web applications?",
+                        hint: "قواعد تتيح لبرنامج طلب بيانات من برنامج آخر، وتعود البيانات بصيغة JSON.",
+                        en_hint: "Rules allowing software to request data/functions from another, returning structured JSON.",
+                        model: "• <b>واجهة برمجة التطبيقات (API):</b> هي مجموعة قواعد واضحة (واجهة أو عقد محدد) تسمح لبرنامج بطلب بيانات أو وظائف من برنامج آخر.<br>• <b>تكاملها مع JSON:</b> ترسل الواجهة الأمامية طلبات إلى خدمة خلفية عبر API وتستقبل منها البيانات، وغالباً تعيد API هذه البيانات بصيغة <b>JSON</b> النصية المهيكلة لأنها خفيفة وسهلة التمثيل وتدعمها لغات برمجية كثيرة.",
+                        en_model: "• <b>API:</b> A clear set of rules allowing one program to request data or functions from another.<br>• <b>Integration with JSON:</b> The front-end sends requests to back-end services via an API and receives structured data formatted in <b>JSON</b>, which is lightweight, human-readable, and widely supported across programming languages."
+                    },
+                    {
+                        source: "فكّر كمهندس - الخطوة 1 (ص 60)",
+                        q: "تريد مدرسة تطبيق ويب يسجل فيه الطلاب الدخول، ويعرضون جدولهم، ويحملون ملف PDF. بالنسبة لثلاثة إجراءات: (1) تحميل سجل درجات الطالب، (2) إرسال نموذج تسجيل الدخول، (3) طلب الجدول الدراسي لليوم من نظام مدرسة أخرى — حدد هل GET أم POST هو الأنسب لكل إجراء، وهل تتضمن العملية الأخيرة API؟",
+                        en_q: "For a school web app, specify whether GET or POST is best for: (1) downloading student grades PDF, (2) submitting login form, (3) requesting today's schedule from another school's system. Is an API involved in the third task?",
+                        hint: "الاسترجاع GET والإرسال للمعالجة POST، والتواصل بين نظامين مختلفين يتم عبر API.",
+                        en_hint: "Retrieval uses GET, form submission uses POST, and cross-system communication uses an API.",
+                        model: "1. <b>تحميل سجل درجات الطالب:</b> الأسلوب <b>GET</b> (لأنه طلب استرجاع ملف/بيانات من الخادم).<br>2. <b>إرسال نموذج تسجيل الدخول:</b> الأسلوب <b>POST</b> (لأنه إرسال بيانات سرية ليعالجها الخادم).<br>3. <b>طلب الجدول الدراسي من نظام مدرسة أخرى:</b> الأسلوب <b>GET</b> (لاسترجاع بيانات الجدول)، <b>ونعم تتضمن العملية واجهة برمجة تطبيقات (API)</b> لأنها تبادل بيانات بين نظامين برمجيين مختلفين.",
+                        en_model: "1. <b>Downloading student grade record:</b> <b>GET</b> (retrieving a resource).<br>2. <b>Submitting login form:</b> <b>POST</b> (sending credentials for server processing).<br>3. <b>Requesting schedule from another school's system:</b> <b>GET</b>, and <b>yes, an API is involved</b> to enable communication between two distinct software systems."
+                    },
+                    {
+                        source: "فكّر كمهندس - الخطوة 2 و 3 (ص 60)",
+                        q: "في تطبيق المدرسة، هل يجب إرسال كل شيء عبر HTTP العادي أم استخدام HTTPS والأسلوب المناسب لكل إجراء؟ برر قرارك بسببين.",
+                        en_q: "In the school app, should everything be sent over plain HTTP, or should HTTPS and the appropriate method for each action be used? Justify with two reasons.",
+                        hint: "فكر في حماية بيانات الطلاب وكلمات المرور، وتنظيم العمليات القياسية.",
+                        en_hint: "Think about protecting student credentials/grades via TLS and using proper HTTP semantics.",
+                        model: "• <b>القرار:</b> يجب <b>استخدام HTTPS والأسلوب المناسب لكل إجراء</b>.<br>• <b>التبرير بسببين:</b><br>1. <b>حماية السرية والسلامة (الأمان):</b> استخدام HTTPS يحمي كلمات مرور الطلاب وسجلات درجاتهم عبر تشفير TLS ويمنع المتجسسين من قراءتها أو تعديلها أثناء النقل.<br>2. <b>سلامة وكفاءة عمل التطبيق:</b> استخدام GET للاسترجاع وPOST لإرسال النماذج يتوافق مع قواعد HTTP القياسية ويضمن معالجة الخادم لكل طلب بالطريقة الصحيحة.",
+                        en_model: "• <b>Decision:</b> Use <b>HTTPS and the appropriate HTTP method for each action</b>.<br>• <b>Two Reasons:</b><br>1. <b>Security & Privacy:</b> HTTPS encrypts traffic via TLS, protecting student passwords and grade PDFs from eavesdropping or tampering.<br>2. <b>Architectural Correctness:</b> Using GET for retrieval and POST for data submission follows standard HTTP semantics for reliable server processing."
+                    },
+                    {
+                        source: "اقرأ البيانات JSON (ص 60)",
+                        q: "تأمل بيانات JSON التالية: { \"city\": \"Cairo\", \"temperature\": 31 } — حدد مفتاحاً (key) واحداً والقيمة (value) المقابلة له، واشرح ميزة تمثيل البيانات بهذه الصيغة.",
+                        en_q: "Examine the JSON data: { \"city\": \"Cairo\", \"temperature\": 31 } — identify one key and its corresponding value, and explain one advantage of this format.",
+                        hint: "المفتاح بين علامتي تنصيص قبل النقطتين الرأسيتين، والقيمة بعدهما.",
+                        en_hint: "The key is before the colon, and the value is after the colon.",
+                        model: "• <b>المفتاح (Key):</b> <code>\"city\"</code> ⬅️ <b>القيمة المقابلة (Value):</b> <code>\"Cairo\"</code> (أو المفتاح <code>\"temperature\"</code> وقيمته <code>31</code>).<br>• <b>ميزة صيغة JSON:</b> صيغة نصية شائعة وقابلة للقراءة البشرية والبرمجية لتمثيل البيانات المهيكلة باستخدام كائنات ومصفوفات وقيم بسيطة، وتدعمها لغات وأدوات برمجية كثيرة.",
+                        en_model: "• <b>Key:</b> <code>\"city\"</code> ⬅️ <b>Corresponding Value:</b> <code>\"Cairo\"</code> (or key <code>\"temperature\"</code> with value <code>31</code>).<br>• <b>Advantage of JSON:</b> A lightweight, human-readable text format for structured data supported by almost all programming languages."
+                    },
+                    {
+                        source: "طبّق ما تعلمته - خدمة الطقس (ص 60)",
+                        q: "تقدم خدمة الطقس واجهة برمجة تطبيقات (API) تعيد توقعات اليوم عندما يرسل العميل طلباً. اذكر طريقة طلب HTTP التي سيستخدمها العميل، ولماذا يجب استخدام HTTPS، ووضح ميزة واحدة لاستقبال البيانات بصيغة JSON.",
+                        en_q: "A weather service provides an API returning today's forecast. State the HTTP method used by the client, why HTTPS is needed, and one benefit of receiving JSON.",
+                        hint: "استرجاع التوقعات = GET، حماية ومصادقة الاتصال = HTTPS، سهولة المعالجة = JSON.",
+                        en_hint: "Retrieving forecast = GET, securing & authenticating = HTTPS, easy parsing = JSON.",
+                        model: "1. <b>طريقة طلب HTTP:</b> الأسلوب <b>GET</b>؛ لأن العميل يطلب استرجاع بيانات توقعات الطقس من الخادم.<br>2. <b>لماذا يجب استخدام HTTPS:</b> لحماية سرية الاتصال وسلامة البيانات من التلاعب أثناء النقل ومصادقة خادم الطقس عبر TLS.<br>3. <b>ميزة استقبال البيانات بصيغة JSON:</b> صيغة نصية مهيكلة خفيفة وسهلة القراءة تُمكّن تطبيق الطقس من استخراج وعرض اسم المدينة ودرجة الحرارة بسهولة وبسرعة.",
+                        en_model: "1. <b>HTTP Request Method:</b> <b>GET</b>, because the client is retrieving forecast data.<br>2. <b>Why use HTTPS:</b> To ensure server authentication and protect data integrity and privacy over TLS.<br>3. <b>Benefit of JSON:</b> Lightweight, structured text format that is easy for the app to parse and render on screen."
+                    },
+                    {
+                        source: "تمارين نهاية الدرس 2 و 3 (ص 61)",
+                        q: "صنّف العمليات الأربع التالية إلى أسلوب (GET) أو أسلوب (POST) مع ذكر السبب: (1 عرض صفحة ويب، 2 إدخال معرّف وكلمة مرور وإرسالهما، 3 عرض نتائج البحث، 4 إرسال محتويات نموذج التواصل).",
+                        en_q: "Classify these 4 operations into GET or POST with justification: (1 viewing a web page, 2 submitting login ID/password, 3 viewing search results, 4 submitting a contact form).",
+                        hint: "العمليات 1 و 3 استرجاع وعرض، والعمليتان 2 و 4 إرسال بيانات للمعالجة.",
+                        en_hint: "Operations 1 & 3 retrieve data (GET); operations 2 & 4 submit data for processing (POST).",
+                        model: "1. <b>عرض صفحة ويب:</b> <b>GET</b> (استرجاع مورد لعرضه).<br>2. <b>إدخال معرّف وكلمة مرور وإرسالهما:</b> <b>POST</b> (إرسال بيانات تسجيل دخول ليعالجها الخادم).<br>3. <b>عرض نتائج البحث:</b> <b>GET</b> (استرجاع بيانات مطابقة للبحث).<br>4. <b>إرسال محتويات نموذج التواصل:</b> <b>POST</b> (إرسال بيانات النموذج ليحفظها ويعالجها الخادم).",
+                        en_model: "1. <b>Viewing a web page:</b> <b>GET</b> (resource retrieval).<br>2. <b>Submitting login ID and password:</b> <b>POST</b> (sending credentials for server authentication).<br>3. <b>Viewing search results:</b> <b>GET</b> (fetching matching records).<br>4. <b>Submitting a contact form:</b> <b>POST</b> (sending form payload for server processing)."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - تأمّل (ص 61)",
+                        q: "عندما تفشل صفحة في التحميل، كيف يساعدك التمييز بين رمزي الحالة (404) و(500) على فهم سبب المشكلة وتحديد الطرف المسؤول عنها؟",
+                        en_q: "When a page fails to load, how does distinguishing between status codes 404 and 500 help you understand the cause and identify the responsible side?",
+                        hint: "404 عنوان غير موجود، بينما 500 عطل داخلي في الخادم نفسه.",
+                        en_hint: "404 means missing resource/wrong URL, while 500 means internal server malfunction.",
+                        model: "• إذا ظهر الرمز <b>404</b>: أدرك أن الخادم يعمل بشكل سليم، ولكن <b>المورد أو الصفحة المطلوبة غير موجودة بهذا العنوان</b> (ربما كتبت الرابط خطأ في المتصفح أو حُذفت الصفحة).<br>• أما إذا ظهر الرمز <b>500</b>: أدرك أن العنوان قد يكون صحيحاً، ولكن <b>حدث خطأ داخلي في جانب الخادم</b> منعه من إكمال الطلب، وعليّ انتظار إصلاح مسؤولي الموقع للخادم.",
+                        en_model: "• <b>Status 404</b> tells me the server is reachable, but the <b>requested resource does not exist at that URL</b> (e.g., broken link or typo).<br>• <b>Status 500</b> tells me an <b>internal error occurred on the server side</b> preventing it from fulfilling the request."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - تحدٍّ وخلاصة (ص 61)",
+                        q: "اختر تطبيقاً واحداً تستخدمه يومياً، وصف طلباً واحداً يرسله العميل والاستجابة التي يتوقعها من الخادم، ثم لخّص الفكرة الرئيسة للدرس.",
+                        en_q: "Choose one daily app you use, describe one request sent by the client and the expected server response, then summarize the lesson's main idea.",
+                        hint: "تطبيق تسوق أو فيديو أو طقس، مع ذكر البروتوكول والأسلوب ورمز الحالة وJSON.",
+                        en_hint: "E-commerce, video, or weather app mentioning HTTPS, GET/POST, status 200, and JSON.",
+                        model: "• <b>مثال تطبيقي (تطبيق تسوق إلكتروني):</b> عندما أضغط على منتج، يرسل التطبيق (العميل) طلب <b>GET</b> عبر <b>HTTPS</b> إلى واجهة <b>API</b> الخادم، ويتوقع استجابة برمز حالة <b>200</b> تحتوي على اسم المنتج وسعره وصوره بصيغة <b>JSON</b>.<br>• <b>الخلاصة الذهبية:</b> العميل يطلب، والخادم يستجيب — عبر <b>HTTP/HTTPS</b>، بأسلوب <b>(GET/POST)</b>، و<b>رمز حالة</b>، وغالباً <b>واجهة برمجة تطبيقات (API)</b> تعيد بيانات <b>JSON</b>.",
+                        en_model: "• <b>Example (Shopping App):</b> Tapping a product sends a <b>GET</b> request over <b>HTTPS</b> to the server's <b>API</b>, expecting a <b>200</b> response containing product details in <b>JSON</b>.<br>• <b>Summary:</b> The client requests and the server responds—via <b>HTTP/HTTPS</b>, using a method <b>(GET/POST)</b>, a <b>status code</b>, and often an <b>API</b> returning <b>JSON</b> data."
+                    }
+                ]
+            },
+            homework: {
+                mcq: [
+                    {
+                        tag: "تمييز العميل والخادم (ص 57)",
+                        ar_q: "عندما تفتح تطبيق الخرائط أو متصفح الويب على هاتفك للبحث عن موقع، فإن هاتفك والمتصفح يمثلان في هذه العملية دور:",
+                        en_q: "When you open a maps app or web browser on your phone to search for a location, your phone and browser act as the:",
+                        options: [
+                            { ar: "الخادم المركزي (Server)", en: "Central Server" },
+                            { ar: "العميل (Client)", en: "Client" },
+                            { ar: "بروتوكول التشفير (TLS)", en: "TLS Encryption Protocol" },
+                            { ar: "رمز الحالة (Status Code)", en: "Status Code" }
+                        ],
+                        correct: 1,
+                        exp_ar: "متصفح الويب وتطبيق الهاتف يمثلان دور العميل (Client) الذي يرسل طلباً إلى خدمة على الخادم عبر الشبكة (ص 57).",
+                        exp_en: "The web browser and mobile app act as the Client that sends requests to a server service over the network (p. 57)."
+                    },
+                    {
+                        tag: "عناوين HTTPS (ص 58)",
+                        ar_q: "المواقع الإلكترونية التي تبدأ عناوينها بـ «https://» في شريط عنوان المتصفح تعتمد على:",
+                        en_q: "Websites whose URLs start with 'https://' in the browser address bar rely on:",
+                        options: [
+                            { ar: "نقل النصوص مكشوفة بدون أي حماية", en: "Transmitting plain text without any protection" },
+                            { ar: "استخدام بروتوكول HTTP عبر اتصال TLS آمن", en: "Using HTTP over a secure TLS connection" },
+                            { ar: "إلغاء الحاجة لوجود خادم ويب", en: "Eliminating the need for a web server" },
+                            { ar: "حظر جميع طلبات GET و POST", en: "Blocking all GET and POST requests" }
+                        ],
+                        correct: 1,
+                        exp_ar: "المواقع التي تبدأ عناوينها بـ https:// تستخدم اتصال HTTPS، وهو استخدام HTTP عبر اتصال TLS آمن (ص 58).",
+                        exp_en: "URLs starting with https:// use HTTPS, which runs HTTP over a secure TLS connection (p. 58)."
+                    },
+                    {
+                        tag: "دور بروتوكول TLS في HTTPS (ص 58)",
+                        ar_q: "ما الفائدة الأمنية التي يضيفها اتصال TLS عند استخدامه مع HTTP لتكوين HTTPS؟",
+                        en_q: "What security benefit does a TLS connection add when combined with HTTP to form HTTPS?",
+                        options: [
+                            { ar: "تغيير ألوان وخطوط الصفحة تلقائياً", en: "Automatically changing page colors and fonts" },
+                            { ar: "حماية سرية الاتصال وسلامته ومصادقة الخادم لمنع التنصت والتعديل", en: "Protecting connection confidentiality, integrity, and server authentication against eavesdropping and tampering" },
+                            { ar: "تحويل جميع طلبات POST إلى طلبات GET", en: "Converting all POST requests into GET requests" },
+                            { ar: "ضمان عدم حدوث الخطأ 404 نهائياً", en: "Guaranteeing that 404 errors never happen" }
+                        ],
+                        correct: 1,
+                        exp_ar: "يساعد TLS على حماية سرية الاتصال وسلامته، وعلى مصادقة الخادم، بحيث لا يستطيع المتجسس قراءة المحتوى أو تعديله بسهولة أثناء النقل (ص 58).",
+                        exp_en: "TLS protects connection confidentiality and integrity, and authenticates the server so eavesdroppers cannot easily read or modify content in transit (p. 58)."
+                    },
+                    {
+                        tag: "تطبيقات الأسلوب GET (ص 58 و 61)",
+                        ar_q: "أي من العمليات التالية يعتمد بشكل أساسي على طريقة طلب (GET)؟",
+                        en_q: "Which of the following operations relies primarily on the (GET) request method?",
+                        options: [
+                            { ar: "إرسال بيانات بطاقة الدفع لإتمام الشراء", en: "Submitting payment card details to complete a purchase" },
+                            { ar: "إرسال نموذج إنشاء حساب مستخدم جديد", en: "Submitting a new user registration form" },
+                            { ar: "عرض صفحة ويب أو استرجاع نتائج البحث من الخادم", en: "Displaying a web page or retrieving search results from the server" },
+                            { ar: "إرسال كلمة المرور لتسجيل الدخول", en: "Sending a password to log in" }
+                        ],
+                        correct: 2,
+                        exp_ar: "يُستخدم الأسلوب GET عادةً لطلب مورد أو بيانات من الخادم، مثل عرض صفحة ويب واسترجاع نتائج البحث (ص 58 و 61).",
+                        exp_en: "GET is used to request a resource or data from the server, such as displaying a web page or retrieving search results (p. 58, 61)."
+                    },
+                    {
+                        tag: "تطبيقات الأسلوب POST (ص 58 و 61)",
+                        ar_q: "أي من العمليات التالية يتطلب استخدام طريقة طلب (POST)؟",
+                        en_q: "Which of the following operations requires using the (POST) request method?",
+                        options: [
+                            { ar: "قراءة مقال منشور في مدونة عامة", en: "Reading a public blog article" },
+                            { ar: "تحميل ملف PDF لجدول الامتحانات", en: "Downloading an exam schedule PDF" },
+                            { ar: "إرسال محتويات نموذج التواصل أو بيانات تسجيل الدخول ليعالجها الخادم", en: "Submitting contact form contents or login credentials for the server to process" },
+                            { ar: "فتح الصفحة الرئيسية لموقع إخباري", en: "Opening the home page of a news website" }
+                        ],
+                        correct: 2,
+                        exp_ar: "يُستخدم POST عادةً لإرسال بيانات ليعالجها الخادم، مثل إرسال معلومات تسجيل الدخول وإرسال محتويات نموذج التواصل (ص 58 و 61).",
+                        exp_en: "POST is used to send data for server processing, such as login credentials or contact form contents (p. 58, 61)."
+                    },
+                    {
+                        tag: "تحليل أخطاء HTTP (ص 58)",
+                        ar_q: "أثناء محاولتك إرسال نموذج حجز عبر موقع طيران، ظهرت لك رسالة خطأ تحمل رمز الحالة (500). ما التفسير الصحيح لهذا الموقف؟",
+                        en_q: "While submitting a booking form on an airline website, an error with status code (500) appeared. What is the correct interpretation?",
+                        options: [
+                            { ar: "تم تأكيد الحجز وإصدار التذكرة بنجاح", en: "The booking was confirmed and ticket issued successfully" },
+                            { ar: "حدث خطأ داخلي في خادم شركة الطيران منعه من إكمال معالجة الطلب", en: "An internal error occurred on the airline's server preventing it from completing the request" },
+                            { ar: "شاشة هاتفك تحتاج إلى تنظيف", en: "Your phone screen needs cleaning" },
+                            { ar: "بروتوكول JSON قام بحذف المتصفح", en: "JSON protocol deleted the browser" }
+                        ],
+                        correct: 1,
+                        exp_ar: "الرمز 500 يشير إلى حدوث خطأ داخلي في الخادم منعه من إكمال الطلب (ص 58).",
+                        exp_en: "Status code 500 indicates an internal server error that prevented the server from completing the request (p. 58)."
+                    },
+                    {
+                        tag: "حدود الرمز 500 (ص 58)",
+                        ar_q: "أي العبارات التالية صحيحة بخصوص رمز حالة HTTP (500) وفق ما ورد في الكتاب المدرسي؟",
+                        en_q: "Which statement is true regarding HTTP status code (500) according to the textbook?",
+                        options: [
+                            { ar: "يحدد الرمز 500 وحده السطر البرمجي الدقيق الذي تعطل في الخادم للمستخدم", en: "Code 500 alone specifies the exact broken line of code to the user" },
+                            { ar: "يشير إلى خطأ داخلي في الخادم منعه من إكمال الطلب، ولا يحدد الرمز وحده السبب التفصيلي", en: "It indicates an internal server error that prevented completing the request, and the code alone does not specify the detailed cause" },
+                            { ar: "يعني أن الطلب تم بنجاح بنسبة 100%", en: "It means the request succeeded 100%" },
+                            { ar: "يظهر فقط عندما ينقطع التيار الكهربائي عن هاتف العميل", en: "It only appears when the client's phone loses battery power" }
+                        ],
+                        correct: 1,
+                        exp_ar: "نص الكتاب ص 58: «500: خطأ داخلي في الخادم منعه من إكمال الطلب؛ ولا يحدد الرمز وحده السبب التفصيلي».",
+                        exp_en: "Textbook p. 58: '500: An internal error in the server prevented it from completing the request; the code alone does not specify the detailed cause.'"
+                    },
+                    {
+                        tag: "وظيفة API بين الطبقات (ص 58)",
+                        ar_q: "كيف تتواصل الواجهة الأمامية (Front-end) مع خدمة في الواجهة الخلفية (Back-end) لجلب بيانات محددة دون إعادة تحميل كامل الصفحة؟",
+                        en_q: "How does the Front-End communicate with a Back-End service to fetch specific data without reloading the entire page?",
+                        options: [
+                            { ar: "ترسل الواجهة الأمامية طلبات إلى الخدمة الخلفية عبر API وتستقبل منها البيانات (غالباً بصيغة JSON)", en: "The Front-End sends requests to the Back-End service via an API and receives data (often in JSON format)" },
+                            { ar: "عن طريق إغلاق المتصفح وإعادة فتحه", en: "By closing and reopening the browser" },
+                            { ar: "عبر إلغاء بروتوكول HTTP واستبداله بكابل طابعة", en: "By replacing HTTP with a printer cable" },
+                            { ar: "عن طريق إرسال رمز الحالة 404 من المتصفح للخادم", en: "By sending status code 404 from the browser to the server" }
+                        ],
+                        correct: 0,
+                        exp_ar: "ترسل الواجهة الأمامية طلبات إلى خدمة خلفية عبر واجهة برمجة التطبيقات (API) وتستقبل منها البيانات، والتي تعود غالباً بصيغة JSON (ص 58).",
+                        exp_en: "The Front-End sends requests to a Back-End service via an API and receives data from it, typically formatted in JSON (p. 58)."
+                    },
+                    {
+                        tag: "بنية بيانات JSON (ص 58)",
+                        ar_q: "بأي شكل تُمثّل صيغة JSON البيانات المهيكلة عند تبادلها بين التطبيقات؟",
+                        en_q: "How does the JSON format represent structured data when exchanged between applications?",
+                        options: [
+                            { ar: "في صورة ملفات صوتية وتناظرية فقط", en: "As analog audio files only" },
+                            { ar: "باستخدام كائنات (Objects) ومصفوفات (Arrays) وقيم بسيطة في صيغة نصية قابلة للقراءة", en: "Using objects, arrays, and simple values in a readable text format" },
+                            { ar: "في صورة رموز ثنائية غير قابلة للقراءة البشرية مطلقاً", en: "As raw binary machine code unreadable by humans" },
+                            { ar: "باستخدام جداول ورقية مطبوعة", en: "Using printed paper tables" }
+                        ],
+                        correct: 1,
+                        exp_ar: "JSON هي صيغة نصية شائعة وقابلة للقراءة لتمثيل وتبادل البيانات المهيكلة باستخدام كائنات ومصفوفات وقيم بسيطة (ص 58 و 60).",
+                        exp_en: "JSON is a readable text format for representing and exchanging structured data using objects, arrays, and simple values (p. 58, 60)."
+                    },
+                    {
+                        tag: "تحليل كود JSON (ص 60)",
+                        ar_q: "إذا أعادت واجهة API البيانات التالية: { \"product\": \"Laptop\", \"price\": 25000 }، فما القيمة (value) المقابلة للمفتاح \"price\"؟",
+                        en_q: "If an API returns the JSON data: { \"product\": \"Laptop\", \"price\": 25000 }, what is the value corresponding to the key \"price\"?",
+                        options: [
+                            { ar: "\"product\"", en: "\"product\"" },
+                            { ar: "\"Laptop\"", en: "\"Laptop\"" },
+                            { ar: "25000", en: "25000" },
+                            { ar: "GET", en: "GET" }
+                        ],
+                        correct: 2,
+                        exp_ar: "في زوج المفتاح والقيمة \"price\": 25000، المفتاح (key) هو \"price\" والقيمة المقابلة له (value) هي 25000 (على غرار نشاط ص 60).",
+                        exp_en: "In the key-value pair \"price\": 25000, the key is \"price\" and its corresponding value is 25000 (p. 60)."
+                    },
+                    {
+                        tag: "تحديد مصدر رسالة الحالة (ص 58)",
+                        ar_q: "من الطرف الذي يُصدِر ويرسل «طريقة طلب HTTP» (مثل GET/POST)، ومن الطرف الذي يُصدِر ويرسل «رمز حالة HTTP» (مثل 200/404)؟",
+                        en_q: "Which side sends the 'HTTP Request Method' (GET/POST), and which side sends the 'HTTP Status Code' (200/404)?",
+                        options: [
+                            { ar: "العميل يرسل طريقة الطلب، والخادم يرسل رمز الحالة في الاستجابة", en: "The Client sends the request method, and the Server sends the status code in the response" },
+                            { ar: "الخادم يرسل طريقة الطلب، والعميل يرسل رمز الحالة", en: "The Server sends the request method, and the Client sends the status code" },
+                            { ar: "كلاهما يرسلهما الخادم فقط دون تدخل العميل", en: "Both are sent exclusively by the Server" },
+                            { ar: "كلاهما يرسلهما العميل فقط دون وجود خادم", en: "Both are sent exclusively by the Client" }
+                        ],
+                        correct: 0,
+                        exp_ar: "الطلبات المرسلة من العميل إلى الخادم تتضمن طريقة طلب HTTP (GET/POST)، والاستجابات المرسلة من الخادم إلى العميل تتضمن رمز حالة HTTP (200/404/500) (ص 58).",
+                        exp_en: "Requests from Client to Server contain the HTTP request method, while responses from Server to Client contain the HTTP status code (p. 58)."
+                    },
+                    {
+                        tag: "سيناريو تطبيقي متكامل (ص 60)",
+                        ar_q: "تطبيق بنك إلكتروني يتيح للعميل إرسال طلب تحويل أموال إلى حساب آخر. ما التركيبة الصحيحة لهذا الإجراء؟",
+                        en_q: "A mobile banking app allows a customer to submit a money transfer to another account. What is the correct combination for this action?",
+                        options: [
+                            { ar: "بروتوكول HTTP العادي + الأسلوب GET", en: "Standard HTTP + GET method" },
+                            { ar: "بروتوكول HTTPS الآمن + الأسلوب POST", en: "Secure HTTPS + POST method" },
+                            { ar: "بروتوكول HTTP العادي + رمز الحالة 404", en: "Standard HTTP + Status 404" },
+                            { ar: "إرسال الطلب بدون شبكة وبدون خادم", en: "Sending the request offline without a server" }
+                        ],
+                        correct: 1,
+                        exp_ar: "تحويل الأموال عملية حساسة جداً وتُرسل بيانات ليعالجها الخادم؛ لذا يجب استخدام بروتوكول HTTPS الآمن مع الأسلوب POST (ص 58 و 60).",
+                        exp_en: "Money transfer submits sensitive transaction data for server processing, requiring secure HTTPS and the POST method (p. 58, 60)."
+                    },
+                    {
+                        tag: "سيناريو تطبيقي - تحميل ملف (ص 60)",
+                        ar_q: "عندما ينقر طالب على زر «تحميل ملف PDF لجدول الامتحانات» من بوابة المدرسة الآمنة، فإن المتصفح ينفذ:",
+                        en_q: "When a student clicks 'Download Exam Schedule PDF' from the secure school portal, the browser executes:",
+                        options: [
+                            { ar: "طلب GET عبر HTTPS لاسترجاع الملف من الخادم", en: "A GET request over HTTPS to retrieve the file from the server" },
+                            { ar: "طلب POST عبر HTTP غير المشفر لحذف الملف", en: "A POST request over unencrypted HTTP to delete the file" },
+                            { ar: "إرسال رمز حالة 500 إلى الخادم", en: "Sending status code 500 to the server" },
+                            { ar: "تعديل برمجة خادم المدرسة يدوياً", en: "Manually editing the school server code" }
+                        ],
+                        correct: 0,
+                        exp_ar: "تحميل ملف PDF أو سجل درجات هو استرجاع لمورد من الخادم، فيُستخدم له الأسلوب GET عبر اتصال HTTPS الآمن (فكر كمهندس ص 60).",
+                        exp_en: "Downloading a PDF record retrieves a resource from the server, so it uses GET over secure HTTPS (p. 60)."
+                    },
+                    {
+                        tag: "شمولية طرق الاتصال (ص 57 و 61)",
+                        ar_q: "أي العبارات التالية تعبّر بدقة عن طرق الاتصال في تطبيقات الويب كما وردت في الكتاب المدرسي؟",
+                        en_q: "Which statement accurately reflects web application communication methods as stated in the textbook?",
+                        options: [
+                            { ar: "يُعد نموذج الطلب والاستجابة عبر HTTP أساسياً في كثير من تطبيقات الويب، مع وجود وسائل اتصال أخرى عند الحاجة", en: "The HTTP request-response model is foundational in many web apps, with other communication means used when needed" },
+                            { ar: "لا توجد أي وسيلة اتصال على الإنترنت سوى أسلوب POST فقط", en: "POST is the only communication method that exists on the internet" },
+                            { ar: "تعمل جميع واجهات API بدون خوادم وبدون شبكات", en: "All APIs operate without servers or networks" },
+                            { ar: "صيغة JSON لا تدعمها أي لغة برمجة سوى لغة واحدة فقط", en: "JSON is supported by only one programming language" }
+                        ],
+                        correct: 0,
+                        exp_ar: "نص الكتاب ص 57 وص 61: «يُعد نموذج الطلب والاستجابة أساسياً في كثير من تطبيقات الويب، مع وجود وسائل اتصال أخرى عند الحاجة».",
+                        exp_en: "Textbook p. 57 & 61: The HTTP request-response model is fundamental to many web applications, while other communication methods may be used when needed."
+                    },
+                    {
+                        tag: "خلاصة الدرس (ص 58 و 61)",
+                        ar_q: "أي خيار يجمع العناصر الخمسة التي تتكامل معاً في دورة تواصل تطبيق الويب القياسية؟",
+                        en_q: "Which option combines the five elements that integrate in a standard web application communication cycle?",
+                        options: [
+                            { ar: "العميل والخادم + بروتوكول (HTTP/HTTPS) + طريقة طلب (GET/POST) + رمز حالة + API تعيد JSON", en: "Client & Server + Protocol (HTTP/HTTPS) + Request Method (GET/POST) + Status Code + API returning JSON" },
+                            { ar: "الطباعة الورقية + الراديو + التلفزيون + الصحف + الملصقات", en: "Paper printing + Radio + TV + Newspapers + Posters" },
+                            { ar: "الصمامات المفرغة + قانون مور + الحوسبة الكمومية فقط", en: "Vacuum tubes + Moore's Law + Quantum computing only" },
+                            { ar: "إلغاء الخادم + إيقاف الشبكة + حذف المتصفح", en: "Removing server + stopping network + deleting browser" }
+                        ],
+                        correct: 0,
+                        exp_ar: "الفكرة الرئيسة والخلاصة (ص 58 وص 61): يطلب العميل ويستجيب الخادم عبر HTTP/HTTPS، بأسلوب (GET/POST)، ورمز حالة، وغالباً واجهة برمجة تطبيقات (API) تعيد بيانات JSON.",
+                        exp_en: "Key Takeaway (p. 58, 61): The client requests and the server responds via HTTP/HTTPS, using GET/POST, a status code, and often an API returning JSON."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "واجب منزلي 1 - دورة الطلب والاستجابة (ص 57)",
+                        q: "اشرح المقصود بـ «نموذج الطلب والاستجابة» (Request-Response Model) بين العميل والخادم، مدعماً إجابتك بمثال عند النقر على رابط في المتصفح.",
+                        en_q: "Explain the 'Request-Response Model' between Client and Server, supporting your answer with an example of clicking a link in a browser.",
+                        hint: "من الذي يبدأ بإرسال الطلب ومن الذي يعالجه ويعيد الاستجابة؟",
+                        en_hint: "Who initiates the request, and who processes it and returns the response?",
+                        model: "يعتمد <b>نموذج الطلب والاستجابة</b> على وجود طرفين: <b>العميل (Client)</b> مثل متصفح الويب الذي يبدأ بإرسال طلب (Request) عبر الشبكة عند نقر المستخدم على رابط («أرني هذه الصفحة»)، و<b>الخادم (Server)</b> الذي يستقبل هذا الطلب، ويعالجه، ثم يعيد استجابة (Response) محملة بالبيانات المطلوبة ليعرضها المتصفح.",
+                        en_model: "The <b>Request-Response Model</b> involves two sides: the <b>Client</b> (e.g., web browser) initiates communication by sending a request over the network when a link is clicked, and the <b>Server</b> receives and processes the request, then returns a response containing the requested data."
+                    },
+                    {
+                        source: "واجب منزلي 2 - مقارنة HTTP و HTTPS (ص 57 - 58)",
+                        q: "قارن في نقاط محددة بين بروتوكول HTTP وبروتوكول HTTPS من حيث: التشفير، دور بروتوكول TLS، وبادئة عنوان الموقع، ومتى يجب استخدام HTTPS إلزامياً.",
+                        en_q: "Compare HTTP and HTTPS in terms of: encryption, role of TLS, URL prefix, and when HTTPS is mandatory.",
+                        hint: "تذكر الوظائف الثلاث لـ TLS في HTTPS: السرية، السلامة، ومصادقة الخادم.",
+                        en_hint: "Remember the three functions of TLS in HTTPS: confidentiality, integrity, and server authentication.",
+                        model: "• <b>بروتوكول HTTP:</b> ينقل الرسائل بين العميل والخادم بدون تشفير، وتبدأ عناوينه بـ <code>http://</code>، ويسهل التنصت عليه.<br>• <b>بروتوكول HTTPS:</b> يستخدم HTTP عبر اتصال <b>TLS آمن</b>، وتبدأ عناوينه بـ <code>https://</code>. يساعد TLS على: (1) حماية سرية الاتصال بالتشفير، (2) حماية سلامة البيانات من التعديل، (3) مصادقة الخادم.<br>• <b>متى يجب استخدامه إلزامياً:</b> في صفحات تسجيل الدخول، والدفع الإلكتروني، ونقل أي بيانات شخصية أو حساسة.",
+                        en_model: "• <b>HTTP:</b> Transfers messages in plain text without encryption (starts with <code>http://</code>).<br>• <b>HTTPS:</b> Runs HTTP over a secure <b>TLS</b> connection (starts with <code>https://</code>), providing (1) confidentiality via encryption, (2) data integrity, and (3) server authentication.<br>• <b>When mandatory:</b> Login pages, online payments, and any transmission of personal/sensitive data."
+                    },
+                    {
+                        source: "واجب منزلي 3 - متى نختار GET ومتى نختار POST؟ (ص 58)",
+                        q: "بصفتك مطور ويب، ما القاعدة الأساسية التي تعتمد عليها للاختيار بين أسلوب الطلب (GET) وأسلوب الطلب (POST)؟ اذكر مثالين عمليين لكل منهما.",
+                        en_q: "As a web developer, what is the core rule for choosing between GET and POST? Give two practical examples for each.",
+                        hint: "هل العملية قراءة واسترجاع أم إرسال بيانات للمعالجة والحفظ؟",
+                        en_hint: "Is the operation retrieving data or submitting data for server processing?",
+                        model: "• <b>قاعدة اختيار GET:</b> عندما يكون الغرض من الطلب هو <b>طلب مورد أو استرجاع بيانات من الخادم</b> دون إرسال بيانات لتغيير حالة الخادم. (مثال 1: عرض صفحة مقال، مثال 2: استرجاع نتائج بحث عن كتاب).<br>• <b>قاعدة اختيار POST:</b> عندما يكون الغرض هو <b>إرسال بيانات من العميل ليعالجها الخادم</b> أو يحفظها. (مثال 1: إرسال اسم المستخدم وكلمة المرور في نموذج الدخول، مثال 2: إرسال رسالة شكوى عبر نموذج التواصل).",
+                        en_model: "• <b>Rule for GET:</b> Use when the goal is to <b>request a resource or retrieve data</b> from the server. (Examples: viewing an article page, fetching book search results).<br>• <b>Rule for POST:</b> Use when the goal is to <b>submit data for the server to process</b> or store. (Examples: submitting login credentials, sending a contact form message)."
+                    },
+                    {
+                        source: "واجب منزلي 4 - تحليل رموز الحالة للمستخدم والمطور (ص 58 - 59)",
+                        q: "تخيل أنك تحاول فتح ثلاث صفحات مختلفة في موقع إلكتروني، فحصلت في الأولى على الرمز (200)، وفي الثانية على (404)، وفي الثالثة على (500). اشرح ما حدث في كل حالة.",
+                        en_q: "Imagine opening three different pages on a website and receiving status codes (200), (404), and (500). Explain what happened in each case.",
+                        hint: "نجاح، مورد غير موجود، خطأ داخلي في الخادم.",
+                        en_hint: "Success, resource not found, internal server error.",
+                        model: "• <b>الصفحة الأولى (200):</b> نجح الخادم في معالجة الطلب وأعاد محتوى الصفحة للعميل بنجاح.<br>• <b>الصفحة الثانية (404):</b> الخادم يعمل واستقبل الطلب، ولكنه لم يجد المورد أو الصفحة المطلوبة بهذا العنوان (رابط خطأ أو صفحة محذوفة).<br>• <b>الصفحة الثالثة (500):</b> واجه الخادم خطأً داخلياً أثناء محاولة تنفيذ الطلب منعه من إكماله.",
+                        en_model: "• <b>First Page (200):</b> The server successfully processed the request and returned the page.<br>• <b>Second Page (404):</b> The server is active, but the requested resource/page does not exist at that URL.<br>• <b>Third Page (500):</b> The server encountered an internal error that prevented it from completing the request."
+                    },
+                    {
+                        source: "واجب منزلي 5 - مفهوم API في الحياة العملية (ص 58 و 60)",
+                        q: "اشرح بمثال عملي كيف تساعد واجهة برمجة التطبيقات (API) تطبيقين مختلفين على التعاون وتبادل البيانات دون تدخل بشري يدوي.",
+                        en_q: "Explain with a practical example how an API helps two different applications cooperate and exchange data automatically.",
+                        hint: "تذكر مثال مدرسة تطلب الجدول من نظام مدرسة أخرى، أو تطبيق يطلب بيانات الطقس.",
+                        en_hint: "Recall the example of a school requesting a schedule from another school's system, or a weather app.",
+                        model: "توفر <b>واجهة برمجة التطبيقات (API)</b> مجموعة قواعد واضحة (عقد محدد) تسمح لبرنامج بطلب بيانات أو وظائف من برنامج آخر تلقائياً.<br><b>مثال عملي:</b> عندما يحتاج تطبيق مدرسة إلى عرض جدول حصص مشترك موجود في نظام مدرسة أخرى، يرسل طلب <code>GET</code> عبر <b>API</b> إلى خادم المدرسة الأخرى، فيرد الخادم تلقائياً ببيانات الجدول بصيغة <code>JSON</code> ليتم عرضها فوراً للطلاب دون نسخ يدوي.",
+                        en_model: "An <b>API</b> defines clear rules allowing one software program to request data or functions from another automatically.<br><b>Example:</b> A school app sends a <code>GET</code> request via an <b>API</b> to another school's system to fetch today's shared schedule, receiving the data in <code>JSON</code> for instant display."
+                    },
+                    {
+                        source: "واجب منزلي 6 - مزايا صيغة JSON وبنيتها (ص 58 و 60)",
+                        q: "لماذا تُفضّل معظم واجهات برمجة التطبيقات (APIs) إعادة البيانات بصيغة JSON؟ وما العناصر التي تستخدمها JSON لهيكلة البيانات؟",
+                        en_q: "Why do most APIs prefer returning data in JSON format, and what elements does JSON use to structure data?",
+                        hint: "صيغة نصية قابلة للقراءة، كائنات ومصفوفات وقيم بسيطة، دعم لغات البرمجة.",
+                        en_hint: "Readable text format, objects/arrays/simple values, broad language support.",
+                        model: "• <b>سبب تفضيل JSON:</b> لأنها صيغة نصية خفيفة، واضحة وقابلة للقراءة للبشر والآلات، وتدعمها لغات وأدوات برمجية كثيرة جداً.<br>• <b>عناصر هيكلة البيانات في JSON:</b> تستخدم <b>الكائنات (Objects)</b> على شكل أزواج مفتاح وقيمة <code>\"key\": \"value\"</code>، و<b>المصفوفات (Arrays)</b>، و<b>القيم البسيطة</b> (نصوص، أرقام، قيم منطقية).",
+                        en_model: "• <b>Why JSON is preferred:</b> It is a lightweight, human- and machine-readable text format supported by a vast range of programming languages and tools.<br>• <b>Structuring elements:</b> It uses <b>Objects</b> (key-value pairs), <b>Arrays</b>, and <b>simple values</b> (strings, numbers, booleans)."
+                    },
+                    {
+                        source: "واجب منزلي 7 - كتابة وتحليل كائن JSON (ص 60)",
+                        q: "اكتب مثالاً مبسطاً لبيانات بصيغة JSON تمثل كتاباً في مكتبة يحتوي على مفتاحين: اسم الكتاب (\"book\") وسعره (\"price\")، ثم حدد المفتاحين والقيمتين.",
+                        en_q: "Write a simple JSON example representing a library book with two keys: \"book\" and \"price\", then identify the keys and values.",
+                        hint: "اتبع نفس نمط مثال الطقس في الكتاب ص 60.",
+                        en_hint: "Follow the exact pattern of the weather JSON example on p. 60.",
+                        model: "<b>مثال كود JSON:</b><br><code dir='ltr'>{ \"book\": \"Web Programming\", \"price\": 150 }</code><br>• <b>المفتاح الأول (Key 1):</b> <code>\"book\"</code> ⬅️ <b>القيمة المقابلة (Value 1):</b> <code>\"Web Programming\"</code>.<br>• <b>المفتاح الثاني (Key 2):</b> <code>\"price\"</code> ⬅️ <b>القيمة المقابلة (Value 2):</b> <code>150</code>.",
+                        en_model: "<b>JSON Example:</b><br><code dir='ltr'>{ \"book\": \"Web Programming\", \"price\": 150 }</code><br>• <b>Key 1:</b> <code>\"book\"</code> ⬅️ <b>Value 1:</b> <code>\"Web Programming\"</code>.<br>• <b>Key 2:</b> <code>\"price\"</code> ⬅️ <b>Value 2:</b> <code>150</code>."
+                    },
+                    {
+                        source: "واجب منزلي 8 - خطورة استخدام GET في تسجيل الدخول (ص 58 و 60)",
+                        q: "لماذا يُعد استخدام أسلوب (GET) بدلاً من (POST) عند إرسال نموذج تسجيل الدخول خطأً تصميمياً، وماذا يحدث لو أُرسل عبر HTTP العادي؟",
+                        en_q: "Why is using GET instead of POST for a login form a design mistake, and what happens if it is sent over plain HTTP?",
+                        hint: "GET مخصص للاسترجاع وليس لإرسال بيانات المعالجة الحساسة، وHTTP غير مشفر.",
+                        en_hint: "GET is for retrieval (exposing parameters in URLs), while HTTP lacks TLS encryption.",
+                        model: "لأن الأسلوب <b>GET</b> مخصص لطلب واسترجاع الموارد والبيانات (وغالباً يضع المعاملات في عنوان الرابط URL)، بينما بيانات تسجيل الدخول هي بيانات سرية تُرسل ليعالجها الخادم ويتحقق منها، لذا يجب إرسالها بأسلوب <b>POST</b> داخل جسم الطلب. وإذا أُرسلت عبر <b>HTTP العادي</b> بدون TLS، فستنتقل كلمة المرور كنص مكشوف يسهل للمتجسسين على الشبكة سرقته.",
+                        en_model: "Because <b>GET</b> is designed for retrieving data (often appending parameters visibly in the URL), whereas login credentials must be submitted for server processing using <b>POST</b>. Sending them over plain <b>HTTP</b> without TLS exposes the password in cleartext to network eavesdroppers."
+                    },
+                    {
+                        source: "واجب منزلي 9 - تشخيص أعطال الاتصال (ص 58 - 59)",
+                        q: "أثناء اختبار تطبيق ويب، لاحظ المطور أن طلبات جلب قائمة المنتجات عبر API تفشل وتعيد الرمز (404) أحياناً والرمز (500) أحياناً أخرى. كيف يختلف إجراء الإصلاح في الحالتين؟",
+                        en_q: "During web app testing, API product requests sometimes fail with (404) and other times with (500). How does troubleshooting differ between the two cases?",
+                        hint: "في 404 نراجع عنوان الرابط والمسار، وفي 500 نراجع كود الخادم وقاعدة البيانات.",
+                        en_hint: "For 404 check the endpoint URL/path; for 500 check server-side code and database logs.",
+                        model: "• <b>عند ظهور الرمز 404:</b> يراجع المطور <b>عنوان الرابط (URL / Endpoint)</b> المكتوب في كود الواجهة الأمامية للتأكد من عدم وجود خطأ إملائي في مسار الـ API.<br>• <b>عند ظهور الرمز 500:</b> يراجع المطور <b>كود الواجهة الخلفية وسجلات أخطاء الخادم (Server Logs)</b> وقاعدة البيانات لمعرفة سبب العطل الداخلي الذي منع الخادم من إكمال الطلب.",
+                        en_model: "• <b>For Status 404:</b> Inspect the <b>request URL/API endpoint</b> in the client code to fix typos or missing routes.<br>• <b>For Status 500:</b> Inspect the <b>Back-End server logs, application logic, and database connection</b> to resolve the internal server crash."
+                    },
+                    {
+                        source: "واجب منزلي 10 - تصميم اتصال لتطبيق مستشفى (ص 60)",
+                        q: "يريد مستشفى تصميم تطبيق ويب يتيح للمريض: (أ) عرض قائمة الأطباء المتاحين، (ب) إرسال نموذج حجز موعد جديد، (ج) استيراد نتائج التحاليل من مختبر خارجي. صمم طريقة الاتصال المناسبة لكل مهمة.",
+                        en_q: "A hospital wants a web app for: (a) viewing available doctors, (b) submitting a new appointment form, (c) importing lab results from an external lab. Design the communication method for each.",
+                        hint: "حدد البروتوكول (HTTPS)، وطريقة الطلب (GET/POST)، ودور API وJSON.",
+                        en_hint: "Specify the protocol (HTTPS), request method (GET/POST), and role of API/JSON.",
+                        model: "• أولاً: جميع المهام الثلاث يجب أن تستخدم بروتوكول <b>HTTPS</b> لحماية خصوصية البيانات الطبية للمرضى.<br>• <b>(أ) عرض قائمة الأطباء:</b> أسلوب <b>GET</b> لاسترجاع بيانات الأطباء من الخادم.<br>• <b>(ب) إرسال نموذج حجز موعد:</b> أسلوب <b>POST</b> لإرسال بيانات الحجز ليعالجها الخادم ويحفظها.<br>• <b>(ج) استيراد نتائج التحاليل من مختبر خارجي:</b> أسلوب <b>GET</b> عبر <b>واجهة برمجة تطبيقات (API)</b> تربط نظام المستشفى بنظام المختبر وتعيد النتائج بصيغة <b>JSON</b>.",
+                        en_model: "• All three tasks must use <b>HTTPS</b> to protect patient medical privacy.<br>• <b>(a) Viewing available doctors:</b> <b>GET</b> request to retrieve doctor lists.<br>• <b>(b) Submitting appointment form:</b> <b>POST</b> request to send booking details for processing.<br>• <b>(c) Importing lab results from external lab:</b> <b>GET</b> request via an <b>API</b> returning structured data in <b>JSON</b>."
+                    },
+                    {
+                        source: "واجب منزلي 11 - تعدد العملاء لخادم واحد (ص 57)",
+                        q: "في الشكل التوضيحي بالكتاب (ص 57: عدة عملاء يرسلون طلبات إلى خدمة على الخادم)، اشرح كيف يستطيع خادم واحد خدمة متصفح حاسوب وتطبيق هاتف ذكي في نفس الوقت.",
+                        en_q: "In the textbook diagram (p. 57: multiple clients sending requests to a server service), explain how a single server can serve both a desktop browser and a mobile app simultaneously.",
+                        hint: "لأنهما يتحدثان نفس لغة البروتوكول القياسي HTTP/HTTPS ويستقبلان JSON عبر API.",
+                        en_hint: "Because both clients use standard HTTP/HTTPS protocols and consume JSON via APIs.",
+                        model: "يستطيع الخادم خدمة عملاء متنوعين (متصفح حاسوب، تطبيق هاتف، جهاز لوحي) لأنهم جميعاً يلتزمون <b>بقواعد تواصل قياسية موحدة</b>؛ فيرسلون طلبات وفق بروتوكول <b>HTTP/HTTPS</b> وبأساليب محددة (GET/POST) إلى <b>واجهة برمجة التطبيقات (API)</b> على الخادم، ويعيد الخادم البيانات بصيغة <b>JSON</b> القياسية التي يفهمها كل عميل ويعرضها بطريقته.",
+                        en_model: "A single server can serve diverse clients (desktop browsers, mobile apps) because they all follow <b>standardized communication rules</b>: sending <b>HTTP/HTTPS</b> requests (GET/POST) to the server's <b>API</b> and receiving universal <b>JSON</b> responses that each client renders for its own screen."
+                    },
+                    {
+                        source: "واجب منزلي 12 - العلاقة بين الدرس 2-1 والدرس 3-2 (ص 32 و ص 58)",
+                        q: "اربط بين ما درسته في وحدة الأمن السيبراني (الدرس 2-1) وما درسته في هذا الدرس (3-2) حول كيفية عمل بروتوكول HTTPS واتصال TLS.",
+                        en_q: "Connect what you learned in Cybersecurity (Lesson 2-1) with this lesson (3-2) regarding how HTTPS and TLS work.",
+                        hint: "مصافحة TLS، الشهادة الرقمية، التشفير، ومنع التنصت والتلاعب.",
+                        en_hint: "TLS handshake, digital certificate authentication, encryption, and integrity.",
+                        model: "يتكامل الدرسان بوضوح؛ ففي الدرس 3-2 عرفنا أن <b>HTTPS</b> هو استخدام بروتوكول الويب HTTP عبر اتصال <b>TLS آمن</b> بين العميل والخادم. وفي الدرس 2-1 تعلمنا تفاصيل هذا التأمين: حيث تتم <b>مصافحة TLS</b> للتحقق من <b>الشهادة الرقمية</b> ومصادقة هوية الخادم، ثم اشتقاق مفاتيح الجلسة وتشفير البيانات لحماية <b>سرية الاتصال وسلامته</b> من التنصت أو التعديل أثناء النقل.",
+                        en_model: "Both lessons connect seamlessly: Lesson 3-2 explains that <b>HTTPS</b> runs HTTP over a secure <b>TLS</b> connection between client and server. Lesson 2-1 details how TLS achieves this via the <b>TLS handshake</b>, verifying the server's <b>digital certificate</b> (authentication) and using session keys to encrypt traffic for <b>confidentiality and integrity</b>."
+                    },
+                    {
+                        source: "واجب منزلي 13 - تتبع دورة البحث في متجر إلكتروني (ص 52 و ص 58)",
+                        q: "في الدرس 3-1 درست الخطوات الست للبحث عن منتج بين الطبقات الثلاث. أعد صياغة ما يحدث بين المتصفح والخادم باستخدام مصطلحات الدرس 3-2 (العميل، الخادم، GET، HTTPS، API، JSON، 200).",
+                        en_q: "In Lesson 3-1 you studied the 6 steps of product search. Rewrite what happens between browser and server using Lesson 3-2 terms (Client, Server, GET, HTTPS, API, JSON, 200).",
+                        hint: "اربط الواجهة الأمامية بالعميل، والخلفية بالخادم، والطلب والاستجابة بالبروتوكولات.",
+                        en_hint: "Map Front-End to Client, Back-End to Server, and trace the HTTPS GET request and 200 JSON response.",
+                        model: "1. يكتب المستخدم كلمة البحث في المتصفح الذي يمثل <b>العميل (Client)</b>.<br>2. يرسل العميل طلب <b>GET</b> عبر بروتوكول <b>HTTPS</b> الآمن إلى <b>واجهة برمجة التطبيقات (API)</b> الموجودة على <b>الخادم (Server)</b>.<br>3. يستعلم الخادم من قاعدة البيانات ويجهز النتائج، ثم يعيد استجابة إلى العميل تحمل رمز الحالة <b>200</b> (نجاح) وتتضمن قائمة المنتجات المطابقة بصيغة <b>JSON</b> ليعرضها المتصفح على الشاشة.",
+                        en_model: "1. The user types a search term in the browser (<b>Client</b>).<br>2. The Client sends a <b>GET</b> request over <b>HTTPS</b> to the <b>API</b> on the <b>Server</b>.<br>3. The Server queries the database and returns a response with status code <b>200</b> containing the matching products formatted in <b>JSON</b> for the browser to display."
+                    },
+                    {
+                        source: "واجب منزلي 14 - نقد تصميم غير آمن (ص 58 و 60)",
+                        q: "اقترح زميلك تصميم موقع مدرسة بحيث يتم إرسال كل شيء عبر HTTP العادي لتسريع الموقع وتجنب تعقيد HTTPS. انقد هذا الاقتراح علمياً موضحاً المخاطر الناتجة عنه.",
+                        en_q: "A classmate suggests building a school website using only plain HTTP to make it faster and simpler than HTTPS. Critique this proposal scientifically, explaining the risks.",
+                        hint: "كشف كلمات المرور، التلاعب بالدرجات، وانتحال هوية الموقع.",
+                        en_hint: "Exposed passwords, grade tampering, and lack of server authentication.",
+                        model: "هذا اقتراح <b>خاطئ وخطير أمنياً</b> للأسباب التالية:<br>1. <b>انعدام السرية (التنصت):</b> في HTTP العادي تنتقل كلمات مرور الطلاب والمعلمين وبياناتهم الشخصية غير مشفرة، مما يتيح لأي متجسس على الشبكة قراءتها بسهولة.<br>2. <b>انعدام السلامة (التلاعب):</b> يمكن لطرف ثالث اعتراض الرسائل وتعديل محتواها أثناء النقل.<br>3. <b>غياب مصادقة الخادم:</b> بدون TLS لا يستطيع المتصفح التحقق من الهوية الحقيقية لخادم المدرسة، مما يعرّض الطلاب لمواقع التصيد المزيفة.",
+                        en_model: "This proposal is <b>scientifically flawed and insecure</b> because:<br>1. <b>No Confidentiality:</b> Plain HTTP transmits student/teacher passwords in cleartext, allowing easy eavesdropping.<br>2. <b>No Integrity:</b> Attackers can intercept and modify data in transit.<br>3. <b>No Server Authentication:</b> Without TLS certificates, browsers cannot verify the school server's identity, exposing users to phishing sites."
+                    },
+                    {
+                        source: "واجب منزلي 15 - التمهيد للدرس 3-3 (ص 56 - 67)",
+                        q: "بعد أن فهمت البنية العامة (3-1) وطرق الاتصال وتبادل بيانات JSON (3-2)، كيف تُحوّل الواجهة الأمامية في المتصفح هذه البيانات النصية إلى شاشة مرئية وتفاعلية يراها المستخدم في الدرس القادم (3-3)؟",
+                        en_q: "After understanding general architecture (3-1) and communication/JSON exchange (3-2), how does the Front-End transform this data into a visual, interactive screen in Lesson 3-3?",
+                        hint: "أدوار تقنيات الواجهة الأمامية الثلاث: HTML للهيكل، CSS للمظهر، وJavaScript للسلوك والتفاعل.",
+                        en_hint: "Roles of the three front-end technologies: HTML for structure, CSS for presentation, and JavaScript for behavior/interactivity.",
+                        model: "عندما يستقبل المتصفح (العميل) الاستجابة وبيانات <b>JSON</b> من الخادم عبر <b>API</b>، تتكامل تقنيات الواجهة الأمامية الثلاث (موضوع الدرس 3-3): حيث تقوم لغة <b>JavaScript</b> بقراءة بيانات JSON وتحديث عناصر الصفحة ديناميكياً، وتحدد لغة <b>HTML</b> بنية وهيكل العناصر (العناوين والفقرات والروابط)، بينما تتولى لغة <b>CSS</b> تنسيق المظهر البصري والألوان والتخطيط المتجاوب مع حجم الشاشة.",
+                        en_model: "Once the browser (Client) receives the response and <b>JSON</b> data from the server via an <b>API</b>, the three Front-End technologies (Lesson 3-3) work together: <b>JavaScript</b> parses the JSON and dynamically updates the page behavior, <b>HTML</b> defines the semantic structure of headings and elements, and <b>CSS</b> styles the visual layout and responsive design."
+                    }
+                ]
+            }
+        };
+
+        let currentMode = 'session';
+        let currentSubTab = 'mcq';
+        let mcqViewMode = 'single';
+        let state = {
+            session: { answers: new Array(15).fill(null), currentIdx: 0 },
+            homework: { answers: new Array(15).fill(null), currentIdx: 0 }
+        };
+
+        function safeGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+        function safeSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        function getPrefix() { return 'cs_u3_l2_' + currentMode; }
+
+        function jumpToQuiz(m, sub) {
+            switchMode(m);
+            switchSubTab(sub);
+            document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchMode(m) {
+            currentMode = m;
+            document.getElementById('modeBtnSession').className = m === 'session' ? 'mode-card-btn active-mode-session' : 'mode-card-btn';
+            document.getElementById('modeBtnHomework').className = m === 'homework' ? 'mode-card-btn active-mode-homework' : 'mode-card-btn';
+            const lbl = m === 'session' ? 'السيشن' : 'الواجب';
+            document.getElementById('tabMCQLabel').innerText = `🔘 الاختيار من متعدد (15 - ${lbl})`;
+            document.getElementById('tabEssayLabel').innerText = `✍️ الأسئلة المقالية (15 - ${lbl})`;
+            document.getElementById('currentModeBadge').innerText = m === 'session' ? '👨‍🏫 السيشن' : '🏠 الواجب';
+            document.getElementById('essayBannerTitle').innerText = `📝 الأسئلة المقالية والتحليلية لقسم ${lbl} (15 سؤالاً):`;
+            document.getElementById('resultsCard').style.display = 'none';
+            if (mcqViewMode === 'single') {
+                document.getElementById('quizCard').style.display = 'block';
+            }
+            loadScores();
+            displayQuestion();
+            renderAllMcqList();
+            renderEssayQuestions();
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            document.getElementById('tabMCQ').classList.toggle('active', sub === 'mcq');
+            document.getElementById('tabEssay').classList.toggle('active', sub === 'essay');
+            document.getElementById('mcqContainer').style.display = sub === 'mcq' ? 'block' : 'none';
+            document.getElementById('essayContainer').style.display = sub === 'essay' ? 'block' : 'none';
+            document.getElementById('mcqViewToggleGroup').style.display = sub === 'mcq' ? 'flex' : 'none';
+        }
+
+        function setMcqViewMode(vm) {
+            mcqViewMode = vm;
+            document.getElementById('viewSingleBtn').classList.toggle('active-view', vm === 'single');
+            document.getElementById('viewAllBtn').classList.toggle('active-view', vm === 'all');
+            document.getElementById('quizCard').style.display = vm === 'single' ? 'block' : 'none';
+            document.getElementById('allMcqListContainer').style.display = vm === 'all' ? 'block' : 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+            if (vm === 'single') displayQuestion();
+            else renderAllMcqList();
+        }
+
+        function calculateScore() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            let s = 0, answered = 0;
+            qs.forEach((q, i) => {
+                if (ans[i] !== null) {
+                    answered++;
+                    if (ans[i] === q.correct) s++;
+                }
+            });
+            document.getElementById('score').innerText = s;
+            document.getElementById('progressBar').style.width = ((answered / qs.length) * 100) + '%';
+            return s;
+        }
+
+        function loadScores() {
+            const p = getPrefix();
+            document.getElementById('highScore').innerText = safeGet(p + '_high') || '0';
+            document.getElementById('firstScore').innerText = safeGet(p + '_first') !== null ? safeGet(p + '_first') : '--';
+            calculateScore();
+        }
+
+        function displayQuestion() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const idx = state[currentMode].currentIdx;
+            const q = qs[idx];
+
+            document.getElementById('qCurrent').innerText = idx + 1;
+            document.getElementById('topicBadge').innerText = q.tag;
+            document.getElementById('questionTextAr').innerText = (idx + 1) + '. ' + q.ar_q;
+            document.getElementById('questionTextEn').innerText = 'Q' + (idx + 1) + ': ' + q.en_q;
+            calculateScore();
+
+            const box = document.getElementById('optionsContainer');
+            box.innerHTML = '';
+            const exp = document.getElementById('explanationText');
+            const st = document.getElementById('qStatusIndicator');
+            const prev = ans[idx];
+
+            if (prev === null) {
+                st.innerText = 'لم يُجب بعد';
+                exp.style.display = 'none';
+            } else {
+                const ok = prev === q.correct;
+                st.innerText = ok ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة';
+                exp.style.display = 'block';
+                exp.style.borderRightColor = ok ? 'var(--success)' : 'var(--danger)';
+                exp.innerHTML = `<b>${ok ? '✅ أحسنت!' : '❌ الإجابة الصحيحة: (' + ['أ','ب','ج','د'][q.correct] + ') ' + q.options[q.correct].ar}</b><div style="margin-top:6px;">${q.exp_ar}</div><div class="exp-en" style="margin-top:6px;">${q.exp_en}</div>`;
+            }
+
+            q.options.forEach((opt, oi) => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.innerHTML = `<div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${opt.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${opt.en}</div>`;
+                if (prev !== null) {
+                    b.disabled = true;
+                    if (oi === q.correct) b.classList.add('correct');
+                    else if (oi === prev) b.classList.add('wrong');
+                } else {
+                    b.onclick = () => {
+                        state[currentMode].answers[idx] = oi;
+                        displayQuestion();
+                    };
+                }
+                box.appendChild(b);
+            });
+
+            document.getElementById('prevBtn').disabled = (idx === 0);
+            document.getElementById('nextBtn').innerText = (idx === qs.length - 1) ? 'إنهاء وعرض النتيجة 🏁' : 'السؤال التالي ⬅️';
+        }
+
+        function nextQuestion() {
+            const qs = quizData[currentMode].mcq;
+            if (state[currentMode].currentIdx < qs.length - 1) {
+                state[currentMode].currentIdx++;
+                displayQuestion();
+            } else {
+                document.getElementById('quizCard').style.display = 'none';
+                document.getElementById('resultsCard').style.display = 'block';
+                const s = calculateScore();
+                const p = getPrefix();
+                document.getElementById('finalScore').innerText = s;
+                if (safeGet(p + '_first') === null) safeSet(p + '_first', s);
+                if (s > parseInt(safeGet(p + '_high') || '0')) safeSet(p + '_high', s);
+                loadScores();
+            }
+        }
+
+        function prevQuestion() {
+            if (state[currentMode].currentIdx > 0) {
+                state[currentMode].currentIdx--;
+                displayQuestion();
+            }
+        }
+
+        function selectAllViewOption(qi, oi) {
+            state[currentMode].answers[qi] = oi;
+            calculateScore();
+            renderAllMcqList();
+        }
+
+        function renderAllMcqList() {
+            const box = document.getElementById('allMcqListContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            box.innerHTML = '';
+
+            qs.forEach((q, qi) => {
+                const prev = ans[qi];
+                const ok = prev === q.correct;
+                const card = document.createElement('div');
+                card.className = 'q-card';
+                let opts = '';
+                q.options.forEach((o, oi) => {
+                    let cls = 'opt-btn' + (prev !== null ? (oi === q.correct ? ' correct' : (oi === prev ? ' wrong' : '')) : '');
+                    opts += `<button class="${cls}" ${prev !== null ? 'disabled' : ''} onclick="selectAllViewOption(${qi}, ${oi})"><div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${o.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${o.en}</div></button>`;
+                });
+                card.innerHTML = `
+                    <div class="q-header">
+                        <span class="q-badge">${q.tag}</span>
+                        <span>${prev === null ? 'لم يُجب' : (ok ? '✅ صحيحة' : '❌ خاطئة')}</span>
+                    </div>
+                    <div class="q-text-ar">${qi+1}. ${q.ar_q}</div>
+                    <div class="q-text-en">Q${qi+1}: ${q.en_q}</div>
+                    <div class="options-list">${opts}</div>
+                    ${prev !== null ? `<div class="explanation" style="display:block; border-right-color:${ok ? 'var(--success)' : 'var(--danger)'};"><div>${q.exp_ar}</div><div class="exp-en">${q.exp_en}</div></div>` : ''}
+                `;
+                box.appendChild(card);
+            });
+        }
+
+        function openIndexModal() {
+            const g = document.getElementById('gridIndexContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            g.innerHTML = '';
+            qs.forEach((q, i) => {
+                const d = document.createElement('div');
+                d.className = 'index-pill' + (ans[i] !== null ? (ans[i] === q.correct ? ' solved-correct' : ' solved-wrong') : '');
+                d.innerText = i + 1;
+                d.onclick = () => {
+                    state[currentMode].currentIdx = i;
+                    setMcqViewMode('single');
+                    closeIndexModal();
+                };
+                g.appendChild(d);
+            });
+            document.getElementById('indexModal').style.display = 'flex';
+        }
+
+        function closeIndexModal() {
+            document.getElementById('indexModal').style.display = 'none';
+        }
+
+        function restartCurrentQuiz() {
+            state[currentMode].answers = new Array(15).fill(null);
+            state[currentMode].currentIdx = 0;
+            setMcqViewMode(mcqViewMode);
+            calculateScore();
+        }
+
+        function toggleEssayBox(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function renderEssayQuestions() {
+            const box = document.getElementById('essayList');
+            const list = quizData[currentMode].essay;
+            box.innerHTML = '';
+            list.forEach((it, i) => {
+                const d = document.createElement('div');
+                d.className = 'essay-item';
+                d.innerHTML = `
+                    <span class="essay-source">${it.source}</span>
+                    <div class="essay-q-text"><strong>س${i+1}:</strong> ${it.q}</div>
+                    <div class="q-text-en"><strong>Q${i+1}:</strong> ${it.en_q}</div>
+                    <textarea class="essay-textarea" placeholder="اكتب إجابتك وتحليلك الهندسي هنا..."></textarea>
+                    <div>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('h_${i}')">💡 تلميح / Hint</button>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('m_${i}')">👁️ الإجابة النموذجية / Model Answer</button>
+                    </div>
+                    <div class="hint-box" id="h_${i}">
+                        <div>💡 ${it.hint}</div>
+                        <div class="exp-en" style="margin-top:4px;">💡 ${it.en_hint}</div>
+                    </div>
+                    <div class="model-answer" id="m_${i}">
+                        <div>${it.model}</div>
+                        <hr style="margin:8px 0;opacity:0.3;">
+                        <div class="exp-en" style="color:inherit;">${it.en_model}</div>
+                    </div>
+                `;
+                box.appendChild(d);
+            });
+        }
+
+        function toggleAllEssays(show) {
+            quizData[currentMode].essay.forEach((_, i) => {
+                const m = document.getElementById('m_' + i);
+                if (m) m.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        window.onload = () => {
+            loadScores();
+            displayQuestion();
+            renderEssayQuestions();
+        };
+    </script>
+</body>
+</html>
