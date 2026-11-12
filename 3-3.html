@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 3-3: أساسيات تقنية الواجهة الأمامية | المنصة التفاعلية الشاملة (شرح + محاكيات + 60 سؤالاً)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81; --primary-dark: #092c4c; --primary-light: #2563eb; --primary-soft: #eff6ff;
+            --accent: #f59e0b; --accent-dark: #d97706; --accent-soft: #fffbeb;
+            --bg: #f8fafc; --card-bg: #ffffff; --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0;
+            --success: #10b981; --success-soft: #dcfce7; --danger: #ef4444; --danger-soft: #fee2e2;
+            --teal: #0d9488; --teal-soft: #ccfbf1; --purple: #8b5cf6; --purple-soft: #ede9fe; --font-scale: 1;
+        }
+        body.dark-mode {
+            --bg: #0b1120; --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #334155;
+            --primary-soft: #1e3a8a; --accent-soft: #451a03; --success-soft: #064e3b; --danger-soft: #450a0a;
+            --teal-soft: #134e4a; --purple-soft: #3b0764;
+        }
+        body.projector-mode { --font-scale: 1.16; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.85; font-size: calc(1rem * var(--font-scale)); padding-bottom: 80px; transition: background-color 0.25s, color 0.25s; }
+        #top-progress-bar { position: fixed; top: 0; right: 0; height: 5px; background: linear-gradient(to left, var(--accent), var(--primary-light), var(--teal), var(--success)); width: 0%; z-index: 3000; }
+        .sticky-toolbar { position: sticky; top: 0; z-index: 1500; background: rgba(15, 30, 54, 0.95); backdrop-filter: blur(10px); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(245, 158, 11, 0.5); }
+        .toolbar-brand { font-weight: 900; font-size: 1rem; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .tool-pill { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); padding: 5px 13px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .tool-pill:hover, .tool-pill.active-tool { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        header { background: linear-gradient(135deg, #07192f 0%, #0f4c81 55%, #1e40af 100%); color: white; padding: 42px 20px 35px; text-align: center; border-bottom: 5px solid var(--accent); }
+        header h1 { font-size: calc(2.1rem * var(--font-scale)); margin-bottom: 10px; font-weight: 900; }
+        header p { font-size: calc(1.05rem * var(--font-scale)); color: #e2e8f0; max-width: 900px; margin: 0 auto 18px; }
+        .header-badges, .nav-shortcuts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .h-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 30px; font-size: 0.86rem; font-weight: 700; color: #fde68a; }
+        .shortcut-btn { background: rgba(255, 255, 255, 0.16); color: white; border: 1px solid rgba(255, 255, 255, 0.35); padding: 9px 18px; border-radius: 22px; text-decoration: none; font-size: 0.94rem; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .shortcut-btn:hover { background: white; color: var(--primary); }
+        .shortcut-btn.highlight-hw { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .container { max-width: 1140px; margin: 28px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 28px; margin-bottom: 28px; border: 1px solid var(--border); box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.05); }
+        .badge { display: inline-block; background: var(--primary-soft); color: var(--primary-light); padding: 5px 15px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; border: 1px solid #93c5fd; }
+        body.dark-mode .badge { color: #93c5fd; }
+        h2 { color: var(--primary-light); font-size: calc(1.5rem * var(--font-scale)); margin-bottom: 14px; font-weight: 900; }
+        h3 { font-size: calc(1.18rem * var(--font-scale)); font-weight: 800; margin-bottom: 8px; }
+        .hook-box { background: var(--accent-soft); border-right: 6px solid var(--accent); padding: 18px; border-radius: 12px; margin: 16px 0; }
+        .hook-box strong { color: var(--accent-dark); display: block; margin-bottom: 5px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+        @media (max-width: 850px) { .grid-3 { grid-template-columns: 1fr; } }
+        .info-panel { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; }
+        .real-world-box { background: linear-gradient(135deg, rgba(13, 148, 136, 0.07) 0%, rgba(37, 99, 235, 0.06) 100%); border: 2px solid rgba(13, 148, 136, 0.35); border-right: 6px solid var(--teal); border-radius: 16px; padding: 18px; margin: 16px 0; }
+        .real-world-title { color: var(--teal); font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .sim-box { background: rgba(37, 99, 235, 0.04); border: 2px solid #93c5fd; border-radius: 16px; padding: 22px; margin: 20px 0; }
+        .sim-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+        .sim-btn { background: var(--card-bg); color: var(--text-main); border: 2px solid var(--primary-light); padding: 9px 16px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; transition: 0.2s; }
+        .sim-btn:hover, .sim-btn.active-sim { background: var(--primary-light); color: white; }
+        .sim-output { background: var(--card-bg); border-radius: 12px; padding: 16px; border-right: 6px solid var(--primary-light); margin-top: 12px; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; border-radius: 12px; overflow: hidden; }
+        table th, table td { border: 1px solid var(--border); padding: 12px 16px; text-align: right; }
+        table th { background: var(--primary); color: white; font-weight: 800; }
+        .code-block-ltr { direction: ltr; text-align: left; background: #0f172a; color: #38bdf8; font-family: 'Inter', monospace; padding: 16px; border-radius: 12px; font-size: 0.92rem; line-height: 1.65; overflow-x: auto; border: 2px solid #334155; margin: 12px 0; }
+        .tag-hl { color: #f472b6; font-weight: 700; }
+        .attr-hl { color: #fbbf24; }
+        .str-hl { color: #34d399; }
+        .preview-stage { border: 2px dashed var(--border); border-radius: 14px; padding: 18px; background: var(--card-bg); transition: all 0.3s ease; }
+        .preview-styled { background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%); border: 2px solid #3b82f6; border-radius: 16px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12); color: #0f172a; }
+        .preview-styled h4 { color: #1d4ed8; font-size: 1.25rem; border-bottom: 2px solid #93c5fd; padding-bottom: 6px; margin-bottom: 10px; }
+        .preview-styled ul { list-style: none; display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+        .preview-styled li { background: #ffffff; border: 1px solid #bfdbfe; padding: 6px 14px; border-radius: 20px; font-weight: 800; color: #1e40af; }
+        .like-action-btn { padding: 8px 16px; border-radius: 10px; border: 1px solid #94a3b8; cursor: pointer; font-weight: 800; margin-top: 8px; transition: 0.2s; }
+        .preview-styled .like-action-btn { background: #2563eb; color: white; border: none; border-radius: 24px; box-shadow: 0 4px 10px rgba(37,99,235,0.3); }
+        .preview-styled .like-action-btn:hover { background: #1d4ed8; transform: scale(1.04); }
+        .device-viewport { margin: 14px auto; border: 4px solid #334155; border-radius: 18px; padding: 14px; background: var(--bg); transition: width 0.35s ease; max-width: 100%; overflow: hidden; }
+        .resp-cards-grid { display: grid; gap: 10px; transition: 0.3s; }
+        .resp-card-item { background: var(--card-bg); border: 2px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; font-weight: 800; }
+        .book-activity { border: 2px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; background: var(--card-bg); }
+        .book-activity-header { padding: 14px 18px; background: rgba(15, 76, 129, 0.06); cursor: pointer; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary-light); }
+        .book-activity-body { padding: 18px; border-top: 1px solid var(--border); display: none; }
+        .book-activity.open .book-activity-body { display: block; }
+        .main-mode-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+        @media (max-width: 640px) { .main-mode-switcher { grid-template-columns: 1fr; } }
+        .mode-card-btn { background: var(--card-bg); border: 3px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: 0.2s; }
+        .mode-card-btn.active-mode-session { border-color: var(--primary-light); background: var(--primary-soft); }
+        .mode-card-btn.active-mode-homework { border-color: var(--accent); background: var(--accent-soft); }
+        .sub-tabs-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .quiz-tabs, .view-toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .view-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 13px; border-radius: 10px; font-size: 0.86rem; font-weight: 700; cursor: pointer; }
+        .view-btn.active-view { background: var(--teal); color: white; border-color: var(--teal); }
+        .stats-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; display: block; }
+        .stat-val { font-size: 1.25rem; font-weight: 900; color: var(--primary-light); }
+        .btn-index { background: var(--primary-soft); color: var(--primary-light); border: 2px solid #93c5fd; padding: 7px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 800; cursor: pointer; }
+        .progress-container { width: 100%; height: 7px; background: var(--border); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary-light), var(--accent)); transition: width 0.3s; }
+        .q-card, .essay-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+        .q-badge, .essay-source { background: var(--primary-soft); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 0.84rem; font-weight: 800; display: inline-block; margin-bottom: 6px; }
+        .q-text-ar, .essay-q-text { font-size: calc(1.14rem * var(--font-scale)); font-weight: 800; margin-bottom: 6px; }
+        .q-text-en, .exp-en { font-size: calc(0.94rem * var(--font-scale)); color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; border-left: 3px solid var(--primary-light); padding-left: 10px; margin-bottom: 12px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .opt-btn { background: var(--bg); border: 2px solid var(--border); padding: 12px 16px; border-radius: 12px; cursor: pointer; text-align: right; width: 100%; transition: 0.2s; }
+        .opt-btn:hover:not(:disabled) { border-color: var(--primary-light); background: var(--primary-soft); }
+        .opt-btn.selected-pending { border-color: var(--primary-light) !important; background: var(--primary-soft) !important; }
+        .opt-btn.correct { background: #dcfce7 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .opt-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991c1c !important; }
+        .opt-ar { font-weight: 700; color: var(--text-main); }
+        .opt-en { font-size: 0.86rem; color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', sans-serif; }
+        .explanation { margin-top: 14px; padding: 14px; border-radius: 12px; display: none; background: var(--bg); border-right: 5px solid var(--primary-light); }
+        .actions { display: flex; justify-content: space-between; margin-top: 18px; gap: 10px; flex-wrap: wrap; }
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 9px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-nav:disabled { background: #94a3b8; cursor: not-allowed; }
+        .essay-textarea { width: 100%; height: 80px; padding: 10px; border-radius: 10px; border: 2px solid var(--border); background: var(--bg); color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem; }
+        .btn-reveal-answer { background: var(--bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-left: 6px; margin-bottom: 6px; }
+        .hint-box { display: none; margin-top: 10px; padding: 10px 14px; background: var(--accent-soft); border-right: 4px solid var(--accent); border-radius: 10px; font-weight: 700; }
+        .model-answer { display: none; margin-top: 12px; padding: 14px; background: #f0fdf4; border-right: 5px solid var(--success); border-radius: 10px; color: #14532d; }
+        body.dark-mode .model-answer { background: #064e3b; color: #ecfdf5; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 2500; padding: 20px; }
+        .modal-content { background: var(--card-bg); color: var(--text-main); border-radius: 20px; width: 100%; max-width: 700px; padding: 24px; max-height: 85vh; overflow-y: auto; }
+        .grid-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 8px; margin-top: 10px; }
+        .index-pill { background: var(--bg); border: 2px solid var(--border); padding: 8px; border-radius: 10px; font-weight: 800; text-align: center; cursor: pointer; }
+        .index-pill.solved-pending { background: var(--primary-soft); border-color: var(--primary-light); color: var(--primary-light); }
+        .index-pill.solved-correct { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+        .index-pill.solved-wrong { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+        .results-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 20px; padding: 32px 24px; text-align: center; display: none; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: var(--primary-soft); border: 5px solid var(--primary-light); display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 16px auto; }
+        .score-num { font-size: 2.1rem; font-weight: 900; color: var(--primary-light); }
+        .btn-restart { background: var(--accent); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .mistakes-review-box { text-align: right; margin-top: 22px; border-top: 2px solid var(--border); padding-top: 18px; }
+    </style>
+</head>
+<body>
+    <div id="top-progress-bar"></div>
+    <div class="sticky-toolbar">
+        <div class="toolbar-brand"><span>🎨</span><span>منصة الدرس 3-3: أساسيات تقنية الواجهة الأمامية (60 سؤالاً + محاكيات تفاعلية)</span></div>
+        <div class="toolbar-actions">
+            <a href="#lesson-explanation" class="tool-pill">📖 الشرح والمحاكيات</a>
+            <a href="#book-activities-sec" class="tool-pill">📗 أنشطة الكتاب</a>
+            <button class="tool-pill" onclick="jumpToQuiz('session','mcq')">🎯 سيشن (30 سؤالاً)</button>
+            <button class="tool-pill" onclick="jumpToQuiz('homework','mcq')">🏠 الواجب (30 سؤالاً)</button>
+            <button class="tool-pill" id="projectorBtn" onclick="toggleProjectorMode()">🔍 تكبير الخط</button>
+            <button class="tool-pill" id="darkBtn" onclick="toggleDarkMode()">🌙 الوضع الليلي</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-badges">
+            <span class="h-badge">الصف الثاني الثانوي (بكالوريا مصرية)</span>
+            <span class="h-badge">الوحدة الثالثة: تطبيقات الويب</span>
+            <span class="h-badge">الدرس 3-3 (صفحات الكتاب 62 - 67)</span>
+        </div>
+        <h1>الدرس 3-3: أساسيات تقنية الواجهة الأمامية (Front-End Technology Basics)</h1>
+        <p>شرح تفاعلي كامل لمنهج الكتاب المدرسي + محاكيات HTML وCSS وJavaScript وHTML الدلالية والتصميم المتجاوب وأطر العمل + 60 سؤالاً (30 للسيشن + 30 للواجب ثنائية اللغة)</p>
+        <div class="nav-shortcuts">
+            <a href="#lesson-explanation" class="shortcut-btn">📖 الشرح والمحاكيات التفاعلية</a>
+            <a href="#book-activities-sec" class="shortcut-btn">📗 جميع أسئلة وأنشطة الكتاب محلولة</a>
+            <button class="shortcut-btn" onclick="jumpToQuiz('session','mcq')">👨‍🏫 أسئلة السيشن (15 اختياري + 15 مقالي)</button>
+            <button class="shortcut-btn highlight-hw" onclick="jumpToQuiz('homework','mcq')">📝 أسئلة الواجب (15 اختياري + 15 مقالي)</button>
+        </div>
+    </header>
+
+    <div class="container" id="lesson-explanation">
+        <!-- Card 1: خريطة الدرس والمدخل -->
+        <div class="card">
+            <span class="badge">خريطة الدرس وأهداف التعلم (كتاب ص 62 - 63)</span>
+            <h2>🧭 مدخل الدرس: كيف تتكامل تقنيات الواجهة الأمامية لبناء صفحة ويب؟</h2>
+            <p>عند فتح أي صفحة ويب، فإنك ترى ثلاث تقنيات تعمل معاً: تتولى لغة <strong>HTML</strong> بناء الهيكل — أي العناوين والفقرات والروابط — تماماً مثل هيكل المبنى. وتضيف لغة <strong>CSS</strong> المظهر — كالألوان والتخطيط والخطوط — بما يشبه التصميم الداخلي للمبنى. أما لغة <strong>JavaScript</strong> فتضيف السلوك التفاعلي — مثل مربعات البحث المستجيبة، والأزرار التي تقوم بعمليات العد، والشاشات التي تُحدّث بياناتها. وتذهب تقنيات الواجهة الأمامية (Frontend) الحديثة إلى أبعد من ذلك؛ إذ تجعل الصفحات ذات دلالة واضحة، وقابلة للتكيف مع مختلف أحجام الشاشات، وأسرع في عملية التطوير.</p>
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">🎯 أهداف التعلم الرسمية (ص 62)</h3>
+                    <ul style="margin-right: 18px; font-size: 0.95rem;">
+                        <li><strong>شرح</strong> الأدوار المميزة لكل من HTML وCSS وJavaScript في بناء صفحة الويب.</li>
+                        <li><strong>شرح</strong> كيف تسهم لغة HTML الدلالية (Semantic HTML)، والتصميم المتجاوب، وأطر العمل في تحسين الواجهة الأمامية الحديثة.</li>
+                    </ul>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--accent);">
+                    <h3 style="color: var(--accent-dark);">⭐ الفكرة الأساسية والمفاهيم الخمسة (ص 63)</h3>
+                    <p style="font-size: 0.94rem; margin-bottom: 8px;">تُبنى صفحة الويب من <strong>HTML (البنية)</strong>، و<strong>CSS (المظهر)</strong>، و<strong>JavaScript (السلوك)</strong>؛ وتضيف الواجهة الأمامية الحديثة <strong>HTML الدلالية</strong> و<strong>التصميم المتجاوب</strong> و<strong>أطر العمل</strong>.</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        <span class="badge" style="margin:0;">HTML / CSS / JavaScript</span>
+                        <span class="badge" style="margin:0;">HTML الدلالية</span>
+                        <span class="badge" style="margin:0;">إمكانية الوصول / SEO</span>
+                        <span class="badge" style="margin:0;">التصميم المتجاوب</span>
+                        <span class="badge" style="margin:0;">إطار العمل</span>
+                    </div>
+                </div>
+            </div>
+            <div class="real-world-box">
+                <div class="real-world-title"><span>🏗️</span><span>تشبيه الكتاب المدرسي (ص 63): بناء وتجهيز مبنى متكامل!</span></div>
+                <p style="font-size: 0.95rem;">يُشبّه الكتاب المدرسي بناء صفحة الويب بتشييد مبنى:<br>
+                1. <strong>لغة HTML (هيكل مبنى):</strong> الأعمدة والجدران والغرف التي تحدد بنية الصفحة وعناصرها كالعناوين والفقرات والصور والروابط.<br>
+                2. <strong>لغة CSS (الديكور الداخلي والخارجي لمبنى):</strong> الطلاء والألوان والإضاءة وتنسيق الأثاث والخطوط والتخطيط.<br>
+                3. <strong>لغة JavaScript (أنظمة الكهرباء والسباكة في مبنى):</strong> الأنظمة الحيوية التي تجعل المبنى يتفاعل معك عند الضغط على مفتاح إضاءة أو زر مصعد (تفعيل الاستجابات وتحديث جزء فقط من الشاشة).</p>
+            </div>
+            <div class="hook-box">
+                <strong>❓ السؤال الرئيسي للدرس (ص 63):</strong>
+                كيف تعمل HTML وCSS وJavaScript معاً لبناء صفحة ويب، وما الذي يجعل الواجهة الأمامية الحديثة ذات معنى وقابلة للتكيف وفعّالة في البناء؟
+            </div>
+        </div>
+
+        <!-- Card 2: المحور الأول: أدوار HTML و CSS و JavaScript -->
+        <div class="card">
+            <span class="badge">المحور الأول (كتاب ص 63 - 64)</span>
+            <h2>🧱 1. أدوار HTML و CSS و JavaScript في بناء صفحة الويب</h2>
+            <p>تؤدي التقنيات الثلاث أدواراً مختلفة في كثير من صفحات الويب؛ <strong>وليس من الضروري أن تستخدم الصفحة الثلاث كلها معاً</strong>، بل يمكن أن تستخدم الصفحة HTML وحده، أو HTML مع CSS وJavaScript بحسب الوظائف التي تحتاج إليها (ص 63 - 64).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 18%;">التقنية</th>
+                        <th style="width: 52%;">الدور الأساسي في صفحة الويب (كتاب ص 63)</th>
+                        <th style="width: 30%;">التشبيه في الكتاب</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>HTML</strong><br><small>(البنية / Structure)</small></td>
+                        <td>يحدد <strong>بنية (هيكل)</strong> صفحة الويب. يصف عناصر مثل العناوين والفقرات والصور والروابط.</td>
+                        <td>🏗️ <strong>هيكل مبنى</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSS</strong><br><small>(المظهر / Appearance)</small></td>
+                        <td>يحدد <strong>مظهر</strong> صفحة الويب (الألوان، التخطيط، الحجم، الخطوط، إلخ).</td>
+                        <td>🎨 <strong>الديكور الداخلي والخارجي لمبنى</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>JavaScript</strong><br><small>(السلوك / Behavior)</small></td>
+                        <td>يضيف <strong>السلوك والتفاعلية</strong> إلى صفحة الويب. يُفعّل الاستجابات عند الضغط على الأزرار وتحديثات جزء فقط من الشاشة.</td>
+                        <td>⚡ <strong>أنظمة الكهرباء والسباكة في مبنى</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧪 محاكي الشكل 3.3.1 (ص 64): طبّق طبقات HTML و CSS و JavaScript على «صفحتي على الويب»:</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runLayerSim(1, this)">1️⃣ فقط HTML (البنية والهيكل)</button>
+                    <button class="sim-btn" onclick="runLayerSim(2, this)">2️⃣ HTML + CSS (+ المظهر والتنسيق)</button>
+                    <button class="sim-btn" onclick="runLayerSim(3, this)">3️⃣ HTML + CSS + JavaScript (+ السلوك والتفاعل)</button>
+                </div>
+                <div class="preview-stage" id="layerPreviewStage">
+                    <h4>صفحتي على الويب</h4>
+                    <p>هذه صفحة بسيطة عن كتبي المفضلة.</p>
+                    <p style="margin-top:8px;"><strong>الكتب التي أحبها:</strong></p>
+                    <ul style="margin-right:20px;">
+                        <li>كتاب أ</li>
+                        <li>كتاب ب</li>
+                        <li>كتاب ج</li>
+                    </ul>
+                    <button class="like-action-btn" id="simLikeBtn" onclick="handleSimLike()">أعجبني ♥</button>
+                    <span id="simLikeCountSpan" style="display:none; margin-right:10px; font-weight:900; color:#dc2626;">العدد: <span id="simLikeCounter">1</span></span>
+                </div>
+                <div class="sim-output" id="layerSimOutput">
+                    🏗️ <strong>المرحلة 1 (فقط HTML - ص 64):</strong> يحدد HTML المحتوى والهيكل فقط (العنوان، الفقرة، القائمة، والزر)، لكن بدون ألوان أو تنسيق جمالي وبدون تفاعل عند النقر على الزر.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: المحور الثاني والثالث: HTML الدلالية والتصميم المتجاوب -->
+        <div class="card">
+            <span class="badge">المحور الثاني والثالث (كتاب ص 64)</span>
+            <h2>🏷️ 2. HTML الدلالية (Semantic HTML) و 3. التصميم المتجاوب (Responsive Design)</h2>
+
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--teal);">
+                    <h3 style="color: var(--teal);">🏷️ أولاً: HTML الدلالية (Semantic HTML)</h3>
+                    <p style="font-size:0.95rem;"><strong>التعريف (ص 64):</strong> استخدام عناصر توضح <strong>وظيفة أجزاء الصفحة</strong>، بدلاً من الصناديق العادية غير المعبرة:</p>
+                    <ul style="margin-right:18px; font-size:0.93rem; margin-top:6px;">
+                        <li><code>&lt;header&gt;</code>: في أعلى الصفحة (الترويسة).</li>
+                        <li><code>&lt;nav&gt;</code>: للتنقل (قائمة الروابط).</li>
+                        <li><code>&lt;main&gt;</code>: للمحتوى الرئيس للصفحة.</li>
+                        <li><code>&lt;footer&gt;</code>: في أسفل الصفحة (التذييل).</li>
+                    </ul>
+                    <p style="font-size:0.93rem; margin-top:8px;"><strong>فوائد استخدام HTML الدلالية:</strong><br>
+                    ① <strong>إمكانية الوصول (Accessibility):</strong> يساعد قارئ الشاشة (Screen Reader) على فهم بنية الصفحة والتنقل فيها، مع الحاجة إلى ممارسات وصول أخرى أيضاً.<br>
+                    ② <strong>فهم محركات البحث للمحتوى (SEO):</strong> قد يساعد محركات البحث على فهم بنية المحتوى بصورة أفضل، <em>لكنه لا يضمن ترتيباً أعلى</em>.</p>
+                </div>
+
+                <div class="info-panel" style="border-right: 5px solid var(--purple);">
+                    <h3 style="color: var(--purple);">📱 ثانياً: التصميم المتجاوب (Responsive Design)</h3>
+                    <p style="font-size:0.95rem;"><strong>التعريف (ص 64):</strong> مفهوم تصميمي يُضبط فيه التخطيط تلقائياً وفقاً لأحجام الشاشات المختلفة مثل أجهزة الكمبيوتر والهواتف الذكية والأجهزة اللوحية.</p>
+                    <ul style="margin-right:18px; font-size:0.93rem; margin-top:8px;">
+                        <li><strong>أهميته:</strong> يساعد الصفحة على التكيف مع أحجام الشاشات المختلفة وتحسين سهولة استخدامها.</li>
+                        <li><strong>نهج الأولوية للجوال (Mobile-First):</strong> يستخدم كثير من الناس الويب عبر الهواتف، لذلك يراعي المطورون الشاشات الصغيرة منذ بداية التصميم.</li>
+                        <li><strong>تنبيه هام (تدرّب 2 ص 66):</strong> HTML الدلالية والتصميم المتجاوب لا يجعلان سرعة عرض الصفحة أسرع بالضرورة، بل يحسنان الفهم والتكيف وسهولة القراءة.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">📲 محاكي HTML الدلالية والتصميم المتجاوب عبر أحجام الشاشات:</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runResponsiveSim('desktop', this)">🖥️ شاشة كمبيوتر (Desktop - 3 أعمدة)</button>
+                    <button class="sim-btn" onclick="runResponsiveSim('tablet', this)">📟 جهاز لوحي (Tablet - عمودان)</button>
+                    <button class="sim-btn" onclick="runResponsiveSim('mobile', this)">📱 هاتف ذكي (Mobile-First - عمود واحد)</button>
+                </div>
+                <div class="device-viewport" id="respViewport" style="width: 100%;">
+                    <div style="background:#1e3a8a; color:white; padding:8px 12px; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span><strong>&lt;header&gt;</strong> ترويسة الموقع الإخباري</span>
+                        <small id="viewportSizeBadge">عرض مكتب (100%)</small>
+                    </div>
+                    <div style="background:#dbeafe; color:#1e40af; padding:6px 12px; border-radius:8px; margin-bottom:8px; font-size:0.88rem; font-weight:800;">
+                        <strong>&lt;nav&gt;</strong> قائمة التنقل: الرئيسية | أخبار التقنية | الفعاليات
+                    </div>
+                    <div style="padding:10px; border:2px solid #93c5fd; border-radius:10px; margin-bottom:8px;">
+                        <div style="font-weight:900; color:var(--primary-light); margin-bottom:6px;"><strong>&lt;main&gt;</strong> المحتوى الرئيس (يتكيف تلقائياً مع الشاشة):</div>
+                        <div class="resp-cards-grid" id="respCardsGrid" style="grid-template-columns: repeat(3, 1fr);">
+                            <div class="resp-card-item">📰 خبر 1: الذكاء الاصطناعي</div>
+                            <div class="resp-card-item">🛡️ خبر 2: الأمن السيبراني</div>
+                            <div class="resp-card-item">🌐 خبر 3: تطبيقات الويب</div>
+                        </div>
+                    </div>
+                    <div style="background:#334155; color:#f1f5f9; padding:6px 12px; border-radius:8px; font-size:0.84rem; text-align:center;">
+                        <strong>&lt;footer&gt;</strong> تذييل الصفحة - جميع الحقوق محفوظة
+                    </div>
+                </div>
+                <div class="sim-output" id="respSimOutput">
+                    🖥️ <strong>وضع الكمبيوتر + HTML الدلالية (ص 64):</strong> العناصر الدلالية (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code>) توضح وظيفة كل جزء لقارئ الشاشة ومحركات البحث، بينما يعرض التصميم المتجاوب البطاقات في 3 أعمدة مريحة.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: المحور الرابع: أطر العمل والمكتبات -->
+        <div class="card">
+            <span class="badge">المحور الرابع (كتاب ص 65)</span>
+            <h2>⚙️ 4. أطر العمل والمكتبات الشائعة لتطوير الويب (React، Vue، Next.js)</h2>
+            <p><strong>إطار العمل (Framework):</strong> بنية توفر مسبقاً وظائف ومكونات شائعة الاستخدام، وذلك لجعل عملية تطوير تطبيقات الويب أكثر كفاءة. وعند استخدام إطار عمل، <strong>لا يحتاج المطورون إلى كتابة كامل الكود البرمجي من الصفر</strong>، ويمكنهم التطوير بكفاءة أكبر (ص 65).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">المكتبة / إطار العمل</th>
+                        <th style="width: 53%;">الخصائص والدور في الكتاب المدرسي (ص 65)</th>
+                        <th style="width: 25%;">الميزة الجوهرية</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>React</strong></td>
+                        <td><strong>مكتبة JavaScript</strong> لبناء واجهات المستخدم من <strong>مكونات قابلة لإعادة الاستخدام (Reusable Components)</strong> وتحديثها عند تغير البيانات.</td>
+                        <td>مكونات واجهة قابلة لإعادة الاستخدام.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vue</strong></td>
+                        <td>له <strong>بنية بسيطة</strong> ويتيح بناء تطبيقات الويب <strong>تدريجياً</strong> بدءاً من ميزات صغيرة.</td>
+                        <td>البساطة والتدرج من ميزات صغيرة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Next.js</strong></td>
+                        <td><strong>إطار مبني على React</strong> لبناء تطبيقات ويب، ويوفر <strong>التوجيه (Routing)</strong> وطرقاً مختلفة لعرض الصفحات والعمل على <strong>الخادم والعميل</strong>.</td>
+                        <td>مبني على React + توجيه وعمل على الخادم والعميل.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧭 محاكي مستشار اختيار المكتبة أو إطار العمل (كتاب ص 65):</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="selectFramework('react', this)">⚛️ 1. بناء واجهة من مكونات قابلة لإعادة الاستخدام (React)</button>
+                    <button class="sim-btn" onclick="selectFramework('vue', this)">🟢 2. البدء ببنية بسيطة وتطوير الميزات تدريجياً (Vue)</button>
+                    <button class="sim-btn" onclick="selectFramework('nextjs', this)">▲ 3. إطار متكامل فوق React يدعم التوجيه والخادم والعميل (Next.js)</button>
+                </div>
+                <div class="sim-output" id="frameworkSimOutput">
+                    ⚛️ <strong>مكتبة React (ص 65):</strong> مكتبة JavaScript تركز على بناء واجهات المستخدم من مكونات (Components) قابلة لإعادة الاستخدام وتحديثها تلقائياً عند تغير البيانات دون إعادة كتابة الكود من الصفر.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: دليل المعلم وأنشطة الكتاب محلولة -->
+        <div class="card" id="book-activities-sec">
+            <span class="badge">دليل المعلم والطالب الشامل (كتاب ص 62 - 67)</span>
+            <h2>📗 جميع أسئلة وأنشطة وتمارين الكتاب المدرسي محلولة بالتفصيل</h2>
+
+            <div class="book-activity open">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>💡 1. أنشطة «توقّف وفكّر» (ص 64، 65، 66) + «المثال المحلول» (ص 65)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>توقّف وفكّر (ص 64):</strong> في صفحة تستخدمها كثيراً، ما هي الأجزاء التي تمثل البنية (HTML)، وما هي التي تمثل الشكل (CSS)، وما الذي يتفاعل معك (JavaScript)؟<br>
+                    ⬅️ <strong>الإجابة:</strong><br>
+                    • <strong>البنية (HTML):</strong> عناوين المقالات أو الفيديوهات، الفقرات النصية، الصور، وروابط القوائم.<br>
+                    • <strong>الشكل والمظهر (CSS):</strong> ألوان الخلفية والأزرار، نوع وحجم الخطوط، وتوزيع البطاقات في شبكة متناسقة.<br>
+                    • <strong>التفاعل والسلوك (JavaScript):</strong> مربع البحث الذي يقترح نتائج فورية أثناء الكتابة، زر «أعجبني» الذي يزيد العداد فوراً، وتحديث التعليقات دون إعادة تحميل الصفحة.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>توقّف وفكّر (ص 65):</strong> لماذا يفهم قارئ الشاشة الصفحة بشكل أفضل عندما نستخدم <code>&lt;header&gt;</code> و<code>&lt;nav&gt;</code> و<code>&lt;main&gt;</code> بدلاً من صناديق عادية؟<br>
+                    ⬅️ <strong>الإجابة:</strong> لأن هذه العناصر الدلالية (Semantic HTML) تحمل معنى يوضح <strong>وظيفة كل جزء في الصفحة</strong> (أعلى الصفحة، قائمة التنقل، المحتوى الرئيس)؛ فيستطيع برنامج قارئ الشاشة إخبار المستخدم الكفيف أو ضعيف البصر بمكان وجوده والقفز مباشرة إلى المحتوى الرئيس أو قائمة التنقل، بينما الصناديق العادية لا توضح وظيفة المحتوى بداخلها.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>توقّف وفكّر (ص 66):</strong> أي من الفوائد تتعلق بمظهر الصفحة، وأيها تتعلق بمدى سهولة إيجادها وقراءتها من قبل الآخرين؟<br>
+                    ⬅️ <strong>الإجابة:</strong><br>
+                    • <strong>تتعلق بمظهر الصفحة وتكيفها البصري:</strong> التصميم المتجاوب وتنسيق CSS.<br>
+                    • <strong>تتعلق بسهولة إيجادها وقراءتها من قبل الآخرين (بمن فيهم ذوو الإعاقة البصرية ومحركات البحث):</strong> لغة HTML الدلالية التي تدعم إمكانية الوصول (Accessibility) وتحسين محركات البحث (SEO).</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>المثال المحلول (ص 65):</strong><br>
+                    (1) ضع علامة ○ أو ×:<br>
+                    • <strong>أ: ○</strong> (تحدد HTML بنية وهيكل صفحة الويب).<br>
+                    • <strong>ب: ×</strong> (CSS تقنية تحدد مظهر صفحة الويب، أما إضافة السلوك فهي JavaScript).<br>
+                    • <strong>جـ: ○</strong> (تعريف صحيح للتصميم المتجاوب الذي يُضبط فيه التخطيط تلقائياً وفقاً لأحجام الشاشات).<br>
+                    • <strong>د: ○</strong> (وصف صحيح لفائدة أطر العمل في إلغاء الحاجة لكتابة كل الكود من الصفر).<br>
+                    (2) المطابقة:<br>
+                    • 1: يحدد بنية صفحة الويب ⬅️ <strong>(أ) HTML</strong>.<br>
+                    • 2: يحدد مظهر صفحة الويب ⬅️ <strong>(ب) CSS</strong>.<br>
+                    • 3: يضيف السلوك والتفاعلية إلى صفحة الويب ⬅️ <strong>(جـ) JavaScript</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>📝 2. سؤال الامتحان [6 درجات] (ص 66) + «تدرّب 1 و 2» (ص 66)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>سؤال على نمط الامتحان [6 درجات] (ص 66):</strong> اشرح كيف تساهم كل من HTML وCSS وJavaScript في صفحة مكتبة تعرض قائمة كتب، وتكون منسّقة، وتُصفّي النتائج أثناء كتابة المستخدم (راجع: البنية، المظهر، السلوك):<br>
+                    ⬅️ <strong>الإجابة النموذجية:</strong><br>
+                    1. <strong>HTML (البنية):</strong> تبني هيكل صفحة المكتبة وتحدد عناصرها الأساسية مثل عنوان المكتبة، وحقل إدخال البحث، وقائمة عناوين الكتب والفقرات والصور.<br>
+                    2. <strong>CSS (المظهر):</strong> تنسّق مظهر صفحة المكتبة، فتحدد ألوان الواجهة، والخطوط، وتخطيط بطاقات الكتب وأحجامها لتظهر بشكل منظم وجذاب.<br>
+                    3. <strong>JavaScript (السلوك):</strong> تضيف السلوك التفاعلي، فتستجيب فوراً أثناء كتابة المستخدم في مربع البحث وتقوم بتصفية قائمة الكتب وتحديث الجزء المعروض على الشاشة دون إعادة تحميل الصفحة كاملة.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 1 (ص 66):</strong><br>
+                    1) الاختصار المكوّن من أربعة أحرف لبنية صفحة الويب: <strong>HTML</strong>.<br>
+                    2) الاختصار المكوّن من ثلاثة أحرف لمظهر صفحة الويب: <strong>CSS</strong>.<br>
+                    3) مصطلح التقنية التي تضيف السلوك والتفاعلية: <strong>JavaScript</strong>.<br>
+                    4) مصطلح مفهوم التصميم الذي يُضبط فيه التخطيط تلقائياً وفقاً لأحجام الشاشات: <strong>التصميم المتجاوب (Responsive Design)</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 2 (ص 66):</strong><br>
+                    (1) الخيار الذي <strong>لا يمثل</strong> فائدة مناسبة لاستخدام HTML الدلالية هو: <strong>(جـ) تصبح سرعة عرض صفحة الويب أسرع بالضرورة</strong>.<br>
+                    (2) الخيار الذي يصف إطار العمل بأنسب شكل هو: <strong>(ب) بنية تجعل تطوير تطبيقات الويب أكثر كفاءة</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>⚙️ 3. حل «فكّر كمهندس: ابحث ثم قرر» (ص 66) + «طبّق ما تعلمته» (ص 67)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>حل نشاط «فكّر كمهندس: ابحث ثم قرر» (صفحة النادي الطلابي ص 66):</strong><br>
+                    1. <strong>لاحظ أولاً (توزيع الميزات الثلاث):</strong><br>
+                    • قائمة الفعاليات ⬅️ <strong>HTML</strong> (لأنها تمثل بنية المحتوى والنصوص والعناوين).<br>
+                    • ألوان النادي وتخطيطه ⬅️ <strong>CSS</strong> (لأنها تحدد المظهر البصري والألوان وتنسيق الصفحة).<br>
+                    • عدّاد التسجيل الحي عند النقر على الزر ⬅️ <strong>JavaScript</strong> (لأنه يضيف السلوك التفاعلي ويُحدّث الرقم على الشاشة فوراً).<br>
+                    2. <strong>اجعلها تصل إلى الجميع:</strong><br>
+                    • تغيير لجعل الصفحة أسهل قراءة على الهاتف (التصميم المتجاوب): ضبط التخطيط تلقائياً ليتحول إلى عمود واحد مع تكبير حجم الخط والأزرار لتناسب شاشات الجوال.<br>
+                    • اختيار في HTML الدلالية يساعد قارئ الشاشة: استخدام عناصر دلالية مثل <code>&lt;header&gt;</code> لترويسة النادي، و<code>&lt;nav&gt;</code> للتنقل، و<code>&lt;main&gt;</code> لقائمة الفعاليات.<br>
+                    3. <strong>القرار:</strong> نوصي بـ ☑️ <strong>استخدام HTML وCSS وJavaScript كلاً حسب دوره الصحيح وفصل الأدوار</strong>؛ لأن ذلك (1) يسهّل صيانة الصفحة وتعديل المظهر أو السلوك دون إفساد البنية، و(2) يجعل الكود منظماً وقابلاً لإعادة الاستخدام والتعاون بين أعضاء الفريق.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل نشاط «طبّق ما تعلمته» - الموقع الإخباري (ص 67):</strong><br>
+                    • <strong>اختيار في التصميم المتجاوب وفائدته:</strong> اعتماد تخطيط مرن يراعي نهج الأولوية للجوال (Mobile-First) بحيث يتكيف عرض الأخبار والصور تلقائياً مع شاشات الهواتف الذكية؛ وفائدته تحسين سهولة القراءة والاستخدام على الهاتف.<br>
+                    • <strong>اختيار في HTML الدلالي وفائدته:</strong> هيكلة الصفحة باستخدام العناصر الدلالية (<code>&lt;header&gt;</code>، <code>&lt;nav&gt;</code>، <code>&lt;main&gt;</code>، <code>&lt;footer&gt;</code>)؛ وفائدته مساعدة محركات البحث (SEO) وتقنيات قارئ الشاشة على فهم بنية صفحات الموقع بدقة.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>🏆 4. إجابة السؤال الرئيسي + حل تمارين نهاية الدرس + «فكّر وتحدَّ نفسك» (ص 67)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>إجابة السؤال الرئيسي (ص 67):</strong> تستخدم كثير من صفحات الويب HTML لبناء الهيكل، ويمكن أن تضيف CSS للمظهر وJavaScript للتفاعل بحسب الحاجة. ويستخدم HTML الدلالي عناصر توضح وظيفة أجزاء الصفحة، ما يساعد التقنيات المساعدة ومحركات البحث على فهم بنيتها. ويجعل التصميم المتجاوب الصفحة تتكيف مع أحجام الشاشات المختلفة. كما تساعد المكتبات والأطر على بناء الواجهة من مكوّنات قابلة لإعادة الاستخدام وتقليل بعض العمل المتكرر؛ فـ React مكتبة لبناء واجهات المستخدم، وNext.js إطار مبني عليها لبناء تطبيقات ويب.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تمارين نهاية الدرس (ص 67):</strong><br>
+                    • <strong>سؤال 2 (إكمال الفقرة):</strong> (1) <strong>HTML</strong> | (2) <strong>CSS</strong> | (3) <strong>JavaScript</strong> | (4) <strong>التصميم المتجاوب</strong>.<br>
+                    • <strong>سؤال 3-(1) (تحديد التقنية: أ HTML، ب CSS، جـ JavaScript):</strong><br>
+                    1 وصف بنية العناوين والفقرات ⬅️ <strong>أ (HTML)</strong><br>
+                    2 تغيير لون النص وحجمه ⬅️ <strong>ب (CSS)</strong><br>
+                    3 تحديث جزء من الشاشة عند الضغط على زر ⬅️ <strong>جـ (JavaScript)</strong><br>
+                    4 وضع الصور والروابط ⬅️ <strong>أ (HTML)</strong><br>
+                    5 تحديد لون خلفية الصفحة بأكملها ⬅️ <strong>ب (CSS)</strong><br>
+                    6 التحقق من صحة المحتويات المُدخلة في نموذج ⬅️ <strong>جـ (JavaScript)</strong><br>
+                    • <strong>سؤال 3-(2) (اختيار من متعدد):</strong> الخيار الذي يصف بأنسب شكل سبب الحاجة إلى التصميم المتجاوب هو: <strong>(ب) لأن المواقع الإلكترونية يتم الوصول إليها من أجهزة متنوعة مثل أجهزة الكمبيوتر والهواتف الذكية والأجهزة اللوحية</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>فكّر وتحدَّ نفسك + الخلاصة (ص 67):</strong><br>
+                    • <strong>تأمّل:</strong> من بين البنية والشكل والسلوك، أيها تلاحظه أكثر عندما تكون صفحة الويب سيئة الصنع، ولماذا؟ ⬅️ غالباً نلاحظ <strong>الشكل والتخطيط (CSS) أو السلوك المعطل (JavaScript)</strong> أولاً؛ لأن تداخل العناصر على شاشة الهاتف أو وجود زر لا يستجيب عند النقر يعيق الاستخدام المباشر فوراً.<br>
+                    • <strong>تحدٍّ:</strong> اذكر موقعاً واحداً تستخدمه وصف شيئاً واحداً تقوم به كل من HTML وCSS وJavaScript فيه ⬅️ في <strong>موقع منصة تعليمية أو فيديو</strong>: تضع <strong>HTML</strong> عناوين الدروس والروابط، وتنسّق <strong>CSS</strong> ألوان البطاقات والوضع الليلي، وتتحكم <strong>JavaScript</strong> في تشغيل الفيديو وحساب نتيجة الاختبار التفاعلي فوراً.<br>
+                    • <strong>الخلاصة:</strong> تذكّر: <strong>HTML يبني البنية، وCSS ينسّق المظهر، وJavaScript يضيف السلوك — وتجعل HTML الدلالية والتصميم المتجاوب وأطر العمل الواجهة الأمامية الحديثة ذات معنى وقابلة للتكيف وفعّالة</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6: بنك الأسئلة المتكامل (60 سؤالاً) -->
+        <div id="quiz-section">
+            <div class="card" style="border-top: 5px solid var(--primary-light);">
+                <span class="badge">بنك الأسئلة المتكامل (60 سؤالاً)</span>
+                <h2>🎯 منصة التدريب والامتحانات: 30 سؤالاً للسيشن + 30 سؤالاً للواجب</h2>
+                <div class="main-mode-switcher">
+                    <div class="mode-card-btn active-mode-session" id="modeBtnSession" onclick="switchMode('session')">
+                        <div style="font-size:2.2rem;">👨‍🏫</div>
+                        <div>
+                            <h3 style="color:var(--primary-light);">القسم الأول: أسئلة السيشن (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتحليلياً للشرح والحصة</p>
+                        </div>
+                    </div>
+                    <div class="mode-card-btn" id="modeBtnHomework" onclick="switchMode('homework')">
+                        <div style="font-size:2.2rem;">🏠</div>
+                        <div>
+                            <h3 style="color:var(--accent-dark);">القسم الثاني: أسئلة الواجب (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتطبيقياً للتدريب المنزلي</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-tabs-bar">
+                    <div class="quiz-tabs">
+                        <button class="tab-btn active" id="tabMCQ" onclick="switchSubTab('mcq')"><span id="tabMCQLabel">🔘 الاختيار من متعدد (15 - السيشن)</span></button>
+                        <button class="tab-btn" id="tabEssay" onclick="switchSubTab('essay')"><span id="tabEssayLabel">✍️ الأسئلة المقالية (15 - السيشن)</span></button>
+                    </div>
+                    <div class="view-toggle-group" id="mcqViewToggleGroup">
+                        <button class="view-btn active-view" id="viewSingleBtn" onclick="setMcqViewMode('single')">🎯 سؤال بسؤال</button>
+                        <button class="view-btn" id="viewAllBtn" onclick="setMcqViewMode('all')">📋 عرض الـ 15 معاً</button>
+                        <button class="view-btn" id="gradingModeBtn" onclick="toggleGradingMode()">📝 وضع التصحيح: عند الإنهاء</button>
+                    </div>
+                </div>
+
+                <!-- MCQ Container -->
+                <div id="mcqContainer">
+                    <div class="stats-bar">
+                        <div><span class="stat-label">القسم</span><div class="stat-val" id="currentModeBadge" style="font-size:1rem;">👨‍🏫 السيشن</div></div>
+                        <div><span class="stat-label">السؤال</span><div><span class="stat-val" id="qCurrent">1</span> / 15</div></div>
+                        <div><span class="stat-label">أول محاولة 🎯</span><span class="stat-val" id="firstScore">--</span></div>
+                        <div><span class="stat-label">تمت الإجابة</span><div><span class="stat-val" id="score">0</span> / 15</div></div>
+                        <div><span class="stat-label">أعلى نتيجة 🏆</span><span class="stat-val" id="highScore">0</span></div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <button class="btn-index" onclick="openIndexModal()">📑 فهرس</button>
+                            <button class="btn-index" style="background:var(--success-soft); border-color:var(--success); color:#065f46;" onclick="submitAndGradeQuiz()">✅ إنهاء وتصحيح الاختبار</button>
+                            <button class="btn-index" style="border-color:var(--danger); color:var(--danger);" onclick="restartCurrentQuiz()">🔄 إعادة</button>
+                        </div>
+                        <div class="progress-container"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
+                    </div>
+
+                    <!-- Single Question Card -->
+                    <div class="q-card" id="quizCard">
+                        <div class="q-header">
+                            <span class="q-badge" id="topicBadge">أدوار التقنيات (ص 63)</span>
+                            <span style="color:var(--text-muted); font-size:0.88rem; font-weight:700;" id="qStatusIndicator">لم يُجب بعد</span>
+                        </div>
+                        <div class="q-text-ar" id="questionTextAr"></div>
+                        <div class="q-text-en" id="questionTextEn"></div>
+                        <div class="options-list" id="optionsContainer"></div>
+                        <div class="explanation" id="explanationText"></div>
+                        <div class="actions">
+                            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()">➡️ السابق</button>
+                            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
+                        </div>
+                    </div>
+
+                    <!-- All 15 MCQ List Container -->
+                    <div id="allMcqListContainer" style="display:none;"></div>
+
+                    <!-- Results Card -->
+                    <div class="results-card" id="resultsCard">
+                        <div style="font-size:3.5rem;">🎉</div>
+                        <h2>تم تصحيح الاختبار! إليك نتيجتك ومراجعة الإجابات</h2>
+                        <div class="score-circle"><div class="score-num" id="finalScore">0</div><span>من 15</span></div>
+                        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                            <button class="btn-restart" onclick="restartCurrentQuiz()">إعادة الاختبار 🔄</button>
+                            <button class="btn-restart" style="background:var(--primary); color:white;" onclick="switchSubTab('essay')">الانتقال للمقالي (15) ✍️</button>
+                        </div>
+                        <div class="mistakes-review-box" id="mistakesReviewBox"></div>
+                    </div>
+                </div>
+
+                <!-- Essay Container -->
+                <div id="essayContainer" style="display:none;">
+                    <div style="background:var(--primary-soft); border-right:5px solid var(--primary-light); padding:14px; border-radius:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <strong style="color:var(--primary-light);" id="essayBannerTitle">📝 الأسئلة المقالية والتحليلية لقسم السيشن (15 سؤالاً):</strong>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="toggleAllEssays(true)">👁️ إظهار كل الإجابات</button>
+                            <button class="btn-index" onclick="toggleAllEssays(false)">🙈 إخفاء كل الإجابات</button>
+                        </div>
+                    </div>
+                    <div id="essayList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Index Modal -->
+    <div class="modal-overlay" id="indexModal" onclick="if(event.target.id==='indexModal')closeIndexModal()">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>📑 فهرس أسئلة الاختيار من متعدد (1 - 15)</h3>
+                <button class="btn-index" onclick="closeIndexModal()">✕</button>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:10px;">اضغط على أي رقم للانتقال السريع إلى السؤال:</p>
+            <div class="grid-index" id="gridIndexContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Top Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("top-progress-bar").style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+        });
+
+        function toggleProjectorMode() {
+            document.body.classList.toggle('projector-mode');
+            document.getElementById('projectorBtn').classList.toggle('active-tool');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('darkBtn').classList.toggle('active-tool');
+        }
+
+        // Simulator 1: HTML / CSS / JS Layers (Figure 3.3.1 p. 64)
+        let currentSimLayer = 1;
+        let likeCount = 1;
+        function runLayerSim(stage, btn) {
+            currentSimLayer = stage;
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const preview = document.getElementById('layerPreviewStage');
+            const countSpan = document.getElementById('simLikeCountSpan');
+            const out = document.getElementById('layerSimOutput');
+
+            if (stage === 1) {
+                preview.classList.remove('preview-styled');
+                countSpan.style.display = 'none';
+                out.style.borderRightColor = 'var(--primary-light)';
+                out.innerHTML = '🏗️ <strong>المرحلة 1 (فقط HTML - ص 64):</strong> يحدد HTML المحتوى والهيكل فقط (العنوان، الفقرة، القائمة، والزر)، تماماً مثل هيكل المبنى بدون ديكور أو تفاعل.';
+            } else if (stage === 2) {
+                preview.classList.add('preview-styled');
+                countSpan.style.display = 'none';
+                out.style.borderRightColor = 'var(--teal)';
+                out.innerHTML = '🎨 <strong>المرحلة 2 (HTML + CSS - ص 64):</strong> يضيف CSS التنسيق والمظهر البصري (الألوان، الخلفية، البطاقات، وتصميم الزر)، مثل الديكور الداخلي والخارجي للمبنى.';
+            } else {
+                preview.classList.add('preview-styled');
+                countSpan.style.display = 'inline-block';
+                out.style.borderRightColor = 'var(--success)';
+                out.innerHTML = '⚡ <strong>المرحلة 3 (+ JavaScript - ص 64):</strong> يضيف JavaScript السلوك والتفاعلية! جرب النقر على زر «أعجبني ♥» أعلاه لترى تحديث العدّاد فوراً دون إعادة تحميل الصفحة.';
+            }
+        }
+
+        function handleSimLike() {
+            const out = document.getElementById('layerSimOutput');
+            if (currentSimLayer < 3) {
+                out.style.borderRightColor = 'var(--accent)';
+                out.innerHTML = '💡 <strong>تنبيه تفاعلي:</strong> الزر لا ينفذ عملية العد في مرحلة HTML أو CSS فقط! اضغط على الزر رقم <strong>3️⃣ (HTML + CSS + JavaScript)</strong> لتفعيل السلوك التفاعلي.';
+            } else {
+                likeCount++;
+                document.getElementById('simLikeCounter').innerText = likeCount;
+                out.style.borderRightColor = 'var(--success)';
+                out.innerHTML = `🎉 <strong>استجابة JavaScript فورية:</strong> تم تحديث جزء فقط من الشاشة ليصبح العدّاد <strong>(${likeCount})</strong> عند الضغط على الزر!`;
+            }
+        }
+
+        // Simulator 2: Responsive Design & Semantic HTML (p. 64)
+        function runResponsiveSim(device, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const vp = document.getElementById('respViewport');
+            const grid = document.getElementById('respCardsGrid');
+            const badge = document.getElementById('viewportSizeBadge');
+            const out = document.getElementById('respSimOutput');
+
+            if (device === 'desktop') {
+                vp.style.width = '100%';
+                grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                badge.innerText = 'شاشة كمبيوتر (3 أعمدة)';
+                out.innerHTML = '🖥️ <strong>وضع الكمبيوتر (Desktop - ص 64):</strong> يضبط التصميم المتجاوب التخطيط لعرض 3 بطاقات أخبار بجانب بعضها للاستفادة من اتساع الشاشة.';
+            } else if (device === 'tablet') {
+                vp.style.width = '72%';
+                grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                badge.innerText = 'جهاز لوحي (عمودان)';
+                out.innerHTML = '📟 <strong>وضع الجهاز اللوحي (Tablet - ص 64):</strong> يتكيف التخطيط تلقائياً مع العرض المتوسط فيرتب الأخبار في عمودين واضحين.';
+            } else {
+                vp.style.width = '360px';
+                grid.style.gridTemplateColumns = '1fr';
+                badge.innerText = 'هاتف ذكي (عمود واحد)';
+                out.innerHTML = '📱 <strong>نهج الأولوية للجوال (Mobile-First - ص 64):</strong> يراعي المطورون الشاشات الصغيرة منذ بداية التصميم، فتترتب العناصر في عمود رأسي واحد سهل القراءة واللمس.';
+            }
+        }
+
+        // Simulator 3: Frameworks Advisor (p. 65)
+        const fwDetails = {
+            react: '⚛️ <strong>مكتبة React (ص 65):</strong> مكتبة JavaScript لبناء واجهات المستخدم من <strong>مكونات قابلة لإعادة الاستخدام (Reusable Components)</strong> وتحديثها عند تغير البيانات.',
+            vue: '🟢 <strong>إطار Vue (ص 65):</strong> يتميز بأن له <strong>بنية بسيطة</strong> ويتيح بناء تطبيقات الويب <strong>تدريجياً</strong> بدءاً من ميزات صغيرة.',
+            nextjs: '▲ <strong>إطار Next.js (ص 65):</strong> إطار عمل مبني على <strong>React</strong> لبناء تطبيقات ويب، ويوفر <strong>التوجيه (Routing)</strong> وطرقاً مختلفة لعرض الصفحات والعمل على <strong>الخادم والعميل</strong>.'
+        };
+        function selectFramework(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            document.getElementById('frameworkSimOutput').innerHTML = fwDetails[key];
+        }
+
+        // Quiz Engine Data (60 Questions: 30 Session + 30 Homework)
+        // Note: Options are carefully balanced in length so the correct answer is never given away by length.
+        const quizData = {
+            session: {
+                mcq: [
+                    {
+                        tag: "بنية الصفحة (ص 63 و 66)",
+                        ar_q: "ما الاختصار المكوّن من أربعة أحرف للتقنية التي تحدد بنية (هيكل) صفحة الويب كالعناوين والفقرات؟",
+                        en_q: "What is the four-letter abbreviation for the technology that defines the structure of a web page?",
+                        options: [
+                            { ar: "تقنية HTML لتحديد البنية والهيكل", en: "HTML for structure and layout skeleton" },
+                            { ar: "تقنية CSS لتنسيق الألوان والخطوط", en: "CSS for styling colors and typography" },
+                            { ar: "بروتوكول HTTP لنقل النص التشعبي", en: "HTTP for hypertext message transfer" },
+                            { ar: "صيغة JSON لتبادل البيانات النصية", en: "JSON for text-based data exchange" }
+                        ],
+                        correct: 0,
+                        exp_ar: "لغة HTML تحدد بنية (هيكل) صفحة الويب وتصف عناصر مثل العناوين والفقرات والصور والروابط (ص 63 وتدرّب 1 ص 66).",
+                        exp_en: "HTML defines the structure (skeleton) of a web page, describing headings, paragraphs, images, and links (p. 63, 66)."
+                    },
+                    {
+                        tag: "مظهر الصفحة (ص 63 و 66)",
+                        ar_q: "ما الاختصار المكوّن من ثلاثة أحرف للتقنية التي تحدد مظهر صفحة الويب (الألوان، التخطيط، الحجم، الخطوط)؟",
+                        en_q: "What is the three-letter abbreviation for the technology that defines the appearance of a web page?",
+                        options: [
+                            { ar: "واجهة API لربط الأنظمة البرمجية", en: "API for connecting software systems" },
+                            { ar: "تقنية CSS لتنسيق المظهر البصري", en: "CSS for styling visual appearance" },
+                            { ar: "بروتوكول TLS لتأمين قناة الاتصال", en: "TLS for securing the communication channel" },
+                            { ar: "تقنية HTML لوصف هيكل الفقرات", en: "HTML for describing paragraph structure" }
+                        ],
+                        correct: 1,
+                        exp_ar: "لغة CSS تحدد مظهر صفحة الويب كالألوان والتخطيط والحجم والخطوط، وتشبه الديكور الداخلي والخارجي للمبنى (ص 63 و 66).",
+                        exp_en: "CSS defines the visual appearance of a web page (colors, layout, size, fonts), similar to interior/exterior decor (p. 63, 66)."
+                    },
+                    {
+                        tag: "السلوك والتفاعلية (ص 63 و 66)",
+                        ar_q: "ما التقنية التي تضيف السلوك والتفاعلية إلى صفحة الويب وتُفعّل الاستجابات عند الضغط على الأزرار؟",
+                        en_q: "Which technology adds behavior and interactivity to a web page and triggers responses when buttons are clicked?",
+                        options: [
+                            { ar: "لغة HTML لبناء الهيكل الأساسي", en: "HTML for building the base structure" },
+                            { ar: "لغة CSS لتلوين الخلفية والنصوص", en: "CSS for coloring backgrounds and text" },
+                            { ar: "لغة JavaScript لإضافة السلوك والتفاعل", en: "JavaScript for adding behavior and interactivity" },
+                            { ar: "قاعدة البيانات لتخزين سجلات الجداول", en: "Database for storing table records" }
+                        ],
+                        correct: 2,
+                        exp_ar: "لغة JavaScript تضيف السلوك والتفاعلية إلى صفحة الويب، وتفعّل الاستجابات عند الضغط على الأزرار وتحديثات جزء فقط من الشاشة (ص 63 و 66).",
+                        exp_en: "JavaScript adds behavior and interactivity to a web page, handling button clicks and partial screen updates (p. 63, 66)."
+                    },
+                    {
+                        tag: "تشبيه المبنى (ص 63)",
+                        ar_q: "في تشبيه الكتاب المدرسي لتقنيات الواجهة الأمامية بالمبنى، ماذا تمثل لغة JavaScript داخل المبنى؟",
+                        en_q: "In the textbook's building analogy for front-end technologies, what does JavaScript represent inside the building?",
+                        options: [
+                            { ar: "الأعمدة الخرسانية وهيكل المبنى الثابت", en: "Concrete columns and the static building frame" },
+                            { ar: "الطلاء والألوان والديكور الداخلي والخارجي", en: "Paint, colors, and interior/exterior decor" },
+                            { ar: "أنظمة الكهرباء والسباكة الحيوية في المبنى", en: "Electrical and plumbing systems in the building" },
+                            { ar: "عقد ملكية الأرض المقام عليها المبنى", en: "The land ownership deed of the building" }
+                        ],
+                        correct: 2,
+                        exp_ar: "يشبّه الكتاب المدرسي (ص 63) HTML بهيكل مبنى، وCSS بالديكور الداخلي والخارجي، وJavaScript بأنظمة الكهرباء والسباكة في مبنى.",
+                        exp_en: "The textbook (p. 63) compares HTML to a building's frame, CSS to interior/exterior decor, and JavaScript to electrical and plumbing systems."
+                    },
+                    {
+                        tag: "استخدام التقنيات الثلاث (ص 63 - 64)",
+                        ar_q: "أي العبارات التالية صحيحة حول اشتراط استخدام HTML وCSS وJavaScript معاً في كل صفحة ويب؟",
+                        en_q: "Which statement is true regarding the requirement to use HTML, CSS, and JavaScript together in every web page?",
+                        options: [
+                            { ar: "لا تعمل أي صفحة ويب إلا بوجود التقنيات الثلاث معاً دائماً", en: "No web page can work without all three technologies together" },
+                            { ar: "يمكن أن تستخدم الصفحة HTML وحده أو مع CSS وJS بحسب الحاجة", en: "A page can use HTML alone, or with CSS and JS as needed" },
+                            { ar: "تُبنى جميع صفحات الويب باستخدام CSS وحده دون HTML", en: "All web pages are built using CSS alone without HTML" },
+                            { ar: "تُستخدم JavaScript فقط لتحديد عناوين وفقرات الصفحة", en: "JavaScript is used only to define headings and paragraphs" }
+                        ],
+                        correct: 1,
+                        exp_ar: "نص الكتاب (ص 63 - 64): «ليس من الضروري أن تستخدم الصفحة الثلاث كلها معاً... يمكن أن تستخدم الصفحة HTML وحده، أو HTML مع CSS وJavaScript بحسب الوظائف التي تحتاج إليها».",
+                        exp_en: "Textbook (p. 63-64): A web page doesn't have to use all three; it can use HTML alone or combine it with CSS and JavaScript as needed."
+                    },
+                    {
+                        tag: "عناصر HTML الدلالية (ص 64)",
+                        ar_q: "في لغة HTML الدلالية (Semantic HTML)، ما العنصر المخصص للإشارة إلى قسم «التنقل» (الروابط والقوائم) في الصفحة؟",
+                        en_q: "In Semantic HTML, which element is specifically used to indicate the 'navigation' section of a page?",
+                        options: [
+                            { ar: "العنصر الدلالي <code>&lt;header&gt;</code>", en: "The semantic element <code>&lt;header&gt;</code>" },
+                            { ar: "العنصر الدلالي <code>&lt;nav&gt;</code>", en: "The semantic element <code>&lt;nav&gt;</code>" },
+                            { ar: "العنصر الدلالي <code>&lt;main&gt;</code>", en: "The semantic element <code>&lt;main&gt;</code>" },
+                            { ar: "العنصر الدلالي <code>&lt;footer&gt;</code>", en: "The semantic element <code>&lt;footer&gt;</code>" }
+                        ],
+                        correct: 1,
+                        exp_ar: "في HTML الدلالي (ص 64): يُستخدم <code>&lt;header&gt;</code> في أعلى الصفحة، و<code>&lt;nav&gt;</code> للتنقل، و<code>&lt;main&gt;</code> للمحتوى الرئيس، و<code>&lt;footer&gt;</code> في أسفل الصفحة.",
+                        exp_en: "In Semantic HTML (p. 64): <code>&lt;header&gt;</code> is for the top header, <code>&lt;nav&gt;</code> for navigation, <code>&lt;main&gt;</code> for main content, and <code>&lt;footer&gt;</code> for the bottom footer."
+                    },
+                    {
+                        tag: "تدرّب 2-(1) - فوائد HTML الدلالية (ص 66)",
+                        ar_q: "من بين الخيارات التالية، اختر الخيار الذي لا يمثل فائدة مناسبة لاستخدام HTML الدلالية:",
+                        en_q: "From the following options, choose the one that is NOT an appropriate benefit of using Semantic HTML:",
+                        options: [
+                            { ar: "يمكن لبرامج قارئ الشاشة فهم بنية الصفحة بشكل صحيح", en: "Screen readers can understand page structure properly" },
+                            { ar: "يمكن لمحركات البحث فهم محتوى صفحة الويب بسهولة أكبر", en: "Search engines can understand web page content more easily" },
+                            { ar: "تصبح سرعة عرض صفحة الويب أسرع بالضرورة", en: "The web page display speed necessarily becomes faster" },
+                            { ar: "يصبح إيصال المعلومات أسهل للمستخدمين ذوي الإعاقة البصرية", en: "Delivering information becomes easier for visually impaired users" }
+                        ],
+                        correct: 2,
+                        exp_ar: "HTML الدلالية تساعد قارئ الشاشة (إمكانية الوصول) ومحركات البحث (SEO) على فهم بنية المحتوى، لكنها لا تجعل سرعة عرض الصفحة أسرع بالضرورة (سؤال تدرّب 2-(1) ص 66).",
+                        exp_en: "Semantic HTML aids screen readers and search engines in understanding page structure, but does not necessarily make page rendering faster (p. 66)."
+                    },
+                    {
+                        tag: "HTML الدلالية ومحركات البحث (ص 64)",
+                        ar_q: "ما العلاقة الدقيقة بين استخدام HTML الدلالية وترتيب الموقع في نتائج محركات البحث (SEO) وفق الكتاب؟",
+                        en_q: "What is the exact relationship between Semantic HTML and search engine ranking (SEO) according to the textbook?",
+                        options: [
+                            { ar: "تضمن وضع الموقع في المركز الأول دائماً دون أي شروط", en: "It guarantees first-place ranking under all conditions" },
+                            { ar: "تساعد محركات البحث على فهم بنية المحتوى، لكنها لا تضمن ترتيباً أعلى", en: "It helps search engines understand content structure, but doesn't guarantee higher ranking" },
+                            { ar: "تمنع محركات البحث من فهرسة الصفحة أو قراءة نصوصها", en: "It prevents search engines from indexing or reading the page" },
+                            { ar: "تحل محل بروتوكول HTTPS في تشفير بيانات المستخدمين", en: "It replaces HTTPS in encrypting user data" }
+                        ],
+                        correct: 1,
+                        exp_ar: "نص الكتاب ص 64: «قد يساعد HTML الدلالي محركات البحث على فهم بنية المحتوى بصورة أفضل، لكنه لا يضمن ترتيباً أعلى».",
+                        exp_en: "Textbook p. 64: Semantic HTML may help search engines better understand content structure, but it does not guarantee a higher ranking."
+                    },
+                    {
+                        tag: "التصميم المتجاوب (ص 64 و 66)",
+                        ar_q: "ما المصطلح الذي يُطلق على مفهوم التصميم الذي يُضبط فيه التخطيط تلقائياً وفقاً لأحجام الشاشات المختلفة؟",
+                        en_q: "What term refers to the design concept where layout automatically adjusts to different screen sizes?",
+                        options: [
+                            { ar: "التصميم المتجاوب (Responsive Design)", en: "Responsive Design" },
+                            { ar: "التشفير المتماثل (Symmetric Encryption)", en: "Symmetric Encryption" },
+                            { ar: "التقييم الإرشادي (Heuristic Evaluation)", en: "Heuristic Evaluation" },
+                            { ar: "قاعدة البيانات العلائقية (Database)", en: "Relational Database" }
+                        ],
+                        correct: 0,
+                        exp_ar: "التصميم المتجاوب (Responsive Design): مفهوم تصميمي يُضبط فيه التخطيط تلقائياً وفقاً لأحجام الشاشات المختلفة كالكمبيوتر والهواتف والأجهزة اللوحية (ص 64 و 66).",
+                        exp_en: "Responsive Design is a design concept in which layout automatically adapts to different screen sizes such as PCs, smartphones, and tablets (p. 64, 66)."
+                    },
+                    {
+                        tag: "تمارين 3-(2) - سبب التصميم المتجاوب (ص 67)",
+                        ar_q: "اختر الخيار الذي يصف بأنسب شكل سبب الحاجة إلى التصميم المتجاوب في المواقع الحديثة:",
+                        en_q: "Choose the option that best describes why Responsive Design is needed in modern websites:",
+                        options: [
+                            { ar: "لتحسين سرعة المعالجة داخل وحدة المعالجة المركزية للخادم", en: "To improve CPU processing speed inside the server" },
+                            { ar: "لأن المواقع يتم الوصول إليها من أجهزة متنوعة كالكمبيوتر والهواتف والأجهزة اللوحية", en: "Because websites are accessed from diverse devices like PCs, phones, and tablets" },
+                            { ar: "لإلغاء الحاجة إلى استخدام لغة HTML في بناء الصفحات", en: "To eliminate the need for HTML in building web pages" },
+                            { ar: "لتشفير كلمات المرور أثناء انتقالها عبر الشبكة العامة", en: "To encrypt passwords while traveling across public networks" }
+                        ],
+                        correct: 1,
+                        exp_ar: "تظهر الحاجة للتصميم المتجاوب لأن المواقع الإلكترونية يتم الوصول إليها من أجهزة متنوعة مثل أجهزة الكمبيوتر والهواتف الذكية والأجهزة اللوحية (تمرين 3-(2) ص 67).",
+                        exp_en: "Responsive design is needed because websites are accessed from diverse devices with varying screen sizes: PCs, smartphones, and tablets (p. 67)."
+                    },
+                    {
+                        tag: "نهج الأولوية للجوال (ص 64)",
+                        ar_q: "ماذا يُسمى النهج الذي يراعي فيه المطورون الشاشات الصغيرة (الهواتف الذكية) منذ بداية تصميم الموقع؟",
+                        en_q: "What is the name of the approach where developers prioritize small screens (smartphones) from the very beginning of design?",
+                        options: [
+                            { ar: "نهج انعدام الثقة (Zero Trust)", en: "Zero Trust Approach" },
+                            { ar: "نهج الأولوية للجوال (Mobile-First)", en: "Mobile-First Approach" },
+                            { ar: "مشكلة الصندوق الأسود (Black Box)", en: "Black Box Problem" },
+                            { ar: "التخزين السحابي الخلفي (Cloud Storage)", en: "Back-End Cloud Storage" }
+                        ],
+                        correct: 1,
+                        exp_ar: "يستخدم كثير من الناس الويب عبر الهواتف، لذلك يراعي المطورون الشاشات الصغيرة منذ بداية التصميم، ويسمى ذلك نهج الأولوية للجوال (ص 64).",
+                        exp_en: "Because many people browse via phones, developers consider small screens from the start of design, known as the Mobile-First approach (p. 64)."
+                    },
+                    {
+                        tag: "تدرّب 2-(2) - إطار العمل (ص 65 و 66)",
+                        ar_q: "من بين الخيارات التالية، اختر الخيار الذي يصف «إطار العمل» (Framework) بأنسب شكل:",
+                        en_q: "From the following options, choose the one that best describes a 'Framework':",
+                        options: [
+                            { ar: "لغة ترميز أساسية لتحديد بنية الفقرات والعناوين فقط", en: "A basic markup language for defining paragraphs and headings only" },
+                            { ar: "بنية توفر مسبقاً وظائف ومكونات شائعة تجعل تطوير تطبيقات الويب أكثر كفاءة", en: "A structure providing pre-built functions and components that makes web development more efficient" },
+                            { ar: "تقنية لتشفير البيانات وإرسالها بأمان بين المتصفح والخادم", en: "A technology for encrypting data and sending it securely" },
+                            { ar: "جهاز مادي لتوصيل كابلات الشبكة المحلية داخل المؤسسة", en: "A hardware device for connecting LAN cables inside an organization" }
+                        ],
+                        correct: 1,
+                        exp_ar: "إطار العمل (Framework): بنية توفر مسبقاً وظائف ومكونات شائعة الاستخدام، وذلك لجعل عملية تطوير تطبيقات الويب أكثر كفاءة دون كتابة كل الكود من الصفر (ص 65 و 66).",
+                        exp_en: "A framework is a structure providing pre-built functions and common components to make web app development more efficient (p. 65, 66)."
+                    },
+                    {
+                        tag: "مكتبة React (ص 65)",
+                        ar_q: "ما الوصف الصحيح لمكتبة (React) ضمن تقنيات تطوير الواجهة الأمامية؟",
+                        en_q: "What is the accurate description of (React) among front-end development technologies?",
+                        options: [
+                            { ar: "مكتبة JavaScript لبناء واجهات المستخدم من مكونات قابلة لإعادة الاستخدام", en: "A JavaScript library for building UIs from reusable components" },
+                            { ar: "بروتوكول أمان شبكي لفصل الخوادم في منطقة معزولة", en: "A network security protocol for isolating servers in a DMZ" },
+                            { ar: "برنامج قارئ شاشة مخصص للمستخدمين ذوي الإعاقة البصرية", en: "A screen reader software for visually impaired users" },
+                            { ar: "لغة بديلة عن HTML تُستخدم بدون متصفح ويب", en: "A replacement language for HTML used without a web browser" }
+                        ],
+                        correct: 0,
+                        exp_ar: "React هي مكتبة JavaScript لبناء واجهات المستخدم من مكونات قابلة لإعادة الاستخدام وتحديثها عند تغير البيانات (جدول ص 65).",
+                        exp_en: "React is a JavaScript library for building user interfaces from reusable components and updating them when data changes (p. 65)."
+                    },
+                    {
+                        tag: "إطار العمل Next.js و Vue (ص 65)",
+                        ar_q: "ما الإطار المبني على مكتبة React ويوفر التوجيه (Routing) وطرقاً مختلفة لعرض الصفحات والعمل على الخادم والعميل؟",
+                        en_q: "Which framework is built on top of React and provides routing, rendering methods, and server/client execution?",
+                        options: [
+                            { ar: "إطار العمل Next.js", en: "Next.js Framework" },
+                            { ar: "لغة التنسيق CSS", en: "CSS Styling Language" },
+                            { ar: "بروتوكول HTTPS", en: "HTTPS Protocol" },
+                            { ar: "محرك البحث SEO", en: "SEO Search Engine" }
+                        ],
+                        correct: 0,
+                        exp_ar: "Next.js هو إطار مبني على React لبناء تطبيقات ويب، ويوفر التوجيه وطرقاً مختلفة لعرض الصفحات والعمل على الخادم والعميل (جدول ص 65).",
+                        exp_en: "Next.js is a React-based framework that provides routing, multiple page rendering methods, and server/client functionality (p. 65)."
+                    },
+                    {
+                        tag: "تمارين 3-(1) - تصنيف المهام (ص 67)",
+                        ar_q: "أي تقنية تُستخدم لتنفيذ مهمة «التحقق من صحة المحتويات المُدخلة في نموذج» و«تحديث جزء من الشاشة عند الضغط على زر»؟",
+                        en_q: "Which technology is used for 'validating input contents in a form' and 'updating part of the screen when a button is clicked'?",
+                        options: [
+                            { ar: "لغة HTML فقط", en: "HTML only" },
+                            { ar: "لغة CSS فقط", en: "CSS only" },
+                            { ar: "لغة JavaScript", en: "JavaScript" },
+                            { ar: "الوسم <code>&lt;footer&gt;</code>", en: "The <code>&lt;footer&gt;</code> tag" }
+                        ],
+                        correct: 2,
+                        exp_ar: "تحديث جزء من الشاشة عند الضغط على زر والتحقق من صحة المحتويات المدخلة في نموذج هما من مهام السلوك والتفاعلية التي تنفذها لغة JavaScript (تمرين 3-(1) ص 67).",
+                        exp_en: "Updating part of the screen on button click and validating form inputs are interactive behaviors handled by JavaScript (Exercise 3-(1), p. 67)."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "السؤال الرئيسي للدرس (ص 63 و ص 67)",
+                        q: "كيف تعمل HTML وCSS وJavaScript معاً لبناء صفحة ويب، وما الذي يجعل الواجهة الأمامية الحديثة ذات معنى وقابلة للتكيف وفعّالة في البناء؟",
+                        en_q: "How do HTML, CSS, and JavaScript work together to build a web page, and what makes a modern front-end meaningful, adaptable, and efficient to build?",
+                        hint: "اذكر أدوار التقنيات الثلاث، ثم دور HTML الدلالية، والتصميم المتجاوب، والمكتبات وأطر العمل.",
+                        en_hint: "Mention the roles of HTML/CSS/JS, then Semantic HTML, Responsive Design, and Frameworks/Libraries.",
+                        model: "تستخدم كثير من صفحات الويب <b>HTML</b> لبناء الهيكل، وتضيف <b>CSS</b> لتنسيق المظهر، و<b>JavaScript</b> لإضافة السلوك والتفاعل بحسب الحاجة. وما يجعل الواجهة الأمامية الحديثة:<br>1. <b>ذات معنى:</b> استخدام <b>HTML الدلالية</b> التي توضح وظيفة أجزاء الصفحة لقارئ الشاشة ومحركات البحث.<br>2. <b>قابلة للتكيف:</b> استخدام <b>التصميم المتجاوب</b> ليتكيف التخطيط تلقائياً مع أحجام الشاشات المختلفة.<br>3. <b>فعّالة في البناء:</b> استخدام <b>المكتبات وأطر العمل</b> (مثل React وVue وNext.js) لبناء الواجهة من مكونات قابلة لإعادة الاستخدام دون كتابة كل الكود من الصفر.",
+                        en_model: "Web pages use <b>HTML</b> for structure, <b>CSS</b> for visual styling, and <b>JavaScript</b> for interactive behavior. A modern front-end becomes:<br>1. <b>Meaningful:</b> via <b>Semantic HTML</b> clarifying page sections for screen readers and search engines.<br>2. <b>Adaptable:</b> via <b>Responsive Design</b> adjusting layouts across screen sizes.<br>3. <b>Efficient:</b> via <b>Libraries & Frameworks</b> (React, Vue, Next.js) providing reusable components."
+                    },
+                    {
+                        source: "سؤال على نمط الامتحان [6 درجات] (ص 66)",
+                        q: "اشرح كيف تساهم كل من HTML وCSS وJavaScript في صفحة مكتبة تعرض قائمة كتب، وتكون منسّقة، وتُصفّي النتائج أثناء كتابة المستخدم. (راجع: البنية، المظهر، السلوك).",
+                        en_q: "Explain how HTML, CSS, and JavaScript each contribute to a library page that displays a book list, is styled, and filters results as the user types.",
+                        hint: "اربط قائمة الكتب بالبنية، والتنسيق بالمظهر، والتصفية الفورية بالسلوك.",
+                        en_hint: "Link the book list to structure (HTML), styling to appearance (CSS), and live filtering to behavior (JavaScript).",
+                        model: "1. <b>HTML (البنية):</b> تحدد هيكل صفحة المكتبة وعناصرها الأساسية مثل العناوين، ومربع البحث، وقائمة الكتب والفقرات والصور.<br>2. <b>CSS (المظهر):</b> تنسّق مظهر الصفحة، فتحدد الألوان، والخطوط، وتخطيط بطاقات الكتب وأحجامها لتظهر بشكل منظم ومقروء.<br>3. <b>JavaScript (السلوك):</b> تضيف السلوك التفاعلي، فتستجيب أثناء كتابة المستخدم في حقل البحث وتقوم بتصفية الكتب وتحديث الجزء المعروض من الشاشة فوراً.",
+                        en_model: "1. <b>HTML (Structure):</b> Defines the page skeleton, headings, search input, and the book list items.<br>2. <b>CSS (Appearance):</b> Styles the visual layout, colors, fonts, and book card dimensions.<br>3. <b>JavaScript (Behavior):</b> Adds interactivity by listening to user typing and dynamically filtering the displayed books on screen."
+                    },
+                    {
+                        source: "تشبيه المبنى في الكتاب (ص 63)",
+                        q: "قارن بين HTML وCSS وJavaScript من حيث الدور الأساسي والتشبيه الهندسي بالمبنى الوارد في الكتاب المدرسي.",
+                        en_q: "Compare HTML, CSS, and JavaScript in terms of primary role and the building analogy in the textbook.",
+                        hint: "هيكل مبنى، الديكور الداخلي والخارجي، أنظمة الكهرباء والسباكة.",
+                        en_hint: "Building frame, interior/exterior decor, electrical and plumbing systems.",
+                        model: "• <b>HTML:</b> يحدد بنية (هيكل) صفحة الويب (العناوين والفقرات والصور والروابط) ⬅️ يشبه <b>هيكل مبنى</b>.<br>• <b>CSS:</b> يحدد مظهر صفحة الويب (الألوان، التخطيط، الحجم، الخطوط) ⬅️ يشبه <b>الديكور الداخلي والخارجي لمبنى</b>.<br>• <b>JavaScript:</b> يضيف السلوك والتفاعلية وتحديثات أجزاء الشاشة ⬅️ يشبه <b>أنظمة الكهرباء والسباكة في مبنى</b>.",
+                        en_model: "• <b>HTML:</b> Defines page structure (headings, paragraphs, images, links) ⬅️ <b>Building frame</b>.<br>• <b>CSS:</b> Defines visual appearance (colors, layout, size, fonts) ⬅️ <b>Interior and exterior decor</b>.<br>• <b>JavaScript:</b> Adds interactive behavior and dynamic updates ⬅️ <b>Electrical and plumbing systems</b>."
+                    },
+                    {
+                        source: "توقّف وفكّر - HTML الدلالية (ص 64 - 65)",
+                        q: "ما المقصود بلغة HTML الدلالية (Semantic HTML)؟ ولماذا يفهم قارئ الشاشة الصفحة بشكل أفضل عند استخدام <code>&lt;header&gt;</code> و<code>&lt;nav&gt;</code> و<code>&lt;main&gt;</code> و<code>&lt;footer&gt;</code> بدلاً من صناديق عادية؟",
+                        en_q: "What is Semantic HTML, and why does a screen reader understand a page better when <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, and <code>&lt;footer&gt;</code> are used instead of generic boxes?",
+                        hint: "توضح وظيفة أجزاء الصفحة وتساعد ذوي الإعاقة البصرية على التنقل.",
+                        en_hint: "Semantic tags explicitly describe the function of each page section for assistive technologies.",
+                        model: "• <b>HTML الدلالية:</b> هي استخدام عناصر HTML توضح <b>وظيفة ومعنى أجزاء الصفحة</b> (مثل <code>&lt;header&gt;</code> لأعلى الصفحة، و<code>&lt;nav&gt;</code> للتنقل، و<code>&lt;main&gt;</code> للمحتوى الرئيس، و<code>&lt;footer&gt;</code> لأسفل الصفحة).<br>• <b>لماذا يفهمها قارئ الشاشة بشكل أفضل:</b> لأن هذه العناصر تعرّف البرنامج المساعد بوظيفة كل قسم برمجياً، مما يتيح للمستخدم فهم هيكلة الصفحة والانتقال مباشرة إلى المحتوى الرئيس أو قائمة التنقل، على عكس الصناديق العادية الصامتة دلالياً.",
+                        en_model: "• <b>Semantic HTML:</b> Using elements that clearly describe the role of page sections (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code>).<br>• <b>Why screen readers understand it better:</b> It communicates the structural meaning of each region, allowing visually impaired users to navigate directly to main content or menus rather than guessing generic containers."
+                    },
+                    {
+                        source: "فوائد وحدود HTML الدلالية (ص 64 و ص 68)",
+                        q: "اشرح الفائدتين الرئيسيتين لاستخدام HTML الدلالية (إمكانية الوصول، وفهم محركات البحث SEO)، مع توضيح التحفظ أو القيد المذكور في الكتاب لكل منهما.",
+                        en_q: "Explain the two main benefits of Semantic HTML (Accessibility and SEO), noting the caveat mentioned in the textbook for each.",
+                        hint: "هل تكفي HTML الدلالية وحدها للوصول؟ وهل تضمن المركز الأول في البحث؟",
+                        en_hint: "Does Semantic HTML alone suffice for accessibility, and does it guarantee top search ranking?",
+                        model: "1. <b>إمكانية الوصول (Accessibility):</b> يساعد HTML الدلالي قارئ الشاشة على فهم بنية الصفحة والتنقل فيها، <b>مع التحفظ بأنه تظل هناك حاجة إلى ممارسات وصول أخرى أيضاً</b> (مثل تباين الألوان والنص البديل للصور).<br>2. <b>فهم محركات البحث للمحتوى (SEO):</b> يساعد محركات البحث على فهم بنية المحتوى وفهرسته بصورة أفضل، <b>مع التحفظ بأنه لا يضمن وحده ترتيباً أعلى في نتائج البحث</b>.",
+                        en_model: "1. <b>Accessibility:</b> Helps screen readers understand and navigate page structure, <b>though other accessibility practices are still required</b>.<br>2. <b>Search Engine Understanding (SEO):</b> Helps search engines better understand content structure, <b>though it does not guarantee a higher ranking</b>."
+                    },
+                    {
+                        source: "التصميم المتجاوب والأولوية للجوال (ص 64)",
+                        q: "اشرح مفهوم «التصميم المتجاوب» (Responsive Design)، ولماذا يتبع المطورون أحياناً نهج «الأولوية للجوال» (Mobile-First)؟",
+                        en_q: "Explain 'Responsive Design' and why developers often follow a 'Mobile-First' approach.",
+                        hint: "تكيف التخطيط تلقائياً مع الشاشات، وكثرة مستخدمي الهواتف الذكية.",
+                        en_hint: "Automatic layout adaptation across screens, and high volume of mobile web users.",
+                        model: "• <b>التصميم المتجاوب:</b> هو مفهوم تصميمي يُضبط فيه تخطيط الصفحة تلقائياً وفقاً لأحجام الشاشات المختلفة (أجهزة الكمبيوتر، الهواتف الذكية، والأجهزة اللوحية) لتحسين سهولة الاستخدام.<br>• <b>نهج الأولوية للجوال (Mobile-First):</b> لأن كثيراً من الناس يستخدمون الويب عبر الهواتف الذكية، يراعي المطورون الشاشات الصغيرة منذ بداية التصميم ثم يتوسعون للشاشات الأكبر.",
+                        en_model: "• <b>Responsive Design:</b> A design concept where layout automatically adapts to different screen sizes (PCs, smartphones, tablets) for better usability.<br>• <b>Mobile-First Approach:</b> Because a large portion of users browse on phones, developers design for small screens right from the start."
+                    },
+                    {
+                        source: "أطر العمل والمكتبات (ص 65)",
+                        q: "ما المقصود بإطار العمل (Framework)؟ وما الفائدة التي يجنيها المطورون عند استخدامه بدلاً من البرمجة التقليدية من الصفر؟",
+                        en_q: "What is a Framework, and what benefit do developers gain by using it instead of coding from scratch?",
+                        hint: "وظائف ومكونات جاهزة ترفع كفاءة وسرعة التطوير.",
+                        en_hint: "Pre-built functions and reusable components that increase development efficiency.",
+                        model: "• <b>إطار العمل (Framework):</b> هو بنية توفر مسبقاً وظائف ومكونات شائعة الاستخدام في تطوير الويب.<br>• <b>فائدته للمطورين:</b> لا يحتاج المطورون إلى كتابة كامل الكود البرمجي من الصفر، بل يعيدون استخدام المكونات الجاهزة مما يقلل العمل المتكرر ويجعل عملية تطوير تطبيقات الويب أكثر كفاءة وسرعة.",
+                        en_model: "• <b>Framework:</b> A structure providing pre-built functions and commonly used components.<br>• <b>Benefit:</b> Developers do not need to write all code from scratch, reducing repetitive work and making web development much faster and more efficient."
+                    },
+                    {
+                        source: "مقارنة React و Vue و Next.js (ص 65)",
+                        q: "قارن بين (React) و(Vue) و(Next.js) وفق الجدول الوارد في الكتاب المدرسي.",
+                        en_q: "Compare React, Vue, and Next.js according to the table in the textbook.",
+                        hint: "راجع جدول مكتبات وأطر شائعة لتطوير الويب ص 65.",
+                        en_hint: "Review the common web libraries and frameworks table on p. 65.",
+                        model: "• <b>React:</b> مكتبة JavaScript لبناء واجهات المستخدم من مكونات قابلة لإعادة الاستخدام وتحديثها عند تغير البيانات.<br>• <b>Vue:</b> إطار له بنية بسيطة ويتيح بناء تطبيقات الويب تدريجياً بدءاً من ميزات صغيرة.<br>• <b>Next.js:</b> إطار مبني على React لبناء تطبيقات ويب، ويوفر التوجيه (Routing) وطرقاً مختلفة لعرض الصفحات والعمل على الخادم والعميل.",
+                        en_model: "• <b>React:</b> A JavaScript library for building UIs from reusable components that update when data changes.<br>• <b>Vue:</b> Has a simple structure allowing incremental web app development starting from small features.<br>• <b>Next.js:</b> A React-based framework offering routing, diverse rendering methods, and both server and client execution."
+                    },
+                    {
+                        source: "فكّر كمهندس - الخطوة 1 (ص 66)",
+                        q: "يريد نادٍ طلابي صفحة ويب بسيطة تعرض فعالياته، ومنسّقة بألوان النادي، وتحتوي على زر يعرض عدد الأشخاص المسجلين. حدد أي تقنية (HTML أو CSS أو JavaScript) تقوم بكل ميزة من الميزات الثلاث، ولماذا.",
+                        en_q: "A student club wants a web page showing events, styled in club colors, with a live registration counter button. Specify which technology (HTML, CSS, or JS) handles each feature and why.",
+                        hint: "قائمة الفعاليات = بنية، ألوان وتخطيط = مظهر، عداد التسجيل الحي = سلوك.",
+                        en_hint: "Event list = structure (HTML), club colors/layout = appearance (CSS), live counter = behavior (JS).",
+                        model: "1. <b>قائمة الفعاليات:</b> تتولاها لغة <b>HTML</b>؛ لأنها المسؤولة عن بناء هيكل الصفحة ووصف العناوين والفقرات والقوائم.<br>2. <b>ألوان النادي وتخطيطه:</b> تتولاها لغة <b>CSS</b>؛ لأنها المسؤولة عن تنسيق المظهر البصري والألوان والخطوط والتخطيط.<br>3. <b>عدّاد التسجيل الحي:</b> تتولاه لغة <b>JavaScript</b>؛ لأنها تضيف السلوك التفاعلي وتحدّث الرقم على الشاشة فوراً عند نقر الزر.",
+                        en_model: "1. <b>Events List:</b> <b>HTML</b>, because it defines content structure, headings, and lists.<br>2. <b>Club Colors & Layout:</b> <b>CSS</b>, because it controls visual appearance, colors, and layout.<br>3. <b>Live Registration Counter:</b> <b>JavaScript</b>, because it handles click events and updates the counter dynamically."
+                    },
+                    {
+                        source: "فكّر كمهندس - الخطوة 2 و 3 (ص 66)",
+                        q: "في مشروع صفحة النادي الطلابي: (أ) اذكر تغييراً واحداً يجعل الصفحة أسهل قراءة على الهاتف واختياراً في HTML الدلالية يساعد قارئ الشاشة، (ب) هل توصي بكتابة كل شيء في ملف واحد مدمج أم استخدام كل تقنية حسب دورها الصحيح؟ ولماذا؟",
+                        en_q: "For the student club page: (a) state one responsive change for phones and one Semantic HTML choice for screen readers, (b) should roles be separated across HTML, CSS, and JS? Why?",
+                        hint: "تذكر التصميم المتجاوب، والوسوم الدلالية، وفائدة فصل المسؤوليات.",
+                        en_hint: "Consider responsive single-column layout, semantic tags (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>), and separation of concerns.",
+                        model: "• <b>(أ) الوصول للجميع:</b> للهاتف نطبق <b>التصميم المتجاوب</b> بضبط التخطيط في عمود واحد وتكبير الأزرار والخطوط؛ ولقارئ الشاشة نستخدم <b>HTML الدلالية</b> مثل <code>&lt;header&gt;</code> و<code>&lt;nav&gt;</code> و<code>&lt;main&gt;</code> لتوضيح وظيفة كل قسم.<br>• <b>(ب) القرار الهندسي:</b> نوصي بـ <b>استخدام HTML وCSS وJavaScript كلاً حسب دوره الصحيح (فصل الأدوار)</b>؛ لأن ذلك يجعل الكود منظماً وسهل الفهم، ويتيح تعديل تصميم الألوان (CSS) أو منطق العداد (JS) دون إفساد هيكل المحتوى (HTML).",
+                        en_model: "• <b>(a) Inclusive Design:</b> Use <b>Responsive Design</b> (single-column mobile layout, readable font sizes) for phones, and <b>Semantic HTML</b> (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>) for screen readers.<br>• <b>(b) Decision:</b> Use <b>HTML, CSS, and JavaScript according to their proper distinct roles</b>, making the codebase cleaner, easier to maintain, and reusable."
+                    },
+                    {
+                        source: "طبّق ما تعلمته - الموقع الإخباري (ص 67)",
+                        q: "يريد موقع إخباري أن يعمل جيداً على الهاتف وأن يفهم محرك البحث بنية صفحاته. اذكر اختياراً في التصميم المتجاوب واختياراً في HTML الدلالي، واشرح الفائدة المتوقعة من كل منهما.",
+                        en_q: "A news site wants to work well on phones and help search engines understand its page structure. State one Responsive Design choice and one Semantic HTML choice, and explain the benefit of each.",
+                        hint: "الأولوية للجوال (Mobile-First) + الوسوم الدلالية.",
+                        en_hint: "Mobile-First responsive layout + Semantic HTML tags.",
+                        model: "1. <b>اختيار التصميم المتجاوب:</b> ضبط تخطيط المقالات والصور تلقائياً ليتناسب مع شاشات الهواتف الذكية (نهج الأولوية للجوال). <b>الفائدة:</b> تحسين سهولة القراءة والتصفح للمستخدمين عبر الجوال دون الحاجة للتكبير اليدوي.<br>2. <b>اختيار HTML الدلالي:</b> استخدام عناصر دلالية واضحة مثل <code>&lt;header&gt;</code> و<code>&lt;nav&gt;</code> و<code>&lt;main&gt;</code> و<code>&lt;footer&gt;</code>. <b>الفائدة:</b> مساعدة محركات البحث (SEO) وقارئ الشاشة على فهم بنية الصفحة وأقسامها بوضوح.",
+                        en_model: "1. <b>Responsive Design Choice:</b> Automatically adapting article grids and images for phone screens (Mobile-First). <b>Benefit:</b> Improves readability and usability on mobile devices.<br>2. <b>Semantic HTML Choice:</b> Structuring pages with <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, and <code>&lt;footer&gt;</code>. <b>Benefit:</b> Helps search engines (SEO) and screen readers accurately understand page hierarchy."
+                    },
+                    {
+                        source: "مصطلحات أساسية: إمكانية الوصول و SEO (ص 63 و 67)",
+                        q: "عرّف كلاً من: (1) إمكانية الوصول (Accessibility)، و(2) تحسين محركات البحث (SEO)، موضحاً القاسم المشترك الذي يدعمهما في بناء صفحة الويب.",
+                        en_q: "Define (1) Accessibility and (2) Search Engine Optimization (SEO), explaining the common front-end practice that supports both.",
+                        hint: "راجع صندوق مصطلحات أساسية ص 67.",
+                        en_hint: "Review the Key Terms box on p. 67.",
+                        model: "• <b>إمكانية الوصول (Accessibility):</b> تصميم المحتوى والواجهة بحيث يمكن لأصحاب القدرات والاحتياجات المختلفة استخدامها، بمن فيهم ذوو الإعاقة.<br>• <b>تحسين محركات البحث (SEO):</b> ممارسات تجعل الصفحة أيسر في الفهرسة والظهور في نتائج البحث.<br>• <b>القاسم المشترك:</b> كلاهما يستفيد بشكل مباشر من استخدام <b>لغة HTML الدلالية (Semantic HTML)</b> التي توضح بنية ومعنى أجزاء الصفحة.",
+                        en_model: "• <b>Accessibility:</b> Designing content and interfaces so people with diverse abilities and needs, including people with disabilities, can use them.<br>• <b>SEO (Search Engine Optimization):</b> Practices that make a page easier to index and appear in search results.<br>• <b>Common Practice:</b> Both are directly supported by <b>Semantic HTML</b>."
+                    },
+                    {
+                        source: "تمارين نهاية الدرس 3-(1) (ص 67)",
+                        q: "صنّف المهام الست التالية إلى (HTML أو CSS أو JavaScript): (1 وصف بنية العناوين والفقرات، 2 تغيير لون النص وحجمه، 3 تحديث جزء من الشاشة عند الضغط على زر، 4 وضع الصور والروابط، 5 تحديد لون خلفية الصفحة، 6 التحقق من صحة المحتويات المدخلة في نموذج).",
+                        en_q: "Classify these 6 tasks into HTML, CSS, or JavaScript: (1 headings/paragraphs structure, 2 text color/size, 3 partial screen update on button click, 4 placing images/links, 5 page background color, 6 form input validation).",
+                        hint: "المهمتان 1 و 4 بنية، والمهمتان 2 و 5 مظهر، والمهمتان 3 و 6 سلوك.",
+                        en_hint: "Tasks 1 & 4 are HTML; Tasks 2 & 5 are CSS; Tasks 3 & 6 are JavaScript.",
+                        model: "• <b>مهام HTML (البنية):</b> (1) وصف بنية العناوين والفقرات، و(4) وضع الصور والروابط.<br>• <b>مهام CSS (المظهر):</b> (2) تغيير لون النص وحجمه، و(5) تحديد لون خلفية الصفحة بأكملها.<br>• <b>مهام JavaScript (السلوك):</b> (3) تحديث جزء من الشاشة عند الضغط على زر، و(6) التحقق من صحة المحتويات المُدخلة في نموذج.",
+                        en_model: "• <b>HTML (Structure):</b> (1) Describing headings/paragraphs structure, (4) Placing images and links.<br>• <b>CSS (Appearance):</b> (2) Changing text color and size, (5) Setting full-page background color.<br>• <b>JavaScript (Behavior):</b> (3) Updating part of the screen on button click, (6) Validating form inputs."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - تأمّل (ص 67)",
+                        q: "من بين البنية (HTML) والشكل (CSS) والسلوك (JavaScript)، أيها تلاحظه أكثر عندما تكون صفحة الويب سيئة الصنع، ولماذا؟",
+                        en_q: "Among structure (HTML), appearance (CSS), and behavior (JavaScript), which do you notice most when a web page is poorly made, and why?",
+                        hint: "فكر في أول ما تقع عليه عينك أو ما يحدث عند محاولة النقر على زر.",
+                        en_hint: "Think about visual clutter on mobile screens (CSS) or broken interactive buttons (JavaScript).",
+                        model: "غالباً ما يلاحظ المستخدم العادي سوء <b>الشكل والتخطيط (CSS)</b> في البداية (مثل ألوان غير مريحة للعين أو نصوص خارجة عن حدود شاشة الهاتف بسبب غياب التصميم المتجاوب)، ثم يلاحظ فوراً عيوب <b>السلوك (JavaScript)</b> عندما يضغط على زر أو يكتب في مربع بحث فلا تستجيب الصفحة؛ أما عيوب <b>البنية (HTML)</b> فتكون أشد أثراً على مستخدمي قارئ الشاشة ومحركات البحث.",
+                        en_model: "Users immediately notice poor <b>appearance/layout (CSS)</b> (such as unreadable colors or broken mobile layouts) and broken <b>behavior (JavaScript)</b> (such as unresponsive buttons), while poor <b>structure (HTML)</b> severely impacts screen reader users and search engine indexing."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - تحدٍّ وخلاصة (ص 67)",
+                        q: "اذكر موقعاً واحداً تستخدمه، وصف شيئاً واحداً تقوم به كل من HTML وCSS وJavaScript فيه، ثم اكتب الخلاصة الذهبية للدرس 3-3.",
+                        en_q: "Name one website you use, describe one thing each of HTML, CSS, and JavaScript does in it, and write the golden summary of Lesson 3-3.",
+                        hint: "طبق على موقع تسوق أو فيديو أو منصة تعليمية.",
+                        en_hint: "Apply to a shopping, video, or educational platform.",
+                        model: "• <b>مثال (موقع متجر إلكتروني):</b><br>1. <b>HTML:</b> يضع عناوين المنتجات وأوصافها وصورها وروابط الأقسام.<br>2. <b>CSS:</b> ينسّق بطاقات المنتجات وألوان الأزرار ويضبط التخطيط المتجاوب على شاشة الهاتف.<br>3. <b>JavaScript:</b> يُحدّث عدّاد سلة التسوق فوراً عند الضغط على زر «أضف إلى السلة» دون إعادة تحميل الصفحة.<br>• <b>الخلاصة الذهبية:</b> HTML يبني البنية، وCSS ينسّق المظهر، وJavaScript يضيف السلوك — وتجعل HTML الدلالية والتصميم المتجاوب وأطر العمل الواجهة الأمامية الحديثة ذات معنى وقابلة للتكيف وفعّالة.",
+                        en_model: "• <b>Example (E-commerce Site):</b><br>1. <b>HTML:</b> Structures product titles, descriptions, images, and category links.<br>2. <b>CSS:</b> Styles product cards, button colors, and responsive grid layouts.<br>3. <b>JavaScript:</b> Updates the shopping cart counter instantly when 'Add to Cart' is clicked.<br>• <b>Summary:</b> HTML builds structure, CSS styles appearance, and JavaScript adds behavior—while Semantic HTML, Responsive Design, and Frameworks make modern front-ends meaningful, adaptable, and efficient."
+                    }
+                ]
+            },
+            homework: {
+                mcq: [
+                    {
+                        tag: "ربط دروس الوحدة الثالثة (ص 51 و 63)",
+                        ar_q: "في بنية الطبقات الثلاث لتطبيق الويب (الدرس 3-1)، في أي طبقة تعمل تقنيات HTML وCSS وJavaScript بشكل أساسي؟",
+                        en_q: "In the three-tier web application architecture (Lesson 3-1), in which tier do HTML, CSS, and JavaScript primarily operate?",
+                        options: [
+                            { ar: "في طبقة الواجهة الأمامية داخل متصفح المستخدم", en: "In the Front-End tier inside the user's browser" },
+                            { ar: "في طبقة قاعدة البيانات الخلفية لتخزين الجداول", en: "In the Back-End Database tier for table storage" },
+                            { ar: "داخل كابلات الألياف الضوئية لشبكة الإنترنت فقط", en: "Inside fiber-optic internet cables only" },
+                            { ar: "في وحدة التشفير المادية لجدار الحماية الناري", en: "In the hardware encryption unit of the firewall" }
+                        ],
+                        correct: 0,
+                        exp_ar: "تعمل تقنيات HTML وCSS وJavaScript في طبقة الواجهة الأمامية (Front-end) التي يراها المستخدم ويتفاعل معها في المتصفح (ص 51 و 63).",
+                        exp_en: "HTML, CSS, and JavaScript are the core technologies of the Front-End tier that runs in the user's browser (p. 51, 63)."
+                    },
+                    {
+                        tag: "الشكل 3.3.1 (ص 64)",
+                        ar_q: "في مثال «صفحتي على الويب» (الشكل 3.3.1 ص 64)، ماذا حدث عندما أُضيفت لغة JavaScript في المرحلة الثالثة إلى الصفحة؟",
+                        en_q: "In the 'My Web Page' example (Figure 3.3.1, p. 64), what happened when JavaScript was added in the third stage?",
+                        options: [
+                            { ar: "تحول زر «أعجبني ♥» إلى عنصر تفاعلي يزيد العدّاد عند الضغط عليه", en: "The 'Like ♥' button became interactive, incrementing the counter on click" },
+                            { ar: "تم حذف جميع العناوين والفقرات النصية من الصفحة نهائياً", en: "All headings and text paragraphs were permanently deleted" },
+                            { ar: "توقفت الصفحة عن العمل على شاشات أجهزة الكمبيوتر المكتبية", en: "The page stopped working on desktop computer monitors" },
+                            { ar: "تحولت الصفحة إلى قاعدة بيانات خلفية لا يراها المستخدم", en: "The page turned into a hidden back-end database" }
+                        ],
+                        correct: 0,
+                        exp_ar: "في الشكل 3.3.1 (ص 64)، أضافت JavaScript السلوك التفاعلي بحيث يؤدي النقر على زر «أعجبني ♥» إلى تحديث عداد الإعجابات («العدد: 1») فوراً.",
+                        exp_en: "In Figure 3.3.1 (p. 64), adding JavaScript enabled interactive behavior where clicking the 'Like ♥' button updates the counter dynamically."
+                    },
+                    {
+                        tag: "تمييز العناصر الدلالية (ص 64)",
+                        ar_q: "أي من العناصر التالية يُستخدم في HTML الدلالية للإشارة إلى «المحتوى الرئيس» لصفحة الويب؟",
+                        en_q: "Which of the following elements is used in Semantic HTML to indicate the 'main content' of a web page?",
+                        options: [
+                            { ar: "العنصر <code>&lt;nav&gt;</code>", en: "The <code>&lt;nav&gt;</code> element" },
+                            { ar: "العنصر <code>&lt;main&gt;</code>", en: "The <code>&lt;main&gt;</code> element" },
+                            { ar: "العنصر <code>&lt;footer&gt;</code>", en: "The <code>&lt;footer&gt;</code> element" },
+                            { ar: "العنصر <code>&lt;header&gt;</code>", en: "The <code>&lt;header&gt;</code> element" }
+                        ],
+                        correct: 1,
+                        exp_ar: "يُستخدم العنصر <code>&lt;main&gt;</code> في HTML الدلالي للإشارة إلى المحتوى الرئيس للصفحة، بينما <code>&lt;header&gt;</code> لأعلى الصفحة و<code>&lt;nav&gt;</code> للتنقل و<code>&lt;footer&gt;</code> لأسفل الصفحة (ص 64).",
+                        exp_en: "In Semantic HTML, <code>&lt;main&gt;</code> denotes the primary content of the page (p. 64)."
+                    },
+                    {
+                        tag: "موقع العنصر <code>&lt;footer&gt;</code> (ص 64)",
+                        ar_q: "أين يوضع العنصر الدلالي <code>&lt;footer&gt;</code> عادةً في بنية صفحة الويب، وماذا يمثل؟",
+                        en_q: "Where is the semantic element <code>&lt;footer&gt;</code> typically placed in a web page structure, and what does it represent?",
+                        options: [
+                            { ar: "في أسفل الصفحة ليمثل تذييل الصفحة ومعلوماتها الختامية", en: "At the bottom of the page representing the page footer" },
+                            { ar: "في أعلى الصفحة قبل الترويسة لعرض شعار الموقع الرئيسي", en: "At the very top of the page before the header" },
+                            { ar: "داخل ملفات CSS فقط لتحديد حجم الخطوط العريضة", en: "Inside CSS files only to set bold font sizes" },
+                            { ar: "في خادم قاعدة البيانات لتشفير كلمات المرور", en: "In the database server to encrypt passwords" }
+                        ],
+                        correct: 0,
+                        exp_ar: "نص الكتاب ص 64: يُستخدم العنصر <code>&lt;header&gt;</code> في أعلى الصفحة، و<code>&lt;nav&gt;</code> للتنقل، و<code>&lt;main&gt;</code> للمحتوى الرئيس، و<code>&lt;footer&gt;</code> في أسفل الصفحة.",
+                        exp_en: "Textbook p. 64: <code>&lt;footer&gt;</code> is used at the bottom of the page to represent the footer section."
+                    },
+                    {
+                        tag: "إمكانية الوصول وقارئ الشاشة (ص 64 و 67)",
+                        ar_q: "كيف تساعد لغة HTML الدلالية المستخدمين ذوي الإعاقة البصرية الذين يعتمدون على برامج «قارئ الشاشة»؟",
+                        en_q: "How does Semantic HTML help visually impaired users who rely on 'Screen Reader' software?",
+                        options: [
+                            { ar: "تمكّن قارئ الشاشة من فهم بنية الصفحة ووظيفة أقسامها والتنقل فيها بسهولة", en: "It enables the screen reader to understand page structure and navigate sections easily" },
+                            { ar: "تقوم بتكبير حجم شاشة الهاتف المادية تلقائياً إلى الضعف", en: "It physically doubles the size of the smartphone screen" },
+                            { ar: "تلغي الحاجة إلى وجود اتصال بالإنترنت عند فتح الموقع", en: "It eliminates the need for an internet connection" },
+                            { ar: "تحول النصوص العربية إلى رموز مشفرة غير قابلة للقراءة", en: "It converts Arabic text into unreadable encrypted symbols" }
+                        ],
+                        correct: 0,
+                        exp_ar: "يساعد HTML الدلالي قارئ الشاشة على فهم بنية الصفحة والتنقل فيها، مما يسهّل إيصال المعلومات للمستخدمين ذوي الإعاقة البصرية (ص 64 و 66).",
+                        exp_en: "Semantic HTML helps screen readers understand page structure and navigate between sections, improving accessibility for visually impaired users (p. 64, 66)."
+                    },
+                    {
+                        tag: "تحسين محركات البحث SEO (ص 63 و 67)",
+                        ar_q: "إلى ماذا يرمز الاختصار (SEO) المرتبط بفوائد استخدام HTML الدلالية في صفحات الويب؟",
+                        en_q: "What does the abbreviation (SEO), associated with Semantic HTML benefits, stand for?",
+                        options: [
+                            { ar: "تحسين محركات البحث (Search Engine Optimization)", en: "Search Engine Optimization" },
+                            { ar: "تشفير مخرجات الخادم (Server Encryption Output)", en: "Server Encryption Output" },
+                            { ar: "تشغيل الكائنات البرمجية (Software Execution Object)", en: "Software Execution Object" },
+                            { ar: "تنظيم أوامر النظام (System Organization Order)", en: "System Organization Order" }
+                        ],
+                        correct: 0,
+                        exp_ar: "يرمز SEO إلى (Search Engine Optimization) أي تحسين محركات البحث، وهي ممارسات تجعل الصفحة أيسر في الفهرسة والظهور في نتائج البحث (ص 63 و 67).",
+                        exp_en: "SEO stands for Search Engine Optimization—practices that make a page easier to index and appear in search results (p. 63, 67)."
+                    },
+                    {
+                        tag: "تطبيقات التصميم المتجاوب (ص 64)",
+                        ar_q: "عندما تفتح موقعاً إلكترونياً على الكمبيوتر فترى 3 أعمدة، ثم تفتحه على هاتفك فترى المحتوى يترتب تلقائياً في عمود واحد مريح للقراءة، فهذا مثال على:",
+                        en_q: "When a website displays 3 columns on a PC and automatically rearranges into 1 readable column on your phone, this is an example of:",
+                        options: [
+                            { ar: "التصميم المتجاوب (Responsive Design)", en: "Responsive Design" },
+                            { ar: "العنصر الدلالي <code>&lt;footer&gt;</code>", en: "The <code>&lt;footer&gt;</code> semantic element" },
+                            { ar: "رمز حالة الخطأ 404", en: "HTTP 404 status code" },
+                            { ar: "تشفير المفتاح العام", en: "Public key encryption" }
+                        ],
+                        correct: 0,
+                        exp_ar: "التصميم المتجاوب يعيد تنسيق العرض ويضبط التخطيط تلقائياً ليناسب كل حجم شاشة (كمبيوتر، هاتف ذكي، جهاز لوحي) (ص 64).",
+                        exp_en: "Responsive Design automatically adjusts the layout to fit each screen size (desktop, smartphone, tablet) (p. 64)."
+                    },
+                    {
+                        tag: "خصائص إطار العمل Vue (ص 65)",
+                        ar_q: "أي من المكتبات أو أطر العمل التالية يتميز بأن له «بنية بسيطة ويتيح بناء تطبيقات الويب تدريجياً بدءاً من ميزات صغيرة»؟",
+                        en_q: "Which library or framework is characterized by having a 'simple structure that allows building web apps incrementally starting from small features'?",
+                        options: [
+                            { ar: "إطار العمل Vue", en: "Vue Framework" },
+                            { ar: "بروتوكول HTTP", en: "HTTP Protocol" },
+                            { ar: "لغة الترميز HTML", en: "HTML Markup Language" },
+                            { ar: "صيغة البيانات JSON", en: "JSON Data Format" }
+                        ],
+                        correct: 0,
+                        exp_ar: "في جدول ص 65: يتميز Vue بأن له بنية بسيطة ويتيح بناء تطبيقات الويب تدريجياً بدءاً من ميزات صغيرة.",
+                        exp_en: "According to the table on p. 65, Vue has a simple structure and allows building web applications incrementally starting from small features."
+                    },
+                    {
+                        tag: "العلاقة بين React و Next.js (ص 65 و 67)",
+                        ar_q: "ما العلاقة الصحيحة بين (React) و(Next.js) كما وردت في الكتاب المدرسي؟",
+                        en_q: "What is the accurate relationship between (React) and (Next.js) as stated in the textbook?",
+                        options: [
+                            { ar: "React مكتبة لبناء واجهات المستخدم، وNext.js إطار عمل مبني على React", en: "React is a library for building UIs, and Next.js is a framework built on React" },
+                            { ar: "كلاهما اسمان لبروتوكول تشفير واحد يعمل داخل جدار الحماية", en: "Both are names for a single firewall encryption protocol" },
+                            { ar: "Next.js هو لغة بديلة عن CSS لتلوين الخلفيات فقط", en: "Next.js is a replacement for CSS used only for background colors" },
+                            { ar: "React يعمل بدون JavaScript، بينما Next.js يعمل بدون متصفح", en: "React works without JavaScript, while Next.js works without a browser" }
+                        ],
+                        correct: 0,
+                        exp_ar: "نص الكتاب (ص 65 وص 67): «React مكتبة لبناء واجهات المستخدم، وNext.js إطار مبني عليها لبناء تطبيقات ويب».",
+                        exp_en: "Textbook (p. 65, 67): React is a JavaScript library for building user interfaces, and Next.js is a framework built on top of React."
+                    },
+                    {
+                        tag: "فائدة المكونات القابلة لإعادة الاستخدام (ص 65)",
+                        ar_q: "كيف تساعد المكتبات وأطر العمل مثل React المطورين при بناء واجهات مواقع كبيرة تحتوي على أزرار وبطاقات متشابهة؟",
+                        en_q: "How do libraries and frameworks like React help developers when building large interfaces with similar buttons and cards?",
+                        options: [
+                            { ar: "تتيح بناء الواجهة من مكونات قابلة لإعادة الاستخدام وتقليل العمل المتكرر", en: "They allow building the UI from reusable components, reducing repetitive work" },
+                            { ar: "تجبر المطور على كتابة الكود من الصفر في كل صفحة جديدة", en: "They force developers to write code from scratch on every new page" },
+                            { ar: "تمنع تحديث البيانات على الشاشة عند تفاعل المستخدم", en: "They prevent screen data updates when users interact" },
+                            { ar: "تستبدل جميع الصور بنصوص غير منسقة", en: "They replace all images with unformatted plain text" }
+                        ],
+                        correct: 0,
+                        exp_ar: "تساعد المكتبات والأطر على بناء الواجهة من مكونات قابلة لإعادة الاستخدام (Reusable Components) وتحديثها عند تغير البيانات وتقليل العمل المتكرر (ص 65 و 67).",
+                        exp_en: "Libraries and frameworks help build UIs from reusable components, updating them when data changes and reducing repetitive coding (p. 65, 67)."
+                    },
+                    {
+                        tag: "تحليل مهام HTML (ص 63 و 67)",
+                        ar_q: "أي من المهام التالية يقع ضمن مسؤولية لغة (HTML) وحدها دون CSS أو JavaScript؟",
+                        en_q: "Which of the following tasks falls under the responsibility of (HTML) alone, rather than CSS or JavaScript?",
+                        options: [
+                            { ar: "وصف بنية العناوين والفقرات ووضع الصور والروابط في الصفحة", en: "Describing heading/paragraph structure and placing images and links" },
+                            { ar: "تغيير لون خلفية الصفحة وتحديد نوع الخط وحجمه", en: "Changing page background color and setting font family and size" },
+                            { ar: "التحقق برمجياً من صحة البريد الإلكتروني المدخل في النموذج", en: "Programmatically validating an email address entered in a form" },
+                            { ar: "تصفية قائمة الكتب فوراً أثناء كتابة المستخدم في مربع البحث", en: "Filtering a book list live while the user types in a search box" }
+                        ],
+                        correct: 0,
+                        exp_ar: "وصف بنية العناوين والفقرات ووضع الصور والروابط في الصفحة من مهام لغة HTML الأساسية (ص 63 وتمرين 3-(1) ص 67).",
+                        exp_en: "Describing the structure of headings and paragraphs and placing images and links are core HTML tasks (p. 63, 67)."
+                    },
+                    {
+                        tag: "تحليل مهام CSS (ص 63 و 67)",
+                        ar_q: "عندما يريد مصمم موقع نادي طلابي تطبيق ألوان شعار النادي وتغيير حجم الخط وتنسيق الهوامش، فإنه يعدّل كود:",
+                        en_q: "When a student club web designer wants to apply club logo colors, change font sizes, and adjust margins, they edit:",
+                        options: [
+                            { ar: "لغة CSS المسؤولة عن المظهر والتنسيق", en: "CSS, which is responsible for appearance and styling" },
+                            { ar: "بروتوكول TLS المسؤول عن التشفير", en: "TLS protocol, which handles encryption" },
+                            { ar: "خادم قاعدة البيانات الخلفي SQL", en: "The back-end SQL database server" },
+                            { ar: "إعدادات قارئ الشاشة الصوتي فقط", en: "Audio screen reader settings only" }
+                        ],
+                        correct: 0,
+                        exp_ar: "تحديد الألوان وتغيير لون النص وحجمه ولون خلفية الصفحة والتخطيط هي من مهام لغة CSS (ص 63 و 66 و 67).",
+                        exp_en: "Setting colors, font sizes, background colors, and layout styling are responsibilities of CSS (p. 63, 66, 67)."
+                    },
+                    {
+                        tag: "التحديث الجزئي للشاشة (ص 63 و 67)",
+                        ar_q: "ما الميزة التفاعلية التي تقدمها لغة JavaScript عند نَقْر المستخدم على زر في صفحة ويب حديثة؟",
+                        en_q: "What interactive advantage does JavaScript provide when a user clicks a button on a modern web page?",
+                        options: [
+                            { ar: "تفعيل الاستجابات وتحديث جزء فقط من الشاشة دون إعادة تحميل الصفحة كاملة", en: "Triggering responses and updating only part of the screen without full page reload" },
+                            { ar: "إغلاق متصفح الويب وإيقاف تشغيل الجهاز تلقائياً", en: "Closing the browser and shutting down the device automatically" },
+                            { ar: "تحويل الصفحة إلى ملف مطبوع على الورق مباشرة", en: "Converting the page directly into a printed paper document" },
+                            { ar: "إلغاء جميع وسوم HTML الدلالية من الكود المصدري", en: "Removing all Semantic HTML tags from the source code" }
+                        ],
+                        correct: 0,
+                        exp_ar: "نص الكتاب ص 63: «JavaScript يضيف السلوك والتفاعلية إلى صفحة الويب. يُفعّل الاستجابات عند الضغط على الأزرار وتحديثات جزء فقط من الشاشة».",
+                        exp_en: "Textbook p. 63: JavaScript adds behavior and interactivity, triggering responses on button clicks and updating only part of the screen."
+                    },
+                    {
+                        tag: "تكامل دروس الوحدة الثالثة (3-1 و 3-2 و 3-3)",
+                        ar_q: "عندما تجلب الواجهة الأمامية بيانات بصيغة JSON من الخادم عبر API (كما درست في 3-2)، أي تقنية في الواجهة الأمامية تستقبل هذه البيانات وتحدّث الشاشة بها؟",
+                        en_q: "When the Front-End fetches JSON data from the server via an API (Lesson 3-2), which front-end technology processes it and updates the screen?",
+                        options: [
+                            { ar: "لغة JavaScript (أو مكتباتها مثل React)", en: "JavaScript (or its libraries such as React)" },
+                            { ar: "الوسم الدلالي <code>&lt;footer&gt;</code> وحده", en: "The <code>&lt;footer&gt;</code> semantic tag alone" },
+                            { ar: "ملف الخطوط والألوان في CSS وحده", en: "The fonts and colors file in CSS alone" },
+                            { ar: "قارئ الشاشة الصوتي للمتصفح", en: "The browser's audio screen reader" }
+                        ],
+                        correct: 0,
+                        exp_ar: "تقوم لغة JavaScript (ومكتباتها مثل React التي تحدّث المكونات عند تغير البيانات) بمعالجة البيانات المستقبلة وتحديث عناصر الشاشة ديناميكياً (ص 58 و 63 و 65).",
+                        exp_en: "JavaScript (and libraries like React) processes fetched JSON data and dynamically updates the UI components on screen (p. 58, 63, 65)."
+                    },
+                    {
+                        tag: "الفكرة الرئيسة للدرس 3-3 (ص 65 و 67)",
+                        ar_q: "أي عبارة تلخّص بدقة «الفكرة الرئيسة» للدرس 3-3 كما وردت في الكتاب المدرسي؟",
+                        en_q: "Which statement accurately summarizes the 'Main Idea' of Lesson 3-3 as stated in the textbook?",
+                        options: [
+                            { ar: "صفحة الويب الحديثة تركيبة: HTML للبنية، وCSS للمظهر، وJS للتفاعل، مع HTML الدلالية والتصميم المتجاوب وأطر العمل", en: "A modern web page is a combination: HTML for structure, CSS for appearance, JS for interactivity, plus Semantic HTML, Responsive Design, and Frameworks" },
+                            { ar: "صفحة الويب الحديثة تعتمد على تقنية واحدة فقط وهي CSS لبناء الهيكل وقواعد البيانات", en: "A modern web page relies on a single technology, CSS, for both structure and databases" },
+                            { ar: "لا حاجة لاستخدام HTML أو CSS إذا كان الموقع يستخدم بروتوكول HTTPS", en: "There is no need for HTML or CSS if the website uses HTTPS" },
+                            { ar: "التصميم المتجاوب يغني تماماً عن كتابة أي كود برمجي للواجهة الأمامية", en: "Responsive design completely eliminates writing any front-end code" }
+                        ],
+                        correct: 0,
+                        exp_ar: "الفكرة الرئيسة (ص 65 وص 67): صفحة الويب الحديثة هي تركيبة وليست تقنية واحدة: HTML يبني بنيتها، وCSS ينسّق مظهرها، وJavaScript يجعلها تفاعلية — بينما تجعل HTML الدلالية والتصميم المتجاوب وأطر العمل بناءها ذا معنى وقابلاً للتكيف وفعّالاً.",
+                        exp_en: "Main Idea (p. 65, 67): A modern web page combines HTML for structure, CSS for styling, and JavaScript for interactivity—enhanced by Semantic HTML, Responsive Design, and Frameworks."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "واجب منزلي 1 - التكامل الثلاثي في الواجهة الأمامية (ص 63 - 64)",
+                        q: "اشرح لماذا تُوصف صفحة الويب الحديثة بأنها «تركيبة وليست تقنية واحدة»، موضحاً ماذا يحدث لو استغنينا عن CSS أو عن JavaScript في موقع تجارة إلكترونية.",
+                        en_q: "Explain why a modern web page is described as 'a combination rather than a single technology', and what happens if CSS or JavaScript is omitted in an e-commerce site.",
+                        hint: "ماذا يرى المستخدم بدون CSS؟ وماذا يحدث لسلة التسوق بدون JavaScript؟",
+                        en_hint: "What does the user see without CSS? What happens to interactive cart updates without JavaScript?",
+                        model: "لأن كل تقنية تؤدي دوراً مكملاً للآخر: <b>HTML</b> يبني الهيكل، و<b>CSS</b> ينسّق المظهر، و<b>JavaScript</b> يضيف السلوك التفاعلي.<br>• <b>لو استغنينا عن CSS:</b> ستظهر منتجات المتجر كنصوص وصور خام فوق بعضها بدون ألوان أو تخطيط متجاوب مريح للعين.<br>• <b>لو استغنينا عن JavaScript:</b> ستفقد الصفحة تفاعليتها الفورية، فلا يمكن تحديث عداد سلة التسوق أو تصفية المنتجات أو التحقق الفوري من النماذج على الشاشة.",
+                        en_model: "Because each technology fulfills a distinct role: <b>HTML</b> for structure, <b>CSS</b> for styling, and <b>JavaScript</b> for interactivity.<br>• <b>Without CSS:</b> Products appear as unstyled raw text and images with no responsive layout.<br>• <b>Without JavaScript:</b> Live interactivity is lost—no instant cart counter updates, live search filtering, or client-side form validation."
+                    },
+                    {
+                        source: "واجب منزلي 2 - خريطة العناصر الدلالية الأربعة (ص 64)",
+                        q: "ارسم بالكلمات هيكل صفحة ويب قياسية باستخدام العناصر الدلالية الأربعة المذكورة في الكتاب، موضحاً مكان ووظيفة كل عنصر.",
+                        en_q: "Describe the structure of a standard web page using the four Semantic HTML elements mentioned in the textbook, stating the location and role of each.",
+                        hint: "<code>&lt;header&gt;</code>، <code>&lt;nav&gt;</code>، <code>&lt;main&gt;</code>، <code>&lt;footer&gt;</code>.",
+                        en_hint: "<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, and <code>&lt;footer&gt;</code>.",
+                        model: "1. <b><code>&lt;header&gt;</code> (في أعلى الصفحة):</b> يضم ترويسة الصفحة مثل شعار الموقع وعنوانه الرئيسي.<br>2. <b><code>&lt;nav&gt;</code> (قسم التنقل):</b> يضم قائمة روابط التنقل بين أقسام وصفحات الموقع.<br>3. <b><code>&lt;main&gt;</code> (في وسط الصفحة):</b> يضم المحتوى الرئيس والأساسي الذي جاء المستخدم لقراءته.<br>4. <b><code>&lt;footer&gt;</code> (في أسفل الصفحة):</b> يضم تذييل الصفحة مثل حقوق النشر وروابط التواصل.",
+                        en_model: "1. <b><code>&lt;header&gt;</code> (Top of page):</b> Contains the site title, logo, and introductory banner.<br>2. <b><code>&lt;nav&gt;</code> (Navigation):</b> Contains navigation links to site sections.<br>3. <b><code>&lt;main&gt;</code> (Core area):</b> Contains the primary content of the page.<br>4. <b><code>&lt;footer&gt;</code> (Bottom of page):</b> Contains copyright notices and footer links."
+                    },
+                    {
+                        source: "واجب منزلي 3 - HTML الدلالية لذوي الإعاقة البصرية (ص 64 - 66)",
+                        q: "طالب كفيف يستخدم برنامج «قارئ الشاشة» لتصفح موقع مدرسته. اشرح كيف يساعده التزام مطور الموقع بلغة HTML الدلالية، واذكر ممارسة وصول إضافية واحدة يحتاج إليها.",
+                        en_q: "A blind student uses a screen reader to browse their school website. Explain how Semantic HTML helps them, and mention one additional accessibility practice needed.",
+                        hint: "فهم بنية الصفحة والقفز للمحتوى الرئيس، بالإضافة إلى النص البديل للصور.",
+                        en_hint: "Understanding page structure and jumping to <code>&lt;main&gt;</code>, plus alt text for images.",
+                        model: "• <b>كيف تساعده HTML الدلالية:</b> تمكّن برنامج قارئ الشاشة من التعرف على أقسام الصفحة (<code>&lt;header&gt;</code>، <code>&lt;nav&gt;</code>، <code>&lt;main&gt;</code>، <code>&lt;footer&gt;</code>) وإعلانها صوتياً للطالب، فيستطيع تخطي القوائم المتكررة والوصول فوراً إلى المحتوى الرئيس.<br>• <b>ممارسة وصول إضافية:</b> إضافة <b>نص بديل (alt text)</b> يصف الصور، وتمكين التنقل الكامل عبر لوحة المفاتيح.",
+                        en_model: "• <b>How Semantic HTML helps:</b> It allows the screen reader to identify landmarks (<code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>) so the student can skip repetitive menus and jump straight to the main content.<br>• <b>Additional practice:</b> Providing descriptive alternative text (alt text) for images and full keyboard navigation."
+                    },
+                    {
+                        source: "واجب منزلي 4 - تصحيح مفهوم خاطئ عن HTML الدلالية و SEO (ص 64 و 66)",
+                        q: "قال أحد زملائك: «استخدام HTML الدلالية يجعل سرعة تحميل الصفحة أسرع بالضرورة، ويضمن ظهور الموقع في المركز الأول في محرك البحث جوجل». صحّح العبارتين علمياً في ضوء ما درسته.",
+                        en_q: "A classmate said: 'Using Semantic HTML necessarily makes page loading faster and guarantees #1 ranking on Google.' Correct both claims scientifically.",
+                        hint: "راجع ص 64 وتدرّب 2-(1) ص 66.",
+                        en_hint: "Review p. 64 and Practice 2-(1) on p. 66.",
+                        model: "العبارتان غير دقيقتين علمياً:<br>1. <b>بخصوص السرعة:</b> استخدام HTML الدلالية يوضح معنى وبنية العناصر، ولكنه <b>لا يجعل سرعة عرض صفحة الويب أسرع بالضرورة</b> (تدرّب 2 ص 66).<br>2. <b>بخصوص محركات البحث (SEO):</b> يساعد HTML الدلالي محركات البحث على <b>فهم بنية المحتوى بصورة أفضل</b>، ولكنه <b>لا يضمن ترتيباً أعلى</b> في النتائج لأن الترتيب يعتمد على عوامل كثيرة أخرى أيضاً (ص 64).",
+                        en_model: "Both claims are inaccurate:<br>1. <b>Regarding Speed:</b> Semantic HTML clarifies structure but <b>does not necessarily make page display faster</b> (p. 66).<br>2. <b>Regarding SEO:</b> Semantic HTML helps search engines better understand content structure, but <b>it does not guarantee a higher ranking</b> (p. 64)."
+                    },
+                    {
+                        source: "واجب منزلي 5 - أهمية التصميم المتجاوب في عصر الهواتف (ص 64 و 67)",
+                        q: "لماذا لم يعد مقبولاً اليوم تصميم موقع إلكتروني يناسب شاشات الكمبيوتر المكتبية فقط؟ وكيف يعالج «التصميم المتجاوب» ونهج «الأولوية للجوال» هذه المشكلة؟",
+                        en_q: "Why is it no longer acceptable to design websites for desktop screens only, and how do Responsive Design and Mobile-First solve this?",
+                        hint: "تنوع الأجهزة التي يصل منها المستخدمون للمواقع.",
+                        en_hint: "Users access websites from diverse devices (phones, tablets, PCs).",
+                        model: "• <b>السبب:</b> لأن المواقع الإلكترونية اليوم يتم الوصول إليها من أجهزة متنوعة (أجهزة الكمبيوتر، الهواتف الذكية، والأجهزة اللوحية)، بل إن كثيراً من الناس يتصفحون الويب عبر الهواتف.<br>• <b>الحل:</b> يراعي المطورون الشاشات الصغيرة منذ بداية التصميم (<b>نهج الأولوية للجوال</b>)، ويستخدمون <b>التصميم المتجاوب</b> لضبط التخطيط والأحجام تلقائياً وفقاً لحجم كل شاشة، مما يحسن سهولة الاستخدام.",
+                        en_model: "• <b>Reason:</b> Users access websites from diverse devices, with a majority browsing on smartphones.<br>• <b>Solution:</b> Developers prioritize small screens from the start (<b>Mobile-First</b>) and apply <b>Responsive Design</b> so layouts automatically adapt to any screen width."
+                    },
+                    {
+                        source: "واجب منزلي 6 - متى نختار React أو Vue أو Next.js؟ (ص 65)",
+                        q: "لديك ثلاثة مشاريع ويب: (1) إضافة ميزة تفاعلية صغيرة تدريجياً لموقع بسيط، (2) بناء واجهة مستخدم كبيرة تعتمد على مكونات قابلة لإعادة الاستخدام، (3) بناء تطبيق ويب متكامل مبني على React يحتاج إلى توجيه (Routing) وعمل على الخادم والعميل. رشّح الأداة الأنسب لكل مشروع مع التبرير.",
+                        en_q: "Recommend the best tool (React, Vue, or Next.js) for: (1) incrementally adding small interactive features with a simple structure, (2) building a UI from reusable components, (3) a full React-based app needing routing and server/client rendering.",
+                        hint: "استعن بجدول ص 65.",
+                        en_hint: "Use the table on p. 65.",
+                        model: "1. <b>المشروع الأول:</b> <b>Vue</b>؛ لأن له بنية بسيطة ويتيح بناء تطبيقات الويب تدريجياً بدءاً من ميزات صغيرة.<br>2. <b>المشروع الثاني:</b> <b>React</b>؛ لأنها مكتبة JavaScript مخصصة لبناء واجهات المستخدم من مكونات قابلة لإعادة الاستخدام وتحديثها عند تغير البيانات.<br>3. <b>المشروع الثالث:</b> <b>Next.js</b>؛ لأنه إطار مبني على React يوفر التوجيه وطرقاً مختلفة لعرض الصفحات والعمل على الخادم والعميل.",
+                        en_model: "1. <b>Project 1:</b> <b>Vue</b>, due to its simple structure and incremental adoption starting from small features.<br>2. <b>Project 2:</b> <b>React</b>, a JS library built around reusable UI components.<br>3. <b>Project 3:</b> <b>Next.js</b>, a React framework providing routing and server/client rendering."
+                    },
+                    {
+                        source: "واجب منزلي 7 - الفرق بين كتابة الكود من الصفر واستخدام إطار عمل (ص 65)",
+                        q: "اشرح كيف يسهم استخدام إطار عمل (Framework) في توفير وقت وجهد فريق تطوير الواجهة الأمامية مقارنة بكتابة كامل الكود من الصفر.",
+                        en_q: "Explain how using a Framework saves time and effort for a front-end development team compared to writing all code from scratch.",
+                        hint: "بنية جاهزة ومكونات شائعة الاستخدام تقلل العمل المتكرر.",
+                        en_hint: "Pre-built architecture and common components reduce repetitive boilerplate.",
+                        model: "يوفر <b>إطار العمل</b> بنية جاهزة تضم مسبقاً وظائف ومكونات شائعة الاستخدام (مثل إدارة الحالة، والتوجيه بين الصفحات، والمكونات القابلة لإعادة الاستخدام). وبذلك لا يضطر المطورون إلى إعادة كتابة هذه الأساسيات المتكررة من الصفر في كل مشروع، بل يركزون مباشرة على ميزات تطبيقهم الخاصة بكفاءة وسرعة أكبر.",
+                        en_model: "A <b>Framework</b> provides a pre-built structure with common functions and reusable components (routing, state updates, UI building blocks), sparing developers from rewriting repetitive boilerplate from scratch and boosting efficiency."
+                    },
+                    {
+                        source: "واجب منزلي 8 - تحليل صفحة نموذج تسجيل (ص 63 و 67)",
+                        q: "عند بناء صفحة «نموذج إنشاء حساب جديد» في موقع إلكتروني، حدد بدقة دور كل من HTML وCSS وJavaScript في هذا النموذج.",
+                        en_q: "When building a 'Sign-Up Form' page on a website, specify the exact role of HTML, CSS, and JavaScript.",
+                        hint: "حقول الإدخال والأزرار، تنسيق الحقول والألوان، والتحقق من صحة البيانات المدخلة.",
+                        en_hint: "Input fields/labels (HTML), styling/layout (CSS), and input validation (JavaScript).",
+                        model: "1. <b>دور HTML:</b> إنشاء بنية النموذج وحقول الإدخال (الاسم، البريد، كلمة المرور) وعناوينها وزر الإرسال.<br>2. <b>دور CSS:</b> تنسيق مظهر الحقول والأزرار والألوان والمحاذاة وضبط حجم النموذج ليتناسب مع شاشة الهاتف والكمبيوتر.<br>3. <b>دور JavaScript:</b> التحقق من صحة المحتويات المُدخلة في النموذج (مثل التأكد من تطابق كلمة المرور وعدم ترك الحقول فارغة) وإظهار رسائل تنبيه فورية قبل الإرسال.",
+                        en_model: "1. <b>HTML:</b> Creates the form structure, input fields, labels, and submit button.<br>2. <b>CSS:</b> Styles the fields, colors, spacing, and responsive layout.<br>3. <b>JavaScript:</b> Validates form inputs in real time and displays instant feedback messages."
+                    },
+                    {
+                        source: "واجب منزلي 9 - متى تكفي HTML وحدها أو مع CSS فقط؟ (ص 63 - 64)",
+                        q: "ذكر الكتاب أنه «يمكن أن تستخدم الصفحة HTML وحده، أو HTML مع CSS وJavaScript بحسب الوظائف التي تحتاج إليها». أعطِ مثالاً لصفحة يكفيها HTML وCSS فقط دون حاجة إلى JavaScript.",
+                        en_q: "The textbook states a page can use HTML alone or with CSS and JS depending on needed functions. Give an example of a page that only needs HTML and CSS without JavaScript.",
+                        hint: "صفحة قراءة ثابتة لا تحتوي على عدادات حية أو تصفية فورية.",
+                        en_hint: "A static reading page (e.g., an article or digital brochure) without live counters or dynamic filtering.",
+                        model: "<b>مثال:</b> صفحة سيرة ذاتية بسيطة أو مقال نصي ثابت يعرض معلومات القراءة فقط.<br>• نحتاج فيها إلى <b>HTML</b> لوضع العناوين والفقرات والصور والروابط.<br>• ونحتاج إلى <b>CSS</b> لتنسيق الألوان والخطوط والتخطيط المتجاوب.<br>• ولا نحتاج إلى <b>JavaScript</b> طالما لا توجد في الصفحة أزرار تفاعلية لتحديث البيانات أو نماذج تحتاج إلى تحقق برمجي.",
+                        en_model: "<b>Example:</b> A simple static article or informational brochure page.<br>• <b>HTML</b> provides the headings, paragraphs, and images.<br>• <b>CSS</b> styles the typography, colors, and responsive layout.<br>• <b>JavaScript</b> is unnecessary if the page requires no dynamic updates or interactive controls."
+                    },
+                    {
+                        source: "واجب منزلي 10 - الربط الشامل للوحدة الثالثة (الدروس 3-1 و 3-2 و 3-3)",
+                        q: "لخّص رحلة كاملة لتطبيق ويب في الوحدة الثالثة عند بحث مستخدم عن كتاب في مكتبة إلكترونية، موضحاً: (1) الطبقات الثلاث [3-1]، (2) طريقة الاتصال والبيانات [3-2]، (3) تقنيات عرض وتصفية النتيجة في الواجهة الأمامية [3-3].",
+                        en_q: "Summarize a complete web app journey across Unit 3 when searching for a book: (1) Three tiers [3-1], (2) Communication & data [3-2], (3) Front-End rendering & filtering [3-3].",
+                        hint: "اربط المفاهيم معاً في سيناريو واحد متسلسل.",
+                        en_hint: "Connect the 3 tiers, HTTPS GET/API/JSON, and HTML/CSS/JS in one cohesive flow.",
+                        model: "1. <b>طبقات التطبيق (الدرس 3-1):</b> تتعاون <b>الواجهة الأمامية</b> (في المتصفح) مع <b>الواجهة الخلفية</b> (على الخادم) و<b>قاعدة البيانات</b>.<br>2. <b>طرق الاتصال (الدرس 3-2):</b> يرسل المتصفح (<b>العميل</b>) طلب <b>GET</b> عبر <b>HTTPS</b> إلى <b>واجهة API</b> الخادم، فيعيد الخادم استجابة برمز <b>200</b> محملة ببيانات الكتب بصيغة <b>JSON</b>.<br>3. <b>تقنيات الواجهة الأمامية (الدرس 3-3):</b> تستقبل <b>JavaScript</b> بيانات الكتب وتحدث الشاشة وتصفيها تفاعلياً، وتعرضها داخل هيكل دلالي منظم بـ <b>HTML</b>، ومنسق بصرياً ومتجاوب مع حجم الشاشة بواسطة <b>CSS</b>.",
+                        en_model: "1. <b>Three Tiers (3-1):</b> Front-End, Back-End, and Database collaborate.<br>2. <b>Communication (3-2):</b> The browser (<b>Client</b>) sends an <b>HTTPS GET</b> request to the server's <b>API</b>, which returns status <b>200</b> with book data in <b>JSON</b>.<br>3. <b>Front-End Tech (3-3):</b> <b>JavaScript</b> processes and filters the books dynamically, <b>HTML</b> structures the elements semantically, and <b>CSS</b> styles the responsive layout."
+                    },
+                    {
+                        source: "واجب منزلي 11 - نقد كود غير دلالي (ص 64 - 66)",
+                        q: "قام مطور مبتدئ ببناء صفحة كاملة باستخدام صناديق عامة فقط دون استخدام <code>&lt;header&gt;</code> أو <code>&lt;nav&gt;</code> أو <code>&lt;main&gt;</code> أو <code>&lt;footer&gt;</code>، ووضع كل أكواد HTML وCSS وJavaScript مختلطة بلا تنظيم. ما السلبيات الناتجة عن ذلك؟",
+                        en_q: "A beginner built a page using only generic containers without <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, or <code>&lt;footer&gt;</code>, mixing all code disorganizedly. What are the negative consequences?",
+                        hint: "ضعف إمكانية الوصول، ضعف SEO، وصعوبة صيانة وتطوير الكود.",
+                        en_hint: "Poor screen reader accessibility, weaker SEO structure understanding, and difficult code maintenance.",
+                        model: "ينتج عن ذلك ثلاث سلبيات رئيسية:<br>1. <b>ضعف إمكانية الوصول (Accessibility):</b> سيواجه مستخدمو برامج قارئ الشاشة صعوبة في فهم بنية الصفحة أو القفز إلى المحتوى الرئيس.<br>2. <b>ضعف فهم محركات البحث (SEO):</b> لن تتعرف محركات البحث بوضوح على وظيفة وأهمية كل قسم في الصفحة.<br>3. <b>صعوبة الصيانة والتطوير:</b> خلط الأدوار يجعل اكتشاف الأخطاء أو تعديل التصميم مستقبلاً أمراً معقداً وبطيئاً.",
+                        en_model: "This leads to three main drawbacks:<br>1. <b>Poor Accessibility:</b> Screen readers cannot easily identify page regions for visually impaired users.<br>2. <b>Weaker SEO:</b> Search engines struggle to understand the functional hierarchy of content.<br>3. <b>Hard Maintenance:</b> Mixing structure, style, and behavior makes debugging and updating difficult."
+                    },
+                    {
+                        source: "واجب منزلي 12 - دراسة حالة: تطوير بوابة مدرسة (ص 65 - 67)",
+                        q: "تريد مدرستك بناء بوابة إلكترونية حديثة وسريعة التطوير تعمل على الهواتف والكمبيوتر وتضم عشرات الصفحات المتشابهة في التصميم. كيف توظف (التصميم المتجاوب) و(Next.js / React) في هذا المشروع؟",
+                        en_q: "Your school wants to build a modern portal working on phones and PCs with dozens of similarly structured pages. How would you use Responsive Design and Next.js/React?",
+                        hint: "مكونات قابلة لإعادة الاستخدام + التوجيه + التكيف مع الشاشات.",
+                        en_hint: "Reusable components + routing + responsive mobile-first layout.",
+                        model: "• <b>توظيف React و Next.js:</b> نستخدم <b>React</b> لبناء عناصر البوابة المتكررة (كالترويسة، وبطاقة الطالب، والجدول) في صورة <b>مكونات قابلة لإعادة الاستخدام</b>، ونعتمد على إطار <b>Next.js</b> لتوفير <b>التوجيه (Routing)</b> بين عشرات الصفحات والعمل بكفاءة على الخادم والعميل.<br>• <b>توظيف التصميم المتجاوب:</b> نضبط التخطيط بـ CSS مع مراعاة <b>الأولوية للجوال</b> ليتكيف العرض تلقائياً سواء فتح الطالب البوابة من هاتفه أو من حاسوب المدرسة.",
+                        en_model: "• <b>Using React & Next.js:</b> Build repeating UI elements (headers, student cards) as <b>reusable React components</b>, and use <b>Next.js</b> for page routing and server/client rendering.<br>• <b>Using Responsive Design:</b> Apply Mobile-First CSS layouts so the portal adapts smoothly to both smartphones and school PCs."
+                    },
+                    {
+                        source: "واجب منزلي 13 - مقارنة إمكانية الوصول و SEO (ص 64 و 67)",
+                        q: "قارن بين مفهوم «إمكانية الوصول» (Accessibility) ومفهوم «تحسين محركات البحث» (SEO) من حيث الهدف الأساسي والفئة المستفيدة من كل منهما.",
+                        en_q: "Compare 'Accessibility' and 'SEO' in terms of primary goal and beneficiary group.",
+                        hint: "ذوو الإعاقة والقدرات المختلفة مقابل محركات البحث والباحثين عن الموقع.",
+                        en_hint: "Users with diverse abilities/disabilities vs. search engines and users searching for content.",
+                        model: "• <b>إمكانية الوصول (Accessibility):</b> هدفها تصميم المحتوى والواجهة بحيث يمكن لأصحاب القدرات والاحتياجات المختلفة استخدامها بسهولة، والفئة المستفيدة منها هم <b>المستخدمون البشر وخاصة ذوو الإعاقة (مثل مستخدمي قارئ الشاشة)</b>.<br>• <b>تحسين محركات البحث (SEO):</b> هدفها تطبيق ممارسات تجعل الصفحة أيسر في الفهرسة والظهور في نتائج البحث، وتستفيد منها <b>محركات البحث الآلية والزوار الباحثون عن المعلومة</b>.",
+                        en_model: "• <b>Accessibility:</b> Aims to make content and interfaces usable by people of all abilities, directly benefiting <b>users with disabilities (e.g., screen reader users)</b>.<br>• <b>SEO:</b> Aims to make pages easier for search engines to understand and index, benefiting <b>search engine crawlers and users searching online</b>."
+                    },
+                    {
+                        source: "واجب منزلي 14 - تشخيص مشكلة في واجهة مستخدم (ص 63 - 66)",
+                        q: "فتح مستخدم صفحة متجر إلكتروني من هاتفه الذكي فواجه مشكلتين: (1) النصوص والصور عريضة جداً وتخرج خارج شاشة الهاتف، (2) عند الضغط على زر «حساب الإجمالي» لا يحدث أي شيء. حدد التقنية المسؤولة عن إصلاح كل مشكلة.",
+                        en_q: "A user opened an online store on their phone and faced two issues: (1) text and images overflow outside the narrow screen, (2) clicking 'Calculate Total' does nothing. Identify the technology responsible for fixing each.",
+                        hint: "تخطيط الشاشة المتجاوب = CSS، استجابة الزر والحساب = JavaScript.",
+                        en_hint: "Responsive layout overflow = CSS; unresponsive calculation button = JavaScript.",
+                        model: "1. <b>المشكلة الأولى (خروج العناصر عن شاشة الهاتف):</b> تُصلح باستخدام لغة <b>CSS</b> عبر تطبيق قواعد <b>التصميم المتجاوب (Responsive Design)</b> لضبط التخطيط والأحجام تلقائياً وفقاً لعرض شاشة الهاتف.<br>2. <b>المشكلة الثانية (عدم استجابة زر الحساب):</b> تُصلح باستخدام لغة <b>JavaScript</b>؛ لأنها المسؤولة عن إضافة السلوك التفاعلي وتفعيل الاستجابات والعمليات الحسابية عند الضغط على الأزرار.",
+                        en_model: "1. <b>Issue 1 (Screen overflow on phone):</b> Fixed using <b>CSS</b> by applying <b>Responsive Design</b> rules so elements scale to mobile viewports.<br>2. <b>Issue 2 (Unresponsive button):</b> Fixed using <b>JavaScript</b>, which binds click events and executes the calculation logic."
+                    },
+                    {
+                        source: "واجب منزلي 15 - التمهيد للوحدة الرابعة: تصميم الويب والوسائط (ص 67 - 68)",
+                        q: "بعد أن تعلمت في الوحدة الثالثة كيف يُبنى تطبيق الويب ويتصل بالخادم وتُبرمج واجهته الأمامية، لماذا نحتاج في الوحدة الرابعة القادمة إلى دراسة «أنواع الوسائط وتصميم تجربة المستخدم وتقييم المواقع»؟",
+                        en_q: "After learning how web apps are built, connected, and coded in Unit 3, why do we need to study 'Media Types, UX Design, and Website Evaluation' in Unit 4?",
+                        hint: "الكود السليم تقنياً يحتاج إلى اختيار وسائط مناسبة وتصميم مريح للمستخدم وتقييم مستمر.",
+                        en_hint: "Technically working code still needs appropriate media selection, user-centered layout (CRAP/UX), and continuous evaluation.",
+                        model: "لأن نجاح الموقع الإلكتروني لا يعتمد على كتابة الكود التقني (HTML/CSS/JS) فقط؛ بل يتطلب أيضاً:<br>1. اختيار <b>الوسائط المناسبة</b> للغرض والجمهور (الدرس 4-1).<br>2. تخطيط المعلومات وتصميم <b>تجربة مستخدم (UX)</b> واضحة وسهلة الاستخدام وفق مبادئ التصميم (الدرس 4-2).<br>3. <b>تقييم الموقع</b> كمياً ونوعياً وتحسينه بشكل تكراري مستمر (الدرسان 4-3 و 4-4).",
+                        en_model: "Because a successful website requires more than just working code (HTML/CSS/JS); it also requires choosing the <b>right media</b> for the audience (4-1), planning <b>user-centered information design and UX</b> (4-2), and <b>evaluating and iteratively improving</b> the site based on real data and user feedback (4-3 & 4-4)."
+                    }
+                ]
+            }
+        };
+
+        let currentMode = 'session';
+        let currentSubTab = 'mcq';
+        let mcqViewMode = 'single';
+        // Deferred grading by default (per user preference: grade on finish with full mistakes review, with option to toggle instant mode)
+        let deferredGrading = true;
+        let state = {
+            session: { answers: new Array(15).fill(null), currentIdx: 0, submitted: false },
+            homework: { answers: new Array(15).fill(null), currentIdx: 0, submitted: false }
+        };
+
+        function safeGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+        function safeSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        function getPrefix() { return 'cs_u3_l3_' + currentMode; }
+
+        function toggleGradingMode() {
+            deferredGrading = !deferredGrading;
+            const btn = document.getElementById('gradingModeBtn');
+            btn.innerText = deferredGrading ? '📝 وضع التصحيح: عند الإنهاء' : '⚡ وضع التصحيح: فوري';
+            displayQuestion();
+            renderAllMcqList();
+        }
+
+        function jumpToQuiz(m, sub) {
+            switchMode(m);
+            switchSubTab(sub);
+            document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchMode(m) {
+            currentMode = m;
+            document.getElementById('modeBtnSession').className = m === 'session' ? 'mode-card-btn active-mode-session' : 'mode-card-btn';
+            document.getElementById('modeBtnHomework').className = m === 'homework' ? 'mode-card-btn active-mode-homework' : 'mode-card-btn';
+            const lbl = m === 'session' ? 'السيشن' : 'الواجب';
+            document.getElementById('tabMCQLabel').innerText = `🔘 الاختيار من متعدد (15 - ${lbl})`;
+            document.getElementById('tabEssayLabel').innerText = `✍️ الأسئلة المقالية (15 - ${lbl})`;
+            document.getElementById('currentModeBadge').innerText = m === 'session' ? '👨‍🏫 السيشن' : '🏠 الواجب';
+            document.getElementById('essayBannerTitle').innerText = `📝 الأسئلة المقالية والتحليلية لقسم ${lbl} (15 سؤالاً):`;
+            document.getElementById('resultsCard').style.display = 'none';
+            if (mcqViewMode === 'single') {
+                document.getElementById('quizCard').style.display = 'block';
+            }
+            loadScores();
+            displayQuestion();
+            renderAllMcqList();
+            renderEssayQuestions();
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            document.getElementById('tabMCQ').classList.toggle('active', sub === 'mcq');
+            document.getElementById('tabEssay').classList.toggle('active', sub === 'essay');
+            document.getElementById('mcqContainer').style.display = sub === 'mcq' ? 'block' : 'none';
+            document.getElementById('essayContainer').style.display = sub === 'essay' ? 'block' : 'none';
+            document.getElementById('mcqViewToggleGroup').style.display = sub === 'mcq' ? 'flex' : 'none';
+        }
+
+        function setMcqViewMode(vm) {
+            mcqViewMode = vm;
+            document.getElementById('viewSingleBtn').classList.toggle('active-view', vm === 'single');
+            document.getElementById('viewAllBtn').classList.toggle('active-view', vm === 'all');
+            document.getElementById('quizCard').style.display = vm === 'single' ? 'block' : 'none';
+            document.getElementById('allMcqListContainer').style.display = vm === 'all' ? 'block' : 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+            if (vm === 'single') displayQuestion();
+            else renderAllMcqList();
+        }
+
+        function calculateScore() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const isSub = state[currentMode].submitted;
+            let s = 0, answered = 0;
+            qs.forEach((q, i) => {
+                if (ans[i] !== null) {
+                    answered++;
+                    if (ans[i] === q.correct) s++;
+                }
+            });
+            document.getElementById('score').innerText = (deferredGrading && !isSub) ? answered : s;
+            document.getElementById('progressBar').style.width = ((answered / qs.length) * 100) + '%';
+            return s;
+        }
+
+        function loadScores() {
+            const p = getPrefix();
+            document.getElementById('highScore').innerText = safeGet(p + '_high') || '0';
+            document.getElementById('firstScore').innerText = safeGet(p + '_first') !== null ? safeGet(p + '_first') : '--';
+            calculateScore();
+        }
+
+        function displayQuestion() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const idx = state[currentMode].currentIdx;
+            const isSub = state[currentMode].submitted;
+            const showFeedback = !deferredGrading || isSub;
+            const q = qs[idx];
+
+            document.getElementById('qCurrent').innerText = idx + 1;
+            document.getElementById('topicBadge').innerText = q.tag;
+            document.getElementById('questionTextAr').innerHTML = (idx + 1) + '. ' + q.ar_q;
+            document.getElementById('questionTextEn').innerHTML = 'Q' + (idx + 1) + ': ' + q.en_q;
+            calculateScore();
+
+            const box = document.getElementById('optionsContainer');
+            box.innerHTML = '';
+            const exp = document.getElementById('explanationText');
+            const st = document.getElementById('qStatusIndicator');
+            const prev = ans[idx];
+
+            if (prev === null) {
+                st.innerText = 'لم يُجب بعد';
+                exp.style.display = 'none';
+            } else if (!showFeedback) {
+                st.innerText = '📌 تم تسجيل اختيارك (يُصحح عند الإنهاء)';
+                exp.style.display = 'none';
+            } else {
+                const ok = prev === q.correct;
+                st.innerText = ok ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة';
+                exp.style.display = 'block';
+                exp.style.borderRightColor = ok ? 'var(--success)' : 'var(--danger)';
+                exp.innerHTML = `<b>${ok ? '✅ أحسنت!' : '❌ الإجابة الصحيحة: (' + ['أ','ب','ج','د'][q.correct] + ') ' + q.options[q.correct].ar}</b><div style="margin-top:6px;">${q.exp_ar}</div><div class="exp-en" style="margin-top:6px;">${q.exp_en}</div>`;
+            }
+
+            q.options.forEach((opt, oi) => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.innerHTML = `<div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${opt.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${opt.en}</div>`;
+                if (prev !== null && showFeedback) {
+                    b.disabled = true;
+                    if (oi === q.correct) b.classList.add('correct');
+                    else if (oi === prev) b.classList.add('wrong');
+                } else {
+                    if (prev === oi && !showFeedback) {
+                        b.classList.add('selected-pending');
+                    }
+                    b.onclick = () => {
+                        state[currentMode].answers[idx] = oi;
+                        displayQuestion();
+                    };
+                }
+                box.appendChild(b);
+            });
+
+            document.getElementById('prevBtn').disabled = (idx === 0);
+            document.getElementById('nextBtn').innerText = (idx === qs.length - 1) ? 'إنهاء وتصحيح الاختبار 🏁' : 'السؤال التالي ⬅️';
+        }
+
+        function submitAndGradeQuiz() {
+            state[currentMode].submitted = true;
+            document.getElementById('quizCard').style.display = 'none';
+            document.getElementById('allMcqListContainer').style.display = 'none';
+            document.getElementById('resultsCard').style.display = 'block';
+            const s = calculateScore();
+            const p = getPrefix();
+            document.getElementById('finalScore').innerText = s;
+            if (safeGet(p + '_first') === null) safeSet(p + '_first', s);
+            if (s > parseInt(safeGet(p + '_high') || '0')) safeSet(p + '_high', s);
+            loadScores();
+            renderMistakesReview();
+        }
+
+        function renderMistakesReview() {
+            const reviewBox = document.getElementById('mistakesReviewBox');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            let html = '<h3 style="color:var(--primary-light); margin-bottom:14px;">📋 المراجعة التفصيلية للإجابات وتصويب الأخطاء:</h3>';
+            qs.forEach((q, i) => {
+                const userAns = ans[i];
+                const isCorrect = userAns === q.correct;
+                const userText = userAns !== null ? `(${['أ','ب','ج','د'][userAns]}) ${q.options[userAns].ar}` : 'لم يُجب';
+                const correctText = `(${['أ','ب','ج','د'][q.correct]}) ${q.options[q.correct].ar}`;
+                html += `
+                <div style="border:2px solid ${isCorrect ? '#10b981' : '#ef4444'}; background:${isCorrect ? 'var(--success-soft)' : 'var(--danger-soft)'}; border-radius:14px; padding:14px; margin-bottom:12px;">
+                    <div style="font-weight:900; margin-bottom:6px;">س${i+1}: ${q.ar_q}</div>
+                    <div style="font-size:0.92rem; margin-bottom:4px;"><strong>إجابتك:</strong> ${userText} ${isCorrect ? '✅' : '❌'}</div>
+                    ${!isCorrect ? `<div style="font-size:0.92rem; color:#065f46; font-weight:800; margin-bottom:4px;"><strong>الإجابة الصحيحة:</strong> ${correctText}</div>` : ''}
+                    <div style="font-size:0.9rem; margin-top:6px; padding-top:6px; border-top:1px dashed rgba(0,0,0,0.15);">${q.exp_ar}</div>
+                </div>`;
+            });
+            reviewBox.innerHTML = html;
+        }
+
+        function nextQuestion() {
+            const qs = quizData[currentMode].mcq;
+            if (state[currentMode].currentIdx < qs.length - 1) {
+                state[currentMode].currentIdx++;
+                displayQuestion();
+            } else {
+                submitAndGradeQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (state[currentMode].currentIdx > 0) {
+                state[currentMode].currentIdx--;
+                displayQuestion();
+            }
+        }
+
+        function selectAllViewOption(qi, oi) {
+            state[currentMode].answers[qi] = oi;
+            calculateScore();
+            renderAllMcqList();
+        }
+
+        function renderAllMcqList() {
+            const box = document.getElementById('allMcqListContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const isSub = state[currentMode].submitted;
+            const showFeedback = !deferredGrading || isSub;
+            box.innerHTML = '';
+
+            qs.forEach((q, qi) => {
+                const prev = ans[qi];
+                const ok = prev === q.correct;
+                const card = document.createElement('div');
+                card.className = 'q-card';
+                let opts = '';
+                q.options.forEach((o, oi) => {
+                    let cls = 'opt-btn';
+                    if (prev !== null && showFeedback) {
+                        if (oi === q.correct) cls += ' correct';
+                        else if (oi === prev) cls += ' wrong';
+                    } else if (prev === oi && !showFeedback) {
+                        cls += ' selected-pending';
+                    }
+                    opts += `<button class="${cls}" ${(prev !== null && showFeedback) ? 'disabled' : ''} onclick="selectAllViewOption(${qi}, ${oi})"><div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${o.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${o.en}</div></button>`;
+                });
+                let statusText = 'لم يُجب';
+                if (prev !== null) {
+                    statusText = showFeedback ? (ok ? '✅ صحيحة' : '❌ خاطئة') : '📌 تم الاختيار';
+                }
+                card.innerHTML = `
+                    <div class="q-header">
+                        <span class="q-badge">${q.tag}</span>
+                        <span>${statusText}</span>
+                    </div>
+                    <div class="q-text-ar">${qi+1}. ${q.ar_q}</div>
+                    <div class="q-text-en">Q${qi+1}: ${q.en_q}</div>
+                    <div class="options-list">${opts}</div>
+                    ${(prev !== null && showFeedback) ? `<div class="explanation" style="display:block; border-right-color:${ok ? 'var(--success)' : 'var(--danger)'};"><div>${q.exp_ar}</div><div class="exp-en">${q.exp_en}</div></div>` : ''}
+                `;
+                box.appendChild(card);
+            });
+
+            const submitBar = document.createElement('div');
+            submitBar.style.textAlign = 'center';
+            submitBar.style.marginTop = '16px';
+            submitBar.innerHTML = `<button class="btn-restart" style="font-size:1.05rem; padding:12px 28px;" onclick="submitAndGradeQuiz()">✅ إنهاء وتصحيح الاختبار وعرض المراجعة الكاملة</button>`;
+            box.appendChild(submitBar);
+        }
+
+        function openIndexModal() {
+            const g = document.getElementById('gridIndexContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const showFeedback = !deferredGrading || state[currentMode].submitted;
+            g.innerHTML = '';
+            qs.forEach((q, i) => {
+                const d = document.createElement('div');
+                let cls = 'index-pill';
+                if (ans[i] !== null) {
+                    cls += showFeedback ? (ans[i] === q.correct ? ' solved-correct' : ' solved-wrong') : ' solved-pending';
+                }
+                d.className = cls;
+                d.innerText = i + 1;
+                d.onclick = () => {
+                    state[currentMode].currentIdx = i;
+                    setMcqViewMode('single');
+                    closeIndexModal();
+                };
+                g.appendChild(d);
+            });
+            document.getElementById('indexModal').style.display = 'flex';
+        }
+
+        function closeIndexModal() {
+            document.getElementById('indexModal').style.display = 'none';
+        }
+
+        function restartCurrentQuiz() {
+            state[currentMode].answers = new Array(15).fill(null);
+            state[currentMode].currentIdx = 0;
+            state[currentMode].submitted = false;
+            setMcqViewMode(mcqViewMode);
+            calculateScore();
+        }
+
+        function toggleEssayBox(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function renderEssayQuestions() {
+            const box = document.getElementById('essayList');
+            const list = quizData[currentMode].essay;
+            box.innerHTML = '';
+            list.forEach((it, i) => {
+                const d = document.createElement('div');
+                d.className = 'essay-item';
+                d.innerHTML = `
+                    <span class="essay-source">${it.source}</span>
+                    <div class="essay-q-text"><strong>س${i+1}:</strong> ${it.q}</div>
+                    <div class="q-text-en"><strong>Q${i+1}:</strong> ${it.en_q}</div>
+                    <textarea class="essay-textarea" placeholder="اكتب إجابتك وتحليلك الهندسي هنا..."></textarea>
+                    <div>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('h_${i}')">💡 تلميح / Hint</button>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('m_${i}')">👁️ الإجابة النموذجية / Model Answer</button>
+                    </div>
+                    <div class="hint-box" id="h_${i}">
+                        <div>💡 ${it.hint}</div>
+                        <div class="exp-en" style="margin-top:4px;">💡 ${it.en_hint}</div>
+                    </div>
+                    <div class="model-answer" id="m_${i}">
+                        <div>${it.model}</div>
+                        <hr style="margin:8px 0;opacity:0.3;">
+                        <div class="exp-en" style="color:inherit;">${it.en_model}</div>
+                    </div>
+                `;
+                box.appendChild(d);
+            });
+        }
+
+        function toggleAllEssays(show) {
+            quizData[currentMode].essay.forEach((_, i) => {
+                const m = document.getElementById('m_' + i);
+                if (m) m.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        window.onload = () => {
+            loadScores();
+            displayQuestion();
+            renderEssayQuestions();
+        };
+    </script>
+</body>
+</html>
