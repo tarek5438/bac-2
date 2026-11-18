@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 4-2: تصميم المعلومات وتجربة المستخدم | المنصة التفاعلية الشاملة (شرح + محاكيات + 60 سؤالاً)</title>
+    <style>
+        :root {
+            --primary: #0f4c81; --primary-dark: #092c4c; --primary-light: #2563eb; --primary-soft: #eff6ff;
+            --accent: #f59e0b; --accent-dark: #d97706; --accent-soft: #fffbeb;
+            --bg: #f8fafc; --card-bg: #ffffff; --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0;
+            --success: #10b981; --success-soft: #dcfce7; --danger: #ef4444; --danger-soft: #fee2e2;
+            --teal: #0d9488; --teal-soft: #ccfbf1; --purple: #8b5cf6; --purple-soft: #ede9fe; --font-scale: 1;
+        }
+        body.dark-mode {
+            --bg: #0b1120; --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #334155;
+            --primary-soft: #1e3a8a; --accent-soft: #451a03; --success-soft: #064e3b; --danger-soft: #450a0a;
+            --teal-soft: #134e4a; --purple-soft: #3b0764;
+        }
+        body.projector-mode { --font-scale: 1.16; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.85; font-size: calc(1rem * var(--font-scale)); padding-bottom: 80px; transition: background-color 0.25s, color 0.25s; }
+        #top-progress-bar { position: fixed; top: 0; right: 0; height: 5px; background: linear-gradient(to left, var(--accent), var(--primary-light), var(--teal), var(--success)); width: 0%; z-index: 3000; }
+        .sticky-toolbar { position: sticky; top: 0; z-index: 1500; background: rgba(15, 30, 54, 0.95); backdrop-filter: blur(10px); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(245, 158, 11, 0.5); }
+        .toolbar-brand { font-weight: 900; font-size: 1rem; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .tool-pill { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); padding: 5px 13px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .tool-pill:hover, .tool-pill.active-tool { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        header { background: linear-gradient(135deg, #07192f 0%, #0f4c81 55%, #0d9488 100%); color: white; padding: 42px 20px 35px; text-align: center; border-bottom: 5px solid var(--accent); }
+        header h1 { font-size: calc(2.05rem * var(--font-scale)); margin-bottom: 10px; font-weight: 900; }
+        header p { font-size: calc(1.04rem * var(--font-scale)); color: #e2e8f0; max-width: 920px; margin: 0 auto 18px; }
+        .header-badges, .nav-shortcuts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .h-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 30px; font-size: 0.86rem; font-weight: 700; color: #fde68a; }
+        .shortcut-btn { background: rgba(255, 255, 255, 0.16); color: white; border: 1px solid rgba(255, 255, 255, 0.35); padding: 9px 18px; border-radius: 22px; text-decoration: none; font-size: 0.94rem; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .shortcut-btn:hover { background: white; color: var(--primary); }
+        .shortcut-btn.highlight-hw { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .container { max-width: 1140px; margin: 28px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 28px; margin-bottom: 28px; border: 1px solid var(--border); box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.05); }
+        .badge { display: inline-block; background: var(--primary-soft); color: var(--primary-light); padding: 5px 15px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; border: 1px solid #93c5fd; }
+        body.dark-mode .badge { color: #93c5fd; }
+        h2 { color: var(--primary-light); font-size: calc(1.5rem * var(--font-scale)); margin-bottom: 14px; font-weight: 900; }
+        h3 { font-size: calc(1.18rem * var(--font-scale)); font-weight: 800; margin-bottom: 8px; }
+        .hook-box { background: var(--accent-soft); border-right: 6px solid var(--accent); padding: 18px; border-radius: 12px; margin: 16px 0; }
+        .hook-box strong { color: var(--accent-dark); display: block; margin-bottom: 5px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+        @media (max-width: 850px) { .grid-3 { grid-template-columns: 1fr; } }
+        .info-panel { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; }
+        .real-world-box { background: linear-gradient(135deg, rgba(13, 148, 136, 0.07) 0%, rgba(37, 99, 235, 0.06) 100%); border: 2px solid rgba(13, 148, 136, 0.35); border-right: 6px solid var(--teal); border-radius: 16px; padding: 18px; margin: 16px 0; }
+        .real-world-title { color: var(--teal); font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .sim-box { background: rgba(37, 99, 235, 0.04); border: 2px solid #93c5fd; border-radius: 16px; padding: 22px; margin: 20px 0; }
+        .sim-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+        .sim-btn { background: var(--card-bg); color: var(--text-main); border: 2px solid var(--primary-light); padding: 9px 16px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; transition: 0.2s; }
+        .sim-btn:hover, .sim-btn.active-sim { background: var(--primary-light); color: white; }
+        .sim-output { background: var(--card-bg); border-radius: 12px; padding: 16px; border-right: 6px solid var(--primary-light); margin-top: 12px; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; border-radius: 12px; overflow: hidden; }
+        table th, table td { border: 1px solid var(--border); padding: 12px 16px; text-align: right; }
+        table th { background: var(--primary); color: white; font-weight: 800; }
+        .media-stage-card { border: 2px dashed var(--border); border-radius: 16px; padding: 18px; background: var(--card-bg); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 12px; }
+        .metric-pill { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; }
+        .metric-pill small { display: block; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; }
+        .metric-pill strong { font-size: 1rem; color: var(--primary-light); font-weight: 900; }
+        /* Wireframe visual stage */
+        .wf-canvas { background: var(--bg); border: 2px solid var(--border); border-radius: 14px; padding: 14px; margin-top: 12px; transition: 0.3s; }
+        .wf-box { border: 2px dashed #94a3b8; border-radius: 10px; padding: 10px; text-align: center; font-weight: 800; font-size: 0.88rem; color: var(--text-muted); background: var(--card-bg); transition: 0.3s; }
+        .wf-canvas.styled-mode .wf-box { border-style: solid; border-color: var(--primary-light); color: var(--text-main); }
+        .wf-canvas.styled-mode .wf-header { background: linear-gradient(90deg, var(--primary), var(--teal)); color: white; border-color: transparent; }
+        .wf-canvas.styled-mode .wf-nav { background: var(--primary-soft); color: var(--primary-light); }
+        .wf-canvas.styled-mode .wf-main { border-right: 5px solid var(--accent); }
+        .wf-grid-mid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin: 10px 0; }
+        @media (max-width: 640px) { .wf-grid-mid { grid-template-columns: 1fr; } }
+        /* CRAP live playground */
+        .crap-stage { border: 2px solid var(--border); border-radius: 16px; padding: 20px; background: var(--card-bg); margin-top: 12px; }
+        .crap-bad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 720px) { .crap-bad-grid { grid-template-columns: 1fr; } }
+        .crap-demo-card { border: 2px solid var(--border); border-radius: 12px; padding: 16px; background: var(--bg); transition: 0.3s; }
+        .crap-demo-card.poor { text-align: center; }
+        .crap-demo-card.good { text-align: right; border-color: var(--success); }
+        .crap-poor-title { font-size: 0.95rem; font-weight: 400; color: #94a3b8; margin-bottom: 18px; }
+        .crap-good-title { font-size: 1.25rem; font-weight: 900; color: var(--primary-light); margin-bottom: 6px; border-bottom: 2px solid var(--accent); padding-bottom: 4px; display: inline-block; }
+        .crap-poor-btn { background: #e2e8f0; color: #94a3b8; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; }
+        .crap-good-btn { background: var(--primary-light); color: white; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
+        .funnel-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+        @media (max-width: 768px) { .funnel-flow { grid-template-columns: 1fr; } }
+        .funnel-step { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 15px; text-align: center; transition: 0.3s; }
+        .funnel-step.active-funnel { border-color: var(--teal); background: var(--teal-soft); color: #0f172a; transform: translateY(-3px); }
+        .book-activity { border: 2px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; background: var(--card-bg); }
+        .book-activity-header { padding: 14px 18px; background: rgba(15, 76, 129, 0.06); cursor: pointer; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary-light); }
+        .book-activity-body { padding: 18px; border-top: 1px solid var(--border); display: none; }
+        .book-activity.open .book-activity-body { display: block; }
+        .main-mode-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+        @media (max-width: 640px) { .main-mode-switcher { grid-template-columns: 1fr; } }
+        .mode-card-btn { background: var(--card-bg); border: 3px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: 0.2s; }
+        .mode-card-btn.active-mode-session { border-color: var(--primary-light); background: var(--primary-soft); }
+        .mode-card-btn.active-mode-homework { border-color: var(--accent); background: var(--accent-soft); }
+        .sub-tabs-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .quiz-tabs, .view-toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .view-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 13px; border-radius: 10px; font-size: 0.86rem; font-weight: 700; cursor: pointer; }
+        .view-btn.active-view { background: var(--teal); color: white; border-color: var(--teal); }
+        .stats-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; display: block; }
+        .stat-val { font-size: 1.25rem; font-weight: 900; color: var(--primary-light); }
+        .btn-index { background: var(--primary-soft); color: var(--primary-light); border: 2px solid #93c5fd; padding: 7px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 800; cursor: pointer; }
+        .progress-container { width: 100%; height: 7px; background: var(--border); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary-light), var(--accent)); transition: width 0.3s; }
+        .q-card, .essay-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+        .q-badge, .essay-source { background: var(--primary-soft); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 0.84rem; font-weight: 800; display: inline-block; margin-bottom: 6px; }
+        .q-text-ar, .essay-q-text { font-size: calc(1.14rem * var(--font-scale)); font-weight: 800; margin-bottom: 6px; }
+        .q-text-en, .exp-en { font-size: calc(0.94rem * var(--font-scale)); color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Segoe UI', Tahoma, sans-serif; border-left: 3px solid var(--primary-light); padding-left: 10px; margin-bottom: 12px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .opt-btn { background: var(--bg); border: 2px solid var(--border); padding: 12px 16px; border-radius: 12px; cursor: pointer; text-align: right; width: 100%; transition: 0.2s; }
+        .opt-btn:hover:not(:disabled) { border-color: var(--primary-light); background: var(--primary-soft); }
+        .opt-btn.selected-pending { border-color: var(--primary-light) !important; background: var(--primary-soft) !important; }
+        .opt-btn.correct { background: #dcfce7 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .opt-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991c1c !important; }
+        .opt-ar { font-weight: 700; color: var(--text-main); }
+        .opt-en { font-size: 0.86rem; color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        .explanation { margin-top: 14px; padding: 14px; border-radius: 12px; display: none; background: var(--bg); border-right: 5px solid var(--primary-light); }
+        .actions { display: flex; justify-content: space-between; margin-top: 18px; gap: 10px; flex-wrap: wrap; }
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 9px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-nav:disabled { background: #94a3b8; cursor: not-allowed; }
+        .essay-textarea { width: 100%; height: 80px; padding: 10px; border-radius: 10px; border: 2px solid var(--border); background: var(--bg); color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem; }
+        .btn-reveal-answer { background: var(--bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-left: 6px; margin-bottom: 6px; }
+        .hint-box { display: none; margin-top: 10px; padding: 10px 14px; background: var(--accent-soft); border-right: 4px solid var(--accent); border-radius: 10px; font-weight: 700; }
+        .model-answer { display: none; margin-top: 12px; padding: 14px; background: #f0fdf4; border-right: 5px solid var(--success); border-radius: 10px; color: #14532d; }
+        body.dark-mode .model-answer { background: #064e3b; color: #ecfdf5; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 2500; padding: 20px; }
+        .modal-content { background: var(--card-bg); color: var(--text-main); border-radius: 20px; width: 100%; max-width: 700px; padding: 24px; max-height: 85vh; overflow-y: auto; }
+        .grid-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 8px; margin-top: 10px; }
+        .index-pill { background: var(--bg); border: 2px solid var(--border); padding: 8px; border-radius: 10px; font-weight: 800; text-align: center; cursor: pointer; }
+        .index-pill.solved-pending { background: var(--primary-soft); border-color: var(--primary-light); color: var(--primary-light); }
+        .index-pill.solved-correct { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+        .index-pill.solved-wrong { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+        .results-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 20px; padding: 32px 24px; text-align: center; display: none; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: var(--primary-soft); border: 5px solid var(--primary-light); display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 16px auto; }
+        .score-num { font-size: 2.1rem; font-weight: 900; color: var(--primary-light); }
+        .btn-restart { background: var(--accent); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .mistakes-review-box { text-align: right; margin-top: 22px; border-top: 2px solid var(--border); padding-top: 18px; }
+    </style>
+</head>
+<body>
+    <div id="top-progress-bar"></div>
+    <div class="sticky-toolbar">
+        <div class="toolbar-brand"><span>🎨</span><span>منصة الدرس 4-2: تصميم المعلومات وتجربة المستخدم (60 سؤالاً + محاكيات تفاعلية)</span></div>
+        <div class="toolbar-actions">
+            <a href="#lesson-explanation" class="tool-pill">📖 الشرح والمحاكيات</a>
+            <a href="#book-activities-sec" class="tool-pill">📗 أنشطة الكتاب</a>
+            <button class="tool-pill" onclick="jumpToQuiz('session','mcq')">🎯 سيشن (30 سؤالاً)</button>
+            <button class="tool-pill" onclick="jumpToQuiz('homework','mcq')">🏠 الواجب (30 سؤالاً)</button>
+            <button class="tool-pill" id="projectorBtn" onclick="toggleProjectorMode()">🔍 تكبير الخط</button>
+            <button class="tool-pill" id="darkBtn" onclick="toggleDarkMode()">🌙 الوضع الليلي</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-badges">
+            <span class="h-badge">الصف الثاني الثانوي (بكالوريا مصرية)</span>
+            <span class="h-badge">الوحدة الرابعة: تصميم الويب والوسائط</span>
+            <span class="h-badge">الدرس 4-2 (صفحات الكتاب 74 - 80)</span>
+        </div>
+        <h1>الدرس 4-2: تصميم المعلومات وتجربة المستخدم للمواقع الإلكترونية</h1>
+        <p>شرح تفاعلي كامل لمنهج الكتاب المدرسي + محاكيات بناء شخصية المستخدم والمخطط الهيكلي (Wireframe)، مختبر مبادئ CRAP التفاعلي، وفاحص التصميم المتمحور حول المستخدم وإمكانية الوصول + 60 سؤالاً (30 للسيشن + 30 للواجب ثنائية اللغة)</p>
+        <div class="nav-shortcuts">
+            <a href="#lesson-explanation" class="shortcut-btn">📖 الشرح والمحاكيات التفاعلية</a>
+            <a href="#book-activities-sec" class="shortcut-btn">📗 جميع أسئلة وأنشطة الكتاب محلولة</a>
+            <button class="shortcut-btn" onclick="jumpToQuiz('session','mcq')">👨‍🏫 أسئلة السيشن (15 اختياري + 15 مقالي)</button>
+            <button class="shortcut-btn highlight-hw" onclick="jumpToQuiz('homework','mcq')">📝 أسئلة الواجب (15 اختياري + 15 مقالي)</button>
+        </div>
+    </header>
+
+    <div class="container" id="lesson-explanation">
+        <!-- Card 1: خريطة الدرس والمدخل -->
+        <div class="card">
+            <span class="badge">خريطة الدرس وأهداف التعلم (كتاب ص 74 - 75)</span>
+            <h2>🧭 مدخل الدرس: من اختيار الموقع إلى تصميمه حول المستخدم</h2>
+            <p>في الدرس السابق (4-1) اخترت الوسيلة الإعلامية المناسبة وفق الغرض والجمهور. وعندما تكون الوسيلة <strong>موقعاً إلكترونياً</strong>، تبدأ الخطوة التالية بفهم <strong>المستخدم</strong> وتنظيم المعلومات حول احتياجاته. قد يبدو الموقع منطقياً لمصممه، لكنه قد يُربك زواره؛ لذلك يجب أن يعتمد التصميم على <strong>فهم المستخدم واحتياجاته وسياق استخدامه</strong>، لا على ذوق المصمم فقط (ص 75).</p>
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">🎯 أهداف التعلم الرسمية (ص 74)</h3>
+                    <ul style="margin-right: 18px; font-size: 0.95rem;">
+                        <li><strong>إنشاء وصف مناسب</strong> لمستخدم مستهدف استناداً إلى احتياجات أو بيانات ذات صلة.</li>
+                        <li><strong>استخدام مخطط هيكلي (Wireframe)</strong> لتنظيم المعلومات قبل التصميم البصري النهائي.</li>
+                        <li><strong>تطبيق مبادئ CRAP</strong> لتبرير قرارات تصميمية.</li>
+                        <li><strong>تقييم قرار تصميمي</strong> من منظور قابلية الاستخدام وإمكانية الوصول.</li>
+                    </ul>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--accent);">
+                    <h3 style="color: var(--accent-dark);">⭐ الفكرة الأساسية والمفاهيم الخمسة (ص 75)</h3>
+                    <p style="font-size: 0.94rem; margin-bottom: 8px;">يبدأ تصميم الويب الجيد من <strong>المستخدم</strong>: <strong>شخصية المستخدم</strong> توضح من هو المستخدم، و<strong>المخطط الهيكلي</strong> يحدد مكان كل عنصر، ومبادئ <strong>CRAP</strong> تجعل الصفحة واضحة، و<strong>التصميم المتمحور حول المستخدم</strong> يبقي كل قرار في صالح المستخدم.</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        <span class="badge" style="margin:0;">شخصية المستخدم (Persona)</span>
+                        <span class="badge" style="margin:0;">المخطط الهيكلي (Wireframe)</span>
+                        <span class="badge" style="margin:0;">التباين / التكرار</span>
+                        <span class="badge" style="margin:0;">المحاذاة / التقارب</span>
+                        <span class="badge" style="margin:0;">التصميم المتمحور حول المستخدم (UCD)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="real-world-box">
+                <div class="real-world-title"><span>📌</span><span>خط سير التصميم الذهبي في الخلاصة (ص 79):</span></div>
+                <p style="font-size: 0.96rem;">
+                <strong>شخصية المستخدم (مَن؟)</strong> ⬅️ <strong>المخطط الهيكلي (أين؟)</strong> ⬅️ <strong>CRAP (اجعله واضحاً)</strong> ⬅️ <strong>UCD (قرّر لصالح المستخدم)</strong>.<br>
+                صمّم من المستخدم إلى الداخل، وليس من ذوق المصمم الشخصي!</p>
+            </div>
+            <div class="hook-box">
+                <strong>❓ السؤال الرئيسي للدرس (ص 75):</strong>
+                كيف يخطط المصممون لموقع إلكتروني حول مستخدميه، وما المبادئ التي تجعل الصفحة واضحة وسهلة الاستخدام؟
+            </div>
+        </div>
+
+        <!-- Card 2: المحور الأول: شخصية المستخدم والمخطط الهيكلي -->
+        <div class="card">
+            <span class="badge">المحور الأول (كتاب ص 75 - 76)</span>
+            <h2>👤 1. شخصية المستخدم (Persona) و 📐 2. المخطط الهيكلي (Wireframe)</h2>
+
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--teal);">
+                    <h3 style="color: var(--teal);">👤 أولاً: شخصية المستخدم (Persona) — ص 75</h3>
+                    <ul style="margin-right: 18px; font-size: 0.94rem;">
+                        <li><strong>التعريف:</strong> تمثيل لنوع أو فئة من المستخدمين المستهدفين، يُبنى قدر الإمكان على <strong>بحث أو بيانات</strong> عن أهدافهم واحتياجاتهم وسلوكهم وسياق استخدامهم وتحدياتهم.</li>
+                        <li><strong>متى نضيف العمر أو المهنة؟</strong> تُضاف معلومات مثل العمر أو المهنة <strong>فقط إذا كانت مهمة للتصميم</strong>.</li>
+                        <li><strong>الفائدة والمرونة:</strong> تساعد الفريق على مناقشة احتياجات نمط من المستخدمين بدل الاعتماد على <strong>الافتراضات الشخصية</strong>، لكنها <strong>ليست خطوة إلزامية</strong> في كل مشروع.</li>
+                    </ul>
+                </div>
+
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">📐 ثانياً: المخطط الهيكلي (Wireframe) — ص 75 - 76</h3>
+                    <ul style="margin-right: 18px; font-size: 0.94rem;">
+                        <li><strong>التعريف:</strong> مخطط أولي (يُسمى أيضاً الإطار السلكي) يساعد على تحديد <strong>أماكن العناصر وأولوياتها</strong>، ويُعد للتخطيط <strong>قبل إضافة أي لون أو زخرفة</strong>.</li>
+                        <li><strong>الفائدة:</strong> يمكّن الفريق من النظر في «توزيع المعلومات ومواضعها» بمعزل عن التصميم البصري (الألوان والخطوط).</li>
+                        <li><strong>لماذا نؤجل الألوان؟</strong> لأنه إذا حُددت الزخارف أولاً، تميل النقاشات إلى الانجراف نحو التفضيلات الشخصية في المظهر؛ بينما تحديد المكان والأولوية أولاً يسهّل اتفاق أصحاب المصلحة.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧪 محاكي بناء شخصية المستخدم والمخطط الهيكلي (كتاب ص 75 - 76 و 79):</h3>
+                <p style="font-size:0.92rem;">اختر حالة تصميمية، ثم بدّل بين <strong>«المخطط الهيكلي (بدون ألوان)»</strong> و<strong>«الشكل البصري النهائي»</strong> لترى كيف يركز الإطار السلكي على مواضع المعلومات وأولوياتها:</p>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="selectPersona('clinic', this)">🏥 1. مريض يبحث عن مواعيد عيادة</button>
+                    <button class="sim-btn" onclick="selectPersona('parent', this)">👨‍👩‍👧 2. ولي أمر يبحث عن درجات طفله</button>
+                    <button class="sim-btn" onclick="selectPersona('lowvision', this)">👓 3. مستخدم ضعيف البصر</button>
+                    <button class="sim-btn" id="wfStyleToggleBtn" style="border-color: var(--teal); color: var(--teal);" onclick="toggleWireframeStyle()">🎨 معاينة بعد إضافة الألوان</button>
+                </div>
+
+                <div class="media-stage-card" id="personaMetrics">
+                    <div class="metric-pill"><small>نوع المستخدم (Persona)</small><strong id="pName">مريض يبحث عن زيارة عاجلة</strong></div>
+                    <div class="metric-pill"><small>أولوية البحث لديه</small><strong id="pNeed">ساعات العمل + الاتجاهات + الحجز</strong></div>
+                    <div class="metric-pill"><small>سياق الاستخدام والتحدي</small><strong id="pContext">هاتف محمول أثناء التنقل</strong></div>
+                    <div class="metric-pill"><small>أولوية المخطط الهيكلي</small><strong id="pWireframe">وضع ساعات العمل بأعلى الصفحة</strong></div>
+                </div>
+
+                <div class="wf-canvas" id="wfCanvas">
+                    <div class="wf-box wf-header" id="wfHeader">الرأس (Header): شعار العيادة المجتمعية + اسم الموقع</div>
+                    <div class="wf-box wf-nav" style="margin-top:8px;" id="wfNav">التنقل (Navigation): الرئيسية | ساعات العمل | الخدمات | الاتجاهات</div>
+                    <div class="wf-grid-mid">
+                        <div class="wf-box wf-main" id="wfMain" style="min-height:86px; display:flex; align-items:center; justify-content:center;">المحتوى الرئيسي (Main): ساعات العمل اليومية + خريطة الموقع والاتجاهات</div>
+                        <div class="wf-box wf-side" id="wfSide" style="min-height:86px; display:flex; align-items:center; justify-content:center;">الشريط الجانبي: أرقام الطوارئ والتنبيهات</div>
+                    </div>
+                    <div class="wf-box wf-footer" id="wfFooter">تذييل الصفحة (Footer): حقوق النشر | معلومات التواصل | سياسة الخصوصية</div>
+                </div>
+
+                <div class="sim-output" id="personaSimOutput">
+                    📐 <strong>المخطط الهيكلي (ص 75 - 76):</strong> قبل اختيار الألوان، رتبنا الصفحة بحيث يظهر «ساعات العمل والاتجاهات» في أعلى المحتوى الرئيسي لأن المريض يبحث عنها فوراً.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: المحور الثاني: المبادئ الأربعة للتصميم (مبادئ CRAP) -->
+        <div class="card">
+            <span class="badge">المحور الثاني (كتاب ص 76)</span>
+            <h2>✨ 3. المبادئ الأربعة للتصميم (مبادئ CRAP)</h2>
+            <p>تساعد المبادئ البصرية الأربعة الآتية على تنظيم الشكل وجعل الصفحة أسهل للفهم، لكنها <strong>لا تحل محل معايير قابلية الاستخدام أو إمكانية الوصول</strong> (ص 76).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 18%;">المبدأ</th>
+                        <th style="width: 34%;">الوصف (الغرض)</th>
+                        <th style="width: 48%;">تقنيات وأمثلة محددة (ص 76)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>C — التباين</strong><br><small>(Contrast)</small></td>
+                        <td>جعل أولوية المعلومات واضحة وإبراز أهم العناصر فوراً.</td>
+                        <td>• اجعل العناوين واضحة مقارنةً بالنص.<br>• استخدم تبايناً واضحاً للأزرار المهمة مع مراعاة سهولة القراءة وعدم الاعتماد على اللون وحده.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R — التكرار</strong><br><small>(Repetition)</small></td>
+                        <td>تكرار خصائص معينة لتحقيق الاتساق في التصميم ككل، مما يتيح للمستخدمين التنقل دون تشتت.</td>
+                        <td>• وحّد اللون والحجم والخط للعناوين في كل صفحة.<br>• طابق تصميم أيقونات النقاط والقوائم.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A — المحاذاة</strong><br><small>(Alignment)</small></td>
+                        <td>محاذاة موضع كل عنصر إلى خط أساس مشترك، مما يمنح الشاشة بأكملها نظاماً.</td>
+                        <td>• حاذِ العناصر حسب اتجاه اللغة وشبكة التصميم (في العربية من اليمين إلى اليسار).<br>• استخدم قواعد محاذاة متسقة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P — التقارب</strong><br><small>(Proximity)</small></td>
+                        <td>وضع المعلومات المرتبطة قريبة من بعضها حتى تُدرك كمجموعة واحدة من أول نظرة.</td>
+                        <td>• اجمع صور المنتجات وأسماءها وأسعارها معاً.<br>• اترك مسافات مناسبة (هوامش) بين العناصر غير المرتبطة.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🎨 مختبر مبادئ CRAP التفاعلي (قارن بين × سيئ و ✓ جيد كما في الشكل 4.2.2 ص 76):</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="inspectCRAP('contrast', this)">🔆 C: التباين (إبراز المهم)</button>
+                    <button class="sim-btn" onclick="inspectCRAP('repetition', this)">🔁 R: التكرار (النمط الموحد)</button>
+                    <button class="sim-btn" onclick="inspectCRAP('alignment', this)">📏 A: المحاذاة (خط أساس مشترك)</button>
+                    <button class="sim-btn" onclick="inspectCRAP('proximity', this)">🧲 P: التقارب (تجميع المرتبط)</button>
+                </div>
+                <div class="crap-stage">
+                    <div class="crap-bad-grid">
+                        <div class="crap-demo-card poor">
+                            <div style="color:var(--danger); font-weight:900; margin-bottom:10px;">❌ تصميم يفتقر للمبدأ</div>
+                            <div class="crap-poor-title">أخبار اليوم — تفاصيل سريعة قد لا تظهر بوضوح</div>
+                            <p style="font-size:0.82rem; color:#94a3b8; margin-bottom:24px;">السعر: 200 — في مكان بعيد</p>
+                            <div style="text-align:left; font-size:0.85rem; margin-bottom:12px;">نص بلا محاذاة يمينية متسقة</div>
+                            <button class="crap-poor-btn">اشترك الآن</button>
+                        </div>
+                        <div class="crap-demo-card good" id="crapGoodCard">
+                            <div style="color:var(--success); font-weight:900; margin-bottom:10px;">✅ تصميم مطبق للمبدأ</div>
+                            <div class="crap-good-title">أخبار اليوم</div>
+                            <p style="font-size:0.92rem; margin:6px 0 12px;">تفاصيل الخبر والعنوان الرئيسي واضحة ومحاذاة لليمين.</p>
+                            <div style="background:var(--primary-soft); padding:8px 12px; border-radius:8px; margin-bottom:12px; font-weight:800;">المنتج أ — السعر: 200 جنيه (مُجمّع معاً)</div>
+                            <button class="crap-good-btn">اشترك الآن</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sim-output" id="crapSimOutput">
+                    🔆 <strong>التباين (Contrast - ص 76):</strong> يجعل العناوين الكبيرة والغامقة بارزة مقارنة بنص المحتوى، ويميز زر «اشترك الآن» بلون واضح ليجذب الانتباه فوراً ويسهّل القراءة.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: المحور الثالث: UCD وقابلية الاستخدام وإمكانية الوصول -->
+        <div class="card">
+            <span class="badge">المحور الثالث (كتاب ص 77 و 79)</span>
+            <h2>♿ 4. التصميم المتمحور حول المستخدم (UCD)، قابلية الاستخدام وإمكانية الوصول</h2>
+            <p><strong>التصميم المتمحور حول المستخدم (UCD — User-Centered Design)</strong> هو نهج يجعل <strong>فهم المستخدمين واحتياجاتهم وسياق استخدامهم أساساً لقرارات التصميم</strong>، وليس راحة المُنشئ أو ذوقه الشخصي (ص 77).</p>
+
+            <div class="grid-3">
+                <div class="info-panel" style="border-top: 4px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">🔄 خطوات UCD (ص 77)</h3>
+                    <p style="font-size: 0.92rem;">يبدأ بفهم ما يحتاجه المستخدم، والمهمة التي يريد إنجازها، والظروف التي سيستخدم فيها الموقع، ثم ينظم الفريق المعلومات، ويصمم الحل، و<strong>يختبره مع المستخدمين، ويكرر التحسين</strong>.</p>
+                </div>
+                <div class="info-panel" style="border-top: 4px solid var(--teal);">
+                    <h3 style="color: var(--teal);">⚡ قابلية الاستخدام (Usability)</h3>
+                    <p style="font-size: 0.92rem;">تعني <strong>مدى سهولة وفاعلية إنجاز المستخدم للمهمة</strong> المطلوبة في الموقع. وهي هدف مستقل يحتاج اختباراً ومعايير مناسبة ولا تكفي المبادئ البصرية وحدها لتحقيقه.</p>
+                </div>
+                <div class="info-panel" style="border-top: 4px solid var(--purple);">
+                    <h3 style="color: var(--purple);">♿ إمكانية الوصول (Accessibility)</h3>
+                    <p style="font-size: 0.92rem;">تعني <strong>تصميم المحتوى والواجهة بحيث يمكن لأصحاب القدرات والاحتياجات المختلفة استخدامها، بمن فيهم ذوو الإعاقة</strong> (مثل ضعاف البصر أو من يستخدمون لوحة المفاتيح فقط).</p>
+                </div>
+            </div>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧭 محاكي فحص إمكانية الوصول وقابلية الاستخدام (كتاب ص 79 - 80):</h3>
+                <p style="font-size:0.92rem;">اختر تحدياً يواجه المستخدمين لترى كيف يعالجه المصمم وفق مبادئ CRAP وإمكانية الوصول:</p>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="checkAccessibility('contrast_low', this)">👁️ 1. ضعف التباين للمستخدم ضعيف البصر</button>
+                    <button class="sim-btn" onclick="checkAccessibility('keyboard', this)">⌨️ 2. صعوبة استخدام لوحة المفاتيح</button>
+                    <button class="sim-btn" onclick="checkAccessibility('alt_text', this)">🖼️ 3. غياب النص البديل للصور (قارئ الشاشة)</button>
+                    <button class="sim-btn" onclick="checkAccessibility('no_internet', this)">📵 4. عدم توفر إنترنت منزلي (النفاذ الرقمي)</button>
+                </div>
+                <div class="funnel-flow">
+                    <div class="funnel-step active-funnel" id="uStep1">
+                        <div style="font-size:1.5rem;">⚠️</div>
+                        <strong>المشكلة / الحاجز</strong>
+                        <p id="uProb" style="font-size:0.86rem; margin-top:4px;">نص رمادي فاتح على خلفية بيضاء يصعب قراءته لضعاف البصر.</p>
+                    </div>
+                    <div class="funnel-step active-funnel" id="uStep2">
+                        <div style="font-size:1.5rem;">🛠️</div>
+                        <strong>الحل التصميمي / المبدأ</strong>
+                        <p id="uFix" style="font-size:0.86rem; margin-top:4px;">تطبيق مبدأ التباين (Contrast) بألوان عالية التباين وخطوط واضحة كبيرة.</p>
+                    </div>
+                    <div class="funnel-step active-funnel" id="uStep3">
+                        <div style="font-size:1.5rem;">✅</div>
+                        <strong>الأثر على المستخدم</strong>
+                        <p id="uImpact" style="font-size:0.86rem; margin-top:4px;">تمكين ضعاف البصر وكبار السن من قراءة الساعات والمواعيد بسهولة دون إجهاد.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: دليل المعلم وأنشطة الكتاب محلولة -->
+        <div class="card" id="book-activities-sec">
+            <span class="badge">دليل المعلم والطالب الشامل (كتاب ص 74 - 80)</span>
+            <h2>📗 جميع أسئلة وأنشطة وتمارين الكتاب المدرسي محلولة بالتفصيل</h2>
+
+            <div class="book-activity open">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>💡 1. أنشطة «توقّف وفكّر» (ص 76، 77، 78) + «المثال المحلول» (ص 77 - 78)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>توقّف وفكّر (ص 76):</strong> لماذا يُحدَّد مكان المعلومات (المخطط الهيكلي) قبل اختيار الألوان والخطوط؟<br>
+                    ⬅️ <strong>الإجابة:</strong> حتى يركز الفريق على بنية المعلومات ومواضعها وأولوياتها بمعزل عن الزخارف؛ لأنه إذا حُددت الألوان والخطوط أولاً تميل النقاشات نحو التفضيلات الشخصية في المظهر، بينما تحديد المكان أولاً يسهّل اتفاق أصحاب المصلحة.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>توقّف وفكّر (ص 77):</strong> أي مبدأ يجمع العناصر المرتبطة معاً، وأيها يجعل العنصر الأهم بارزاً؟<br>
+                    ⬅️ <strong>الإجابة:</strong> مبدأ <strong>التقارب (Proximity)</strong> يجمع العناصر المرتبطة معاً في مجموعة واحدة، ومبدأ <strong>التباين (Contrast)</strong> يجعل العنصر الأهم بارزاً وواضحاً فوراً.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>توقّف وفكّر (ص 78):</strong> لكل تحسين أدناه، اسأل: هل يبرز، أم يوحّد، أم ينظّم، أم يجمّع؟<br>
+                    ⬅️ <strong>الإجابة:</strong> يبرز = <strong>التباين</strong> | يوحّد = <strong>التكرار</strong> | ينظّم على خط أساس = <strong>المحاذاة</strong> | يجمّع المرتبط = <strong>التقارب</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>المثال المحلول (ص 77 - 78):</strong><br>
+                    (1) ضع علامة ○ أو ×:<br>
+                    • <strong>أ: ○</strong> (شخصية المستخدم تمثيل لنمط من المستخدمين يستند قدر الإمكان إلى بحث أو بيانات عن أهدافهم واحتياجاتهم).<br>
+                    • <strong>ب: ×</strong> (المخطط الهيكلي يحدد مكان وأولوية المعلومات دون تضمين الألوان والزخارف التصميمية).<br>
+                    • <strong>جـ: ○</strong> (التقارب يعني تجميع المعلومات المرتبطة قريبة من بعضها).<br>
+                    • <strong>د: ×</strong> (التصميم المتمحور حول المستخدم نهج تصميم يعطي الأولوية للمستخدم وليس لراحة المُنشئ).<br>
+                    (2) المطابقة (1 - 4):<br>
+                    • 1: إبراز المعلومات المهمة والإشارة بصرياً إلى الأولوية ⬅️ <strong>(أ) التباين</strong>.<br>
+                    • 2: تكرار نفس النمط لإعطاء مظهر موحد ⬅️ <strong>(ب) التكرار</strong>.<br>
+                    • 3: محاذاة مواضع العناصر لإعطاء مظهر منظم ⬅️ <strong>(جـ) المحاذاة</strong>.<br>
+                    • 4: تجميع المعلومات المرتبطة قريبة من بعضها ⬅️ <strong>(د) التقارب</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>📝 2. سؤال الامتحان [6 درجات] (ص 78) + «تدرّب 1 و 2» (ص 78)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>سؤال على نمط الامتحان [6 درجات] (ص 78):</strong> اشرح لماذا يُنشئ المصمم شخصية نموذجية وإطاراً هيكلياً قبل اختيار الألوان والخطوط. (ارجع إلى: احتياجات المستخدم والتوصل إلى اتفاق مع أصحاب المصلحة):<br>
+                    ⬅️ <strong>الإجابة النموذجية:</strong><br>
+                    1. <strong>شخصية المستخدم (Persona):</strong> تساعد الفريق على فهم احتياجات نوع المستخدم المستهدف وأهدافه وسياقه استناداً إلى البحث والبيانات، بدلاً من الاعتماد على الافتراضات الشخصية للمصمم.<br>
+                    2. <strong>الإطار الهيكلي (Wireframe):</strong> يركز على ترتيب مواضع المعلومات وأولوياتها بمعزل عن الزخارف البصرية؛ لأن البدء بالألوان والخطوط يجعل النقاشات تنجرف نحو الأذواق الشخصية، بينما تحديد البنية أولاً يسهّل التوصل إلى اتفاق واضح مع أصحاب المصلحة.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 1 (ص 78):</strong><br>
+                    1) التمثيل الذي يلخص نوعاً من المستخدمين واحتياجاته وسياق استخدامه: <strong>شخصية المستخدم (Persona)</strong>.<br>
+                    2) المخطط الذي يوضح مكان وأولوية المعلومات في صفحة الويب: <strong>المخطط الهيكلي / الإطار السلكي (Wireframe)</strong>.<br>
+                    3) اسم المبادئ الأربعة عند التعبير عنها بالأحرف الأولى الإنجليزية: <strong>CRAP</strong>.<br>
+                    4) نهج التصميم من منظور المستخدم واختصاره من 3 أحرف: <strong>التصميم المتمحور حول المستخدم (UCD)</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 2 (ص 78):</strong><br>
+                    (1) المعلومة غير المناسبة لإدراجها في الشخصية النموذجية: <strong>(جـ) أداء خادم الموقع الإلكتروني</strong> (لأنها تخص الخادم التقني وليس المستخدم، كما أن العمر والمهنة يُضافان فقط عند أهميتهما للتصميم).<br>
+                    (2) تحسينات التصميم (1 - 4):<br>
+                    • 1: جعل العناوين كبيرة وغامقة لتمييزها عن نص المحتوى ⬅️ <strong>(أ) التباين</strong>.<br>
+                    • 2: تجميع أسماء المنتجات وأسعارها وصورها قريبة من بعضها ⬅️ <strong>(د) التقارب</strong>.<br>
+                    • 3: محاذاة الحواف اليمنى للنص العربي والعناصر المرتبطة وفق شبكة التصميم ⬅️ <strong>(جـ) المحاذاة</strong>.<br>
+                    • 4: توحيد خط ولون العناوين في جميع الصفحات ⬅️ <strong>(ب) التكرار</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>⚙️ 3. حل «فكّر كمهندس: ابحث ثم قرر» (عيادة مجتمعية - ص 79) + «طبّق ما تعلمته» (ص 79)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>حل نشاط «فكّر كمهندس: ابحث ثم قرر» (موقع عيادة مجتمعية - ص 79):</strong><br>
+                    1. <strong>تحليل المستخدمين وحواجز الوصول:</strong><br>
+                    • <strong>مستخدم ضعيف البصر (إمكانية الوصول):</strong> يحتاج إلى <strong>تباين ألوان عالٍ (Contrast)</strong>، وخطوط كبيرة واضحة، وعناوين دلالية ونص بديل للصور لقارئ الشاشة، وإمكانية التنقل بلوحة المفاتيح.<br>
+                    • <strong>شخص لا يتوفر لديه إنترنت منزلي (النفاذ الرقمي):</strong> يحتاج إلى توفير معلومات العيادة في <strong>ملصقات مطبوعة بالعيادة</strong> أو خط هاتفي مختصر لأن الموقع وحده لا يكفيه من المنزل.<br>
+                    2. <strong>القرار التصميمي:</strong> نوصي بـ ☑️ <strong>ابدأ من المستخدم، ثم صمّم (UCD)</strong>:<br>
+                    • نرتب أقسام الصفحة الرئيسة بحيث تتصدر <strong>ساعات العمل والاتجاهات</strong> (الأكثر بحثاً من المرضى) أعلى المخطط الهيكلي.<br>
+                    • نطبق <strong>التباين العالي</strong> لحل مشكلة ضعف الرؤية، و<strong>المحاذاة والتقارب</strong> لتنظيم المواعيد والعنوان معاً، مع إضافة نص بديل واضح للخرائط والأيقونات.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل نشاط «طبّق ما تعلمته» - صفحة نتائج المدرسة المزدحمة (ص 79):</strong><br>
+                    • <strong>شخصية المستخدم:</strong> ولي أمر مشغول يفتح الصفحة عبر هاتفه للوصول السريع لدرجات طفله.<br>
+                    • <strong>قرار المخطط الهيكلي:</strong> وضع خانة البحث برقم الطالب وملخص الدرجات في أعلى الصفحة وإخفاء الجداول الإضافية في أقسام جانبية أو صفحات فرعية.<br>
+                    • <strong>مبدأ CRAP:</strong> تطبيق <strong>التقارب (Proximity)</strong> بتجميع اسم المادة مع درجتها وتقديرها في بطاقة واحدة متقاربة، أو <strong>التباين (Contrast)</strong> لإبراز النتيجة النهائية بوضوح.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>🏆 4. إجابة السؤال الرئيسي + حل تمارين نهاية الدرس + «فكّر وتحدَّ نفسك» (ص 79 - 80)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>إجابة السؤال الرئيسي (ص 79):</strong> يجعل التصميم المتمحور حول المستخدم فهم احتياجات المستخدم وسياق الاستخدام أساساً للقرارات، ثم يتطور الحل بالاختبار والتحسين. ويمكن للفريق استخدام شخصية مستخدم مبنية على بحث أو بيانات لتلخيص نوع من المستخدمين، ومخطط هيكلي لتحديد أماكن العناصر وأولوياتها، ومبادئ بصرية مثل التباين والتكرار والمحاذاة والتقارب لتنظيم الشكل. وتبقى قابلية الاستخدام وإمكانية الوصول هدفين مستقلين يحتاجان اختباراً ومعايير مناسبة، ولا تكفي المبادئ البصرية وحدها لتحقيقهما.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تمارين نهاية الدرس (ص 80):</strong><br>
+                    • <strong>سؤال 2 (إكمال الفقرة):</strong> (1) <strong>شخصية المستخدم (Persona)</strong> | (2) <strong>المخطط الهيكلي (Wireframe)</strong> | (3) <strong>مبادئ CRAP</strong>.<br>
+                    • <strong>سؤال 3-(1) (الخيار غير المدرج ضمن مبادئ CRAP):</strong> الإجابة الصحيحة هي <strong>(ب) التشفير</strong> (لأنه من تقنيات الأمن السيبراني وليس من مبادئ التصميم الأربعة).<br>
+                    • <strong>سؤال 3-(2) (وصف التصميم المتمحور حول المستخدم):</strong> الإجابة الصحيحة هي <strong>(جـ) بدء التصميم انطلاقاً مما يحتاجه المستخدم</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>فكّر وتحدَّ نفسك + الخلاصة (ص 80):</strong><br>
+                    • <strong>تأمّل:</strong> في موقع مربك، أي مبدأ من CRAP يبدو الأكثر خللاً؟ ⬅️ غالباً يكون الخلل في <strong>التقارب (Proximity)</strong> عندما تتناثر المعلومات المرتبطة، أو <strong>التباين (Contrast)</strong> عندما تتساوى العناوين والنصوص في الحجم واللون فلا يعرف الزائر من أين يبدأ.<br>
+                    • <strong>تحدٍّ:</strong> مقايضة تمويل تحسين واحد فقط في إمكانية الوصول للعيادة ⬅️ نختار <strong>التباين (Contrast)</strong> العالي وتكبير الخط وإزالة الزخارف والخلفيات المتحركة المشتتة؛ فالتخلي عن الزخرفة يقلل التشتت ويجعل النصوص والأزرار واضحة وسهلة القراءة لضعاف البصر.<br>
+                    • <strong>الخلاصة:</strong> تذكّر: <strong>شخصية المستخدم (مَن) ← المخطط الهيكلي (أين) ← CRAP (اجعله واضحاً) ← UCD (قرّر لصالح المستخدم). صمّم من المستخدم إلى الداخل.</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6: بنك الأسئلة المتكامل (60 سؤالاً) -->
+        <div id="quiz-section">
+            <div class="card" style="border-top: 5px solid var(--primary-light);">
+                <span class="badge">بنك الأسئلة المتكامل (60 سؤالاً)</span>
+                <h2>🎯 منصة التدريب والامتحانات: 30 سؤالاً للسيشن + 30 سؤالاً للواجب</h2>
+                <div class="main-mode-switcher">
+                    <div class="mode-card-btn active-mode-session" id="modeBtnSession" onclick="switchMode('session')">
+                        <div style="font-size:2.2rem;">👨‍🏫</div>
+                        <div>
+                            <h3 style="color:var(--primary-light);">القسم الأول: أسئلة السيشن (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتحليلياً للشرح والحصة</p>
+                        </div>
+                    </div>
+                    <div class="mode-card-btn" id="modeBtnHomework" onclick="switchMode('homework')">
+                        <div style="font-size:2.2rem;">🏠</div>
+                        <div>
+                            <h3 style="color:var(--accent-dark);">القسم الثاني: أسئلة الواجب (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتطبيقياً للتدريب المنزلي</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-tabs-bar">
+                    <div class="quiz-tabs">
+                        <button class="tab-btn active" id="tabMCQ" onclick="switchSubTab('mcq')"><span id="tabMCQLabel">🔘 الاختيار من متعدد (15 - السيشن)</span></button>
+                        <button class="tab-btn" id="tabEssay" onclick="switchSubTab('essay')"><span id="tabEssayLabel">✍️ الأسئلة المقالية (15 - السيشن)</span></button>
+                    </div>
+                    <div class="view-toggle-group" id="mcqViewToggleGroup">
+                        <button class="view-btn active-view" id="viewSingleBtn" onclick="setMcqViewMode('single')">🎯 سؤال بسؤال</button>
+                        <button class="view-btn" id="viewAllBtn" onclick="setMcqViewMode('all')">📋 عرض الـ 15 معاً</button>
+                        <button class="view-btn" id="gradingModeBtn" onclick="toggleGradingMode()">📝 وضع التصحيح: عند الإنهاء</button>
+                    </div>
+                </div>
+
+                <!-- MCQ Container -->
+                <div id="mcqContainer">
+                    <div class="stats-bar">
+                        <div><span class="stat-label">القسم</span><div class="stat-val" id="currentModeBadge" style="font-size:1rem;">👨‍🏫 السيشن</div></div>
+                        <div><span class="stat-label">السؤال</span><div><span class="stat-val" id="qCurrent">1</span> / 15</div></div>
+                        <div><span class="stat-label">أول محاولة 🎯</span><span class="stat-val" id="firstScore">--</span></div>
+                        <div><span class="stat-label">تمت الإجابة</span><div><span class="stat-val" id="score">0</span> / 15</div></div>
+                        <div><span class="stat-label">أعلى نتيجة 🏆</span><span class="stat-val" id="highScore">0</span></div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <button class="btn-index" onclick="openIndexModal()">📑 فهرس</button>
+                            <button class="btn-index" style="background:var(--success-soft); border-color:var(--success); color:#065f46;" onclick="submitAndGradeQuiz()">✅ إنهاء وتصحيح الاختبار</button>
+                            <button class="btn-index" style="border-color:var(--danger); color:var(--danger);" onclick="restartCurrentQuiz()">🔄 إعادة</button>
+                        </div>
+                        <div class="progress-container"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
+                    </div>
+
+                    <!-- Single Question Card -->
+                    <div class="q-card" id="quizCard">
+                        <div class="q-header">
+                            <span class="q-badge" id="topicBadge">شخصية المستخدم (ص 75)</span>
+                            <span style="color:var(--text-muted); font-size:0.88rem; font-weight:700;" id="qStatusIndicator">لم يُجب بعد</span>
+                        </div>
+                        <div class="q-text-ar" id="questionTextAr"></div>
+                        <div class="q-text-en" id="questionTextEn"></div>
+                        <div class="options-list" id="optionsContainer"></div>
+                        <div class="explanation" id="explanationText" style="display: none;"></div>
+                        <div class="actions">
+                            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled="disabled">➡️ السابق</button>
+                            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
+                        </div>
+                    </div>
+
+                    <!-- All 15 MCQ List Container -->
+                    <div id="allMcqListContainer" style="display:none;"></div>
+
+                    <!-- Results Card -->
+                    <div class="results-card" id="resultsCard">
+                        <div style="font-size:3.5rem;">🎉</div>
+                        <h2>تم تصحيح الاختبار! إليك نتيجتك ومراجعة الإجابات</h2>
+                        <div class="score-circle"><div class="score-num" id="finalScore">0</div><span>من 15</span></div>
+                        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                            <button class="btn-restart" onclick="restartCurrentQuiz()">إعادة الاختبار 🔄</button>
+                            <button class="btn-restart" style="background:var(--primary); color:white;" onclick="switchSubTab('essay')">الانتقال للمقالي (15) ✍️</button>
+                        </div>
+                        <div class="mistakes-review-box" id="mistakesReviewBox"></div>
+                    </div>
+                </div>
+
+                <!-- Essay Container -->
+                <div id="essayContainer" style="display:none;">
+                    <div style="background:var(--primary-soft); border-right:5px solid var(--primary-light); padding:14px; border-radius:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <strong style="color:var(--primary-light);" id="essayBannerTitle">📝 الأسئلة المقالية والتحليلية لقسم السيشن (15 سؤالاً):</strong>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="toggleAllEssays(true)">👁️ إظهار كل الإجابات</button>
+                            <button class="btn-index" onclick="toggleAllEssays(false)">🙈 إخفاء كل الإجابات</button>
+                        </div>
+                    </div>
+                    <div id="essayList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Index Modal -->
+    <div class="modal-overlay" id="indexModal" onclick="if(event.target.id==='indexModal')closeIndexModal()">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>📑 فهرس أسئلة الاختيار من متعدد (1 - 15)</h3>
+                <button class="btn-index" onclick="closeIndexModal()">✕</button>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:10px;">اضغط على أي رقم للانتقال السريع إلى السؤال:</p>
+            <div class="grid-index" id="gridIndexContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("top-progress-bar").style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+        });
+
+        function toggleProjectorMode() {
+            document.body.classList.toggle('projector-mode');
+            document.getElementById('projectorBtn').classList.toggle('active-tool');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('darkBtn').classList.toggle('active-tool');
+        }
+
+        // Simulator 1: Persona & Wireframe Builder
+        const personaScenarios = {
+            clinic: {
+                name: 'مريض يبحث عن زيارة عاجلة',
+                need: 'ساعات العمل + الاتجاهات + الحجز',
+                context: 'هاتف محمول أثناء التنقل',
+                wf: 'وضع ساعات العمل بأعلى الصفحة',
+                h: 'الرأس (Header): شعار العيادة المجتمعية + اسم الموقع',
+                n: 'التنقل (Navigation): الرئيسية | ساعات العمل | الخدمات | الاتجاهات',
+                m: 'المحتوى الرئيسي (Main): ساعات العمل اليومية + خريطة الموقع والاتجاهات',
+                s: 'الشريط الجانبي: أرقام الطوارئ والتنبيهات',
+                f: 'تذييل الصفحة (Footer): حقوق النشر | معلومات التواصل | سياسة الخصوصية',
+                out: '📐 <strong>المخطط الهيكلي (ص 75 - 76):</strong> قبل اختيار الألوان، رتبنا الصفحة بحيث تتصدر «ساعات العمل والاتجاهات» أعلى المحتوى الرئيسي لأن المريض يبحث عنها فوراً.'
+            },
+            parent: {
+                name: 'ولي أمر يبحث عن درجات طفله',
+                need: 'نتيجة الطالب بسرعة دون ازدحام',
+                context: 'تصفح سريع بين ساعات العمل',
+                wf: 'مربع بحث برقم الطالب في المقدمة',
+                h: 'الرأس (Header): شعار المدرسة + بوابة أولياء الأمور',
+                n: 'التنقل (Navigation): الرئيسية | النتائج | الجدول | التواصل',
+                m: 'المحتوى الرئيسي (Main): نموذج البحث برقم الطالب + بطاقة الدرجات والتقدير',
+                s: 'الشريط الجانبي: مواعيد الامتحانات والإعلانات',
+                f: 'تذييل الصفحة (Footer): بيانات المدرسة | الدعم الفني',
+                out: '👨‍👩‍👧 <strong>تطبيق ص 79 (صفحة نتائج المدرسة):</strong> عند إعادة تصميم صفحة مزدحمة، يحدد المخطط الهيكلي مكاناً بارزاً لبحث الدرجات في الأعلى بعيداً عن الإعلانات والروابط المشتتة.'
+            },
+            lowvision: {
+                name: 'مستخدم ضعيف البصر',
+                need: 'قراءة واضحة + قارئ شاشة منظم',
+                context: 'يعتمد على التكبير وتباين الألوان',
+                wf: 'أقسام بسيطة واضحة + تدرج عناوين',
+                h: 'الرأس (Header): اسم الموقع بخط كبير وعالي التباين',
+                n: 'التنقل (Navigation): روابط واضحة متباعدة يسهل الوصول إليها بلوحة المفاتيح',
+                m: 'المحتوى الرئيسي (Main): نصوص كبيرة بتباين عالٍ + نص بديل للصور',
+                s: 'الشريط الجانبي: أدوات تكبير الخط واختصارات واضحة',
+                f: 'تذييل الصفحة (Footer): روابط التواصل والدعم الميسر',
+                out: '♿ <strong>إمكانية الوصول (ص 79):</strong> المخطط الهيكلي الواضح وتجنب الازدحام يسهّلان على قارئ الشاشة والمستخدمين ذوي ضعف البصر التنقل دون إرباك.'
+            }
+        };
+
+        let isWfStyled = false;
+        function selectPersona(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => {
+                    if (b.id !== 'wfStyleToggleBtn') b.classList.remove('active-sim');
+                });
+                btn.classList.add('active-sim');
+            }
+            const d = personaScenarios[key];
+            document.getElementById('pName').innerText = d.name;
+            document.getElementById('pNeed').innerText = d.need;
+            document.getElementById('pContext').innerText = d.context;
+            document.getElementById('pWireframe').innerText = d.wf;
+            document.getElementById('wfHeader').innerText = d.h;
+            document.getElementById('wfNav').innerText = d.n;
+            document.getElementById('wfMain').innerText = d.m;
+            document.getElementById('wfSide').innerText = d.s;
+            document.getElementById('wfFooter').innerText = d.f;
+            document.getElementById('personaSimOutput').innerHTML = d.out;
+        }
+
+        function toggleWireframeStyle() {
+            isWfStyled = !isWfStyled;
+            const c = document.getElementById('wfCanvas');
+            const b = document.getElementById('wfStyleToggleBtn');
+            c.classList.toggle('styled-mode', isWfStyled);
+            b.innerText = isWfStyled ? '📐 العودة للمخطط الهيكلي (بدون ألوان)' : '🎨 معاينة بعد إضافة الألوان';
+        }
+
+        // Simulator 2: CRAP Lab
+        const crapData = {
+            contrast: '🔆 <strong>التباين (Contrast - ص 76):</strong> يجعل العناوين الكبيرة والغامقة بارزة مقارنة بنص المحتوى، ويميز زر «اشترك الآن» بلون واضح ليجذب الانتباه فوراً ويسهّل القراءة دون الاعتماد على اللون وحده.',
+            repetition: '🔁 <strong>التكرار (Repetition - ص 76):</strong> يوحّد اللون والحجم والخط للعناوين وأيقونات القوائم في جميع صفحات الموقع، مما يحقق الاتساق ويمنع تشتت المستخدم أثناء التنقل.',
+            alignment: '📏 <strong>المحاذاة (Alignment - ص 76):</strong> يرتب العناصر على خط أساس مشترك وفق اتجاه اللغة (من اليمين إلى اليسار في العربية) وشبكة التصميم، بدلاً من العشوائية في التوسيط والمحاذاة.',
+            proximity: '🧲 <strong>التقارب (Proximity - ص 76):</strong> يضع اسم المنتج وصورته وسعره متقاربة في بطاقة واحدة مع ترك هوامش فاصلة بين المجموعات المختلفة، فتُدرك كمجموعة واحدة من أول نظرة.'
+        };
+
+        function inspectCRAP(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            document.getElementById('crapSimOutput').innerHTML = crapData[key];
+        }
+
+        // Simulator 3: Accessibility & UCD Checker
+        const accData = {
+            contrast_low: {
+                prob: 'نص رمادي فاتح على خلفية بيضاء يصعب قراءته لضعاف البصر.',
+                fix: 'تطبيق مبدأ التباين (Contrast) بألوان عالية التباين وخطوط واضحة كبيرة.',
+                impact: 'تمكين ضعاف البصر وكبار السن من قراءة الساعات والمواعيد بسهولة دون إجهاد.'
+            },
+            keyboard: {
+                prob: 'قوائم وأزرار لا يمكن الوصول إليها أو تفعيلها باستخدام مفتاح Tab في لوحة المفاتيح.',
+                fix: 'اختبار قابلية الاستخدام بلوحة المفاتيح وضبط ترتيب التركيز وعناصر HTML الدلالية.',
+                impact: 'تمكين المستخدمين الذين يعتمدون على لوحة المفاتيح وحدها من إتمام مهامهم بكفاءة.'
+            },
+            alt_text: {
+                prob: 'صور وأيقونات بلا نص بديل (alt)، فلا يستطيع قارئ الشاشة وصفها للمكفوفين.',
+                fix: 'إضافة نص بديل وصفي للصور واستخدام وسوم HTML الدلالية بوضوح.',
+                impact: 'تحسين إمكانية الوصول الرقمي وفهم المحتوى لجميع المستخدمين دون استثناء.'
+            },
+            no_internet: {
+                prob: 'اعتماد الموقع على الإنترنت فقط يحرم الأسر غير المتصلة بالشبكة من معرفة المواعيد.',
+                fix: 'التفكير المتمحور حول المستخدم بإتاحة ملصقات مطبوعة أو رقم هاتف بجانب الموقع.',
+                impact: 'ضمان النفاذ الرقمي والاجتماعي للجميع وفق ظروفهم الواقعية (ص 79).'
+            }
+        };
+
+        function checkAccessibility(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const d = accData[key];
+            document.getElementById('uProb').innerText = d.prob;
+            document.getElementById('uFix').innerText = d.fix;
+            document.getElementById('uImpact').innerText = d.impact;
+        }
+
+        // Quiz Engine Data (60 Questions: 30 Session + 30 Homework)
+        const quizData = {
+            session: {
+                mcq: [
+                    {
+                        tag: "شخصية المستخدم Persona (ص 75)",
+                        ar_q: "ما المقصود بمصطلح «شخصية المستخدم» (Persona) في تصميم مواقع الويب؟",
+                        en_q: "What is meant by the term 'Persona' in website information design?",
+                        options: [
+                            { ar: "تمثيل لنمط من المستخدمين يستند إلى بحث أو بيانات عن أهدافهم واحتياجاتهم وسياقهم", en: "A representation of a user type based on research or data about their goals, needs, and context" },
+                            { ar: "تقرير تقني يقيس سرعة استجابة الخادم وعدد الطلبات في الثانية", en: "A technical report measuring server response speed and requests per second" },
+                            { ar: "مجموعة قواعد برمجية لتشفير كلمات المرور داخل قاعدة البيانات", en: "A set of programming rules for encrypting passwords inside a database" },
+                            { ar: "نسخة نهائية ملونة من الصفحة الرئيسية جاهزة للنشر على الإنترنت", en: "A final colored version of the homepage ready for publishing online" }
+                        ],
+                        correct: 0,
+                        exp_ar: "شخصية المستخدم (Persona) هي تمثيل لنوع من المستخدمين يُبنى قدر الإمكان على بحث أو بيانات عن أهدافهم واحتياجاتهم وسلوكهم وسياقهم وتحدياتهم (ص 75).",
+                        exp_en: "A Persona is a representation of a user type based as much as possible on research or data about their goals, needs, behavior, and context (p. 75)."
+                    },
+                    {
+                        tag: "تفاصيل شخصية المستخدم (ص 75)",
+                        ar_q: "متى تُضاف معلومات مثل «العمر أو المهنة» عند إعداد شخصية المستخدم (Persona)؟",
+                        en_q: "When should details such as 'age or occupation' be included when creating a user Persona?",
+                        options: [
+                            { ar: "في كل مشروع بشكل إجباري حتى لو لم تؤثر على التصميم", en: "Mandatorily in every project even if they have no impact on design" },
+                            { ar: "فقط إذا كانت هذه المعلومات مهمة ومؤثرة في التصميم", en: "Only if those details are actually relevant and important to the design" },
+                            { ar: "عندما يريد المصمم إخفاء أهداف المستخدم الحقيقية", en: "Whenever the designer wants to hide the user's real goals" },
+                            { ar: "بعد الانتهاء من برمجة الموقع ونشره للجمهور", en: "After finishing website coding and publishing it to the public" }
+                        ],
+                        correct: 1,
+                        exp_ar: "نص الكتاب ص 75: «وتُضاف معلومات مثل العمر أو المهنة فقط إذا كانت مهمة للتصميم»، كما أن شخصية المستخدم ليست خطوة إلزامية في كل مشروع.",
+                        exp_en: "Textbook p. 75: Information such as age or occupation is added only if it is important for the design."
+                    },
+                    {
+                        tag: "المخطط الهيكلي Wireframe (ص 75 - 76)",
+                        ar_q: "ما الوظيفة الأساسية لـ «المخطط الهيكلي» (Wireframe) قبل البدء في التصميم البصري النهائي؟",
+                        en_q: "What is the primary function of a 'Wireframe' before starting final visual design?",
+                        options: [
+                            { ar: "تحديد درجات الألوان والزخارف والرسوم المتحركة المعقدة", en: "Selecting color shades, decorations, and complex animations" },
+                            { ar: "قياس معدل الارتداد وعدد زيارات المستخدمين للموقع", en: "Measuring bounce rate and the number of user visits to the site" },
+                            { ar: "تحديد أماكن العناصر والمعلومات وأولوياتها قبل إضافة أي لون أو زخرفة", en: "Determining the placement and priority of elements before adding colors or decoration" },
+                            { ar: "تشفير الاتصال بين متصفح العميل وخادم الويب ببروتوكول TLS", en: "Encrypting the connection between client browser and web server using TLS" }
+                        ],
+                        correct: 2,
+                        exp_ar: "المخطط الهيكلي (Wireframe) هو مخطط أولي يساعد على تحديد أماكن العناصر وأولوياتها قبل إضافة أي لون أو زخرفة (ص 75 - 76).",
+                        exp_en: "A Wireframe is a preliminary layout that helps determine element placement and priorities before adding colors or decoration (p. 75-76)."
+                    },
+                    {
+                        tag: "فائدة تأجيل الألوان والزخارف (ص 75 - 76)",
+                        ar_q: "لماذا يوصي المصممون بتحديد مواضع المعلومات في المخطط الهيكلي قبل اختيار الألوان والخطوط؟",
+                        en_q: "Why do designers recommend determining information placement in a wireframe before choosing colors and fonts?",
+                        options: [
+                            { ar: "لأن المتصفحات الحديثة لا تدعم عرض الألوان والخطوط معاً", en: "Because modern browsers do not support displaying colors and fonts together" },
+                            { ar: "لأن المخطط الهيكلي يغني عن اختبار قابلية الاستخدام لاحقاً", en: "Because a wireframe eliminates the need for usability testing later" },
+                            { ar: "لأن الألوان تمنع محركات البحث من قراءة نصوص الصفحة", en: "Because colors prevent search engines from reading page text" },
+                            { ar: "لتجنب انجراف النقاشات نحو التفضيلات الشخصية في المظهر وتسهيل اتفاق أصحاب المصلحة", en: "To avoid discussions drifting toward personal appearance preferences and ease stakeholder agreement" }
+                        ],
+                        correct: 3,
+                        exp_ar: "نص الكتاب ص 75: «فإذا تم تحديد الزخارف كالألوان والخطوط أولاً، تميل النقاشات إلى الانجراف نحو التفضيلات الشخصية في المظهر. لذا فإن تحديد مكان وأولوية المعلومات أولاً يسهّل على أصحاب المصلحة الوصول إلى اتفاق».",
+                        exp_en: "Textbook p. 75: Starting with visual decorations drifts discussions toward personal preferences, whereas defining placement and priority first helps stakeholders reach agreement."
+                    },
+                    {
+                        tag: "تدرّب 2-(1) - معلومات الشخصية النموذجية (ص 78)",
+                        ar_q: "من الخيارات التالية، أي خيار لا يُعد معلومة مناسبة لإدراجها عند إعداد شخصية مستخدم نموذجية (Persona)؟",
+                        en_q: "From the following options, which is NOT appropriate information to include when creating a user Persona?",
+                        options: [
+                            { ar: "أداء خادم الموقع الإلكتروني", en: "Performance of the website's server" },
+                            { ar: "عمر المستخدم ومهنته عند أهميتها للتصميم", en: "User's age and occupation when relevant to design" },
+                            { ar: "غرض المستخدم من استخدام الموقع الإلكتروني", en: "User's purpose for using the website" },
+                            { ar: "التحديات التي يواجهها المستخدم أثناء الاستخدام", en: "Challenges the user faces while using the site" }
+                        ],
+                        correct: 0,
+                        exp_ar: "أداء الخادم معلومة تقنية عن الخادم وليس عن المستخدم المستهدف (تدرّب 2-(1) ص 78).",
+                        exp_en: "Website server performance is a technical server metric, not a characteristic of the target user (Practice 2-(1), p. 78)."
+                    },
+                    {
+                        tag: "تمارين 3-(1) - مبادئ CRAP (ص 80)",
+                        ar_q: "من الخيارات التالية، اختر الخيار غير المدرج ضمن المبادئ الأربعة للتصميم (مبادئ CRAP):",
+                        en_q: "From the following options, choose the one NOT included in the four design principles (CRAP):",
+                        options: [
+                            { ar: "التباين (Contrast)", en: "Contrast" },
+                            { ar: "التشفير (Encryption)", en: "Encryption" },
+                            { ar: "المحاذاة (Alignment)", en: "Alignment" },
+                            { ar: "التقارب (Proximity)", en: "Proximity" }
+                        ],
+                        correct: 1,
+                        exp_ar: "مبادئ CRAP الأربعة هي: التباين (Contrast)، والتكرار (Repetition)، والمحاذاة (Alignment)، والتقارب (Proximity). أما التشفير فمن تقنيات الأمن السيبراني (ص 80).",
+                        exp_en: "CRAP stands for Contrast, Repetition, Alignment, and Proximity. Encryption is a cybersecurity technique, not a CRAP principle (p. 80)."
+                    },
+                    {
+                        tag: "مبدأ التباين Contrast (ص 76)",
+                        ar_q: "أي تقنية تصميمية تعبّر بدقة عن تطبيق مبدأ «التباين» (Contrast) في صفحة الويب؟",
+                        en_q: "Which design technique accurately represents applying the 'Contrast' principle on a webpage?",
+                        options: [
+                            { ar: "توحيد نفس الخط واللون لجميع العناوين في صفحات الموقع", en: "Unifying the exact same font and color for all headings across pages" },
+                            { ar: "تقريب صورة المنتج من اسمه وسعره في بطاقة واحدة", en: "Placing a product image, name, and price close together in one card" },
+                            { ar: "جعل العناوين كبيرة وغامقة وإبراز الأزرار المهمة مع مراعاة سهولة القراءة", en: "Making headings large and bold and highlighting key buttons while ensuring readability" },
+                            { ar: "محاذاة الحواف اليمنى للفقرات العربية وفق خط أساس مشترك", en: "Aligning the right edges of Arabic paragraphs along a shared baseline" }
+                        ],
+                        correct: 2,
+                        exp_ar: "التباين (Contrast) يهدف إلى جعل أولوية المعلومات واضحة وإبراز أهم العناصر فوراً، مثل تمييز العناوين والأزرار المهمة دون الاعتماد على اللون وحده (ص 76).",
+                        exp_en: "Contrast makes information hierarchy clear and highlights key elements immediately, such as bold headings and prominent buttons (p. 76)."
+                    },
+                    {
+                        tag: "مبدأ التكرار Repetition (ص 76)",
+                        ar_q: "ما الفائدة المباشرة التي يحققها مبدأ «التكرار» (Repetition) عند تصفح المستخدم لعدة صفحات في الموقع؟",
+                        en_q: "What direct benefit does the 'Repetition' principle provide when a user browses multiple pages of a website?",
+                        options: [
+                            { ar: "إلغاء الحاجة إلى اتصال بالإنترنت عند فتح صفحات جديدة", en: "Eliminating the need for an internet connection when opening new pages" },
+                            { ar: "جعل كل صفحة تبدو مختلفة تماماً بألوان وخطوط متنافرة", en: "Making every page look completely different with clashing colors and fonts" },
+                            { ar: "تجميع صور المنتجات وأسعارها قريبة من بعضها", en: "Grouping product images and prices close together" },
+                            { ar: "تحقيق الاتساق في التصميم ككل مما يتيح للمستخدمين التنقل دون تشتت", en: "Achieving overall design consistency so users can navigate without distraction" }
+                        ],
+                        correct: 3,
+                        exp_ar: "التكرار (Repetition) يعني تكرار خصائص معينة (كخطوط ولون العناوين وأيقونات القوائم) لتحقيق الاتساق في التصميم ككل، مما يتيح التنقل دون تشتت (ص 76).",
+                        exp_en: "Repetition repeats consistent visual styles across pages to create unity and allow users to navigate without confusion (p. 76)."
+                    },
+                    {
+                        tag: "مبدأ المحاذاة Alignment (ص 76)",
+                        ar_q: "عند تصميم صفحة ويب باللغة العربية وفق مبدأ «المحاذاة» (Alignment)، كيف ينبغي محاذاة النص الأساسي والعناصر؟",
+                        en_q: "When designing an Arabic webpage according to the 'Alignment' principle, how should body text and elements be aligned?",
+                        options: [
+                            { ar: "من اليمين إلى اليسار على خط أساس مشترك وفق شبكة التصميم", en: "From right to left along a shared baseline following the design grid" },
+                            { ar: "بشكل عشوائي دون أي خطوط مشتركة بين العناصر", en: "Randomly without any shared alignment lines between elements" },
+                            { ar: "من اليسار إلى اليمين دائماً مع تجاهل اتجاه اللغة العربية", en: "Always from left to right while ignoring Arabic reading direction" },
+                            { ar: "بوضع كل كلمة في منتصف الشاشة بسطر مستقل", en: "By centering every single word on its own separate line" }
+                        ],
+                        correct: 0,
+                        exp_ar: "نص الكتاب ص 76: «حاذِ العناصر حسب اتجاه اللغة وشبكة التصميم؛ ففي العربية يكون اتجاه النص الأساسي من اليمين إلى اليسار. استخدم قواعد محاذاة متسقة».",
+                        exp_en: "Textbook p. 76: Align elements according to language direction and design grid—for Arabic, primary text flows right-to-left along a shared baseline."
+                    },
+                    {
+                        tag: "مبدأ التقارب Proximity (ص 76)",
+                        ar_q: "أي من الأمثلة التالية يوضح تطبيق مبدأ «التقارب» (Proximity) بشكل صحيح؟",
+                        en_q: "Which of the following examples correctly demonstrates applying the 'Proximity' principle?",
+                        options: [
+                            { ar: "فصل اسم المنتج في أعلى الصفحة ووضع سعره في تذييل الصفحة", en: "Placing a product's name at the top and its price in the page footer" },
+                            { ar: "جمع صور المنتجات وأسمائها وأسعارها معاً وترك هوامش مناسبة بين المجموعات", en: "Grouping product images, names, and prices together with proper margins between groups" },
+                            { ar: "استخدام نفس حجم الخط في العنوان الرئيسي والنص الفرعي", en: "Using the exact same font size for the main heading and body text" },
+                            { ar: "تلوين جميع أزرار الموقع بنفس درجة اللون الرمادي الباهت", en: "Coloring all website buttons in the exact same pale gray shade" }
+                        ],
+                        correct: 1,
+                        exp_ar: "التقارب (Proximity) يضع المعلومات المرتبطة قريبة من بعضها (كصورة المنتج واسمه وسعره) مع ترك مسافات مناسبة بين المجموعات لتُدرك كمجموعة واحدة (ص 76).",
+                        exp_en: "Proximity places related items (product photo, name, price) close together with clear margins separating distinct groups (p. 76)."
+                    },
+                    {
+                        tag: "حدود مبادئ CRAP (ص 76 و 79)",
+                        ar_q: "ما العلاقة بين مبادئ التصميم البصرية (CRAP) ومعايير «قابلية الاستخدام وإمكانية الوصول»؟",
+                        en_q: "What is the relationship between visual design principles (CRAP) and 'usability and accessibility' standards?",
+                        options: [
+                            { ar: "مبادئ CRAP تغني تماماً عن اختبار قابلية الاستخدام وإمكانية الوصول", en: "CRAP principles completely replace testing for usability and accessibility" },
+                            { ar: "إذا طُبقت مبادئ CRAP فلا حاجة لدعم ذوي الإعاقة البصرية أو لوحة المفاتيح", en: "If CRAP is applied, there is no need to support visually impaired or keyboard users" },
+                            { ar: "تساعد CRAP على تنظيم الشكل، لكنها لا تحل محل معايير قابلية الاستخدام وإمكانية الوصول", en: "CRAP helps organize visual layout, but does not replace usability or accessibility standards" },
+                            { ar: "مبادئ CRAP مخصصة للصحف الورقية فقط ولا تُستخدم في مواقع الويب", en: "CRAP principles apply only to printed newspapers and are not used on websites" }
+                        ],
+                        correct: 2,
+                        exp_ar: "نص الكتاب ص 76: «تساعد المبادئ البصرية الأربعة الآتية على تنظيم الشكل وجعل الصفحة أسهل للفهم، لكنها لا تحل محل معايير قابلية الاستخدام أو إمكانية الوصول».",
+                        exp_en: "Textbook p. 76 & 79: CRAP principles organize layout and clarity, but usability and accessibility remain independent goals requiring dedicated testing and standards."
+                    },
+                    {
+                        tag: "تمارين 3-(2) - التصميم المتمحور حول المستخدم UCD (ص 80)",
+                        ar_q: "من الخيارات التالية، اختر الخيار الذي يصف مفهوم «التصميم المتمحور حول المستخدم» (UCD) بأنسب شكل:",
+                        en_q: "From the following options, choose the one that best describes 'User-Centered Design' (UCD):",
+                        options: [
+                            { ar: "إعطاء الأولوية للتصميم الذي يجده المطور سهل الاستخدام", en: "Giving priority to the design that the developer finds easy to use" },
+                            { ar: "إعطاء الأهمية القصوى للتصميم البصري والزخارف فقط", en: "Giving top importance strictly to visual styling and decorations" },
+                            { ar: "استخدام أكبر عدد ممكن من أحدث التقنيات دون سؤال المستخدم", en: "Using as many latest technologies as possible without asking users" },
+                            { ar: "بدء التصميم انطلاقاً مما يحتاجه المستخدم وسياق استخدامه", en: "Starting the design based on what the user needs and their usage context" }
+                        ],
+                        correct: 3,
+                        exp_ar: "التصميم المتمحور حول المستخدم (UCD) هو نهج يجعل فهم المستخدمين واحتياجاتهم وسياق استخدامهم أساساً لقرارات التصميم (تمرين 3-(2) ص 80).",
+                        exp_en: "User-Centered Design (UCD) bases all design decisions on understanding users, their needs, and their context of use (Exercise 3-(2), p. 80)."
+                    },
+                    {
+                        tag: "قابلية الاستخدام Usability (ص 77 و 79)",
+                        ar_q: "ماذا يقصد بمصطلح «قابلية الاستخدام» (Usability) في تصميم المواقع الإلكترونية؟",
+                        en_q: "What is meant by the term 'Usability' in website design?",
+                        options: [
+                            { ar: "مدى سهولة وفاعلية إنجاز المستخدمين للمهمة المطلوبة في الموقع", en: "How easily and effectively users can accomplish their intended task on the site" },
+                            { ar: "قدرة الخادم على تخزين ملايين الصور دون امتلاء القرص الصلب", en: "The server's ability to store millions of images without filling the hard drive" },
+                            { ar: "تشفير رسائل البريد الإلكتروني المرسلة من الموقع للعملاء", en: "Encrypting email messages sent from the website to customers" },
+                            { ar: "عدد الألوان والخطوط المزخرفة المضافة إلى تذييل الصفحة", en: "The number of decorative colors and fonts added to the page footer" }
+                        ],
+                        correct: 0,
+                        exp_ar: "قابلية الاستخدام (Usability) هي مدى سهولة وفاعلية إنجاز المستخدم للمهمة على الموقع (ص 77 وصندوق المصطلحات ص 79).",
+                        exp_en: "Usability refers to how easily and effectively users can complete tasks on a website (p. 77, 79)."
+                    },
+                    {
+                        tag: "إمكانية الوصول الرقمي Accessibility (ص 77 و 79)",
+                        ar_q: "ما الهدف الأساسي من «إمكانية الوصول الرقمي» (Accessibility) عند بناء موقع إلكتروني؟",
+                        en_q: "What is the primary goal of 'Digital Accessibility' when building a website?",
+                        options: [
+                            { ar: "حصر استخدام الموقع على فئة الشباب المتصلين بشبكات الألياف الضوئية", en: "Restricting website use to young users on fiber-optic networks" },
+                            { ar: "تمكين أصحاب القدرات والاحتياجات المختلفة، بمن فيهم ذوو الإعاقة، من استخدام الموقع والتفاعل معه", en: "Enabling people with diverse abilities and needs, including disabilities, to use and interact with the site" },
+                            { ar: "إجبار جميع الزوار على شراء شاشات حاسوب كبيرة قبل فتح الموقع", en: "Forcing all visitors to buy large computer monitors before opening the site" },
+                            { ar: "إلغاء جميع النصوص والاعتماد على الصور الصامتة دون وصف بديل", en: "Removing all text and relying on silent images without alternative text" }
+                        ],
+                        correct: 1,
+                        exp_ar: "إمكانية الوصول (Accessibility) تعني تصميم المحتوى والواجهة بحيث يمكن لأصحاب القدرات والاحتياجات المختلفة استخدامها، بمن فيهم ذوو الإعاقة (ص 77 و 79).",
+                        exp_en: "Accessibility means designing content and interfaces so people with diverse abilities and disabilities can perceive, navigate, and interact with them (p. 77, 79)."
+                    },
+                    {
+                        tag: "دور المصمم والاختبار التكراري (ص 77)",
+                        ar_q: "في عملية التصميم المتمحور حول المستخدم (UCD)، ماذا يفعل الفريق بعد تصميم الحل المبدئي؟",
+                        en_q: "In the User-Centered Design (UCD) process, what does the team do after designing an initial solution?",
+                        options: [
+                            { ar: "يتوقف عن أي تعديل نهائياً ويعتبر النسخة الأولى مثالية", en: "Stops all modifications permanently and considers the first version perfect" },
+                            { ar: "يمتنع عن عرض الموقع على المستخدمين الفعليين حتى لا ينتقدوه", en: "Avoids showing the site to real users so they cannot criticize it" },
+                            { ar: "يختبر الحل مع المستخدمين الفعليين ويكرر التحسين بناءً على ملاحظاتهم", en: "Tests the solution with real users and iteratively improves it based on feedback" },
+                            { ar: "يحذف شخصية المستخدم والمخطط الهيكلي ويبدأ بالألوان فقط", en: "Deletes the persona and wireframe and starts over with colors only" }
+                        ],
+                        correct: 2,
+                        exp_ar: "نص الكتاب ص 77: «ثم ينظم الفريق المعلومات، ويصمم الحل، ويختبره مع المستخدمين، ويكرر التحسين».",
+                        exp_en: "Textbook p. 77: The team organizes information, designs the solution, tests it with users, and repeats improvements."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "السؤال الرئيسي للدرس (ص 75 و ص 79)",
+                        q: "كيف يخطط المصممون لموقع إلكتروني حول مستخدميه، وما المبادئ التي تجعل الصفحة واضحة وسهلة الاستخدام؟",
+                        en_q: "How do designers plan a website around its users, and what principles make a page clear and easy to use?",
+                        hint: "اذكر UCD، شخصية المستخدم، المخطط الهيكلي، مبادئ CRAP، وهدفي قابلية الاستخدام وإمكانية الوصول.",
+                        en_hint: "Mention UCD, Persona, Wireframe, CRAP principles, and independent usability/accessibility goals.",
+                        model: "• <b>التخطيط حول المستخدم (UCD):</b> يجعل التصميم المتمحور حول المستخدم فهم احتياجات المستخدم وسياق استخدامه أساساً للقرارات، ويطور الحل بالاختبار والتحسين.<br>• <b>الأدوات والمبادئ:</b> يستخدم الفريق <b>شخصية المستخدم</b> (بناءً على بحث وبيانات) لتلخيص نوع المستخدمين، و<b>المخطط الهيكلي</b> لتحديد أماكن العناصر وأولوياتها قبل الألوان، ثم يطبق <b>مبادئ CRAP</b> (التباين، التكرار، المحاذاة، التقارب) لتنظيم الشكل وجعل الصفحة واضحة.<br>• <b>أهداف مستقلة:</b> تبقى <b>قابلية الاستخدام</b> و<b>إمكانية الوصول</b> هدفين مستقلين يحتاجان اختباراً ومعايير مناسبة.",
+                        en_model: "• <b>Planning around users (UCD):</b> User-Centered Design bases decisions on user needs and context, refining solutions via testing.<br>• <b>Tools & Principles:</b> Teams use a <b>Persona</b> to summarize user types, a <b>Wireframe</b> to plan element placement/priority before colors, and <b>CRAP principles</b> (Contrast, Repetition, Alignment, Proximity) for visual clarity.<br>• <b>Independent Goals:</b> <b>Usability</b> and <b>Accessibility</b> require dedicated testing and standards."
+                    },
+                    {
+                        source: "سؤال على نمط الامتحان [6 درجات] (ص 78)",
+                        q: "اشرح لماذا يُنشئ المصمم شخصية نموذجية وإطاراً هيكلياً قبل اختيار الألوان والخطوط. (ارجع إلى: احتياجات المستخدم والتوصل إلى اتفاق مع أصحاب المصلحة).",
+                        en_q: "Explain why a designer creates a user persona and a wireframe before choosing colors and fonts. (Refer to: user needs and reaching stakeholder agreement).",
+                        hint: "تجنب الافتراضات الشخصية + منع انجراف النقاش نحو الأذواق اللونية.",
+                        en_hint: "Avoid personal assumptions + prevent discussions from drifting into subjective color tastes.",
+                        model: "1. <b>شخصية المستخدم (Persona):</b> تساعد الفريق على مناقشة احتياجات نوع المستخدم المستهدف وأهدافه وسياقه استناداً إلى البحث والبيانات، بدلاً من الاعتماد على الافتراضات الشخصية للمصمم.<br>2. <b>الإطار الهيكلي (Wireframe):</b> يعزل بنية المعلومات ومواضعها وأولوياتها عن التصميم البصري؛ لأن البدء بالألوان والخطوط يجعل النقاشات تنجرف نحو التفضيلات الشخصية في المظهر، بينما تحديد البنية أولاً يسهّل على أصحاب المصلحة الوصول إلى اتفاق.",
+                        en_model: "1. <b>User Persona:</b> Helps the team focus on real user needs, goals, and context based on data rather than personal assumptions.<br>2. <b>Wireframe:</b> Separates information layout and priority from visual styling; starting with colors and fonts pulls discussions toward personal appearance tastes, whereas agreeing on structure first helps stakeholders reach consensus."
+                    },
+                    {
+                        source: "مبادئ CRAP الأربعة (ص 76)",
+                        q: "اذكر مبادئ CRAP الأربعة للتصميم البصري، واشرح الغرض من كل مبدأ مع مثال تطبيقي واحد على كل منها.",
+                        en_q: "List the four CRAP visual design principles, and explain the purpose of each with one practical example.",
+                        hint: "Contrast, Repetition, Alignment, Proximity.",
+                        en_hint: "Contrast, Repetition, Alignment, Proximity.",
+                        model: "1. <b>التباين (Contrast):</b> جعل أولوية المعلومات واضحة وإبراز المهم فوراً. <i>مثال:</i> جعل العناوين كبيرة وغامقة مقارنة بالنص، وإبراز الأزرار المهمة.<br>2. <b>التكرار (Repetition):</b> تحقيق الاتساق في التصميم للتنقل دون تشتت. <i>مثال:</i> توحيد لون وحجم وخط العناوين في كل صفحات الموقع.<br>3. <b>المحاذاة (Alignment):</b> منح الشاشة نظاماً بربط العناصر بخط أساس مشترك. <i>مثال:</i> محاذاة النصوص العربية من اليمين إلى اليسار وفق شبكة التصميم.<br>4. <b>التقارب (Proximity):</b> إدراك العناصر المرتبطة كمجموعة واحدة. <i>مثال:</i> تجميع صورة المنتج واسمه وسعره معاً وترك هوامش بين المجموعات.",
+                        en_model: "1. <b>Contrast:</b> Clarify priority and highlight key items (e.g., bold large headings and distinct buttons).<br>2. <b>Repetition:</b> Create consistency for distraction-free navigation (e.g., uniform heading fonts/colors across pages).<br>3. <b>Alignment:</b> Give order via a shared baseline (e.g., right-aligning Arabic text to a grid).<br>4. <b>Proximity:</b> Group related items visually (e.g., placing product photo, name, and price together with margins)."
+                    },
+                    {
+                        source: "فكّر كمهندس - موقع العيادة المجتمعية (ص 79)",
+                        q: "في مشروع موقع عيادة مجتمعية بسيطة، ادرس احتياجات مستخدمَين منفصلَين: (أ) مستخدم ضعيف البصر، و(ب) شخص لا يتوفر لديه إنترنت منزلي. ماذا يحتاج كل نوع؟",
+                        en_q: "In a community clinic website project, analyze two separate users: (a) a user with low vision, and (b) a person without home internet. What does each need?",
+                        hint: "فكر في إمكانية الوصول للأول، وفي النفاذ الرقمي والبدائل المطبوعة للثاني.",
+                        en_hint: "Consider accessibility fixes for the first, and digital access / offline print alternatives for the second.",
+                        model: "• <b>المستخدم ضعيف البصر (إمكانية الوصول):</b> يحتاج إلى <b>تباين ألوان عالٍ</b>، وخطوط واضحة وكبيرة، وقابلية استخدام بلوحة المفاتيح، وعناصر HTML دلالية مع نص بديل للصور لدعم قارئ الشاشة.<br>• <b>الشخص الذي لا يتوفر لديه إنترنت منزلي (النفاذ الرقمي):</b> لن يتمكن من فتح الموقع من منزله، لذا يحتاج إلى بدائل غير متصلة بالشبكة مثل <b>ملصق مطبوع في العيادة أو مطوية ورقية أو رقم هاتف للاستعلام</b>.",
+                        en_model: "• <b>Low-vision user (Accessibility):</b> Needs <b>high color contrast</b>, clear large typography, keyboard navigability, semantic HTML, and alt text for screen readers.<br>• <b>Person without home internet (Digital Access):</b> Needs offline channels such as <b>printed posters at the clinic, brochures, or a phone line</b>."
+                    },
+                    {
+                        source: "فكّر كمهندس - قرار التصميم للعيادة المجتمعية (ص 79)",
+                        q: "بناءً على بيانات المرضى الذين يبحثون أولاً عن «ساعات العمل والاتجاهات»، كيف ترتب أقسام الصفحة الرئيسة للعيادة؟ وما حاجز الوصول الذي قد يواجهه المستخدم وكيف تعالجه؟",
+                        en_q: "Based on data showing patients search first for 'working hours and directions,' how should you order the clinic homepage sections? Identify one accessibility barrier and propose a fix.",
+                        hint: "ضع الأكثر بحثاً في الأعلى، واختر حاجزاً مثل ضعف التباين أو غياب النص البديل.",
+                        en_hint: "Put top-searched info at the top, and fix a barrier like low contrast, keyboard trap, or missing alt text.",
+                        model: "• <b>ترتيب أقسام الصفحة الرئيسة:</b> نبدأ من المستخدم ونضع <b>ساعات العمل والخدمات والاتجاهات (الخريطة)</b> في أعلى الصفحة وبصورة بارزة لأنها أول ما يبحث عنه المرضى.<br>• <b>حاجز وصول وعلاجه:</b> مثل <b>ضعف التباين</b> أو <b>غياب النص البديل للخريطة/الأيقونات</b> أو <b>صعوبة التنقل بلوحة المفاتيح</b>؛ ونعالجه برفع التباين اللوني، وإضافة نص بديل وصفي للخريطة والصور، وضمان عمل كافة الروابط بمفتاح Tab.",
+                        en_model: "• <b>Section Ordering:</b> Start with user needs by placing <b>working hours, services, and directions</b> prominently at the top of the homepage.<br>• <b>Accessibility Barrier & Fix:</b> E.g., <b>low contrast</b> or <b>missing alt text on the map</b>; fix by using high-contrast text/buttons, adding descriptive alt text, and ensuring keyboard navigation."
+                    },
+                    {
+                        source: "طبّق ما تعلمته - صفحة نتائج المدرسة المزدحمة (ص 79)",
+                        q: "تريد مدرسة إعادة تصميم صفحة نتائجها المزدحمة حتى يتمكن أولياء الأمور من العثور على درجات أطفالهم بسرعة. حدد: (1) شخصية المستخدم، (2) قراراً واحداً خاصاً بالمخطط الهيكلي، (3) مبدأ واحداً من CRAP ستطبقه، وبيّن ما يحسّنه كل منها.",
+                        en_q: "A school wants to redesign its cluttered results page so parents can find their children's grades quickly. Specify: (1) the Persona, (2) one Wireframe decision, (3) one CRAP principle, and what each improves.",
+                        hint: "ولي أمر مستعجل + خانة بحث في الأعلى + تقارب أو تباين.",
+                        en_hint: "Busy parent + search box at top + Proximity or Contrast.",
+                        model: "1. <b>شخصية المستخدم:</b> ولي أمر مشغول يفتح الصفحة من هاتفه ويريد معرفة نتيجة طفله في ثوانٍ؛ مما يوجه التصميم نحو البساطة والسرعة.<br>2. <b>قرار المخطط الهيكلي:</b> وضع خانة البحث برقم الطالب وبطاقة النتيجة في أعلى الصفحة وإبعاد الإعلانات الجانبية؛ مما يسهل الوصول للهدف فوراً.<br>3. <b>مبدأ CRAP (التقارب أو التباين):</b> استخدام <b>التقارب</b> لجمع اسم المادة والدرجة والتقدير في صف/بطاقة واحدة واضحة (أو <b>التباين</b> لإبراز المجموع النهائي)، مما يمنع الخلط البصري.",
+                        en_model: "1. <b>Persona:</b> A busy parent checking grades on a phone, guiding a fast, uncluttered design.<br>2. <b>Wireframe Decision:</b> Place the student ID search and grade summary at the very top, moving secondary notices aside.<br>3. <b>CRAP Principle:</b> Apply <b>Proximity</b> to group each subject with its score, or <b>Contrast</b> to highlight the final total clearly."
+                    },
+                    {
+                        source: "توقّف وفكّر - تباين الأدوار في CRAP (ص 77)",
+                        q: "قارن بين مبدأ «التقارب» ومبدأ «التباين» في تصميم بطاقة منتج على متجر إلكتروني.",
+                        en_q: "Compare the 'Proximity' principle and the 'Contrast' principle when designing a product card on an e-commerce site.",
+                        hint: "التقارب يجمع العناصر المرتبطة، والتباين يبرز الأهم.",
+                        en_hint: "Proximity groups related details together; Contrast highlights the most important element.",
+                        model: "• <b>التقارب (Proximity):</b> يجمع صورة المنتج واسمه وسعره وزر الشراء قريبة من بعضها داخل بطاقة واحدة ويفصلها بهوامش عن المنتجات المجاورة؛ ليدرك الزائر أن هذا السعر يخص هذا المنتج تحديداً.<br>• <b>التباين (Contrast):</b> يبرز اسم المنتج بخط أكبر وأغمق من الوصف، ويميز السعر أو زر «أضف للسلة» بلون واضح متباين ليجذب نظر المشتري فوراً.",
+                        en_model: "• <b>Proximity:</b> Groups the product image, title, price, and button together with margins separating adjacent cards.<br>• <b>Contrast:</b> Makes the product title bold and distinct from description text, and highlights the price or 'Buy' button visually."
+                    },
+                    {
+                        source: "قابلية الاستخدام مقابل إمكانية الوصول (ص 77 و 79)",
+                        q: "فرّق بين مفهومي «قابلية الاستخدام» (Usability) و«إمكانية الوصول» (Accessibility) في سياق المواقع الإلكترونية.",
+                        en_q: "Differentiate between 'Usability' and 'Accessibility' in the context of websites.",
+                        hint: "الفاعلية وسهولة إنجاز المهمة للعموم مقابل تمكين أصحاب القدرات والاحتياجات المختلفة وذوي الإعاقة.",
+                        en_hint: "Ease/effectiveness of task completion vs. enabling people with diverse abilities and disabilities to access and interact.",
+                        model: "• <b>قابلية الاستخدام (Usability):</b> تعني مدى سهولة وفاعلية إنجاز المستخدمين للمهمة المطلوبة في الموقع (مثل سرعة العثور على المعلومة أو إتمام التسجيل دون أخطاء).<br>• <b>إمكانية الوصول (Accessibility):</b> تعني تصميم المحتوى والواجهة بحيث يمكن لأصحاب القدرات والاحتياجات المختلفة استخدامها، بمن فيهم ذوو الإعاقة (مثل ضعاف البصر أو من يستخدمون قارئ الشاشة أو لوحة المفاتيح فقط).",
+                        en_model: "• <b>Usability:</b> How easily and effectively users can complete their tasks on a website.<br>• <b>Accessibility:</b> Designing content and interfaces so people with diverse abilities and disabilities (e.g., low vision, screen reader users) can use them."
+                    },
+                    {
+                        source: "أهمية الخطوط والألوان والاعتماد على اللون وحده (ص 76)",
+                        q: "في جدول مبادئ CRAP (ص 76)، حذّر الكتاب عند استخدام التباين من «الاعتماد على اللون وحده». اشرح سبب هذا التحذير وكيف يتجاوزه المصمم.",
+                        en_q: "In the CRAP table (p. 76), the textbook warns against 'relying on color alone' when using contrast. Explain why and how designers address this.",
+                        hint: "فكر في المستخدمين المصابين بعمى الألوان أو ضعف البصر.",
+                        en_hint: "Consider users with color blindness or low vision.",
+                        model: "لأن الاعتماد على اللون وحده (مثل تمييز زر الخطأ باللون الأحمر فقط دون نص أو أيقونة) يجعل المستخدمين المصابين <b>بعمى الألوان أو ضعف البصر</b> عاجزين عن تمييز الفرق. ويتجاوز المصمم ذلك بالجمع بين اللون وعناصر أخرى مثل <b>حجم الخط وسُمكه، والأيقونات، والحدود الواضحة، والنصوص التوضيحية</b>.",
+                        en_model: "Relying on color alone (e.g., red vs. green without labels) excludes users with <b>color blindness or low vision</b>. Designers overcome this by pairing color with <b>font weight/size, icons, borders, and clear text labels</b>."
+                    },
+                    {
+                        source: "شخصية المستخدم والافتراضات الشخصية (ص 75)",
+                        q: "يقول الكتاب: «قد يبدو الموقع منطقياً لمصممه لكنه يربك زواره». كيف تعالج أداة «شخصية المستخدم» هذه المشكلة؟ وهل هي إلزامية في كل مشروع؟",
+                        en_q: "The textbook states: 'A site may seem logical to its designer yet confuse its visitors.' How does a Persona address this, and is it mandatory in every project?",
+                        hint: "تنقل التركيز من ذوق المصمم إلى بحث وبيانات المستخدم؛ وليست خطوة إلزامية في كل مشروع.",
+                        en_hint: "Shifts focus from designer taste to user research/data; and it is NOT mandatory in every project.",
+                        model: "• تعالج أداة <b>شخصية المستخدم (Persona)</b> هذه المشكلة لأنها تبني قرارات الفريق على <b>بحث وبيانات فعلية</b> عن أهداف المستخدمين وسياقهم وتحدياتهم بدلاً من الافتراضات الشخصية للمصمم.<br>• <b>هل هي إلزامية؟</b> <b>لا</b>، نص الكتاب (ص 75 و 77) أن شخصية المستخدم أداة مساعدة ممكنة وليست خطوة إلزامية في كل مشروع.",
+                        en_model: "• A <b>Persona</b> solves this by grounding team discussions in <b>research and data</b> about real user goals and challenges rather than the designer's personal assumptions.<br>• <b>Is it mandatory?</b> <b>No</b>, the textbook (p. 75, 77) notes it is a helpful tool but not a strict requirement for every project."
+                    },
+                    {
+                        source: "مخاطر إهمال المخطط الهيكلي (ص 75 - 76)",
+                        q: "ماذا يحدث في اجتماعات فريق التصميم إذا قفز المصمم مباشرة إلى اختيار الألوان والخطوط والزخارف دون إعداد مخطط هيكلي (Wireframe) أولاً؟",
+                        en_q: "What happens in design team meetings if the designer jumps straight into choosing colors, fonts, and decorations without creating a Wireframe first?",
+                        hint: "انجراف النقاشات نحو التفضيلات الشخصية وصعوبة الاتفاق على مواضع وأولوية المعلومات.",
+                        en_hint: "Discussions drift into subjective visual tastes instead of agreeing on information hierarchy and placement.",
+                        model: "تميل النقاشات إلى <b>الانجراف نحو التفضيلات الشخصية والأذواق الذاتية في المظهر</b> (مثل الجدل حول درجة اللون أو نوع الخط)، مما يُهمل ترتيب المعلومات وأولوياتها ويصعّب على أصحاب المصلحة الوصول إلى اتفاق حول بنية الصفحة.",
+                        en_model: "Discussions tend to <b>drift toward personal preferences about visual appearance</b>, neglecting information placement and priority and making it harder for stakeholders to reach agreement on page structure."
+                    },
+                    {
+                        source: "تطبيق UCD على بوابة تعليمية (ص 77)",
+                        q: "إذا أردت تصميم صفحة رئيسية لمنصة تعليمية وفق نهج «التصميم المتمحور حول المستخدم» (UCD)، ما الخطوات الأربع المتتابعة التي ستتبعها؟",
+                        en_q: "If you want to design a homepage for an educational platform using 'User-Centered Design' (UCD), what four sequential steps will you follow?",
+                        hint: "راجع الفقرة (2) من قسم UCD ص 77.",
+                        en_hint: "Review paragraph (2) of the UCD section on p. 77.",
+                        model: "1. <b>فهم المستخدم وسياقه:</b> تحديد ما يحتاجه الطالب والمعلم، والمهمة التي يريد إنجازها، وظروف استخدامه.<br>2. <b>تنظيم المعلومات:</b> ترتيب المحتوى وأولوياته (باستخدام المخطط الهيكلي).<br>3. <b>تصميم الحل:</b> تطبيق مبادئ CRAP ومعايير قابلية الاستخدام وإمكانية الوصول.<br>4. <b>الاختبار والتحسين التكراري:</b> تجربة التصميم مع طلاب حقيقيين وتكرار التحسين بناءً على ملاحظاتهم.",
+                        en_model: "1. <b>Understand users & context:</b> Identify student/teacher needs, tasks, and usage conditions.<br>2. <b>Organize information:</b> Structure priorities via a wireframe.<br>3. <b>Design the solution:</b> Apply CRAP, usability, and accessibility.<br>4. <b>Test & iterate:</b> Test with real users and refine continuously."
+                    },
+                    {
+                        source: "الاتساق والمحاذاة في النماذج (ص 76)",
+                        q: "كيف يساعد تطبيق مبدأي «المحاذاة» و«التكرار» معاً في جعل نموذج تسجيل إلكتروني طويل أسهل وأقل إرهاقاً للمستخدم؟",
+                        en_q: "How do 'Alignment' and 'Repetition' work together to make a long online registration form easier and less tiring for users?",
+                        hint: "محاذاة الحقول على خط واحد وتكرار شكل التسميات والأزرار.",
+                        en_hint: "Aligning input fields along a common line and repeating uniform label/button styles.",
+                        model: "• <b>المحاذاة (Alignment):</b> تجعل جميع تسميات الحقول وصناديق الإدخال تصطف على خط أساس عمودي مشترك ومنظم، فتتحرك عين المستخدم بسلاسة من حقل لآخر دون تشتت.<br>• <b>التكرار (Repetition):</b> يوحد شكل الحقول والخطوط والأزرار الإرشادية في كل خطوة، فيتوقع المستخدم طريقة التفاعل دون إعادة تعلمها.",
+                        en_model: "• <b>Alignment:</b> Lines up all labels and input boxes along a shared vertical axis so the eye scans smoothly.<br>• <b>Repetition:</b> Keeps field styles, fonts, and button formatting consistent across every step so users don't have to re-learn the interface."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - تأمل في المواقع المربكة (ص 80)",
+                        q: "عندما تزور موقعاً إلكترونياً تشعر أنه مربك ومبعثر، أي مبدأ من مبادئ CRAP يكون الأكثر خللاً في الغالب؟ ولماذا؟",
+                        en_q: "When you visit a website that feels confusing and cluttered, which CRAP principle is most often broken, and why?",
+                        hint: "التقارب أو التباين أو المحاذاة — اشرح كيف يسبب غيابه الارتباك.",
+                        en_hint: "Proximity, Contrast, or Alignment—explain how its absence causes confusion.",
+                        model: "غالباً يكون الخلل الأكثر وضوحاً في <b>التقارب (Proximity)</b> أو <b>التباين (Contrast)</b>: فغياب التقارب يجعل العناصر غير المرتبطة متلاصقة والبيانات المرتبطة متباعدة فلا تُدرك كمجموعات؛ وغياب التباين يجعل العناوين والنصوص والأزرار متشابهة فلا يعرف الزائر ما هو الأهم ولا من أين يبدأ.",
+                        en_model: "Most often <b>Proximity</b> or <b>Contrast</b>: poor proximity scatters related details or crowds unrelated ones, while poor contrast makes headings, body text, and buttons look identical so users don't know where to focus."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - مقايضة تمويل تحسين واحد (ص 80)",
+                        q: "إذا كانت ميزانية عيادة تكفي لتمويل تحسين واحد فقط في إمكانية الوصول هذا العام، فما التحسين الذي تختاره من مبادئ CRAP، وما الذي ستتخلى عنه لإفساح المجال له؟ ولماذا تخدم هذه المقايضة المستخدم بشكل أفضل؟",
+                        en_q: "If a clinic can fund only one accessibility improvement this year, which CRAP principle would you apply, what decoration or feature would you give up, and why does this trade-off serve users better?",
+                        hint: "التباين العالي على حساب الزخارف والصور المتحركة المشتتة.",
+                        en_hint: "High Contrast at the expense of decorative animations/backgrounds.",
+                        model: "• <b>المبدأ المختار:</b> تطبيق <b>التباين (Contrast)</b> العالي في النصوص والأزرار المهمة وتكبير حجم الخط لضعاف البصر.<br>• <b>ما سنتخلى عنه:</b> التخلي عن <b>الزخارف المعقدة والخلفيات الملونة المتدرجة أو الرسوم المتحركة</b>.<br>• <b>لماذا تخدم المستخدم أفضل؟</b> لأن المريض يزور موقع العيادة لمعرفة المواعيد والاتجاهات بسرعة؛ فالتخلي عن الزخرفة يزيل التشتت ويجعل المعلومات الأساسية مقروءة للجميع بمن فيهم ضعاف البصر.",
+                        en_model: "• <b>Chosen Principle:</b> High <b>Contrast</b> and larger legible text for low-vision users.<br>• <b>Given Up:</b> Complex <b>decorative animations and patterned backgrounds</b>.<br>• <b>Why it serves users better:</b> Patients need clinic hours and directions quickly; removing visual clutter makes essential information readable for everyone."
+                    }
+                ]
+            },
+            homework: {
+                mcq: [
+                    {
+                        tag: "هدف الدرس 4-2 (ص 75)",
+                        ar_q: "على ماذا يجب أن يعتمد تصميم الموقع الإلكتروني الجيد بدلاً من الاعتماد على ذوق المصمم الشخصي فقط؟",
+                        en_q: "What should good website design rely on instead of relying solely on the designer's personal taste?",
+                        options: [
+                            { ar: "إخفاء المعلومات المهمة داخل قوائم فرعية معقدة", en: "Hiding important information inside complex submenus" },
+                            { ar: "فهم المستخدم المستهدف واحتياجاته وسياق استخدامه", en: "Understanding the target user, their needs, and usage context" },
+                            { ar: "استخدام أكبر عدد ممكن من الألوان المتقاربة والزخارف", en: "Using as many similar colors and decorations as possible" },
+                            { ar: "تقليد تصميم الصحف الورقية دون أي تعديل للشاشات", en: "Copying printed newspaper layouts without screen adaptation" }
+                        ],
+                        correct: 1,
+                        exp_ar: "نص الكتاب ص 75: «لذلك يجب أن يعتمد التصميم على فهم المستخدم واحتياجاته وسياق استخدامه، لا على ذوق المصمم فقط».",
+                        exp_en: "Textbook p. 75: Design must be based on understanding the user, their needs, and their context of use, not just the designer's taste."
+                    },
+                    {
+                        tag: "بناء شخصية المستخدم (ص 75)",
+                        ar_q: "على ماذا تُبنى «شخصية المستخدم» (Persona) قدر الإمكان حتى لا تعتمد على افتراضات شخصية غير دقيقة؟",
+                        en_q: "What should a 'Persona' be built upon as much as possible so it does not rely on inaccurate personal assumptions?",
+                        options: [
+                            { ar: "على تخمينات عشوائية يضعها المبرمج دون سؤال أحد", en: "On random guesses made by the programmer without asking anyone" },
+                            { ar: "على نوع الخط وحجم الهوامش في الصفحة الرئيسية", en: "On the font family and margin size of the homepage" },
+                            { ar: "على بحث أو بيانات حقيقية حول أهداف المستخدمين وتحدياتهم", en: "On real research or data about users' goals and challenges" },
+                            { ar: "على مواصفات بطاقة الرسوميات في خادم البيانات", en: "On the graphics card specifications of the data server" }
+                        ],
+                        correct: 2,
+                        exp_ar: "شخصية المستخدم (Persona) تُبنى قدر الإمكان على بحث أو بيانات عن أهداف المستخدمين واحتياجاتهم وسلوكهم وسياقهم وتحدياتهم (ص 75).",
+                        exp_en: "A Persona is built as much as possible on research or data about users' goals, needs, behavior, and challenges (p. 75)."
+                    },
+                    {
+                        tag: "مكونات المخطط الهيكلي (ص 76)",
+                        ar_q: "في مثال الإطار السلكي (Wireframe) بالكتاب (ص 76)، ما العناصر الرئيسية التي يحددها المخطط قبل التلوين؟",
+                        en_q: "In the textbook's Wireframe example (p. 76), what main structural areas does it define before coloring?",
+                        options: [
+                            { ar: "جدار الحماية، والمنطقة المعزولة DMZ، وبروتوكول HTTPS", en: "Firewall, Demilitarized Zone DMZ, and HTTPS protocol" },
+                            { ar: "أكواد التشفير المتماثل ومفاتيح الجلسة الرقمية", en: "Symmetric encryption code and digital session keys" },
+                            { ar: "درجات التباين اللوني وأنواع الخطوط المزخرفة", en: "Color contrast ratios and decorative font families" },
+                            { ar: "الرأس (الشعار)، التنقل (القائمة)، المحتوى الرئيسي، الشريط الجانبي، وتذييل الصفحة", en: "Header (logo), Navigation (menu), Main Content, Sidebar, and Footer" }
+                        ],
+                        correct: 3,
+                        exp_ar: "يوضح الشكل 4.2.1 (ص 76) توزيع المواضع في الإطار السلكي: الرأس، التنقل، المحتوى الرئيسي، الشريط الجانبي، وتذييل الصفحة.",
+                        exp_en: "Figure 4.2.1 (p. 76) illustrates Wireframe placement: Header, Navigation, Main Content, Sidebar, and Footer."
+                    },
+                    {
+                        tag: "اختصار CRAP (ص 76 و 78)",
+                        ar_q: "ماذا تمثل الأحرف الأربعة في اختصار مبادئ التصميم البصري (CRAP) بالترتيب؟",
+                        en_q: "What do the four letters in the visual design acronym 'CRAP' stand for in order?",
+                        options: [
+                            { ar: "التباين (Contrast)، التكرار (Repetition)، المحاذاة (Alignment)، التقارب (Proximity)", en: "Contrast, Repetition, Alignment, Proximity" },
+                            { ar: "العميل (Client)، الراديو (Radio)، المحاذاة (Alignment)، الخصوصية (Privacy)", en: "Client, Radio, Alignment, Privacy" },
+                            { ar: "التباين (Contrast)، الاستعادة (Recovery)، الوصول (Access)، السياسة (Policy)", en: "Contrast, Recovery, Access, Policy" },
+                            { ar: "التحكم (Control)، التكرار (Repetition)، التوثيق (Auth)، الأداء (Performance)", en: "Control, Repetition, Auth, Performance" }
+                        ],
+                        correct: 0,
+                        exp_ar: "CRAP اختصار للمبادئ الأربعة: Contrast (التباين)، Repetition (التكرار)، Alignment (المحاذاة)، Proximity (التقارب) (ص 76).",
+                        exp_en: "CRAP stands for Contrast, Repetition, Alignment, and Proximity (p. 76)."
+                    },
+                    {
+                        tag: "تطبيق التباين في تدرّب 2 (ص 78)",
+                        ar_q: "أي مبدأ من مبادئ CRAP يُطبّق عند «جعل العناوين كبيرة وغامقة لتمييزها عن نص المحتوى»؟",
+                        en_q: "Which CRAP principle is applied when 'making headings large and bold to distinguish them from body text'?",
+                        options: [
+                            { ar: "مبدأ التقارب (Proximity)", en: "Proximity" },
+                            { ar: "مبدأ التباين (Contrast)", en: "Contrast" },
+                            { ar: "مبدأ التكرار (Repetition)", en: "Repetition" },
+                            { ar: "مبدأ المحاذاة (Alignment)", en: "Alignment" }
+                        ],
+                        correct: 1,
+                        exp_ar: "جعل العناوين كبيرة وغامقة لتمييزها عن نص المحتوى وإبراز الأولوية هو تطبيق مباشر لمبدأ التباين (تدرّب 2-(2) ص 78).",
+                        exp_en: "Making headings large and bold to stand out from body text is a direct application of Contrast (Practice 2-(2), p. 78)."
+                    },
+                    {
+                        tag: "تطبيق التكرار في تدرّب 2 (ص 78)",
+                        ar_q: "عندما يقوم مصمم بـ «توحيد خط ولون العناوين وأيقونات النقاط في جميع صفحات الموقع»، فما المبدأ الذي طبّقه؟",
+                        en_q: "When a designer 'unifies the font and color of headings and bullet icons across all pages,' which principle is applied?",
+                        options: [
+                            { ar: "مبدأ التقارب (Proximity)", en: "Proximity" },
+                            { ar: "مبدأ المحاذاة (Alignment)", en: "Alignment" },
+                            { ar: "مبدأ التكرار (Repetition)", en: "Repetition" },
+                            { ar: "مبدأ التشفير (Encryption)", en: "Encryption" }
+                        ],
+                        correct: 2,
+                        exp_ar: "توحيد خط ولون العناوين وتطابق تصميم أيقونات النقاط في كل صفحة يحقق الاتساق، وهو مبدأ التكرار (تدرّب 2-(2) ص 76 و 78).",
+                        exp_en: "Unifying heading fonts/colors and matching icon styles across all pages achieves consistency via Repetition (p. 76, 78)."
+                    },
+                    {
+                        tag: "التفريق بين الارتباك والوضوح (ص 76)",
+                        ar_q: "في صفحة متجر إلكتروني، لاحظ الزوار أن سعر كل منتج يظهر بعيداً جداً عن صورته واسمه مما يسبب ارتباكاً. أي مبدأ من CRAP يحتاج إلى إصلاح؟",
+                        en_q: "On an online store page, visitors notice each product's price appears far away from its image and name, causing confusion. Which CRAP principle needs fixing?",
+                        options: [
+                            { ar: "مبدأ التكرار (Repetition)", en: "Repetition" },
+                            { ar: "مبدأ التباين (Contrast)", en: "Contrast" },
+                            { ar: "مبدأ المحاذاة (Alignment)", en: "Alignment" },
+                            { ar: "مبدأ التقارب (Proximity)", en: "Proximity" }
+                        ],
+                        correct: 3,
+                        exp_ar: "التقارب (Proximity) يعني وضع المعلومات المرتبطة (صورة المنتج واسمه وسعره) قريبة من بعضها حتى تُدرك كمجموعة واحدة (ص 76).",
+                        exp_en: "Proximity requires placing related items (product image, name, and price) close together so they are perceived as one unit (p. 76)."
+                    },
+                    {
+                        tag: "صلاحية العبارات في المثال المحلول (ص 77)",
+                        ar_q: "لماذا تُعد العبارة «التصميم المتمحور حول المستخدم هو نهج تصميم يعطي الأولوية لراحة المُنشئ» عبارة خاطئة؟",
+                        en_q: "Why is the statement 'User-Centered Design is a design approach that prioritizes the creator's convenience' false?",
+                        options: [
+                            { ar: "لأن التصميم المتمحور حول المستخدم هو نهج تصميم من منظور المستخدم واحتياجاته", en: "Because User-Centered Design is a design approach from the user's perspective and needs" },
+                            { ar: "لأن التصميم المتمحور حول المستخدم يهتم فقط بسرعة معالجة الخادم", en: "Because User-Centered Design only cares about server processing speed" },
+                            { ar: "لأن التصميم المتمحور حول المستخدم يمنع استخدام أي نصوص أو صور", en: "Because User-Centered Design prohibits using any text or images" },
+                            { ar: "لأن التصميم المتمحور حول المستخدم يتطلب حذف جميع الأزرار التفاعلية", en: "Because User-Centered Design requires deleting all interactive buttons" }
+                        ],
+                        correct: 0,
+                        exp_ar: "حل المثال المحلول (1)-د ص 77 - 78: «التصميم المتمحور حول المستخدم هو نهج تصميم من منظور المستخدم، وليس لراحة المُنشئ».",
+                        exp_en: "Worked Example (1)-d, p. 77-78: UCD designs from the user's perspective, prioritizing user needs rather than creator convenience."
+                    },
+                    {
+                        tag: "دراسة حالة: عيادة مجتمعية (ص 79)",
+                        ar_q: "في نشاط «فكّر كمهندس» (ص 79) لموقع عيادة مجتمعية، ما الذي ينبغي وضعه في أعلى الصفحة الرئيسة بناءً على احتياجات المرضى؟",
+                        en_q: "In the 'Think Like an Engineer' activity (p. 79) for a community clinic website, what should be placed at the top of the homepage based on patient needs?",
+                        options: [
+                            { ar: "سير ذاتية طويلة لمهندسي البرمجيات الذين صمموا الموقع", en: "Long biographies of the software engineers who built the site" },
+                            { ar: "ساعات العمل والخدمات المقدمة والاتجاهات للوصول إلى العيادة", en: "Working hours, services offered, and directions to reach the clinic" },
+                            { ar: "إعلانات تجارية متحركة لمنتجات لا علاقة لها بالعيادة", en: "Animated commercial ads for products unrelated to the clinic" },
+                            { ar: "كود المصدر الكامل لقاعدة بيانات المرضى السرية", en: "The full source code of the confidential patient database" }
+                        ],
+                        correct: 1,
+                        exp_ar: "في نشاط ص 79، يريد المرضى معرفة ساعات العمل والخدمات والاتجاهات فوراً؛ لذا يبدأ التصميم من احتياجات المستخدم بوضعها في المقدمة.",
+                        exp_en: "In the p. 79 activity, patients visit primarily to find working hours, services, and directions, so those belong at the top."
+                    },
+                    {
+                        tag: "حواجز إمكانية الوصول (ص 79)",
+                        ar_q: "أي مما يلي يُعد مثالاً على «حاجز وصول» (Accessibility Barrier) يواجه مستخدماً ضعيف البصر عند تصفح موقع ويب؟",
+                        en_q: "Which of the following is an example of an 'Accessibility Barrier' facing a low-vision user when browsing a website?",
+                        options: [
+                            { ar: "استخدام خطوط كبيرة وواضحة وعناوين متباينة", en: "Using large, clear fonts and high-contrast headings" },
+                            { ar: "إضافة نص بديل وصفي لكل صورة وأيقونة في الصفحة", en: "Adding descriptive alternative text to every image and icon" },
+                            { ar: "ضعف التباين بين لون النص ولون الخلفية وغياب النص البديل", en: "Low contrast between text and background colors and missing alt text" },
+                            { ar: "تنظيم المحتوى في مجموعات متقاربة ومحاذاة واضحة", en: "Organizing content in proximate groups with clear alignment" }
+                        ],
+                        correct: 2,
+                        exp_ar: "من حواجز الوصول التي ذكرها الكتاب ص 79: ضعف التباين، وصعوبة استخدام لوحة المفاتيح، وغياب النص البديل للصور.",
+                        exp_en: "Accessibility barriers noted on p. 79 include low contrast, keyboard navigation difficulties, and missing alt text."
+                    },
+                    {
+                        tag: "تمارين 2 - إكمال الفقرة (ص 80)",
+                        ar_q: "في تمرين إكمال الفقرة (ص 80): «يمكنك استخدام ( 1 ) لتلخيص نوع من المستخدمين، و( 2 ) لتخطيط أماكن العناصر وأولوياتها، و( 3 ) لتنظيم الشكل». ما الترتيب الصحيح؟",
+                        en_q: "In the completion exercise (p. 80): 'You can use (1) to summarize a user type, (2) to plan element placement/priority, and (3) to organize layout.' What is the correct order?",
+                        options: [
+                            { ar: "(1) التباين — (2) المحاذاة — (3) شخصية المستخدم", en: "(1) Contrast — (2) Alignment — (3) Persona" },
+                            { ar: "(1) المخطط الهيكلي — (2) CRAP — (3) البريد الإلكتروني", en: "(1) Wireframe — (2) CRAP — (3) Email" },
+                            { ar: "(1) الخادم — (2) التشفير — (3) قاعدة البيانات", en: "(1) Server — (2) Encryption — (3) Database" },
+                            { ar: "(1) شخصية المستخدم — (2) المخطط الهيكلي — (3) مبادئ CRAP", en: "(1) Persona — (2) Wireframe — (3) CRAP principles" }
+                        ],
+                        correct: 3,
+                        exp_ar: "الترتيب الصحيح في تمرين 2 ص 80 هو: (1) شخصية المستخدم (Persona)، (2) المخطط الهيكلي (Wireframe)، (3) مبادئ CRAP.",
+                        exp_en: "The correct order in Exercise 2 (p. 80) is: (1) Persona, (2) Wireframe, (3) CRAP principles."
+                    },
+                    {
+                        tag: "الترابط مع HTML الدلالية (الوحدة 3 و 4)",
+                        ar_q: "كيف يدعم استخدام وسوم HTML الدلالية (مثل &lt;header&gt; و&lt;nav&gt; و&lt;main&gt;) هدف «إمكانية الوصول الرقمي» في الدرس 4-2؟",
+                        en_q: "How does using Semantic HTML tags (such as &lt;header&gt;, &lt;nav&gt;, and &lt;main&gt;) support 'Digital Accessibility' in Lesson 4-2?",
+                        options: [
+                            { ar: "يساعد قارئات الشاشة على فهم بنية الصفحة والتنقل فيها بسهولة لذوي الإعاقة البصرية", en: "It helps screen readers understand page structure and navigate easily for visually impaired users" },
+                            { ar: "يقوم بتشفير ملفات الفيديو تلقائياً ومنع تحميلها في المتصفح", en: "It automatically encrypts video files and blocks browser loading" },
+                            { ar: "يحول الموقع الإلكتروني إلى صحيفة ورقية تُقرأ دون شاشة", en: "It converts the website into a paper newspaper read without a screen" },
+                            { ar: "يزيد من حجم الصور لتملأ الشاشة بالكامل وتخفي النصوص", en: "It enlarges images to fill the entire screen and hide text" }
+                        ],
+                        correct: 0,
+                        exp_ar: "تساعد HTML الدلالية قارئ الشاشة على فهم بنية الصفحة والتنقل فيها بوضوح، مما يدعم إمكانية الوصول الرقمي (ص 64 و 77).",
+                        exp_en: "Semantic HTML helps screen readers understand page structure and navigate efficiently, supporting digital accessibility (p. 64, 77)."
+                    },
+                    {
+                        tag: "الفرق بين الهيكلة والجماليات (ص 75 - 76)",
+                        ar_q: "أي من المهام التالية يتم تحديده في مرحلة «المخطط الهيكلي» وليس في مرحلة التصميم البصري النهائي؟",
+                        en_q: "Which of the following tasks is determined during the 'Wireframe' stage rather than the final visual design stage?",
+                        options: [
+                            { ar: "اختيار درجة اللون الأزرق الفاتح أو الداكن للأزرار", en: "Choosing light blue vs. dark blue shades for buttons" },
+                            { ar: "تحديد موضع قائمة التنقل وأولوية ظهور جدول المواعيد في الصفحة", en: "Determining the navigation menu placement and schedule priority on the page" },
+                            { ar: "إضافة ظلال ناعمة وتأثيرات حركة عند تمرير المؤشر", en: "Adding soft drop shadows and hover animations" },
+                            { ar: "اختيار نوع الخط الزخرفي للشعار الرئيسي", en: "Selecting the decorative font family for the main logo" }
+                        ],
+                        correct: 1,
+                        exp_ar: "المخطط الهيكلي يركز على مواضع العناصر وتوزيع المعلومات وأولوياتها بمعزل عن الألوان والخطوط والزخارف (ص 75 - 76).",
+                        exp_en: "Wireframes focus on element placement, information distribution, and priority, separate from colors, fonts, and styling (p. 75-76)."
+                    },
+                    {
+                        tag: "إعادة تصميم صفحة مزدحمة (ص 79)",
+                        ar_q: "أردت إعادة تصميم صفحة نتائج مدرسة مزدحمة ليجد ولي الأمر درجات طفله بسرعة. ما القرار الأفضل للمخطط الهيكلي؟",
+                        en_q: "You want to redesign a cluttered school results page so a parent can find their child's grades quickly. What is the best Wireframe decision?",
+                        options: [
+                            { ar: "وضع ألبوم صور الأنشطة المدرسية في أعلى الصفحة وإخفاء الدرجات في الأسفل", en: "Placing the school activity photo album at the top and hiding grades at the bottom" },
+                            { ar: "توزيع المواد الدراسية عشوائياً في زوايا الصفحة الأربع دون ترتيب", en: "Scattering school subjects randomly across all four corners without order" },
+                            { ar: "وضع مربع البحث برقم الطالب وملخص الدرجات في أعلى الصفحة وإبعاد العناصر الثانوية", en: "Placing the student ID search box and grade summary at the top while moving secondary items aside" },
+                            { ar: "إزالة أسماء المواد والاحتفاظ بالأرقام فقط لتقليل النص", en: "Removing subject names and keeping numbers only to reduce text" }
+                        ],
+                        correct: 2,
+                        exp_ar: "في نشاط «طبّق ما تعلمته» (ص 79)، وضع أداة البحث عن الدرجات وبطاقة النتيجة في أعلى الصفحة يخدم حاجة ولي الأمر فوراً ويقلل الازدحام.",
+                        exp_en: "In 'Apply What You Learned' (p. 79), placing grade search and summary at the top directly serves the busy parent's primary task."
+                    },
+                    {
+                        tag: "الخلاصة الذهبية للدرس 4-2 (ص 79)",
+                        ar_q: "ما الترتيب المنطقي الصحيح لخطوات تصميم الموقع كما لخّصه صندوق «الخلاصة» في نهاية الدرس (ص 79)؟",
+                        en_q: "What is the correct logical sequence of website design steps as summarized in the 'Summary' box at the end of the lesson (p. 79)?",
+                        options: [
+                            { ar: "اختيار الألوان أولاً ← كتابة الأكواد ← ثم التفكير في المستخدم", en: "Choose colors first → write code → then think about the user" },
+                            { ar: "CRAP أولاً ← ثم إزالة المخطط الهيكلي ← ثم اختيار الخادم", en: "CRAP first → remove wireframe → choose server" },
+                            { ar: "راحة المصمم ← ثم الزخرفة ← ثم اختبار الشبكة", en: "Designer convenience → decoration → network testing" },
+                            { ar: "شخصية المستخدم (مَن) ← المخطط الهيكلي (أين) ← CRAP (اجعله واضحاً) ← UCD (قرّر لصالح المستخدم)", en: "Persona (Who) → Wireframe (Where) → CRAP (Make it clear) → UCD (Decide for the user)" }
+                        ],
+                        correct: 3,
+                        exp_ar: "الخلاصة ص 79: «شخصية المستخدم (مَن) ← المخطط الهيكلي (أين) ← CRAP (اجعله واضحاً) ← UCD (قرّر لصالح المستخدم). صمّم من المستخدم إلى الداخل».",
+                        exp_en: "Summary p. 79: Persona (Who) → Wireframe (Where) → CRAP (Make it clear) → UCD (Decide for the user). Design from the user inward."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "واجب منزلي 1 - رحلة التصميم من المستخدم إلى الداخل (ص 75 و 79)",
+                        q: "اشرح عبارة الخلاصة في الدرس: «صمّم من المستخدم إلى الداخل» موضحاً دور كل من شخصية المستخدم والمخطط الهيكلي ومبادئ CRAP في ذلك.",
+                        en_q: "Explain the lesson summary statement: 'Design from the user inward,' clarifying the role of Persona, Wireframe, and CRAP principles.",
+                        hint: "ابدأ بـ (مَن) ثم (أين) ثم (الوضوح) ثم (القرار لصالح المستخدم).",
+                        en_hint: "Start with Who (Persona), then Where (Wireframe), then Clarity (CRAP), then User-Centered decisions (UCD).",
+                        model: "تعني العبارة أن نقطة البداية في تصميم أي موقع هي <b>احتياجات المستخدم الفعلي</b> وليس ذوق المصمم:<br>1. <b>شخصية المستخدم (مَن؟):</b> تحدد من هو المستخدم وأهدافه وسياقه.<br>2. <b>المخطط الهيكلي (أين؟):</b> يرتب المعلومات في الصفحة حسب أولوية المستخدم قبل الألوان.<br>3. <b>مبادئ CRAP (اجعله واضحاً):</b> تنظم التباين والتكرار والمحاذاة والتقارب لتسهيل الفهم.<br>4. <b>UCD (قرّر لصالح المستخدم):</b> يختبر التصميم مع المستخدمين ويحسّنه باستمرار.",
+                        en_model: "It means starting from the <b>real user's needs</b> rather than designer taste:<br>1. <b>Persona (Who):</b> Defines target users and goals.<br>2. <b>Wireframe (Where):</b> Organizes layout priority before colors.<br>3. <b>CRAP (Make it clear):</b> Applies Contrast, Repetition, Alignment, and Proximity.<br>4. <b>UCD (Decide for the user):</b> Tests and iterates with users."
+                    },
+                    {
+                        source: "واجب منزلي 2 - متى نضيف العمر والمهنة في Persona؟ (ص 75)",
+                        q: "هل يجب إدراج العمر والمهنة دائماً في كل شخصية مستخدم (Persona)؟ وضّح إجابتك مع مثال لحالة تكون فيها المهنة مهمة، وأخرى لا تكون مهمة.",
+                        en_q: "Must age and occupation always be included in every user Persona? Explain with one case where occupation matters and one where it does not.",
+                        hint: "تُضاف فقط إذا كانت مهمة للتصميم.",
+                        en_hint: "Add them only if relevant/important to the design.",
+                        model: "<b>لا</b>، نص الكتاب (ص 75) أن معلومات مثل العمر أو المهنة تُضاف <b>فقط إذا كانت مهمة للتصميم</b>:<br>• <b>حالة تكون فيها مهمة:</b> تصميم بوابة تعليمية أو طبية (معرفة أن المستخدم طالب أو طبيب أو مريض تغيّر المصطلحات والخدمات المعروضة).<br>• <b>حالة لا تكون مهمة:</b> موقع بسيط لمعرفة مواعيد حافلات عامة أو حالة الطقس؛ فالجميع يحتاج نفس المعلومة بسرعة بغض النظر عن مهنته.",
+                        en_model: "<b>No</b>, age and occupation are included <b>only if important to the design</b> (p. 75):<br>• <b>Relevant case:</b> A medical or educational portal where being a student vs. teacher changes required tools.<br>• <b>Irrelevant case:</b> A public weather or bus schedule site where everyone needs the same quick info regardless of occupation."
+                    },
+                    {
+                        source: "واجب منزلي 3 - تشريح الإطار السلكي Wireframe (ص 76)",
+                        q: "انظر إلى المخطط الهيكلي المكون من 5 أجزاء في الكتاب (الرأس، التنقل، المحتوى الرئيسي، الشريط الجانبي، تذييل الصفحة). صف وظيفة كل جزء في موقع إخباري مدرسي.",
+                        en_q: "Based on the 5-part Wireframe in the textbook (Header, Navigation, Main Content, Sidebar, Footer), describe the function of each part in a school news website.",
+                        hint: "الشعار في الرأس، الروابط في التنقل، الأخبار في الرئيسي، التنبيهات في الجانبي، التواصل في التذييل.",
+                        en_hint: "Logo in Header, links in Nav, articles in Main, alerts in Sidebar, contact/copyright in Footer.",
+                        model: "1. <b>الرأس (Header):</b> يعرض شعار المدرسة واسم الموقع.<br>2. <b>التنقل (Navigation):</b> يضم قائمة الأقسام (الرئيسية، الأخبار، الجداول، الأنشطة).<br>3. <b>المحتوى الرئيسي (Main Content):</b> يعرض المقالات الإخبارية الرئيسية والصور المهمة.<br>4. <b>الشريط الجانبي (Sidebar):</b> يعرض الروابط ذات الصلة أو تنبيهات الامتحانات السريعة.<br>5. <b>تذييل الصفحة (Footer):</b> يضم حقوق النشر ومعلومات التواصل مع المدرسة.",
+                        en_model: "1. <b>Header:</b> School logo and site title.<br>2. <b>Navigation:</b> Menu links (Home, News, Schedules, Activities).<br>3. <b>Main Content:</b> Featured news articles and key updates.<br>4. <b>Sidebar:</b> Quick alerts and related links.<br>5. <b>Footer:</b> Copyright and school contact details."
+                    },
+                    {
+                        source: "واجب منزلي 4 - الفرق بين التقارب والمحاذاة (ص 76)",
+                        q: "يخلط بعض الطلاب بين مبدأ «المحاذاة» (Alignment) ومبدأ «التقارب» (Proximity). فرّق بينهما بوضوح مع مثال لخطأ شائع في كل منهما.",
+                        en_q: "Some students confuse 'Alignment' and 'Proximity.' Clearly differentiate them with an example of a common mistake for each.",
+                        hint: "المحاذاة تخص الاصطفاف على خط مشترك، والتقارب يخص المسافة والقرب بين المرتبط وغير المرتبط.",
+                        en_hint: "Alignment is about lining up on a shared axis; Proximity is about grouping related items closely and spacing unrelated ones.",
+                        model: "• <b>المحاذاة (Alignment):</b> تعني اصطفاف العناصر على خط أساس مشترك وفق شبكة التصميم. <i>الخطأ الشائع:</i> جعل فقرة بمحاذاة اليمين والفقرة التالية في الوسط والثالثة بمحاذاة اليسار.<br>• <b>التقارب (Proximity):</b> يعني وضع المعلومات المرتبطة قريبة من بعضها وفصلها بهوامش عن غير المرتبطة. <i>الخطأ الشائع:</i> وضع صورة المنتج في جهة وسعره في جهة أخرى بعيدة.",
+                        en_model: "• <b>Alignment:</b> Lining elements along a shared baseline. <i>Mistake:</i> Mixing right-aligned, centered, and left-aligned blocks randomly.<br>• <b>Proximity:</b> Placing related items close together with margins between groups. <i>Mistake:</i> Putting a product title far away from its price."
+                    },
+                    {
+                        source: "واجب منزلي 5 - تطبيق CRAP على بطاقة فعالية مدرسية (ص 76)",
+                        q: "صمّم بالكلمات بطاقة رقمية للإعلان عن «مسابقة البرمجة السنوية» في موقع المدرسة، موضحاً كيف ستطبق فيها مبادئ CRAP الأربعة.",
+                        en_q: "Describe a digital card announcing the 'Annual Coding Competition' on a school website, explaining how you apply all four CRAP principles.",
+                        hint: "حدد العنوان البارز، توحيد البطاقات، المحاذاة اليمينية، وتجميع التفاصيل معاً.",
+                        en_hint: "Bold title/button, consistent card style, right alignment, and grouped date/place/button.",
+                        model: "• <b>التباين (Contrast):</b> عنوان «مسابقة البرمجة السنوية» بخط كبير وغامق، وزر «سجّل الآن» بلون بارز.<br>• <b>التكرار (Repetition):</b> استخدام نفس نمط الخط والألوان وأيقونات التاريخ والمكان الموجودة في باقي بطاقات الموقع.<br>• <b>المحاذاة (Alignment):</b> محاذاة العنوان والتفاصيل والزر إلى الحافة اليمنى بخط مستقيم واحد.<br>• <b>التقارب (Proximity):</b> تجميع التاريخ والمكان وشروط التسجيل متقاربة داخل البطاقة مع ترك هامش مريح حولها.",
+                        en_model: "• <b>Contrast:</b> Large bold title and high-contrast 'Register Now' button.<br>• <b>Repetition:</b> Matching fonts, colors, and icon styles used across the school site.<br>• <b>Alignment:</b> Right-aligning title, details, and button on a common axis.<br>• <b>Proximity:</b> Grouping date, location, and registration info closely inside the card with outer margins."
+                    },
+                    {
+                        source: "واجب منزلي 6 - لماذا لا تكفي مبادئ CRAP وحدها؟ (ص 76 و 79)",
+                        q: "قد يبدو موقع إلكتروني جميلاً ومتسقاً ومطبقاً لمبادئ CRAP، ومع ذلك يفشل في اختبارات «قابلية الاستخدام» و«إمكانية الوصول». أعطِ مثالين على ذلك.",
+                        en_q: "A website may look visually appealing and follow CRAP principles, yet still fail 'Usability' and 'Accessibility' tests. Give two examples.",
+                        hint: "فكر في تسميات أزرار غامضة أو تعذر استخدام لوحة المفاتيح أو غياب النص البديل.",
+                        en_hint: "Consider confusing button wording, keyboard navigation failure, or missing alt text.",
+                        model: "1. <b>فشل قابلية الاستخدام:</b> قد تكون الأزرار متباينة ومنظمة ومحاذاة بدقة، لكن تسمياتها غامضة أو عملية الحجز تتطلب 10 خطوات معقدة، فيعجز المستخدم عن إتمام مهمته بسهولة.<br>2. <b>فشل إمكانية الوصول:</b> قد يكون التخطيط جميلاً ومتناسقاً، لكن الصور تخلو من النص البديل أو القوائم لا تعمل بلوحة المفاتيح وحدها، فلا يستطيع المستخدم الكفيف أو ذو الإعاقة الحركية استخدام الموقع.",
+                        en_model: "1. <b>Usability failure:</b> Buttons may be well-aligned and high-contrast, yet have unclear labels or require 10 confusing steps to finish a task.<br>2. <b>Accessibility failure:</b> A clean layout may still lack image alt text or keyboard Tab support, locking out screen-reader or motor-impaired users."
+                    },
+                    {
+                        source: "واجب منزلي 7 - اختبار التصميم مع المستخدمين (ص 77)",
+                        q: "في خطوات التصميم المتمحور حول المستخدم (UCD)، لماذا نحتاج إلى «اختبار الحل مع المستخدمين وتكرار التحسين» بدلاً من الاكتفاء برأي فريق التصميم؟",
+                        en_q: "In User-Centered Design (UCD), why must we 'test the solution with users and iterate' instead of relying solely on the design team's opinion?",
+                        hint: "المصمم يعرف الموقع مسبقاً، أما المستخدم الفعلي فيكشف نقاط الارتباك الحقيقية.",
+                        en_hint: "Designers already know how their site works, whereas real users reveal actual confusion and friction.",
+                        model: "لأن فريق التصميم يعرف مسبقاً مكان كل زر وهدف كل صفحة، فقد يبدو التصميم بديهياً له بينما يرتبك فيه الزوار الجدد. أما الاختبار الفعلي مع المستخدمين فيكشف نقاط الغموض وصعوبات الاستخدام الحقيقية لتعديلها وتحسينها تكرارياً.",
+                        en_model: "Because the design team already knows where every button is and how it works, making flaws invisible to them. Testing with real users reveals genuine confusion and usability issues to fix iteratively."
+                    },
+                    {
+                        source: "واجب منزلي 8 - دمج الدرس 4-1 و 4-2 في مشروع متكامل (ص 69 و 75)",
+                        q: "تخطط بلدية لإطلاق بوابة خدمات للمواطنين. اشرح كيف تستفيد من الدرس (4-1) والدرس (4-2) معاً عند التخطيط للمشروع.",
+                        en_q: "A municipality plans to launch a citizen services portal. Explain how it benefits from both Lesson 4-1 and Lesson 4-2 when planning the project.",
+                        hint: "4-1 لاختيار الوسيلة والجمع بين الوسائط؛ 4-2 لتصميم البوابة حول المواطن.",
+                        en_hint: "Lesson 4-1 for choosing/combining media; Lesson 4-2 for designing the portal around citizen needs.",
+                        model: "• <b>من الدرس 4-1 (أنواع الوسائط):</b> تحدد البلدية لماذا تحتاج بوابة إلكترونية (لتقديم تفاصيل الخدمات وتحديثها والتفاعل بالنماذج) وتجمع معها وسائل أخرى مثل الملصقات والراديو لمن لا يملك إنترنت.<br>• <b>من الدرس 4-2 (تصميم المعلومات وUX):</b> تبني البوابة حول شخصيات المواطنين (كبار السن، أصحاب الأعمال)، وتصمم مخططاً هيكلياً يبرز أهم الخدمات، وتطبق مبادئ CRAP وإمكانية الوصول للجميع.",
+                        en_model: "• <b>From Lesson 4-1:</b> Justify why a website is needed (detailed updatable services and interactive forms) and combine offline media (posters/radio) for non-internet citizens.<br>• <b>From Lesson 4-2:</b> Build citizen Personas, organize top services in a Wireframe, and apply CRAP and accessibility standards."
+                    },
+                    {
+                        source: "واجب منزلي 9 - تحليل تطبيقي: عيوب قائمة تنقل طويلة (ص 76 - 77)",
+                        q: "يحتوي موقع مكتبة على 25 رابطاً متراصاً في شريط التنقل العلوي بخط صغير جداً وبدون مسافات فاصلة. حدد مبدأين من مبادئ التصميم تضررا هنا، واقترح حلاً.",
+                        en_q: "A library website has 25 links crammed into the top navigation bar in tiny font with no spacing. Identify two design principles violated here and propose a solution.",
+                        hint: "التقارب (لا توجد مسافات بين المجموعات) والتباين (خط صغير مزدحم) + قابلية الاستخدام.",
+                        en_hint: "Proximity (no spacing/grouping) and Contrast/Usability (tiny cramped text).",
+                        model: "• <b>المبدآن المتضرران:</b> <b>التقارب (Proximity)</b> لعدم وجود هوامش تفصل الروابط في مجموعات منطقية، و<b>التباين (Contrast)</b> بسبب صغر الخط وازدحامه مما يصعّب القراءة.<br>• <b>الحل:</b> تقليص الروابط الرئيسية إلى 5–6 أقسام واضحة في شريط التنقل، وتكبير الخط مع ترك مسافات مناسبة بينها، ووضع الروابط الفرعية داخل الصفحات.",
+                        en_model: "• <b>Violated Principles:</b> <b>Proximity</b> (no margins/grouping) and <b>Contrast</b> (tiny, hard-to-read text).<br>• <b>Solution:</b> Group links into 5–6 clear main categories in the navigation bar, increase font size and spacing, and move sub-links inside category pages."
+                    },
+                    {
+                        source: "واجب منزلي 10 - معالجة النفاذ الرقمي في المناطق محدودة الإنترنت (ص 79)",
+                        q: "في نشاط العيادة المجتمعية (ص 79)، أشار الكتاب إلى التفكير في «النفاذ الرقمي» لشخص لا يتوفر لديه إنترنت منزلي. كيف يرتبط هذا بمفهوم التصميم المتمحور حول المستخدم؟",
+                        en_q: "In the community clinic activity (p. 79), the textbook mentions thinking about 'digital access' for someone without home internet. How does this connect to User-Centered Design?",
+                        hint: "UCD ينظر لسياق الاستخدام الواقعي وظروف المستخدمين كافة.",
+                        en_hint: "UCD considers the real-world usage context and constraints of all target users.",
+                        model: "لأن التصميم المتمحور حول المستخدم (UCD) يبدأ من <b>ظروف المستخدم الواقعية وسياق استخدامه</b>؛ فإذا اكتشف المصمم أن شريحة من المرضى لا تملك إنترنت منزلياً أو تستخدم هواتف بسيطة بشبكة ضعيفة، فإنه يجعل الموقع خفيفاً وسريع التحميل على باقات الهاتف، ويدعمه بقنوات بديلة كالمطبوعات الورقية.",
+                        en_model: "Because UCD starts from <b>real-world user conditions and context</b>; recognizing that some patients lack home internet or have slow mobile connections leads designers to keep pages lightweight and pair the site with offline print alternatives."
+                    },
+                    {
+                        source: "واجب منزلي 11 - تقييم زر دعوة لاتخاذ إجراء CTA (ص 76)",
+                        q: "في صفحة تسجيل لفعالية، وضع المصمم زر «تأكيد التسجيل» بلون رمادي باهت جداً أسفل يسار الصفحة بينما وضع زر «إلغاء» بلون أحمر كبير وبارز. قيّم هذا القرار بناءً على مبادئ CRAP وقابلية الاستخدام.",
+                        en_q: "On an event registration page, a designer placed the 'Confirm Registration' button in pale gray at the bottom-left while making 'Cancel' large and bright red. Evaluate this using CRAP and usability.",
+                        hint: "تباين عكسي يضلّل المستخدم ويجعله يضغط إلغاء بالخطأ!",
+                        en_hint: "Inverted contrast misleads users into accidentally clicking Cancel!",
+                        model: "هذا القرار <b>سيئ جداً</b> من منظور <b>التباين (Contrast)</b> و<b>قابلية الاستخدام</b>: لأن التباين يجب أن يبرز العنصر الأهم (تأكيد التسجيل)، أما إبراز زر «إلغاء» فيجذب عين المستخدم للخطأ ويؤدي إلى ضغطه بالخطأ وفقدان بياناته. الصواب إبراز زر «تأكيد التسجيل» بوضوح وتقليل حدة زر «إلغاء».",
+                        en_model: "This is a <b>poor decision</b> under <b>Contrast</b> and <b>Usability</b>: contrast should highlight the primary action ('Confirm'), whereas making 'Cancel' bright red misleads users into accidentally canceling their form."
+                    },
+                    {
+                        source: "واجب منزلي 12 - فائدة شبكة التصميم واتجاه اللغة (ص 76)",
+                        q: "عند ترجمة موقع إلكتروني ناجح من اللغة الإنجليزية إلى اللغة العربية، ما التعديل الأساسي المطلوب في مبدأ «المحاذاة» (Alignment)؟ ولماذا؟",
+                        en_q: "When translating a successful website from English to Arabic, what primary adjustment is required under the 'Alignment' principle, and why?",
+                        hint: "اتجاه اللغة العربية من اليمين إلى اليسار (RTL).",
+                        en_hint: "Arabic reads right-to-left (RTL).",
+                        model: "يجب عكس <b>محاذاة العناصر والشبكة لتصبح من اليمين إلى اليسار (RTL)</b> بدلاً من اليسار إلى اليمين؛ لأن الكتاب يوضح أن المحاذاة تتبع اتجاه اللغة (في العربية من اليمين إلى اليسار) حتى تتحرك عين القارئ العربي بشكل طبيعي ومنظم.",
+                        en_model: "The layout grid and text <b>alignment must be mirrored to Right-to-Left (RTL)</b> because alignment follows the language's reading direction so Arabic readers scan naturally."
+                    },
+                    {
+                        source: "واجب منزلي 13 - مقارنة المخطط الهيكلي بالتصميم النهائي (ص 75 - 76)",
+                        q: "لماذا يركز المخطط الهيكلي على «المحتوى والبنية» مع استخدام مربعات رمادية بسيطة وتفاصيل بصرية قليلة؟",
+                        en_q: "Why does a Wireframe focus on 'content and structure' using simple gray boxes and minimal visual details?",
+                        hint: "سرعة التعديل، اختبار تدفق المعلومات، والاتفاق قبل إهدار وقت التلوين.",
+                        en_hint: "Fast iteration, testing information flow, and agreeing on layout before spending time on styling.",
+                        model: "لأن استخدام تفاصيل بصرية قليلة يجعل تعديل أماكن العناصر وأولوياتها <b>سريعاً وغير مكلف</b> قبل الدخول في برمجة الألوان والصور والزخارف، كما يوجّه انتباه الفريق وأصحاب المصلحة إلى «هل يجد المستخدم ما يبحث عنه بسهولة؟» بدلاً من الانشغال بالجماليات مبكراً.",
+                        en_model: "Minimal visual detail makes rearranging element placement and priority <b>fast and inexpensive</b> before investing time in colors and graphics, keeping the team focused on whether users can find what they need."
+                    },
+                    {
+                        source: "واجب منزلي 14 - إمكانية الوصول ومكافحة التمييز الرقمي (ص 77 و 79)",
+                        q: "اذكر ثلاثة إجراءات عملية تجعل موقعاً تعليمياً أكثر قابلية للوصول (Accessibility) للطلاب ذوي الإعاقة البصرية أو الحركية.",
+                        en_q: "List three practical measures that make an educational website more accessible to students with visual or motor disabilities.",
+                        hint: "التباين العالي، النص البديل، التنقل بلوحة المفاتيح، ووسوم HTML الدلالية.",
+                        en_hint: "High contrast, alt text, keyboard navigation, and semantic HTML.",
+                        model: "1. <b>تباين ألوان عالٍ وخطوط واضحة قابلة للتكبير</b> لدعم ضعاف البصر.<br>2. <b>إضافة نص بديل (alt text)</b> لجميع الصور والرسوم البيانية واستخدام <b>HTML الدلالية</b> لمساعدة قارئات الشاشة.<br>3. <b>دعم التنقل الكامل عبر لوحة المفاتيح (Tab/Enter)</b> للطلاب الذين لا يستطيعون استخدام الفأرة.",
+                        en_model: "1. <b>High color contrast and scalable clear fonts</b> for low-vision students.<br>2. <b>Descriptive alt text</b> on images and <b>Semantic HTML</b> for screen readers.<br>3. <b>Full keyboard navigation</b> for students who cannot use a mouse."
+                    },
+                    {
+                        source: "واجب منزلي 15 - ربط الدرس 4-2 بتقييم المواقع (4-3) (ص 75 و 82)",
+                        q: "بعد أن تصمم موقعاً باستخدام شخصية المستخدم والمخطط الهيكلي ومبادئ CRAP في الدرس 4-2، كيف تتأكد في الخطوة التالية (الدرس 4-3) أن التصميم يعمل فعلاً لصالح المستخدمين؟",
+                        en_q: "After designing a website using Persona, Wireframe, and CRAP in Lesson 4-2, how do you verify in the next step (Lesson 4-3) that the design actually works for users?",
+                        hint: "نحتاج إلى أدلة عبر التقييم الكمي (الأرقام) والتقييم النوعي (آراء ومراقبة المستخدمين).",
+                        en_hint: "Gather evidence through Quantitative evaluation (analytics) and Qualitative evaluation (usability testing/interviews).",
+                        model: "لا يكفي افتراض أن التصميم جيد؛ بل نحتاج إلى <b>جمع الأدلة</b> عبر طريقتين:<br>1. <b>التقييم النوعي (لماذا؟):</b> مراقبة المستخدمين الفعليين في اختبار قابلية الاستخدام، وإجراء مقابلات معهم، والتقييم الإرشادي لاكتشاف نقاط الصعوبة وأسبابها.<br>2. <b>التقييم الكمي (كم؟):</b> قياس بيانات الاستخدام بالأرقام عبر تحليلات الويب (مثل مشاهدات الصفحة ومعدل الارتداد ومعدل التحويل) للتحقق من نجاح التصميم.",
+                        en_model: "We must gather evidence using two complementary approaches:<br>1. <b>Qualitative Evaluation (Why):</b> Usability testing, user interviews, and heuristic evaluation to uncover reasons behind confusion.<br>2. <b>Quantitative Evaluation (How much):</b> Web analytics metrics (PV, bounce rate, CVR) to measure real user behavior."
+                    }
+                ]
+            }
+        };
+
+        let currentMode = 'session';
+        let currentSubTab = 'mcq';
+        let mcqViewMode = 'single';
+        let deferredGrading = true;
+        let state = {
+            session: { answers: new Array(15).fill(null), currentIdx: 0, submitted: false },
+            homework: { answers: new Array(15).fill(null), currentIdx: 0, submitted: false }
+        };
+
+        function safeGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+        function safeSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        function getPrefix() { return 'cs_u4_l2_' + currentMode; }
+
+        function toggleGradingMode() {
+            deferredGrading = !deferredGrading;
+            const btn = document.getElementById('gradingModeBtn');
+            btn.innerText = deferredGrading ? '📝 وضع التصحيح: عند الإنهاء' : '⚡ وضع التصحيح: فوري';
+            displayQuestion();
+            renderAllMcqList();
+        }
+
+        function jumpToQuiz(m, sub) {
+            switchMode(m);
+            switchSubTab(sub);
+            document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchMode(m) {
+            currentMode = m;
+            document.getElementById('modeBtnSession').className = m === 'session' ? 'mode-card-btn active-mode-session' : 'mode-card-btn';
+            document.getElementById('modeBtnHomework').className = m === 'homework' ? 'mode-card-btn active-mode-homework' : 'mode-card-btn';
+            const lbl = m === 'session' ? 'السيشن' : 'الواجب';
+            document.getElementById('tabMCQLabel').innerText = `🔘 الاختيار من متعدد (15 - ${lbl})`;
+            document.getElementById('tabEssayLabel').innerText = `✍️ الأسئلة المقالية (15 - ${lbl})`;
+            document.getElementById('currentModeBadge').innerText = m === 'session' ? '👨‍🏫 السيشن' : '🏠 الواجب';
+            document.getElementById('essayBannerTitle').innerText = `📝 الأسئلة المقالية والتحليلية لقسم ${lbl} (15 سؤالاً):`;
+            document.getElementById('resultsCard').style.display = 'none';
+            if (mcqViewMode === 'single') {
+                document.getElementById('quizCard').style.display = 'block';
+            }
+            loadScores();
+            displayQuestion();
+            renderAllMcqList();
+            renderEssayQuestions();
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            document.getElementById('tabMCQ').classList.toggle('active', sub === 'mcq');
+            document.getElementById('tabEssay').classList.toggle('active', sub === 'essay');
+            document.getElementById('mcqContainer').style.display = sub === 'mcq' ? 'block' : 'none';
+            document.getElementById('essayContainer').style.display = sub === 'essay' ? 'block' : 'none';
+            document.getElementById('mcqViewToggleGroup').style.display = sub === 'mcq' ? 'flex' : 'none';
+        }
+
+        function setMcqViewMode(vm) {
+            mcqViewMode = vm;
+            document.getElementById('viewSingleBtn').classList.toggle('active-view', vm === 'single');
+            document.getElementById('viewAllBtn').classList.toggle('active-view', vm === 'all');
+            document.getElementById('quizCard').style.display = vm === 'single' ? 'block' : 'none';
+            document.getElementById('allMcqListContainer').style.display = vm === 'all' ? 'block' : 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+            if (vm === 'single') displayQuestion();
+            else renderAllMcqList();
+        }
+
+        function calculateScore() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const isSub = state[currentMode].submitted;
+            let s = 0, answered = 0;
+            qs.forEach((q, i) => {
+                if (ans[i] !== null) {
+                    answered++;
+                    if (ans[i] === q.correct) s++;
+                }
+            });
+            document.getElementById('score').innerText = (deferredGrading && !isSub) ? answered : s;
+            document.getElementById('progressBar').style.width = ((answered / qs.length) * 100) + '%';
+            return s;
+        }
+
+        function loadScores() {
+            const p = getPrefix();
+            document.getElementById('highScore').innerText = safeGet(p + '_high') || '0';
+            document.getElementById('firstScore').innerText = safeGet(p + '_first') !== null ? safeGet(p + '_first') : '--';
+            calculateScore();
+        }
+
+        function displayQuestion() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const idx = state[currentMode].currentIdx;
+            const isSub = state[currentMode].submitted;
+            const showFeedback = !deferredGrading || isSub;
+            const q = qs[idx];
+
+            document.getElementById('qCurrent').innerText = idx + 1;
+            document.getElementById('topicBadge').innerText = q.tag;
+            document.getElementById('questionTextAr').innerHTML = (idx + 1) + '. ' + q.ar_q;
+            document.getElementById('questionTextEn').innerHTML = 'Q' + (idx + 1) + ': ' + q.en_q;
+            calculateScore();
+
+            const box = document.getElementById('optionsContainer');
+            box.innerHTML = '';
+            const exp = document.getElementById('explanationText');
+            const st = document.getElementById('qStatusIndicator');
+            const prev = ans[idx];
+
+            if (prev === null) {
+                st.innerText = 'لم يُجب بعد';
+                exp.style.display = 'none';
+            } else if (!showFeedback) {
+                st.innerText = '📌 تم تسجيل اختيارك (يُصحح عند الإنهاء)';
+                exp.style.display = 'none';
+            } else {
+                const ok = prev === q.correct;
+                st.innerText = ok ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة';
+                exp.style.display = 'block';
+                exp.style.borderRightColor = ok ? 'var(--success)' : 'var(--danger)';
+                exp.innerHTML = `<b>${ok ? '✅ أحسنت!' : '❌ الإجابة الصحيحة: (' + ['أ','ب','ج','د'][q.correct] + ') ' + q.options[q.correct].ar}</b><div style="margin-top:6px;">${q.exp_ar}</div><div class="exp-en" style="margin-top:6px;">${q.exp_en}</div>`;
+            }
+
+            q.options.forEach((opt, oi) => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.innerHTML = `<div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${opt.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${opt.en}</div>`;
+                if (prev !== null && showFeedback) {
+                    b.disabled = true;
+                    if (oi === q.correct) b.classList.add('correct');
+                    else if (oi === prev) b.classList.add('wrong');
+                } else {
+                    if (prev === oi && !showFeedback) {
+                        b.classList.add('selected-pending');
+                    }
+                    b.onclick = () => {
+                        state[currentMode].answers[idx] = oi;
+                        displayQuestion();
+                    };
+                }
+                box.appendChild(b);
+            });
+
+            document.getElementById('prevBtn').disabled = (idx === 0);
+            document.getElementById('nextBtn').innerText = (idx === qs.length - 1) ? 'إنهاء وتصحيح الاختبار 🏁' : 'السؤال التالي ⬅️';
+        }
+
+        function submitAndGradeQuiz() {
+            state[currentMode].submitted = true;
+            document.getElementById('quizCard').style.display = 'none';
+            document.getElementById('allMcqListContainer').style.display = 'none';
+            document.getElementById('resultsCard').style.display = 'block';
+            const s = calculateScore();
+            const p = getPrefix();
+            document.getElementById('finalScore').innerText = s;
+            if (safeGet(p + '_first') === null) safeSet(p + '_first', s);
+            if (s > parseInt(safeGet(p + '_high') || '0')) safeSet(p + '_high', s);
+            loadScores();
+            renderMistakesReview();
+        }
+
+        function renderMistakesReview() {
+            const reviewBox = document.getElementById('mistakesReviewBox');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            let html = '<h3 style="color:var(--primary-light); margin-bottom:14px;">📋 المراجعة التفصيلية للإجابات وتصويب الأخطاء:</h3>';
+            qs.forEach((q, i) => {
+                const userAns = ans[i];
+                const isCorrect = userAns === q.correct;
+                const userText = userAns !== null ? `(${['أ','ب','ج','د'][userAns]}) ${q.options[userAns].ar}` : 'لم يُجب';
+                const correctText = `(${['أ','ب','ج','د'][q.correct]}) ${q.options[q.correct].ar}`;
+                html += `
+                <div style="border:2px solid ${isCorrect ? '#10b981' : '#ef4444'}; background:${isCorrect ? 'var(--success-soft)' : 'var(--danger-soft)'}; border-radius:14px; padding:14px; margin-bottom:12px;">
+                    <div style="font-weight:900; margin-bottom:6px;">س${i+1}: ${q.ar_q}</div>
+                    <div style="font-size:0.92rem; margin-bottom:4px;"><strong>إجابتك:</strong> ${userText} ${isCorrect ? '✅' : '❌'}</div>
+                    ${!isCorrect ? `<div style="font-size:0.92rem; color:#065f46; font-weight:800; margin-bottom:4px;"><strong>الإجابة الصحيحة:</strong> ${correctText}</div>` : ''}
+                    <div style="font-size:0.9rem; margin-top:6px; padding-top:6px; border-top:1px dashed rgba(0,0,0,0.15);">${q.exp_ar}</div>
+                </div>`;
+            });
+            reviewBox.innerHTML = html;
+        }
+
+        function nextQuestion() {
+            const qs = quizData[currentMode].mcq;
+            if (state[currentMode].currentIdx < qs.length - 1) {
+                state[currentMode].currentIdx++;
+                displayQuestion();
+            } else {
+                submitAndGradeQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (state[currentMode].currentIdx > 0) {
+                state[currentMode].currentIdx--;
+                displayQuestion();
+            }
+        }
+
+        function selectAllViewOption(qi, oi) {
+            state[currentMode].answers[qi] = oi;
+            calculateScore();
+            renderAllMcqList();
+        }
+
+        function renderAllMcqList() {
+            const box = document.getElementById('allMcqListContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const isSub = state[currentMode].submitted;
+            const showFeedback = !deferredGrading || isSub;
+            box.innerHTML = '';
+
+            qs.forEach((q, qi) => {
+                const prev = ans[qi];
+                const ok = prev === q.correct;
+                const card = document.createElement('div');
+                card.className = 'q-card';
+                let opts = '';
+                q.options.forEach((o, oi) => {
+                    let cls = 'opt-btn';
+                    if (prev !== null && showFeedback) {
+                        if (oi === q.correct) cls += ' correct';
+                        else if (oi === prev) cls += ' wrong';
+                    } else if (prev === oi && !showFeedback) {
+                        cls += ' selected-pending';
+                    }
+                    opts += `<button class="${cls}" ${(prev !== null && showFeedback) ? 'disabled' : ''} onclick="selectAllViewOption(${qi}, ${oi})"><div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${o.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${o.en}</div></button>`;
+                });
+                let statusText = 'لم يُجب';
+                if (prev !== null) {
+                    statusText = showFeedback ? (ok ? '✅ صحيحة' : '❌ خاطئة') : '📌 تم الاختيار';
+                }
+                card.innerHTML = `
+                    <div class="q-header">
+                        <span class="q-badge">${q.tag}</span>
+                        <span>${statusText}</span>
+                    </div>
+                    <div class="q-text-ar">${qi+1}. ${q.ar_q}</div>
+                    <div class="q-text-en">Q${qi+1}: ${q.en_q}</div>
+                    <div class="options-list">${opts}</div>
+                    ${(prev !== null && showFeedback) ? `<div class="explanation" style="display:block; border-right-color:${ok ? 'var(--success)' : 'var(--danger)'};"><div>${q.exp_ar}</div><div class="exp-en">${q.exp_en}</div></div>` : ''}
+                `;
+                box.appendChild(card);
+            });
+
+            const submitBar = document.createElement('div');
+            submitBar.style.textAlign = 'center';
+            submitBar.style.marginTop = '16px';
+            submitBar.innerHTML = `<button class="btn-restart" style="font-size:1.05rem; padding:12px 28px;" onclick="submitAndGradeQuiz()">✅ إنهاء وتصحيح الاختبار وعرض المراجعة الكاملة</button>`;
+            box.appendChild(submitBar);
+        }
+
+        function openIndexModal() {
+            const g = document.getElementById('gridIndexContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const showFeedback = !deferredGrading || state[currentMode].submitted;
+            g.innerHTML = '';
+            qs.forEach((q, i) => {
+                const d = document.createElement('div');
+                let cls = 'index-pill';
+                if (ans[i] !== null) {
+                    cls += showFeedback ? (ans[i] === q.correct ? ' solved-correct' : ' solved-wrong') : ' solved-pending';
+                }
+                d.className = cls;
+                d.innerText = i + 1;
+                d.onclick = () => {
+                    state[currentMode].currentIdx = i;
+                    setMcqViewMode('single');
+                    closeIndexModal();
+                };
+                g.appendChild(d);
+            });
+            document.getElementById('indexModal').style.display = 'flex';
+        }
+
+        function closeIndexModal() {
+            document.getElementById('indexModal').style.display = 'none';
+        }
+
+        function restartCurrentQuiz() {
+            state[currentMode].answers = new Array(15).fill(null);
+            state[currentMode].currentIdx = 0;
+            state[currentMode].submitted = false;
+            setMcqViewMode(mcqViewMode);
+            calculateScore();
+        }
+
+        function toggleEssayBox(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function renderEssayQuestions() {
+            const box = document.getElementById('essayList');
+            const list = quizData[currentMode].essay;
+            box.innerHTML = '';
+            list.forEach((it, i) => {
+                const d = document.createElement('div');
+                d.className = 'essay-item';
+                d.innerHTML = `
+                    <span class="essay-source">${it.source}</span>
+                    <div class="essay-q-text"><strong>س${i+1}:</strong> ${it.q}</div>
+                    <div class="q-text-en"><strong>Q${i+1}:</strong> ${it.en_q}</div>
+                    <textarea class="essay-textarea" placeholder="اكتب إجابتك وتحليلك الهندسي هنا..."></textarea>
+                    <div>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('h_${i}')">💡 تلميح / Hint</button>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('m_${i}')">👁️ الإجابة النموذجية / Model Answer</button>
+                    </div>
+                    <div class="hint-box" id="h_${i}">
+                        <div>💡 ${it.hint}</div>
+                        <div class="exp-en" style="margin-top:4px;">💡 ${it.en_hint}</div>
+                    </div>
+                    <div class="model-answer" id="m_${i}">
+                        <div>${it.model}</div>
+                        <hr style="margin:8px 0;opacity:0.3;">
+                        <div class="exp-en" style="color:inherit;">${it.en_model}</div>
+                    </div>
+                `;
+                box.appendChild(d);
+            });
+        }
+
+        function toggleAllEssays(show) {
+            quizData[currentMode].essay.forEach((_, i) => {
+                const m = document.getElementById('m_' + i);
+                if (m) m.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        window.onload = () => {
+            loadScores();
+            displayQuestion();
+            renderEssayQuestions();
+        };
+    </script>
+</body>
+</html>
