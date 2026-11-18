@@ -1,87 +1,69 @@
 {
+  "configVersion": 5,
   "portalTitle": "دروس المجموعة",
   "teacherPin": "2468",
-  "folders": [
-    {
-      "id": "folder_1793899909195",
-      "name": "الوحدة الأولى",
-      "icon": "📁",
-      "color": "indigo",
-      "desc": ""
-    },
-    {
-      "id": "folder_1793899918958",
-      "name": "الوحدة الثانية",
-      "icon": "📁",
-      "color": "indigo",
-      "desc": ""
-    },
-    {
-      "id": "folder_1793899937334",
-      "name": "الوحدة الثالثة",
-      "icon": "📁",
-      "color": "indigo",
-      "desc": ""
-    }
-  ],
+  "folders": [],
   "fileMeta": {
     "lesson1.html": {
-      "folderId": "folder_1793899909195",
       "title": "lesson1",
+      "order": 1,
       "hidden": false,
-      "order": 1
+      "folderId": ""
     },
     "lesson2.html": {
-      "folderId": "folder_1793899909195",
       "title": "lesson2",
+      "order": 2,
       "hidden": false,
-      "order": 2
+      "folderId": ""
     },
     "lesson3.html": {
-      "folderId": "folder_1793899909195",
       "title": "lesson3",
+      "order": 3,
       "hidden": false,
-      "order": 3
+      "folderId": ""
     },
     "lesson4.html": {
-      "folderId": "folder_1793899909195",
       "title": "lesson4",
+      "order": 4,
       "hidden": false,
-      "order": 4
+      "folderId": ""
     },
     "2-1.html": {
-      "folderId": "folder_1793899918958",
       "title": "lesson1",
+      "order": 1,
       "hidden": false,
-      "order": 1
+      "folderId": ""
     },
     "2-2.html": {
-      "folderId": "folder_1793899918958",
       "title": "lesson2",
+      "order": 2,
       "hidden": false,
-      "order": 2
+      "folderId": ""
     },
     "2-3.html": {
-      "folderId": "folder_1793899918958",
       "title": "lesson3",
+      "order": 3,
       "hidden": false,
-      "order": 3
+      "folderId": ""
     },
     "unit1 300Q.html": {
-      "folderId": "folder_1793899909195",
       "title": "unit1 300Q",
+      "order": 5,
       "hidden": false,
-      "order": 5
+      "folderId": ""
     },
     "test1.html": {
-      "folderId": "folder_1793899918958"
+      "hidden": false,
+      "folderId": ""
     },
     "3-1.html": {
-      "folderId": "folder_1793899937334"
+      "hidden": false,
+      "folderId": ""
     },
     "3-2.html": {
-      "folderId": "folder_1793899937334",
-      "order": 2
+      "order": 2,
+      "hidden": false,
+      "folderId": ""
     }
   }
 }
