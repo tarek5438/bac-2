@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 4-1: أنواع الوسائط وخصائصها | المنصة التفاعلية الشاملة (شرح + محاكيات + 60 سؤالاً)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81; --primary-dark: #092c4c; --primary-light: #2563eb; --primary-soft: #eff6ff;
+            --accent: #f59e0b; --accent-dark: #d97706; --accent-soft: #fffbeb;
+            --bg: #f8fafc; --card-bg: #ffffff; --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0;
+            --success: #10b981; --success-soft: #dcfce7; --danger: #ef4444; --danger-soft: #fee2e2;
+            --teal: #0d9488; --teal-soft: #ccfbf1; --purple: #8b5cf6; --purple-soft: #ede9fe; --font-scale: 1;
+        }
+        body.dark-mode {
+            --bg: #0b1120; --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #334155;
+            --primary-soft: #1e3a8a; --accent-soft: #451a03; --success-soft: #064e3b; --danger-soft: #450a0a;
+            --teal-soft: #134e4a; --purple-soft: #3b0764;
+        }
+        body.projector-mode { --font-scale: 1.16; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.85; font-size: calc(1rem * var(--font-scale)); padding-bottom: 80px; transition: background-color 0.25s, color 0.25s; }
+        #top-progress-bar { position: fixed; top: 0; right: 0; height: 5px; background: linear-gradient(to left, var(--accent), var(--primary-light), var(--teal), var(--success)); width: 0%; z-index: 3000; }
+        .sticky-toolbar { position: sticky; top: 0; z-index: 1500; background: rgba(15, 30, 54, 0.95); backdrop-filter: blur(10px); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(245, 158, 11, 0.5); }
+        .toolbar-brand { font-weight: 900; font-size: 1rem; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .tool-pill { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); padding: 5px 13px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .tool-pill:hover, .tool-pill.active-tool { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        header { background: linear-gradient(135deg, #07192f 0%, #0f4c81 55%, #0d9488 100%); color: white; padding: 42px 20px 35px; text-align: center; border-bottom: 5px solid var(--accent); }
+        header h1 { font-size: calc(2.1rem * var(--font-scale)); margin-bottom: 10px; font-weight: 900; }
+        header p { font-size: calc(1.05rem * var(--font-scale)); color: #e2e8f0; max-width: 920px; margin: 0 auto 18px; }
+        .header-badges, .nav-shortcuts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .h-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 30px; font-size: 0.86rem; font-weight: 700; color: #fde68a; }
+        .shortcut-btn { background: rgba(255, 255, 255, 0.16); color: white; border: 1px solid rgba(255, 255, 255, 0.35); padding: 9px 18px; border-radius: 22px; text-decoration: none; font-size: 0.94rem; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .shortcut-btn:hover { background: white; color: var(--primary); }
+        .shortcut-btn.highlight-hw { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+        .container { max-width: 1140px; margin: 28px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 28px; margin-bottom: 28px; border: 1px solid var(--border); box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.05); }
+        .badge { display: inline-block; background: var(--primary-soft); color: var(--primary-light); padding: 5px 15px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; border: 1px solid #93c5fd; }
+        body.dark-mode .badge { color: #93c5fd; }
+        h2 { color: var(--primary-light); font-size: calc(1.5rem * var(--font-scale)); margin-bottom: 14px; font-weight: 900; }
+        h3 { font-size: calc(1.18rem * var(--font-scale)); font-weight: 800; margin-bottom: 8px; }
+        .hook-box { background: var(--accent-soft); border-right: 6px solid var(--accent); padding: 18px; border-radius: 12px; margin: 16px 0; }
+        .hook-box strong { color: var(--accent-dark); display: block; margin-bottom: 5px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+        @media (max-width: 850px) { .grid-3 { grid-template-columns: 1fr; } }
+        .info-panel { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; }
+        .real-world-box { background: linear-gradient(135deg, rgba(13, 148, 136, 0.07) 0%, rgba(37, 99, 235, 0.06) 100%); border: 2px solid rgba(13, 148, 136, 0.35); border-right: 6px solid var(--teal); border-radius: 16px; padding: 18px; margin: 16px 0; }
+        .real-world-title { color: var(--teal); font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .sim-box { background: rgba(37, 99, 235, 0.04); border: 2px solid #93c5fd; border-radius: 16px; padding: 22px; margin: 20px 0; }
+        .sim-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+        .sim-btn { background: var(--card-bg); color: var(--text-main); border: 2px solid var(--primary-light); padding: 9px 16px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; transition: 0.2s; }
+        .sim-btn:hover, .sim-btn.active-sim { background: var(--primary-light); color: white; }
+        .sim-output { background: var(--card-bg); border-radius: 12px; padding: 16px; border-right: 6px solid var(--primary-light); margin-top: 12px; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; border-radius: 12px; overflow: hidden; }
+        table th, table td { border: 1px solid var(--border); padding: 12px 16px; text-align: right; }
+        table th { background: var(--primary); color: white; font-weight: 800; }
+        .media-stage-card { border: 2px dashed var(--border); border-radius: 16px; padding: 18px; background: var(--card-bg); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 12px; }
+        .metric-pill { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; }
+        .metric-pill small { display: block; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; }
+        .metric-pill strong { font-size: 1rem; color: var(--primary-light); font-weight: 900; }
+        .funnel-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+        @media (max-width: 768px) { .funnel-flow { grid-template-columns: 1fr; } }
+        .funnel-step { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 15px; text-align: center; transition: 0.3s; }
+        .funnel-step.active-funnel { border-color: var(--teal); background: var(--teal-soft); color: #0f172a; transform: translateY(-3px); }
+        .book-activity { border: 2px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; background: var(--card-bg); }
+        .book-activity-header { padding: 14px 18px; background: rgba(15, 76, 129, 0.06); cursor: pointer; display: flex; justify-content: space-between; font-weight: 800; color: var(--primary-light); }
+        .book-activity-body { padding: 18px; border-top: 1px solid var(--border); display: none; }
+        .book-activity.open .book-activity-body { display: block; }
+        .main-mode-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+        @media (max-width: 640px) { .main-mode-switcher { grid-template-columns: 1fr; } }
+        .mode-card-btn { background: var(--card-bg); border: 3px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: 0.2s; }
+        .mode-card-btn.active-mode-session { border-color: var(--primary-light); background: var(--primary-soft); }
+        .mode-card-btn.active-mode-homework { border-color: var(--accent); background: var(--accent-soft); }
+        .sub-tabs-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .quiz-tabs, .view-toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .view-btn { background: var(--card-bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 13px; border-radius: 10px; font-size: 0.86rem; font-weight: 700; cursor: pointer; }
+        .view-btn.active-view { background: var(--teal); color: white; border-color: var(--teal); }
+        .stats-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; display: block; }
+        .stat-val { font-size: 1.25rem; font-weight: 900; color: var(--primary-light); }
+        .btn-index { background: var(--primary-soft); color: var(--primary-light); border: 2px solid #93c5fd; padding: 7px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 800; cursor: pointer; }
+        .progress-container { width: 100%; height: 7px; background: var(--border); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary-light), var(--accent)); transition: width 0.3s; }
+        .q-card, .essay-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+        .q-badge, .essay-source { background: var(--primary-soft); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 0.84rem; font-weight: 800; display: inline-block; margin-bottom: 6px; }
+        .q-text-ar, .essay-q-text { font-size: calc(1.14rem * var(--font-scale)); font-weight: 800; margin-bottom: 6px; }
+        .q-text-en, .exp-en { font-size: calc(0.94rem * var(--font-scale)); color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; border-left: 3px solid var(--primary-light); padding-left: 10px; margin-bottom: 12px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .opt-btn { background: var(--bg); border: 2px solid var(--border); padding: 12px 16px; border-radius: 12px; cursor: pointer; text-align: right; width: 100%; transition: 0.2s; }
+        .opt-btn:hover:not(:disabled) { border-color: var(--primary-light); background: var(--primary-soft); }
+        .opt-btn.selected-pending { border-color: var(--primary-light) !important; background: var(--primary-soft) !important; }
+        .opt-btn.correct { background: #dcfce7 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .opt-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991c1c !important; }
+        .opt-ar { font-weight: 700; color: var(--text-main); }
+        .opt-en { font-size: 0.86rem; color: var(--text-muted); direction: ltr; text-align: left; font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; }
+        .explanation { margin-top: 14px; padding: 14px; border-radius: 12px; display: none; background: var(--bg); border-right: 5px solid var(--primary-light); }
+        .actions { display: flex; justify-content: space-between; margin-top: 18px; gap: 10px; flex-wrap: wrap; }
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 9px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-nav:disabled { background: #94a3b8; cursor: not-allowed; }
+        .essay-textarea { width: 100%; height: 80px; padding: 10px; border-radius: 10px; border: 2px solid var(--border); background: var(--bg); color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem; }
+        .btn-reveal-answer { background: var(--bg); border: 2px solid var(--border); color: var(--text-main); padding: 7px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-left: 6px; margin-bottom: 6px; }
+        .hint-box { display: none; margin-top: 10px; padding: 10px 14px; background: var(--accent-soft); border-right: 4px solid var(--accent); border-radius: 10px; font-weight: 700; }
+        .model-answer { display: none; margin-top: 12px; padding: 14px; background: #f0fdf4; border-right: 5px solid var(--success); border-radius: 10px; color: #14532d; }
+        body.dark-mode .model-answer { background: #064e3b; color: #ecfdf5; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 2500; padding: 20px; }
+        .modal-content { background: var(--card-bg); color: var(--text-main); border-radius: 20px; width: 100%; max-width: 700px; padding: 24px; max-height: 85vh; overflow-y: auto; }
+        .grid-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 8px; margin-top: 10px; }
+        .index-pill { background: var(--bg); border: 2px solid var(--border); padding: 8px; border-radius: 10px; font-weight: 800; text-align: center; cursor: pointer; }
+        .index-pill.solved-pending { background: var(--primary-soft); border-color: var(--primary-light); color: var(--primary-light); }
+        .index-pill.solved-correct { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+        .index-pill.solved-wrong { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+        .results-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 20px; padding: 32px 24px; text-align: center; display: none; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: var(--primary-soft); border: 5px solid var(--primary-light); display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 16px auto; }
+        .score-num { font-size: 2.1rem; font-weight: 900; color: var(--primary-light); }
+        .btn-restart { background: var(--accent); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .mistakes-review-box { text-align: right; margin-top: 22px; border-top: 2px solid var(--border); padding-top: 18px; }
+    </style>
+</head>
+<body>
+    <div id="top-progress-bar"></div>
+    <div class="sticky-toolbar">
+        <div class="toolbar-brand"><span>📡</span><span>منصة الدرس 4-1: أنواع الوسائط وخصائصها (60 سؤالاً + محاكيات تفاعلية)</span></div>
+        <div class="toolbar-actions">
+            <a href="#lesson-explanation" class="tool-pill">📖 الشرح والمحاكيات</a>
+            <a href="#book-activities-sec" class="tool-pill">📗 أنشطة الكتاب</a>
+            <button class="tool-pill" onclick="jumpToQuiz('session','mcq')">🎯 سيشن (30 سؤالاً)</button>
+            <button class="tool-pill" onclick="jumpToQuiz('homework','mcq')">🏠 الواجب (30 سؤالاً)</button>
+            <button class="tool-pill" id="projectorBtn" onclick="toggleProjectorMode()">🔍 تكبير الخط</button>
+            <button class="tool-pill" id="darkBtn" onclick="toggleDarkMode()">🌙 الوضع الليلي</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-badges">
+            <span class="h-badge">الصف الثاني الثانوي (بكالوريا مصرية)</span>
+            <span class="h-badge">الوحدة الرابعة: تصميم الويب والوسائط</span>
+            <span class="h-badge">الدرس 4-1 (صفحات الكتاب 68 - 73)</span>
+        </div>
+        <h1>الدرس 4-1: أنواع الوسائط وخصائصها (Media Types and Their Characteristics)</h1>
+        <p>شرح تفاعلي كامل لمنهج الكتاب المدرسي + محاكيات مقارنة الوسائط الخمس، نقاط قوة وقيود المواقع الإلكترونية، ومستشار اختيار الوسيلة والجمع بين الوسائط + 60 سؤالاً (30 للسيشن + 30 للواجب ثنائية اللغة)</p>
+        <div class="nav-shortcuts">
+            <a href="#lesson-explanation" class="shortcut-btn">📖 الشرح والمحاكيات التفاعلية</a>
+            <a href="#book-activities-sec" class="shortcut-btn">📗 جميع أسئلة وأنشطة الكتاب محلولة</a>
+            <button class="shortcut-btn" onclick="jumpToQuiz('session','mcq')">👨‍🏫 أسئلة السيشن (15 اختياري + 15 مقالي)</button>
+            <button class="shortcut-btn highlight-hw" onclick="jumpToQuiz('homework','mcq')">📝 أسئلة الواجب (15 اختياري + 15 مقالي)</button>
+        </div>
+    </header>
+
+    <div class="container" id="lesson-explanation">
+        <!-- Card 1: خريطة الدرس والمدخل -->
+        <div class="card">
+            <span class="badge">خريطة الدرس وأهداف التعلم (كتاب ص 68 - 69)</span>
+            <h2>🧭 مدخل الدرس: لماذا نختار وسيلة إعلامية معينة قبل بناء موقع إلكتروني؟</h2>
+            <p>قبل بناء موقع إلكتروني، من المفيد أن تسأل: لماذا نختار هذه الوسيلة؟ يمكن <strong>للتلفزيون</strong> الوصول إلى جمهور كبير في وقت واحد، وعادةً يكون الاتصال فيه باتجاه واحد. ويمكن الاستماع إلى <strong>الراديو</strong> أثناء التنقل أو أداء مهام أخرى بحسب التغطية ووسيلة الاستقبال. وتبقى <strong>الصحيفة</strong> متاحة على الورق دون اتصال. ويجمع <strong>الموقع الإلكتروني</strong> النص والصور والصوت والفيديو، ويمكن تحديثه وإضافة التفاعل إليه. كما يمكن <strong>لوسائل التواصل الاجتماعي</strong> نشر المعلومات بسرعة وتشجيع المشاركة. لذلك يعتمد الاختيار على <strong>الرسالة والجمهور والموارد</strong>.</p>
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--primary-light);">
+                    <h3 style="color: var(--primary-light);">🎯 أهداف التعلم الرسمية (ص 68)</h3>
+                    <ul style="margin-right: 18px; font-size: 0.95rem;">
+                        <li><strong>المقارنة</strong> بين خصائص الوسائط المختلفة، وشرح نقاط القوة والقيود المتعلقة بمواقع الويب.</li>
+                        <li><strong>اختيار</strong> الوسيلة المناسبة لغرض وجمهور محددين، وتبرير هذا الاختيار.</li>
+                    </ul>
+                </div>
+                <div class="info-panel" style="border-right: 5px solid var(--accent);">
+                    <h3 style="color: var(--accent-dark);">⭐ الفكرة الأساسية والمفاهيم الخمسة (ص 69)</h3>
+                    <p style="font-size: 0.94rem; margin-bottom: 8px;">لكل وسيلة إعلامية <strong>نقاط قوة وقيود</strong> مختلفة؛ ويعتمد اختيار الوسيلة المناسبة — وغالباً <strong>عدة وسائل مجتمعة</strong> — على <strong>الغرض والجمهور المستهدف</strong>.</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        <span class="badge" style="margin:0;">التلفزيون / الراديو / الصحيفة</span>
+                        <span class="badge" style="margin:0;">الموقع الإلكتروني / وسائل التواصل</span>
+                        <span class="badge" style="margin:0;">اتجاه واحد / اتجاهين</span>
+                        <span class="badge" style="margin:0;">نقاط القوة / القيود</span>
+                        <span class="badge" style="margin:0;">الجمع بين الوسائط</span>
+                    </div>
+                </div>
+            </div>
+            <div class="real-world-box">
+                <div class="real-world-title"><span>🔄</span><span>مصطلحات أساسية (ص 69 و 72): الفرق الجوهري بين «اتجاه واحد» و«اتجاهين»!</span></div>
+                <p style="font-size: 0.95rem;">
+                1. <strong>اتجاه واحد (One-Way Communication):</strong> ينتقل فيه الاتصال من <strong>المُرسِل إلى المُستقبِل فقط</strong> دون قدرة مباشرة للمتلقي على الرد عبر نفس الوسيلة (مثل: التلفزيون، الراديو، والصحيفة المطبوعة).<br>
+                2. <strong>اتجاهين / ثنائي الاتجاه (Two-Way Communication):</strong> يمكن للمستخدمين فيه <strong>الاستجابة والمشاركة والتفاعل</strong> مع المرسل ومع بعضهم البعض (مثل: وسائل التواصل الاجتماعي، والمواقع الإلكترونية من خلال النماذج والتعليقات).</p>
+            </div>
+            <div class="hook-box">
+                <strong>❓ السؤال الرئيسي للدرس (ص 69):</strong>
+                ما هي نقاط القوة والقيود في الوسائط المختلفة، وكيف تختار الوسيلة المناسبة لغرض وجمهور معينين؟
+            </div>
+        </div>
+
+        <!-- Card 2: المحور الأول: مقارنة خصائص الوسائط المختلفة -->
+        <div class="card">
+            <span class="badge">المحور الأول (كتاب ص 69)</span>
+            <h2>📺 1. مقارنة خصائص الوسائط المختلفة (التقليدية والرقمية)</h2>
+            <p>لكل وسيلة لنقل المعلومات خصائص مختلفة. عند التخطيط لموقع إلكتروني، من المهم فهم الاختلافات عن الوسائط الأخرى، وكيف تتكامل الوسائط التقليدية والرقمية جنباً إلى جنب (ص 69).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 18%;">الوسيلة</th>
+                        <th style="width: 24%;">المعلومات المنقولة</th>
+                        <th style="width: 58%;">الخصائص الأساسية في الكتاب المدرسي (ص 69)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>📺 التلفزيون</strong><br><small>(Television)</small></td>
+                        <td><strong>فيديو + صوت</strong></td>
+                        <td>يمكنه الوصول إلى <strong>جمهور كبير في وقت واحد</strong>، ويجمع الصورة والصوت، وعادةً يكون الاتصال فيه من المرسل إلى المتلقي (<strong>اتجاه واحد</strong>).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>📻 الراديو</strong><br><small>(Radio)</small></td>
+                        <td><strong>صوت</strong></td>
+                        <td>يعتمد على الصوت، ويمكن الاستماع إليه <strong>أثناء التنقل أو أداء مهام أخرى</strong> بحسب التغطية ووسيلة الاستقبال؛ وعادةً يكون الاتصال فيه <strong>باتجاه واحد</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>📰 الصحيفة</strong><br><small>(Newspaper)</small></td>
+                        <td><strong>نص + صور</strong></td>
+                        <td>تبقى <strong>موجودة مادياً كوسيلة مطبوعة</strong>. يمكن قراءتها <strong>دون اتصال بالإنترنت</strong>. الاتصال فيها <strong>اتجاه واحد</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🌐 الموقع الإلكتروني</strong><br><small>(Website)</small></td>
+                        <td><strong>نص + صور + فيديو + صوت</strong></td>
+                        <td>يمكن الجمع بين معلومات متنوعة، ويمكن <strong>تحديثه في أي وقت</strong>. اتجاه واحد أساساً، لكن <strong>التفاعل ثنائي الاتجاه ممكن أيضاً</strong> من خلال النماذج والتعليقات وغيرها.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>📱 وسائل التواصل الاجتماعي</strong><br><small>(Social Media)</small></td>
+                        <td><strong>نص + صور + فيديو + صوت</strong></td>
+                        <td>يمكنها <strong>نشر المعلومات بسرعة</strong>، وتسمح للمستخدمين <strong>بالنشر والمشاركة والتفاعل</strong> (ثنائية الاتجاه).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧪 محاكي مختبر مقارنة الوسائط الخمس (كتاب ص 69): اضغط على أي وسيلة لفحص خصائصها:</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="inspectMedia('tv', this)">📺 1. التلفزيون</button>
+                    <button class="sim-btn" onclick="inspectMedia('radio', this)">📻 2. الراديو</button>
+                    <button class="sim-btn" onclick="inspectMedia('newspaper', this)">📰 3. الصحيفة</button>
+                    <button class="sim-btn" onclick="inspectMedia('website', this)">🌐 4. الموقع الإلكتروني</button>
+                    <button class="sim-btn" onclick="inspectMedia('social', this)">📱 5. وسائل التواصل الاجتماعي</button>
+                </div>
+                <div class="media-stage-card" id="mediaMetricsGrid">
+                    <div class="metric-pill"><small>المعلومات المنقولة</small><strong id="mInfoType">فيديو + صوت</strong></div>
+                    <div class="metric-pill"><small>اتجاه الاتصال</small><strong id="mDirection">اتجاه واحد (من المرسل للمتلقي)</strong></div>
+                    <div class="metric-pill"><small>الحاجة للإنترنت</small><strong id="mInternet">لا يحتاج في البث الهوائي المعتاد</strong></div>
+                    <div class="metric-pill"><small>الميزة الأبرز</small><strong id="mStrength">الوصول لجمهور كبير في آنٍ واحد</strong></div>
+                </div>
+                <div class="sim-output" id="mediaSimOutput">
+                    📺 <strong>التلفزيون (ص 69):</strong> ينقل (فيديو + صوت) ويتميز بالقدرة على إعلام جمهور كبير في وقت واحد بقوة الصورة والصوت معاً، لكن الاتصال فيه عادةً أحادي الاتجاه من المرسل إلى المتلقي فقط.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: المحور الثاني: نقاط القوة والقيود في المواقع الإلكترونية -->
+        <div class="card">
+            <span class="badge">المحور الثاني (كتاب ص 69 - 70 و 72)</span>
+            <h2>⚖️ 2. نقاط القوة والقيود في المواقع الإلكترونية (Websites Strengths &amp; Limitations)</h2>
+            <p>يجمع الموقع الإلكتروني بين مزايا لا تتوفر في وسائل الإعلام أحادية الاتجاه، لكنه يخضع أيضاً لمجموعة من القيود التي يجب أخذها في الاعتبار عند التخطيط (ص 69 - 70).</p>
+
+            <div class="grid-2">
+                <div class="info-panel" style="border-right: 5px solid var(--success);">
+                    <h3 style="color: var(--success);">✅ أولاً: نقاط قوة المواقع الإلكترونية (5 نقاط - ص 70)</h3>
+                    <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:8px;">ملخص المصطلحات (ص 72): <strong>متنوع، قابل للتحديث، عالمي، ثنائي الاتجاه</strong>.</p>
+                    <ol style="margin-right:18px; font-size:0.94rem;">
+                        <li><strong>تنوع الوسائط:</strong> يمكن الجمع بين معلومات متنوعة مثل النص والصور والصوت والفيديو وعرضها معاً.</li>
+                        <li><strong>قابلية التحديث الفوري:</strong> يمكن تحديث المعلومات في أي وقت.</li>
+                        <li><strong>الوصول العالمي:</strong> يمكن الوصول إليه من أي مكان يتوفر فيه اتصال مناسب بالشبكة.</li>
+                        <li><strong>التفاعل ثنائي الاتجاه:</strong> التفاعل مع المستخدمين ممكن من خلال النماذج والتعليقات وغيرها.</li>
+                        <li><strong>سهولة التشغيل والتثبيت:</strong> يمكن استخدامه من المتصفح مباشرة، وقد تسمح بعض تطبيقات الويب أيضاً بالتثبيت.</li>
+                    </ol>
+                </div>
+
+                <div class="info-panel" style="border-right: 5px solid var(--danger);">
+                    <h3 style="color: var(--danger);">⚠️ ثانياً: قيود المواقع الإلكترونية (3 قيود - ص 70)</h3>
+                    <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:8px;">ملخص المصطلحات (ص 72): <strong>يحتاج إلى إنترنت؛ يجب على المستخدمين البحث عنه</strong>.</p>
+                    <ol style="margin-right:18px; font-size:0.94rem;">
+                        <li><strong>الاعتماد على الشبكة:</strong> تحتاج معظم وظائف المواقع إلى اتصال بالشبكة، لكن يمكن تصميم بعض المواقع أو تطبيقات الويب لتوفير محتوى أو وظائف محدودة دون اتصال.</li>
+                        <li><strong>الحاجة لمبادرة المستخدم (وسيلة سحب):</strong> غالباً يحتاج المستخدم إلى فتح الموقع للوصول إلى محتواه (لا تصل المعلومات تلقائياً للمستخدم)، ما لم تستخدم الخدمة إشعارات أو قنوات أخرى.</li>
+                        <li><strong>تفاوت الأداء والسرعة:</strong> قد تختلف سرعة العرض والتحميل حسب جهاز المستخدم وبيئة الشبكة.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🔍 محاكي اختبار جاهزية الموقع الإلكتروني في المواقف الواقعية (ص 70):</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runWebsiteCheck('update', this)">🔄 1. تغيير مواعيد العمل فجأة</button>
+                    <button class="sim-btn" onclick="runWebsiteCheck('offline', this)">📴 2. عائلة بلا إنترنت منزلي</button>
+                    <button class="sim-btn" onclick="runWebsiteCheck('passive', this)">🔔 3. جمهور لا يبحث عن الموقع بنفسه</button>
+                    <button class="sim-btn" onclick="runWebsiteCheck('feedback', this)">💬 4. استقبال أسئلة وتعليقات الزوار</button>
+                </div>
+                <div class="sim-output" id="websiteCheckOutput">
+                    ✅ <strong>نقطة قوة (القابلية للتحديث في أي وقت - ص 70):</strong> على عكس الصحيفة المطبوعة التي لا يمكن تعديلها بعد طباعتها، يمكن للموقع الإلكتروني تحديث مواعيد العمل والبيانات فوراً وفي أي وقت ليراها الجميع.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: المحور الثالث: اختيار الوسائط وفقاً للغرض والجمع بينها -->
+        <div class="card">
+            <span class="badge">المحور الثالث (كتاب ص 70 - 71)</span>
+            <h2>🎯 3. اختيار الوسائط وفقاً للغرض والجمهور والجمع بين عدة وسائط</h2>
+            <p>عند نقل المعلومات، من المهم اختيار الوسيلة الأنسب وفقاً <strong>للغرض والجمهور المستهدف</strong>. وفي الواقع العملي، <strong>غالباً ما تُستخدم عدة وسائط معاً</strong> بحيث تكمل كل وسيلة الأخرى (ص 70 - 71).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 28%;">الغرض الاتصالي (ص 70)</th>
+                        <th style="width: 32%;">أمثلة على الوسائط المناسبة</th>
+                        <th style="width: 40%;">السبب والتبرير العلمي</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. إعلام عدد كبير من الناس في آنٍ واحد</strong></td>
+                        <td><strong>التلفزيون، إعلانات وسائل التواصل الاجتماعي</strong></td>
+                        <td>تحقيق <strong>انتشار واسع</strong> وسريع لجمهور عريض في وقت واحد.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. تقديم معلومات تفصيلية</strong></td>
+                        <td><strong>الموقع الإلكتروني</strong></td>
+                        <td>يمكن للموقع تقديم <strong>كمية كبيرة من المعلومات</strong> وتنظيمها في صفحات وأقسام وتحديثها.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. إيصال المعلومات مباشرة لأشخاص محددين</strong></td>
+                        <td><strong>البريد الإلكتروني، الرسائل المباشرة</strong></td>
+                        <td>يمكن <strong>التوصيل بشكل فردي</strong> ومباشر لكل شخص مستهدف.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. الانتشار عن طريق التناقل الشفهي</strong></td>
+                        <td><strong>وسائل التواصل الاجتماعي</strong></td>
+                        <td>يمكن للمستخدمين <strong>مشاركة المعلومات ونشرها طوعاً</strong> بين أصدقائهم ومتابعيهم.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="sim-box">
+                <h3 style="color: var(--primary-light);">🧭 محاكي مستشار الحملة الإعلامية والجمع بين الوسائط (كتاب ص 70 - 71):</h3>
+                <p style="font-size:0.93rem;">اختر الهدف أو جرب <strong>«حملة متكاملة تجمع الوسائط»</strong> لترى كيف يتعاون التلفزيون والموقع الإلكتروني ووسائل التواصل معاً:</p>
+                <div class="sim-controls">
+                    <button class="sim-btn active-sim" onclick="runGoalAdvisor('mass', this)">📢 1. إعلام أكبر عدد في آنٍ واحد</button>
+                    <button class="sim-btn" onclick="runGoalAdvisor('details', this)">📑 2. تقديم مواصفات تفصيلية دائمة</button>
+                    <button class="sim-btn" onclick="runGoalAdvisor('direct', this)">✉️ 3. مراسلة أشخاص محددين فردياً</button>
+                    <button class="sim-btn" onclick="runGoalAdvisor('viral', this)">🔁 4. الانتشار بالتناقل الشفهي</button>
+                    <button class="sim-btn" onclick="runGoalAdvisor('combined', this)">🚀 5. حملة متكاملة (الجمع بين الوسائط)</button>
+                </div>
+                <div class="funnel-flow">
+                    <div class="funnel-step active-funnel" id="fStep1">
+                        <div style="font-size:1.6rem;">📺</div>
+                        <strong>الخطوة 1: جذب الانتباه الواسع</strong>
+                        <p style="font-size:0.84rem; margin-top:4px;">إعلان تلفزيوني أو إعلان تواصل اجتماعي يصل لجمهور كبير ويوجّههم للموقع.</p>
+                    </div>
+                    <div class="funnel-step" id="fStep2">
+                        <div style="font-size:1.6rem;">🌐</div>
+                        <strong>الخطوة 2: التعمق والتفاصيل</strong>
+                        <p style="font-size:0.84rem; margin-top:4px;">الموقع الإلكتروني يعرض التفاصيل الكاملة مقسمة في صفحات ويشجع على المشاركة.</p>
+                    </div>
+                    <div class="funnel-step" id="fStep3">
+                        <div style="font-size:1.6rem;">📱 + ✉️</div>
+                        <strong>الخطوة 3: المشاركة والتخصيص</strong>
+                        <p style="font-size:0.84rem; margin-top:4px;">وسائل التواصل للتناقل الشفهي الطوعي، والبريد الإلكتروني للرسائل الفردية.</p>
+                    </div>
+                </div>
+                <div class="sim-output" id="advisorSimOutput">
+                    📢 <strong>الاختيار الأنسب: التلفزيون أو إعلانات وسائل التواصل الاجتماعي (ص 70):</strong> لأنها تحقق انتشاراً واسعاً وتوصل الرسالة إلى عدد كبير من الناس في آنٍ واحد بالصوت والصورة.
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: دليل المعلم وأنشطة الكتاب محلولة -->
+        <div class="card" id="book-activities-sec">
+            <span class="badge">دليل المعلم والطالب الشامل (كتاب ص 68 - 73)</span>
+            <h2>📗 جميع أسئلة وأنشطة وتمارين الكتاب المدرسي محلولة بالتفصيل</h2>
+
+            <div class="book-activity open">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>💡 1. أنشطة «توقّف وفكّر» (ص 70 و 72) + «المثال المحلول» (ص 71)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>توقّف وفكّر (ص 70):</strong> أي وسيلة قد تختارها للوصول إلى أكبر عدد من الناس في آنٍ واحد — وأيها لتتيح لهم الاستجابة إليك؟<br>
+                    ⬅️ <strong>الإجابة:</strong><br>
+                    • <strong>للوصول إلى أكبر عدد من الناس في آنٍ واحد:</strong> نختار <strong>التلفزيون</strong> (أو إعلانات وسائل التواصل الاجتماعي) لتميزه بالانتشار الواسع.<br>
+                    • <strong>لإتاحة الاستجابة والتفاعل ثنائي الاتجاه:</strong> نختار <strong>وسائل التواصل الاجتماعي</strong> أو <strong>الموقع الإلكتروني</strong> (عبر النماذج والتعليقات) لأنها تدعم الاتصال ثنائي الاتجاه.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>توقّف وفكّر (ص 72):</strong> لكل موقف أدناه، اسأل أولاً: هل الهدف هو الانتشار الواسع، أم التفاصيل الكاملة، أم النشر، أم رسالة مباشرة؟<br>
+                    ⬅️ <strong>الإجابة:</strong><br>
+                    • إذا كان الهدف <strong>التفاصيل الكاملة في أي وقت</strong> ⬅️ نختار <strong>الموقع الإلكتروني</strong>.<br>
+                    • إذا كان الهدف <strong>النشر والتناقل الشفهي بين الناس</strong> ⬅️ نختار <strong>وسائل التواصل الاجتماعي</strong>.<br>
+                    • إذا كان الهدف <strong>الانتشار الواسع في آنٍ واحد بالفيديو</strong> ⬅️ نختار <strong>التلفزيون</strong>.<br>
+                    • إذا كان الهدف <strong>رسالة مباشرة لأشخاص محددين</strong> ⬅️ نختار <strong>البريد الإلكتروني أو الرسائل المباشرة</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>المثال المحلول (ص 71):</strong><br>
+                    (1) ضع علامة ○ أو ×:<br>
+                    • <strong>أ: ○</strong> (يمكن للموقع الإلكتروني عرض معلومات متنوعة مثل النص والصور والفيديو مجتمعة — نقطة قوة).<br>
+                    • <strong>ب: ×</strong> (التلفزيون عادةً وسيلة أحادية الاتجاه من المُرسِل إلى المُستقبِل، وليس ثنائي الاتجاه).<br>
+                    • <strong>جـ: ○</strong> (وسائل التواصل الاجتماعي وسيلة فعّالة للغاية في نشر المعلومات بسرعة).<br>
+                    • <strong>د: ×</strong> (يتطلب الموقع الإلكتروني عادةً اتصالاً بالإنترنت لمشاهدته).<br>
+                    (2) المطابقة (1 - 3):<br>
+                    • 1: إتاحة معلومات تفصيلية للاطلاع عليها في أي وقت ⬅️ <strong>(ب) الموقع الإلكتروني</strong>.<br>
+                    • 2: جعل المستخدمين ينشرون المعلومات عن طريق التناقل الشفهي ⬅️ <strong>(جـ) وسائل التواصل الاجتماعي</strong>.<br>
+                    • 3: إعلام عدد كبير من الناس في آنٍ واحد بالفيديو ⬅️ <strong>(أ) التلفزيون</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>📝 2. سؤال الامتحان [6 درجات] (ص 71) + «تدرّب 1 و 2» (ص 71 - 72)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>سؤال على نمط الامتحان [6 درجات] (ص 71):</strong> اشرح لماذا قد تستخدم مؤسسة ما موقعاً إلكترونياً وتلفزيوناً ووسائل تواصل اجتماعي معاً بدلاً من وسيلة واحدة فقط، للترويج لخدمة جديدة. (راجع: الانتشار، العمق، والنشر عن طريق التناقل الشفهي):<br>
+                    ⬅️ <strong>الإجابة النموذجية:</strong><br>
+                    لأنه لا توجد وسيلة إعلامية واحدة هي الأفضل لكل الأغراض، والجمع بين الوسائط الثلاث يجعل كل وسيلة تقوم بما تُجيده:<br>
+                    1. <strong>التلفزيون (الانتشار الواسع):</strong> يصل بالصوت والصورة إلى عدد كبير جداً من الناس في آنٍ واحد للفت انتباههم للخدمة الجديدة وتوجيههم للموقع.<br>
+                    2. <strong>الموقع الإلكتروني (العمق والتفاصيل):</strong> يتيح تقديم معلومات ومواصفات تفصيلية منظمة في صفحات وأقسام، مع إمكانية تحديثها في أي وقت واستقبال الطلبات أو الاستفسارات.<br>
+                    3. <strong>وسائل التواصل الاجتماعي (النشر والتناقل الشفهي):</strong> تتيح نشر المعلومات بسرعة وتفاعل المستخدمين ومشاركتها طوعاً مع أصدقائهم (التناقل الشفهي).</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 1 (ص 71):</strong><br>
+                    1) <strong>نقطتا قوة للمواقع الإلكترونية:</strong> (أ) الجمع بين معلومات متنوعة (نص وصور وصوت وفيديو) وتحديثها في أي وقت، (ب) الوصول إليها من أي مكان يتوفر فيه اتصال بالشبكة مع إمكانية التفاعل ثنائي الاتجاه عبر النماذج والتعليقات.<br>
+                    2) <strong>قيدان للمواقع الإلكترونية:</strong> (أ) تحتاج معظم وظائفها إلى اتصال بالإنترنت وتختلف سرعة التحميل حسب الجهاز والشبكة، (ب) غالباً يحتاج المستخدم إلى فتح الموقع بنفسه للوصول إلى محتواه ما لم تُستخدم إشعارات أو قنوات أخرى.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تدرّب 2 (ص 71 - 72):</strong><br>
+                    (1) الخيار الذي <strong>لا يمثل</strong> خاصية مناسبة للمواقع الإلكترونية هو: <strong>(ب) تصل المعلومات تلقائياً إلى المستخدمين دون أن يصلوا إليها بأنفسهم</strong>.<br>
+                    (2) تحديد الوسيلة الأنسب لكل موقف (1 - 4):<br>
+                    • 1 إتاحة المواصفات التفصيلية واستخدامات منتج جديد في أي وقت ⬅️ <strong>(ب) الموقع الإلكتروني</strong>.<br>
+                    • 2 جعل المستخدمين ينشرون معلومات عن منتج جديد عن طريق التناقل الشفهي ⬅️ <strong>(جـ) وسائل التواصل الاجتماعي</strong>.<br>
+                    • 3 توصيل فيديو منتج جديد إلى عدد كبير من الناس في آنٍ واحد ⬅️ <strong>(أ) التلفزيون</strong>.<br>
+                    • 4 إرسال معلومات حملة ترويجية مباشرة إلى العملاء الحاليين ⬅️ <strong>(د) البريد الإلكتروني</strong>.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>⚙️ 3. حل «فكّر كمهندس: ابحث ثم قرر» (ص 72) + «طبّق ما تعلمته» (ص 72)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>حل نشاط «فكّر كمهندس: ابحث ثم قرر» (برنامج القراءة المجاني في المكتبة العامة - ص 72):</strong><br>
+                    1. <strong>تحليل الجمهور (فائدة واحدة وعيب واحد للموقع الإلكتروني كقناة رئيسية):</strong><br>
+                    • <strong>عائلة بلا إنترنت منزلي:</strong> <em>الفائدة:</em> يمكنهم الاطلاع على التفاصيل إذا زاروا المكتبة واستخدموا حواسيبها؛ <em>العيب:</em> لن يتمكنوا من الوصول للموقع من المنزل لعدم وجود اتصال بالإنترنت، لذا يحتاجون إلى <strong>ملصق مطبوع أو صحيفة أو راديو محلي</strong>.<br>
+                    • <strong>طالب:</strong> <em>الفائدة:</em> يمكنه تصفح جدول الكتب والتسجيل عبر نموذج الموقع من هاتفه في أي وقت؛ <em>العيب:</em> قد لا يفتح موقع المكتبة من تلقاء نفسه ما لم يصله إعلان عبر وسائل التواصل الاجتماعي.<br>
+                    • <strong>أمين المكتبة:</strong> <em>الفائدة:</em> يمكنه تحديث قائمة الكتب والمواعيد في أي وقت واستقبال طلبات التسجيل إلكترونياً؛ <em>العيب:</em> يحتاج إلى متابعة الموقع وتحديثه وإدارة الوسائل المطبوعة بالتوازي لمن لا يملكون إنترنت.<br>
+                    2. <strong>القرار الهندسي:</strong> نوصي بـ ☑️ <strong>الجمع بين الوسائط حسب الغرض</strong>:<br>
+                    • استخدام <strong>الملصقات المطبوعة والصحف أو الراديو المحلي</strong> للوصول إلى العائلات غير المتصلة بالإنترنت.<br>
+                    • استخدام <strong>وسائل التواصل الاجتماعي</strong> لجذب الطلاب وتشجيع التناقل الشفهي السريع.<br>
+                    • استخدام <strong>الموقع الإلكتروني للمكتبة</strong> لتقديم تفاصيل البرنامج الكاملة ونماذج التسجيل.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل نشاط «طبّق ما تعلمته» - مواعيد عمل المستشفى (ص 72):</strong><br>
+                    • <strong>وسيلة للوصول إلى عدد كبير من الناس بسرعة:</strong> <strong>التلفزيون المحلي أو منشورات وسائل التواصل الاجتماعي</strong>؛ لأنها تنتشر بسرعة وتصل إلى شريحة واسعة من المواطنين في وقت واحد.<br>
+                    • <strong>وسيلة تتيح تفاعلاً ثنائي الاتجاه (طرح الأسئلة):</strong> <strong>الموقع الإلكتروني للمستشفى (عبر نماذج الاستفسار) أو صفحة التواصل الاجتماعي / الرسائل المباشرة</strong>؛ لأنها تتيح للمرضى إرسال أسئلتهم وتلقي الردود عليها مع عرض جدول المواعيد التفصيلي محدّثاً.</p>
+                </div>
+            </div>
+
+            <div class="book-activity">
+                <div class="book-activity-header" onclick="this.parentElement.classList.toggle('open')">
+                    <span>🏆 4. إجابة السؤال الرئيسي + حل تمارين نهاية الدرس + «فكّر وتحدَّ نفسك» (ص 72 - 73)</span><span>▼</span>
+                </div>
+                <div class="book-activity-body">
+                    <p><strong>إجابة السؤال الرئيسي (ص 72):</strong> يمكن للتلفزيون الوصول إلى جمهور كبير، ويمكن الاستماع إلى الراديو في مواقف مختلفة بحسب التغطية، وتبقى الصحيفة متاحة دون شبكة. ويجمع الموقع أنواعاً متعددة من المحتوى، ويمكن تحديثه وإضافة التفاعل إليه، لكنه يحتاج غالباً إلى اتصال، وقد يتطلب من المستخدم فتحه ما لم توجد آليات تنبيه. ويمكن لوسائل التواصل نشر المعلومات بسرعة وتشجيع المشاركة. لا توجد وسيلة أفضل لكل غرض؛ فالاختيار يعتمد على الجمهور والرسالة والموارد، وقد يكون الجمع بين عدة وسائل هو الأنسب.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>حل تمارين نهاية الدرس (ص 73):</strong><br>
+                    • <strong>سؤال 2 (إكمال الفقرة):</strong> (1) <strong>بالشبكة (أو بالإنترنت)</strong> | (2) <strong>فتح (أو زيارة)</strong> | (3) <strong>وسائط (أو وسائل إعلامية)</strong>.<br>
+                    • <strong>سؤال 3-(1) (اختيار من متعدد - خصائص الوسائط):</strong> الإجابة الصحيحة هي <strong>(جـ) وسائل التواصل الاجتماعي وسيلة تتيح للمستخدمين نشر المعلومات ومشاركتها</strong>. (لأن الراديو ينقل الصوت فقط، والصحف المطبوعة ليست الأسرع مقارنة بالوسائط الرقمية، والتلفزيون أحادي الاتجاه عادةً).<br>
+                    • <strong>سؤال 3-(2) (اختيار من متعدد - اختيار الوسائط):</strong> الإجابة الصحيحة هي <strong>(جـ) من المهم اختيار الوسيلة الأنسب وفقاً للغرض والجمهور المستهدف</strong>.</p>
+                    <hr style="margin:12px 0; border:0; border-top:1px dashed var(--border);">
+                    <p><strong>فكّر وتحدَّ نفسك + الخلاصة (ص 73):</strong><br>
+                    • <strong>تأمّل:</strong> أي وسيلة تثق بها شخصياً أكثر للأخبار المهمة، ولماذا؟ ⬅️ يثق كثيرون في <strong>المواقع الرسمية المعتمدة والصحف والتلفزيون الرسمي</strong> للتحقق من الأخبار المهمة نظراً لوجود مراجعة تحريرية، بينما تتميز وسائل التواصل بالسرعة ولكنها تتطلب تحققاً من المصدر.<br>
+                    • <strong>تحدٍّ:</strong> خطّط لمزيج الوسائط للإعلان عن فعالية مدرسية بميزانية تستبعد التلفزيون — ثم اذكر جمهوراً واحداً قد يفوّته مزيجك، ولماذا ⬅️ نجمع بين <strong>وسائل التواصل الاجتماعي</strong> (للانتشار السريع المجاني والتناقل الشفهي)، و<strong>الموقع الإلكتروني للمدرسة</strong> (لتفاصيل الفعالية وجدولها)، و<strong>البريد الإلكتروني/الرسائل</strong> (لأولياء الأمور المسجلين). والجمهور الذي قد يفوّته هذا المزيج الرقمي هو <strong>كبار السن أو الأسر التي لا تملك اتصالاً بالإنترنت</strong>، لذا يُنصح بإضافة ملصقات ورقية مطبوعة.<br>
+                    • <strong>الخلاصة:</strong> تذكّر: <strong>لا توجد وسيلة هي الأفضل لكل شيء — طابِق الوسيلة مع الغرض والجمهور، واجمع بين الوسائط بحيث تقوم كل واحدة بما تُجيده</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6: بنك الأسئلة المتكامل (60 سؤالاً) -->
+        <div id="quiz-section">
+            <div class="card" style="border-top: 5px solid var(--primary-light);">
+                <span class="badge">بنك الأسئلة المتكامل (60 سؤالاً)</span>
+                <h2>🎯 منصة التدريب والامتحانات: 30 سؤالاً للسيشن + 30 سؤالاً للواجب</h2>
+                <div class="main-mode-switcher">
+                    <div class="mode-card-btn active-mode-session" id="modeBtnSession" onclick="switchMode('session')">
+                        <div style="font-size:2.2rem;">👨‍🏫</div>
+                        <div>
+                            <h3 style="color:var(--primary-light);">القسم الأول: أسئلة السيشن (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتحليلياً للشرح والحصة</p>
+                        </div>
+                    </div>
+                    <div class="mode-card-btn" id="modeBtnHomework" onclick="switchMode('homework')">
+                        <div style="font-size:2.2rem;">🏠</div>
+                        <div>
+                            <h3 style="color:var(--accent-dark);">القسم الثاني: أسئلة الواجب (30 سؤالاً)</h3>
+                            <p style="font-size:0.88rem; color:var(--text-muted);">15 سؤال اختيار من متعدد + 15 سؤالاً مقالياً وتطبيقياً للتدريب المنزلي</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-tabs-bar">
+                    <div class="quiz-tabs">
+                        <button class="tab-btn active" id="tabMCQ" onclick="switchSubTab('mcq')"><span id="tabMCQLabel">🔘 الاختيار من متعدد (15 - السيشن)</span></button>
+                        <button class="tab-btn" id="tabEssay" onclick="switchSubTab('essay')"><span id="tabEssayLabel">✍️ الأسئلة المقالية (15 - السيشن)</span></button>
+                    </div>
+                    <div class="view-toggle-group" id="mcqViewToggleGroup">
+                        <button class="view-btn active-view" id="viewSingleBtn" onclick="setMcqViewMode('single')">🎯 سؤال بسؤال</button>
+                        <button class="view-btn" id="viewAllBtn" onclick="setMcqViewMode('all')">📋 عرض الـ 15 معاً</button>
+                        <button class="view-btn" id="gradingModeBtn" onclick="toggleGradingMode()">📝 وضع التصحيح: عند الإنهاء</button>
+                    </div>
+                </div>
+
+                <!-- MCQ Container -->
+                <div id="mcqContainer">
+                    <div class="stats-bar">
+                        <div><span class="stat-label">القسم</span><div class="stat-val" id="currentModeBadge" style="font-size:1rem;">👨‍🏫 السيشن</div></div>
+                        <div><span class="stat-label">السؤال</span><div><span class="stat-val" id="qCurrent">1</span> / 15</div></div>
+                        <div><span class="stat-label">أول محاولة 🎯</span><span class="stat-val" id="firstScore">--</span></div>
+                        <div><span class="stat-label">تمت الإجابة</span><div><span class="stat-val" id="score">0</span> / 15</div></div>
+                        <div><span class="stat-label">أعلى نتيجة 🏆</span><span class="stat-val" id="highScore">0</span></div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <button class="btn-index" onclick="openIndexModal()">📑 فهرس</button>
+                            <button class="btn-index" style="background:var(--success-soft); border-color:var(--success); color:#065f46;" onclick="submitAndGradeQuiz()">✅ إنهاء وتصحيح الاختبار</button>
+                            <button class="btn-index" style="border-color:var(--danger); color:var(--danger);" onclick="restartCurrentQuiz()">🔄 إعادة</button>
+                        </div>
+                        <div class="progress-container"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
+                    </div>
+
+                    <!-- Single Question Card -->
+                    <div class="q-card" id="quizCard">
+                        <div class="q-header">
+                            <span class="q-badge" id="topicBadge">خصائص الوسائط (ص 69)</span>
+                            <span style="color:var(--text-muted); font-size:0.88rem; font-weight:700;" id="qStatusIndicator">لم يُجب بعد</span>
+                        </div>
+                        <div class="q-text-ar" id="questionTextAr"></div>
+                        <div class="q-text-en" id="questionTextEn"></div>
+                        <div class="options-list" id="optionsContainer"></div>
+                        <div class="explanation" id="explanationText" style="display: none;"></div>
+                        <div class="actions">
+                            <button class="btn-nav" id="prevBtn" onclick="prevQuestion()" disabled="disabled">➡️ السابق</button>
+                            <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
+                        </div>
+                    </div>
+
+                    <!-- All 15 MCQ List Container -->
+                    <div id="allMcqListContainer" style="display:none;"></div>
+
+                    <!-- Results Card -->
+                    <div class="results-card" id="resultsCard">
+                        <div style="font-size:3.5rem;">🎉</div>
+                        <h2>تم تصحيح الاختبار! إليك نتيجتك ومراجعة الإجابات</h2>
+                        <div class="score-circle"><div class="score-num" id="finalScore">0</div><span>من 15</span></div>
+                        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                            <button class="btn-restart" onclick="restartCurrentQuiz()">إعادة الاختبار 🔄</button>
+                            <button class="btn-restart" style="background:var(--primary); color:white;" onclick="switchSubTab('essay')">الانتقال للمقالي (15) ✍️</button>
+                        </div>
+                        <div class="mistakes-review-box" id="mistakesReviewBox"></div>
+                    </div>
+                </div>
+
+                <!-- Essay Container -->
+                <div id="essayContainer" style="display:none;">
+                    <div style="background:var(--primary-soft); border-right:5px solid var(--primary-light); padding:14px; border-radius:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <strong style="color:var(--primary-light);" id="essayBannerTitle">📝 الأسئلة المقالية والتحليلية لقسم السيشن (15 سؤالاً):</strong>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-index" onclick="toggleAllEssays(true)">👁️ إظهار كل الإجابات</button>
+                            <button class="btn-index" onclick="toggleAllEssays(false)">🙈 إخفاء كل الإجابات</button>
+                        </div>
+                    </div>
+                    <div id="essayList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Index Modal -->
+    <div class="modal-overlay" id="indexModal" onclick="if(event.target.id==='indexModal')closeIndexModal()">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>📑 فهرس أسئلة الاختيار من متعدد (1 - 15)</h3>
+                <button class="btn-index" onclick="closeIndexModal()">✕</button>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:10px;">اضغط على أي رقم للانتقال السريع إلى السؤال:</p>
+            <div class="grid-index" id="gridIndexContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Top Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("top-progress-bar").style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+        });
+
+        function toggleProjectorMode() {
+            document.body.classList.toggle('projector-mode');
+            document.getElementById('projectorBtn').classList.toggle('active-tool');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('darkBtn').classList.toggle('active-tool');
+        }
+
+        // Simulator 1: Media Comparison Lab (p. 69)
+        const mediaComparisonData = {
+            tv: {
+                info: 'فيديو + صوت',
+                dir: 'اتجاه واحد (من المرسل للمتلقي)',
+                net: 'لا يحتاج إنترنت للبث الفضائي/الأرضي',
+                strength: 'إعلام جمهور كبير في آنٍ واحد',
+                desc: '📺 <strong>التلفزيون (ص 69):</strong> ينقل (فيديو + صوت) ويتميز بالقدرة على الوصول إلى جمهور كبير في وقت واحد، وعادةً يكون الاتصال فيه باتجاه واحد من المرسل إلى المتلقي.'
+            },
+            radio: {
+                info: 'صوت فقط',
+                dir: 'اتجاه واحد (من المرسل للمتلقي)',
+                net: 'يعتمد على التغطية وجهاز الاستقبال',
+                strength: 'الاستماع أثناء التنقل أو أداء مهام أخرى',
+                desc: '📻 <strong>الراديو (ص 69):</strong> يعتمد على الصوت فقط، ويمكن الاستماع إليه أثناء التنقل أو القيادة أو أداء مهام أخرى بحسب التغطية ووسيلة الاستقبال، والاتصال فيه باتجاه واحد عادةً.'
+            },
+            newspaper: {
+                info: 'نص + صور',
+                dir: 'اتجاه واحد (وسيلة مطبوعة)',
+                net: 'لا تحتاج إلى اتصال بالإنترنت نهائياً',
+                strength: 'تبقى موجودة مادياً على الورق',
+                desc: '📰 <strong>الصحيفة (ص 69):</strong> تنقل (نص + صور) وتبقى موجودة مادياً كوسيلة مطبوعة يمكن قراءتها والاحتفاظ بها دون أي اتصال بالإنترنت، والاتصال فيها باتجاه واحد.'
+            },
+            website: {
+                info: 'نص + صور + فيديو + صوت',
+                dir: 'اتجاه واحد أساساً + تفاعل ثنائي بالنماذج والتعليقات',
+                net: 'يحتاج اتصالاً بالشبكة لمعظم وظائفه',
+                strength: 'معلومات تفصيلية وتحديث في أي وقت',
+                desc: '🌐 <strong>الموقع الإلكتروني (ص 69 - 70):</strong> يجمع بين النص والصور والصوت والفيديو، ويمكن تحديثه في أي وقت وتنظيم معلومات تفصيلية فيه، ويدعم التفاعل ثنائي الاتجاه عبر النماذج والتعليقات.'
+            },
+            social: {
+                info: 'نص + صور + فيديو + صوت',
+                dir: 'ثنائي الاتجاه (تفاعل ومشاركة فورية)',
+                net: 'يحتاج إلى اتصال بالإنترنت',
+                strength: 'نشر سريع وتناقل شفهي طوعي',
+                desc: '📱 <strong>وسائل التواصل الاجتماعي (ص 69 - 70):</strong> تنقل النص والصور والفيديو والصوت، وتتميز بنشر المعلومات بسرعة هائلة والسماح للمستخدمين بالنشر والمشاركة والتفاعل (التناقل الشفهي).'
+            }
+        };
+
+        function inspectMedia(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const d = mediaComparisonData[key];
+            document.getElementById('mInfoType').innerText = d.info;
+            document.getElementById('mDirection').innerText = d.dir;
+            document.getElementById('mInternet').innerText = d.net;
+            document.getElementById('mStrength').innerText = d.strength;
+            document.getElementById('mediaSimOutput').innerHTML = d.desc;
+        }
+
+        // Simulator 2: Website Strengths & Limitations Checker (p. 70)
+        const websiteCheckScenarios = {
+            update: {
+                color: 'var(--success)',
+                html: '✅ <strong>نقطة قوة (القابلية للتحديث في أي وقت - ص 70):</strong> على عكس الصحيفة المطبوعة التي لا يمكن تعديلها بعد طباعتها، يمكن للموقع الإلكتروني تحديث مواعيد العمل والبيانات فوراً وفي أي وقت ليراها الجميع.'
+            },
+            offline: {
+                color: 'var(--danger)',
+                html: '⚠️ <strong>قيد من قيود الموقع الإلكتروني (الاعتماد على الشبكة - ص 70 و 72):</strong> تحتاج معظم وظائف المواقع إلى اتصال بالشبكة؛ لذا فإن العائلة التي لا تملك إنترنت منزلياً قد يفوتها محتوى الموقع ما لم نستخدم وسيلة مطبوعة كالملصقات أو الصحف.'
+            },
+            passive: {
+                color: 'var(--accent)',
+                html: '⚠️ <strong>قيد من قيود الموقع الإلكتروني (الحاجة لفتح الموقع - ص 70 و 71):</strong> لا تصل معلومات الموقع تلقائياً للمستخدمين؛ بل يحتاج المستخدم إلى فتح الموقع بنفسه للوصول إلى محتواه، ما لم تستخدم الخدمة إشعارات أو قنوات ترويج أخرى.'
+            },
+            feedback: {
+                color: 'var(--teal)',
+                html: '✅ <strong>نقطة قوة (التفاعل ثنائي الاتجاه - ص 70):</strong> يتيح الموقع الإلكتروني التفاعل ثنائي الاتجاه مع المستخدمين من خلال نماذج الاستفسار والتسجيل والتعليقات، وهو ما لا يوفره التلفزيون أو الورق المطبوع.'
+            }
+        };
+
+        function runWebsiteCheck(key, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const out = document.getElementById('websiteCheckOutput');
+            out.style.borderRightColor = websiteCheckScenarios[key].color;
+            out.innerHTML = websiteCheckScenarios[key].html;
+        }
+
+        // Simulator 3: Media Selection & Multi-Media Campaign Advisor (p. 70-71)
+        function runGoalAdvisor(goal, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active-sim'));
+                btn.classList.add('active-sim');
+            }
+            const s1 = document.getElementById('fStep1');
+            const s2 = document.getElementById('fStep2');
+            const s3 = document.getElementById('fStep3');
+            const out = document.getElementById('advisorSimOutput');
+
+            s1.classList.remove('active-funnel');
+            s2.classList.remove('active-funnel');
+            s3.classList.remove('active-funnel');
+
+            if (goal === 'mass') {
+                s1.classList.add('active-funnel');
+                out.style.borderRightColor = 'var(--primary-light)';
+                out.innerHTML = '📢 <strong>إعلام عدد كبير من الناس في آنٍ واحد (ص 70):</strong> نختار <strong>التلفزيون أو إعلانات وسائل التواصل الاجتماعي</strong>؛ والسبب هو تحقيق انتشار واسع وسريع بالصوت والصورة.';
+            } else if (goal === 'details') {
+                s2.classList.add('active-funnel');
+                out.style.borderRightColor = 'var(--teal)';
+                out.innerHTML = '📑 <strong>تقديم معلومات تفصيلية (ص 70):</strong> نختار <strong>الموقع الإلكتروني</strong>؛ لأنه يستطيع تقديم كمية كبيرة من المعلومات وتنظيمها في صفحات وأقسام وتحديثها في أي وقت.';
+            } else if (goal === 'direct') {
+                s3.classList.add('active-funnel');
+                out.style.borderRightColor = 'var(--purple)';
+                out.innerHTML = '✉️ <strong>إيصال المعلومات مباشرة لأشخاص محددين (ص 70):</strong> نختار <strong>البريد الإلكتروني أو الرسائل المباشرة</strong>؛ لأنها تتيح التوصيل بشكل فردي ومباشر لكل مستلم.';
+            } else if (goal === 'viral') {
+                s3.classList.add('active-funnel');
+                out.style.borderRightColor = 'var(--accent)';
+                out.innerHTML = '🔁 <strong>الانتشار عن طريق التناقل الشفهي (ص 70):</strong> نختار <strong>وسائل التواصل الاجتماعي</strong>؛ لأنها تمكّن المستخدمين من مشاركة المعلومات ونشرها طوعاً.';
+            } else {
+                s1.classList.add('active-funnel');
+                s2.classList.add('active-funnel');
+                s3.classList.add('active-funnel');
+                out.style.borderRightColor = 'var(--success)';
+                out.innerHTML = '🚀 <strong>الجمع بين عدة وسائط معاً في الواقع العملي (ص 70 - 71):</strong> يوجّه <strong>إعلان تلفزيوني</strong> المشاهدين إلى <strong>موقع إلكتروني</strong> للاطلاع على التفاصيل، ويشجع الموقع على نشر المعلومات عبر <strong>وسائل التواصل الاجتماعي</strong>، مع استخدام <strong>البريد الإلكتروني</strong> للعملاء المسجلين!';
+            }
+        }
+
+        // Quiz Engine Data (60 Questions: 30 Session + 30 Homework)
+        // Balanced option lengths & randomized correct indices (0, 1, 2, 3)
+        const quizData = {
+            session: {
+                mcq: [
+                    {
+                        tag: "مفهوم اتجاه الاتصال (ص 69)",
+                        ar_q: "ما المقصود بمصطلح «اتجاه واحد» (One-Way) عند وصف وسائل الإعلام والتواصل في الكتاب المدرسي؟",
+                        en_q: "What is meant by the term 'One-Way' when describing media and communication channels in the textbook?",
+                        options: [
+                            { ar: "انتقال المعلومات من المُرسِل إلى المُستقبِل فقط دون استجابة مباشرة", en: "Information flows from sender to receiver only without direct response" },
+                            { ar: "قدرة جميع المستخدمين على تعديل محتوى الرسالة وإعادة نشرها فوراً", en: "All users can edit the message content and republish it immediately" },
+                            { ar: "تشفير البيانات الرقمية بين المتصفح والخادم باستخدام مفتاح عام", en: "Encrypting digital data between browser and server using a public key" },
+                            { ar: "تخزين السجلات والملفات داخل قاعدة بيانات خلفية على الخادم", en: "Storing records and files inside a back-end database on the server" }
+                        ],
+                        correct: 0,
+                        exp_ar: "اتجاه واحد يعني انتقال الرسالة من المُرسِل إلى المُستقبِل فقط (مثل التلفزيون والراديو والصحيفة)، بينما اتجاهين يتيح للمستخدمين الاستجابة والمشاركة (ص 69).",
+                        exp_en: "One-way communication means information travels from sender to receiver only, whereas two-way allows users to respond and participate (p. 69)."
+                    },
+                    {
+                        tag: "خصائص التلفزيون (ص 69)",
+                        ar_q: "ما نوع المعلومات التي ينقلها «التلفزيون»، وما أبرز خاصية تميزه في جدول مقارنة الوسائط؟",
+                        en_q: "What type of information does 'Television' transmit, and what is its key characteristic in the media comparison table?",
+                        options: [
+                            { ar: "ينقل الصوت فقط ويبقى مطبوعاً على الورق بدون كهرباء", en: "Transmits audio only and remains printed on paper without electricity" },
+                            { ar: "ينقل الفيديو والصوت ويصل إلى جمهور كبير في وقت واحد باتجاه واحد", en: "Transmits video and audio, reaching a large audience simultaneously in one direction" },
+                            { ar: "ينقل النصوص فقط ويسمح للمشاهدين بكتابة التعليقات على الشاشة", en: "Transmits text only and allows viewers to write comments on screen" },
+                            { ar: "يرسل رسائل نصية فردية خاصة لكل شخص على حدة عبر البريد", en: "Sends private individual text messages to each person separately via mail" }
+                        ],
+                        correct: 1,
+                        exp_ar: "التلفزيون ينقل (فيديو + صوت)، ويمكنه الوصول إلى جمهور كبير في وقت واحد، وعادةً يكون الاتصال فيه باتجاه واحد من المرسل إلى المتلقي (ص 69).",
+                        exp_en: "Television transmits video + audio, reaches a large audience at once, and typically operates as one-way communication (p. 69)."
+                    },
+                    {
+                        tag: "خصائص الراديو (ص 69)",
+                        ar_q: "أي وسيلة إعلامية تعتمد على «الصوت فقط» وتتميز بإمكانية الاستماع إليها أثناء التنقل أو أداء مهام أخرى؟",
+                        en_q: "Which media channel relies on 'audio only' and allows listening while commuting or performing other tasks?",
+                        options: [
+                            { ar: "الصحيفة الورقية المطبوعة يومياً", en: "The daily printed paper newspaper" },
+                            { ar: "البريد الإلكتروني المباشر للأفراد", en: "Direct individual electronic mail" },
+                            { ar: "الراديو (الإذاعة المسموعة)", en: "Radio (audio broadcasting)" },
+                            { ar: "نموذج التسجيل في الموقع الإلكتروني", en: "The registration form on a website" }
+                        ],
+                        correct: 2,
+                        exp_ar: "الراديو يعتمد على الصوت، ويمكن الاستماع إليه أثناء التنقل أو أداء مهام أخرى بحسب التغطية ووسيلة الاستقبال، وعادةً يكون باتجاه واحد (ص 69).",
+                        exp_en: "Radio relies on audio and can be listened to while on the move or doing other tasks depending on coverage and receiver (p. 69)."
+                    },
+                    {
+                        tag: "خصائص الصحيفة (ص 69)",
+                        ar_q: "ما الميزة التي تنفرد بها «الصحيفة» (Newspaper) مقارنةً بالوسائط الرقمية التي تتطلب اتصالاً بالشبكة؟",
+                        en_q: "What advantage distinguishes a 'Newspaper' compared to digital media that require a network connection?",
+                        options: [
+                            { ar: "قدرتها على بث مقاطع الفيديو الحية والملفات الصوتية", en: "Its ability to stream live video clips and audio files" },
+                            { ar: "إمكانية تحديث الأخبار المطبوعة على الورقة نفسها تلقائياً", en: "Its ability to automatically update news printed on the same paper" },
+                            { ar: "إتاحة الدردشة الفورية ثنائية الاتجاه بين القراء على الورق", en: "Providing instant two-way chat between readers on paper" },
+                            { ar: "بقاؤها موجودة مادياً كوسيلة مطبوعة يمكن قراءتها دون اتصال بالإنترنت", en: "Remaining physically available as a printed medium readable without internet" }
+                        ],
+                        correct: 3,
+                        exp_ar: "الصحيفة تنقل (نص + صور)، وتبقى موجودة مادياً كوسيلة مطبوعة يمكن قراءتها دون اتصال بالإنترنت، والاتصال فيها باتجاه واحد (ص 69).",
+                        exp_en: "A newspaper conveys text and images, remains physically available as print media, and can be read without an internet connection (p. 69)."
+                    },
+                    {
+                        tag: "خصائص الموقع الإلكتروني (ص 69 - 70)",
+                        ar_q: "كيف يتحقق «التفاعل ثنائي الاتجاه» مع المستخدمين داخل الموقع الإلكتروني بالرغم من أنه أحادي الاتجاه في عرضه الأساسي؟",
+                        en_q: "How is 'two-way interaction' achieved with users on a website despite its primary display being one-way?",
+                        options: [
+                            { ar: "من خلال إضافة النماذج والتعليقات وأدوات الإدخال التفاعلية", en: "Through adding forms, comments, and interactive input tools" },
+                            { ar: "عن طريق طباعة صفحات الموقع على ورق الصحف اليومية", en: "By printing the website pages onto daily newspaper sheets" },
+                            { ar: "عبر تحويل الموقع إلى موجة راديو صوتية أحادية الاتجاه", en: "By converting the website into a one-way audio radio wave" },
+                            { ar: "بإلغاء جميع الأزرار والروابط ومنع المستخدم من الكتابة", en: "By removing all buttons and links and preventing user input" }
+                        ],
+                        correct: 0,
+                        exp_ar: "الموقع الإلكتروني اتجاه واحد أساساً في عرض المحتوى، لكن التفاعل ثنائي الاتجاه ممكن أيضاً من خلال النماذج والتعليقات وغيرها (ص 69 - 70).",
+                        exp_en: "A website is primarily one-way when presenting content, but two-way interaction is enabled through forms, comments, and similar features (p. 69-70)."
+                    },
+                    {
+                        tag: "تمارين 3-(1) - خصائص الوسائط (ص 73)",
+                        ar_q: "من بين الخيارات التالية، اختر الخيار الذي يصف خصائص الوسائط بأنسب شكل وفق الكتاب المدرسي:",
+                        en_q: "From the following options, choose the one that best describes media characteristics according to the textbook:",
+                        options: [
+                            { ar: "الراديو وسيلة تنقل المعلومات من خلال الفيديو والصوت معاً", en: "Radio is a medium that transmits information via both video and audio" },
+                            { ar: "وسائل التواصل الاجتماعي وسيلة تتيح للمستخدمين نشر المعلومات ومشاركتها", en: "Social media is a medium that allows users to post and share information" },
+                            { ar: "التلفزيون وسيلة تتيح التفاعل ثنائي الاتجاه مع المستخدمين دائماً", en: "Television is a medium that always provides two-way interaction with users" },
+                            { ar: "الصحف المطبوعة يمكن مشاهدتها فقط عند توفر اتصال سريع بالإنترنت", en: "Printed newspapers can only be viewed when a fast internet connection is available" }
+                        ],
+                        correct: 1,
+                        exp_ar: "وسائل التواصل الاجتماعي تتيح للمستخدمين نشر المعلومات بسرعة ومشاركتها والتفاعل معها (تمرين 3-(1) ص 73 والمثال المحلول ص 71).",
+                        exp_en: "Social media allows users to quickly publish, share, and interact with information (Exercise 3-(1), p. 73)."
+                    },
+                    {
+                        tag: "نقاط قوة المواقع الإلكترونية (ص 70)",
+                        ar_q: "أي من المزايا التالية يُعد من «نقاط القوة» الأساسية للمواقع الإلكترونية مقارنةً بالوسائط التقليدية؟",
+                        en_q: "Which of the following is a core 'strength' of websites compared to traditional media?",
+                        options: [
+                            { ar: "عدم حاجتها إلى أي اتصال بالشبكة أو أجهزة حاسوبية", en: "Needing no network connection or computing devices at all" },
+                            { ar: "وصول المعلومات تلقائياً للمستخدم دون أن يفتح الموقع أو يبحث عنه", en: "Delivering information automatically without the user opening the site" },
+                            { ar: "الجمع بين النص والصور والصوت والفيديو مع إمكانية تحديثها في أي وقت", en: "Combining text, images, audio, and video with the ability to update anytime" },
+                            { ar: "ثبات سرعة العرض والتحميل بغض النظر عن جهاز المستخدم أو الشبكة", en: "Identical loading speed regardless of the user's device or network" }
+                        ],
+                        correct: 2,
+                        exp_ar: "من نقاط قوة المواقع الإلكترونية (ص 70): الجمع بين معلومات متنوعة (نص وصور وصوت وفيديو) وعرضها معاً، وإمكانية تحديث المعلومات في أي وقت.",
+                        exp_en: "Key strengths of websites (p. 70) include combining diverse media types (text, images, audio, video) and updating information at any time."
+                    },
+                    {
+                        tag: "تدرّب 2-(1) - قيود المواقع الإلكترونية (ص 71)",
+                        ar_q: "من بين الخيارات التالية، اختر الخيار الذي لا يمثل خاصية مناسبة للمواقع الإلكترونية:",
+                        en_q: "From the following options, choose the one that is NOT an appropriate characteristic of websites:",
+                        options: [
+                            { ar: "يمكن تحديث المعلومات المعروضة في الموقع في أي وقت", en: "Information displayed on the website can be updated at any time" },
+                            { ar: "يمكن الجمع بين النص والصور والفيديو وعرضها معاً في الصفحة", en: "Text, images, and video can be combined and displayed together" },
+                            { ar: "التفاعل ثنائي الاتجاه ممكن من خلال النماذج والتعليقات", en: "Two-way interaction is possible through forms and comments" },
+                            { ar: "تصل المعلومات تلقائياً إلى المستخدمين دون أن يصلوا إليها بأنفسهم", en: "Information automatically reaches users without them accessing it themselves" }
+                        ],
+                        correct: 3,
+                        exp_ar: "من قيود المواقع الإلكترونية أنه غالباً يحتاج المستخدم إلى فتح الموقع بنفسه للوصول إلى محتواه، فلا تصل المعلومات تلقائياً إليه ما لم تُستخدم إشعارات أو قنوات أخرى (تدرّب 2-(1) ص 71).",
+                        exp_en: "A limitation of websites is that users usually must actively open or search for the site to view its content; it does not arrive automatically unless notifications are used (p. 71)."
+                    },
+                    {
+                        tag: "قيود الأداء والشبكة في المواقع (ص 70)",
+                        ar_q: "على ماذا تعتمد سرعة عرض وتحميل صفحات الموقع الإلكتروني عند المستخدم وفق قسم «قيود المواقع الإلكترونية»؟",
+                        en_q: "On what does the display and loading speed of a website depend according to the 'Limitations of Websites' section?",
+                        options: [
+                            { ar: "تختلف سرعة العرض والتحميل حسب جهاز المستخدم وبيئة الشبكة", en: "Display and loading speed vary depending on the user's device and network environment" },
+                            { ar: "تعتمد على نوع الورق والحبر المستخدم في طباعة الصحيفة", en: "It depends on the type of paper and ink used in newspaper printing" },
+                            { ar: "تعتمد فقط على عدد ساعات البث الإذاعي لمحطة الراديو", en: "It depends solely on the broadcast hours of the radio station" },
+                            { ar: "لا تتأثر أبداً بسرعة الإنترنت أو مواصفات هاتف المستخدم", en: "It is never affected by internet speed or the user's phone specifications" }
+                        ],
+                        correct: 0,
+                        exp_ar: "نص الكتاب ص 70 (القيد الثالث): «قد تختلف سرعة العرض والتحميل حسب جهاز المستخدم وبيئة الشبكة».",
+                        exp_en: "Textbook p. 70 (Limitation 3): Display and loading speed may vary depending on the user's device and network environment."
+                    },
+                    {
+                        tag: "تدرّب 2-(2) - اختيار الوسيلة لتقديم تفاصيل (ص 70 و 72)",
+                        ar_q: "ما الوسيلة الأنسب عندما يكون الغرض هو «إتاحة المواصفات التفصيلية واستخدامات منتج جديد للاطلاع عليها في أي وقت»؟",
+                        en_q: "Which medium is most appropriate when the goal is 'making detailed specifications and uses of a new product available at any time'?",
+                        options: [
+                            { ar: "إذاعة الراديو المسموعة أثناء القيادة", en: "Audio radio broadcast while driving" },
+                            { ar: "الموقع الإلكتروني لتنظيم الصفحات والأقسام", en: "A Website to organize pages and detailed sections" },
+                            { ar: "رسالة نصية قصيرة من سطر واحد", en: "A single-line short text message" },
+                            { ar: "إعلان تلفزيوني مدته خمس ثوانٍ فقط", en: "A five-second television commercial" }
+                        ],
+                        correct: 1,
+                        exp_ar: "لتقديم معلومات تفصيلية نختار الموقع الإلكتروني؛ لأنه يمكن للموقع تقديم كمية كبيرة من المعلومات وتنظيمها في صفحات وأقسام وتحديثها (ص 70 و 72).",
+                        exp_en: "For providing detailed information at any time, a website is best because it can organize large amounts of information across pages and sections (p. 70, 72)."
+                    },
+                    {
+                        tag: "تدرّب 2-(2) - الانتشار بالتناقل الشفهي (ص 70 و 72)",
+                        ar_q: "أي وسيلة هي الأنسب عندما يكون الغرض «جعل المستخدمين ينشرون معلومات عن منتج جديد عن طريق التناقل الشفهي»؟",
+                        en_q: "Which medium is best when the goal is 'getting users to spread information about a new product via word-of-mouth'?",
+                        options: [
+                            { ar: "الصحيفة الورقية الأسبوعية", en: "Weekly printed newspaper" },
+                            { ar: "البث الإذاعي عبر موجة الراديو", en: "Audio broadcast over radio waves" },
+                            { ar: "وسائل التواصل الاجتماعي", en: "Social Media platforms" },
+                            { ar: "الأرشيف الورقي الداخلي للمؤسسة", en: "Internal paper archive of the organization" }
+                        ],
+                        correct: 2,
+                        exp_ar: "للانتشار عن طريق التناقل الشفهي نختار وسائل التواصل الاجتماعي؛ لأنها تتيح للمستخدمين مشاركة المعلومات ونشرها طوعاً (ص 70 و 72).",
+                        exp_en: "For word-of-mouth spread, social media is ideal because users can voluntarily share and repost content among their networks (p. 70, 72)."
+                    },
+                    {
+                        tag: "تدرّب 2-(2) - الإعلام الواسع بالفيديو (ص 70 و 72)",
+                        ar_q: "ما الوسيلة الأنسب لتوصيل فيديو عن منتج جديد وإعلام عدد كبير من الناس في آنٍ واحد؟",
+                        en_q: "Which medium is most suitable for delivering a new product video and informing a large number of people simultaneously?",
+                        options: [
+                            { ar: "الراديو الصوتي التقليدي", en: "Traditional audio radio" },
+                            { ar: "الصحيفة الورقية المطبوعة", en: "Printed paper newspaper" },
+                            { ar: "البريد الورقي الفردي المسجل", en: "Registered individual postal mail" },
+                            { ar: "التلفزيون (أو إعلانات الفيديو واسعة الانتشار)", en: "Television (or wide-reach video broadcasts)" }
+                        ],
+                        correct: 3,
+                        exp_ar: "لإعلام عدد كبير من الناس في آنٍ واحد بالفيديو نختار التلفزيون لما يتميز به من انتشار واسع وقدرة على عرض الصوت والصورة معاً (ص 70 - 72).",
+                        exp_en: "Television is ideal for informing a large audience simultaneously with video due to its wide reach (p. 70-72)."
+                    },
+                    {
+                        tag: "تدرّب 2-(2) - المراسلة الفردية المباشرة (ص 70 و 72)",
+                        ar_q: "عندما تريد شركة «إرسال معلومات حملة ترويجية مباشرة إلى العملاء الحاليين بشكل فردي»، فما الوسيلة الأنسب؟",
+                        en_q: "When a company wants to 'send promotional campaign information directly to existing customers individually', which medium is most suitable?",
+                        options: [
+                            { ar: "البريد الإلكتروني أو الرسائل المباشرة", en: "Email or Direct Messages" },
+                            { ar: "لوحة إعلانات ورقية في الشارع العام", en: "A public street paper billboard" },
+                            { ar: "بث إذاعي عام عبر موجات الراديو", en: "A public radio wave broadcast" },
+                            { ar: "مقال عام في صحيفة ورقية يومية", en: "A general article in a daily newspaper" }
+                        ],
+                        correct: 0,
+                        exp_ar: "لإيصال المعلومات مباشرة لأشخاص محددين نختار البريد الإلكتروني أو الرسائل المباشرة لأنها تتيح التوصيل بشكل فردي لكل عميل (ص 70 و 72).",
+                        exp_en: "To deliver information directly to specific individuals, email or direct messaging is best because it supports individual delivery (p. 70, 72)."
+                    },
+                    {
+                        tag: "الجمع بين الوسائط في الواقع العملي (ص 70 - 71)",
+                        ar_q: "كيف تتكامل الوسائط معاً في حملة إعلانية واقعية كما ورد في الكتاب المدرسي (ص 70)؟",
+                        en_q: "How do multiple media channels work together in a real-world campaign as described in the textbook (p. 70)?",
+                        options: [
+                            { ar: "تُلغى جميع الوسائط الرقمية ويُكتفى بالصحيفة الورقية فقط", en: "All digital media are canceled and only a printed newspaper is used" },
+                            { ar: "يوجّه إعلان تلفزيوني المشاهدين إلى موقع إلكتروني، ويشجع الموقع على النشر عبر وسائل التواصل", en: "A TV ad directs viewers to a website, and the website encourages sharing via social media" },
+                            { ar: "يُمنع وضع عنوان الموقع الإلكتروني في الإعلانات التلفزيونية أو المنشورات", en: "The website address is prohibited from appearing in TV ads or social posts" },
+                            { ar: "يُستخدم الراديو لعرض الصور عالية الدقة والجداول التفصيلية فقط", en: "Radio is used solely to display high-resolution images and detailed tables" }
+                        ],
+                        correct: 1,
+                        exp_ar: "نص الكتاب ص 70: «في الواقع العملي، غالباً ما تُستخدم عدة وسائط معاً. على سبيل المثال، يوجّه إعلان تلفزيوني المشاهدين إلى موقع إلكتروني، ويشجع الموقع الإلكتروني على نشر المعلومات عبر وسائل التواصل الاجتماعي».",
+                        exp_en: "Textbook p. 70: In practice, multiple media are combined—for example, a TV ad directs viewers to a website for depth, which then encourages sharing on social media."
+                    },
+                    {
+                        tag: "تمارين 3-(2) - قاعدة اختيار الوسائط (ص 73)",
+                        ar_q: "اختر الخيار الذي يصف قاعدة «اختيار الوسائط» بأنسب شكل وفق تمارين نهاية الدرس (ص 73):",
+                        en_q: "Choose the option that best describes the rule for 'selecting media' according to the end-of-lesson exercises (p. 73):",
+                        options: [
+                            { ar: "يجب أن يستخدم نشر المعلومات دائماً وسيلة إعلامية واحدة فقط", en: "Information dissemination must always use only a single medium" },
+                            { ar: "بغض النظر عن الغرض أو الجمهور المستهدف، يكفي الموقع الإلكتروني وحده", en: "Regardless of purpose or target audience, a website alone is sufficient" },
+                            { ar: "من المهم اختيار الوسيلة الأنسب وفقاً للغرض والجمهور المستهدف", en: "It is important to choose the most appropriate medium based on purpose and target audience" },
+                            { ar: "مع وجود وسائل التواصل الاجتماعي، لا حاجة أبداً إلى التلفزيون أو المواقع الإلكترونية", en: "With social media available, there is never any need for TV or websites" }
+                        ],
+                        correct: 2,
+                        exp_ar: "القاعدة الأساسية في الدرس (ص 70 و 73): لا توجد وسيلة واحدة هي الأفضل لكل شيء؛ بل من المهم اختيار الوسيلة الأنسب وفقاً للغرض والجمهور المستهدف والجمع بينها عند الحاجة.",
+                        exp_en: "Core rule (p. 70, 73): No single medium is best for everything; choose the most appropriate medium based on the purpose and target audience."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "السؤال الرئيسي للدرس (ص 69 و ص 72)",
+                        q: "ما هي نقاط القوة والقيود في الوسائط المختلفة، وكيف تختار الوسيلة المناسبة لغرض وجمهور معينين؟",
+                        en_q: "What are the strengths and limitations of different media, and how do you choose the appropriate medium for a specific purpose and audience?",
+                        hint: "قارن بين التلفزيون والراديو والصحيفة والموقع الإلكتروني ووسائل التواصل، ثم وضح معيار الغرض والجمهور.",
+                        en_hint: "Compare TV, radio, newspaper, website, and social media, then explain matching the medium to purpose, audience, and resources.",
+                        model: "• <b>خصائص الوسائط ونقاط قوتها وقيودها:</b> يصل <b>التلفزيون</b> لجمهور كبير بالصوت والصورة لكنه أحادي الاتجاه؛ ويُستمع <b>للراديو</b> أثناء التنقل بالصوت فقط؛ وتبقى <b>الصحيفة</b> متاحة ورقياً دون شبكة؛ ويجمع <b>الموقع الإلكتروني</b> وسائط متعددة ويُحدّث في أي وقت ويدعم التفاعل لكنه يتطلب إنترنت وفتحه من قِبل المستخدم؛ وتنشر <b>وسائل التواصل</b> المعلومات بسرعة وتشجع المشاركة.<br>• <b>كيف نختار الوسيلة:</b> لا توجد وسيلة أفضل لكل غرض؛ بل نختار بناءً على <b>الغرض والجمهور المستهدف والموارد</b>، وغالباً ما نجمع بين عدة وسائل معاً بحيث تقوم كل وسيلة بما تُجيده.",
+                        en_model: "• <b>Media Strengths & Limitations:</b> <b>TV</b> reaches massive audiences with video/audio (one-way); <b>Radio</b> works on the move (audio only); <b>Newspapers</b> work offline in print; <b>Websites</b> combine rich media, update anytime, and allow interaction but require internet and user visits; <b>Social Media</b> spreads rapidly via two-way sharing.<br>• <b>Selection Rule:</b> Choose based on <b>purpose, target audience, and resources</b>, often combining multiple media."
+                    },
+                    {
+                        source: "سؤال على نمط الامتحان [6 درجات] (ص 71)",
+                        q: "اشرح لماذا قد تستخدم مؤسسة ما موقعاً إلكترونياً وتلفزيوناً ووسائل تواصل اجتماعي معاً بدلاً من وسيلة واحدة فقط، للترويج لخدمة جديدة. (راجع: الانتشار، العمق، والنشر عن طريق التناقل الشفهي).",
+                        en_q: "Explain why an organization might use a website, television, and social media together rather than a single medium to promote a new service. (Refer to: reach, depth, and word-of-mouth).",
+                        hint: "وزع الأدوار الثلاثة: الانتشار للتلفزيون، العمق للموقع، والتناقل الشفهي لوسائل التواصل.",
+                        en_hint: "Assign reach to TV, informational depth to the website, and word-of-mouth sharing to social media.",
+                        model: "لأن الجمع بين الوسائط الثلاث يحقق تكاملاً لا توفره وسيلة منفردة:<br>1. <b>التلفزيون (الانتشار الواسع):</b> يعرّف عدداً كبيراً جداً من الناس بالخدمة الجديدة في وقت واحد بالصوت والصورة ويوجههم للموقع.<br>2. <b>الموقع الإلكتروني (العمق والتفاصيل):</b> يوفر شرحاً تفصيلياً منظماً في صفحات وأقسام قابلة للتحديث في أي وقت، ويتيح نماذج الاشتراك أو الاستفسار.<br>3. <b>وسائل التواصل الاجتماعي (النشر والتناقل الشفهي):</b> تتيح للمستخدمين التفاعل ومشاركة المعلومات ونشرها طوعاً بين معارفهم بسرعة.",
+                        en_model: "Combining all three leverages each medium's unique strength:<br>1. <b>Television (Broad Reach):</b> Informs a massive audience simultaneously with video and audio.<br>2. <b>Website (Depth):</b> Provides detailed, organized, and updatable information across pages and forms.<br>3. <b>Social Media (Word-of-Mouth):</b> Enables rapid sharing, user interaction, and voluntary viral spread."
+                    },
+                    {
+                        source: "تدرّب 1-(1) - نقاط قوة المواقع الإلكترونية (ص 70 - 71)",
+                        q: "اذكر خمس نقاط قوة تتميز بها المواقع الإلكترونية عند نقل المعلومات والتواصل مع المستخدمين.",
+                        en_q: "State five strengths of websites when conveying information and communicating with users.",
+                        hint: "تنوع المحتوى، التحديث، الوصول العالمي، التفاعل ثنائي الاتجاه، والاستخدام عبر المتصفح/التثبيت.",
+                        en_hint: "Multimedia variety, anytime updates, global access, two-way interaction, and browser/installable access.",
+                        model: "1. <b>تنوع المحتوى:</b> الجمع بين النص والصور والصوت والفيديو وعرضها معاً.<br>2. <b>التحديث الفوري:</b> إمكانية تحديث المعلومات في أي وقت.<br>3. <b>الوصول العالمي:</b> إمكانية الوصول إلى الموقع من أي مكان يتوفر فيه اتصال مناسب بالشبكة.<br>4. <b>التفاعل ثنائي الاتجاه:</b> إتاحة التفاعل مع المستخدمين عبر النماذج والتعليقات وغيرها.<br>5. <b>مرونة التشغيل:</b> استخدامه مباشرة من المتصفح، مع سماح بعض تطبيقات الويب بالتثبيت.",
+                        en_model: "1. <b>Multimedia Integration:</b> Combining text, images, audio, and video together.<br>2. <b>Anytime Updates:</b> Updating content whenever needed.<br>3. <b>Anywhere Access:</b> Accessible from any location with a network connection.<br>4. <b>Two-Way Interaction:</b> Supporting user feedback via forms and comments.<br>5. <b>Browser & Installability:</b> Running directly in a browser, with some web apps supporting installation."
+                    },
+                    {
+                        source: "تدرّب 1-(2) - قيود المواقع الإلكترونية (ص 70 - 71)",
+                        q: "اذكر القيود الثلاثة للمواقع الإلكترونية التي يجب مراعاتها عند التخطيط لنشر المعلومات.",
+                        en_q: "State the three limitations of websites that must be considered when planning information delivery.",
+                        hint: "الحاجة للاتصال بالشبكة، الحاجة لفتح الموقع من قِبل المستخدم، وتفاوت سرعة العرض والتحميل.",
+                        en_hint: "Network dependency, requiring users to actively open the site, and variable loading speeds.",
+                        model: "1. <b>الحاجة للاتصال بالشبكة:</b> تحتاج معظم وظائف المواقع إلى اتصال بالإنترنت (رغم إمكانية توفير محتوى محدود دون اتصال في بعض التطبيقات).<br>2. <b>ضرورة مبادرة المستخدم بفتح الموقع:</b> غالباً يحتاج المستخدم إلى فتح الموقع أو البحث عنه للوصول إلى محتواه، ما لم تستخدم الخدمة إشعارات أو قنوات أخرى.<br>3. <b>تفاوت سرعة العرض والتحميل:</b> قد تختلف سرعة التحميل والعرض حسب مواصفات جهاز المستخدم وبيئة الشبكة.",
+                        en_model: "1. <b>Network Dependency:</b> Most website functions require an active internet connection.<br>2. <b>User-Initiated Access:</b> Users usually must open or search for the site themselves unless notifications or external channels are used.<br>3. <b>Variable Performance:</b> Loading and display speeds vary based on the user's device and network quality."
+                    },
+                    {
+                        source: "مقارنة الاتجاه الواحد والاتجاهين (ص 69)",
+                        q: "قارن بين الاتصال «باتجاه واحد» والاتصال «باتجاهين» من حيث المفهوم، مع إعطاء مثالين من الوسائط لكل نوع.",
+                        en_q: "Compare 'One-Way' and 'Two-Way' communication in terms of concept, giving two media examples for each.",
+                        hint: "راجع صندوق المصطلحات الأساسية ص 69.",
+                        en_hint: "Review the Key Terms box on p. 69.",
+                        model: "• <b>اتجاه واحد (One-Way):</b> ينتقل فيه الاتصال من المُرسِل إلى المُستقبِل فقط دون إمكانية رد مباشر عبر الوسيلة نفسها. <b>أمثلة:</b> التلفزيون، الراديو، والصحيفة المطبوعة.<br>• <b>اتجاهين (Two-Way):</b> يمكن للمستخدمين فيه الاستجابة والمشاركة والتفاعل. <b>أمثلة:</b> وسائل التواصل الاجتماعي، والمواقع الإلكترونية المزودة بنماذج وتعليقات.",
+                        en_model: "• <b>One-Way:</b> Information flows solely from sender to receiver without direct reply. <b>Examples:</b> Television, Radio, and Printed Newspapers.<br>• <b>Two-Way:</b> Users can respond, participate, and interact. <b>Examples:</b> Social Media and Websites with forms/comments."
+                    },
+                    {
+                        source: "مقارنة الوسائط الثلاث التقليدية (ص 69)",
+                        q: "قارن بين (التلفزيون) و(الراديو) و(الصحيفة) من حيث: نوع المعلومات المنقولة، والميزة العملية لكل وسيلة.",
+                        en_q: "Compare Television, Radio, and Newspaper in terms of transmitted information types and practical advantage.",
+                        hint: "راجع الجدول الأول في ص 69.",
+                        en_hint: "Refer to Table 1 on p. 69.",
+                        model: "1. <b>التلفزيون:</b> ينقل (<b>فيديو + صوت</b>)؛ وميزته الوصول إلى جمهور كبير في وقت واحد بقوة الصورة والصوت.<br>2. <b>الراديو:</b> ينقل (<b>صوت فقط</b>)؛ وميزته إمكانية الاستماع إليه أثناء التنقل أو أداء مهام أخرى بحسب التغطية.<br>3. <b>الصحيفة:</b> تنقل (<b>نص + صور</b>)؛ وميزتها أنها تبقى موجودة مادياً كوسيلة مطبوعة تُقرأ دون اتصال بالإنترنت.",
+                        en_model: "1. <b>Television:</b> Transmits <b>video + audio</b>; reaches a large audience simultaneously.<br>2. <b>Radio:</b> Transmits <b>audio only</b>; can be listened to while commuting or multitasking.<br>3. <b>Newspaper:</b> Transmits <b>text + images</b>; physically persists on paper and requires no internet."
+                    },
+                    {
+                        source: "اختيار الوسيلة وفق الغرض (ص 70)",
+                        q: "حدد الوسيلة الإعلامية الأنسب لكل غرض من الأغراض الأربعة التالية مع ذكر السبب: (1 إعلام عدد كبير في آنٍ واحد، 2 تقديم معلومات تفصيلية، 3 إيصال معلومات مباشرة لأشخاص محددين، 4 الانتشار عن طريق التناقل الشفهي).",
+                        en_q: "Identify the best medium and reason for each of the four goals: (1 informing a large group at once, 2 providing detailed info, 3 reaching specific individuals directly, 4 word-of-mouth spread).",
+                        hint: "راجع جدول اختيار الوسائط وفقاً للغرض ص 70.",
+                        en_hint: "Review the media selection by purpose table on p. 70.",
+                        model: "1. <b>إعلام عدد كبير في آنٍ واحد:</b> <b>التلفزيون أو إعلانات التواصل الاجتماعي</b> (السبب: انتشار واسع).<br>2. <b>تقديم معلومات تفصيلية:</b> <b>الموقع الإلكتروني</b> (السبب: تقديم كمية كبيرة من المعلومات وتنظيمها في صفحات وأقسام وتحديثها).<br>3. <b>إيصال معلومات مباشرة لأشخاص محددين:</b> <b>البريد الإلكتروني أو الرسائل المباشرة</b> (السبب: التوصيل بشكل فردي).<br>4. <b>الانتشار عن طريق التناقل الشفهي:</b> <b>وسائل التواصل الاجتماعي</b> (السبب: مشاركة المستخدمين للمعلومات ونشرها طوعاً).",
+                        en_model: "1. <b>Informing many at once:</b> <b>TV or Social Media Ads</b> (wide reach).<br>2. <b>Detailed information:</b> <b>Website</b> (organizes large volumes of updatable content across pages).<br>3. <b>Direct individual delivery:</b> <b>Email or Direct Messages</b> (individual targeting).<br>4. <b>Word-of-mouth spread:</b> <b>Social Media</b> (voluntary user sharing)."
+                    },
+                    {
+                        source: "فكّر كمهندس - مكتبة المدينة العامة (ص 72)",
+                        q: "تريد مكتبة عامة الإعلان عن برنامج قراءة مجاني جديد لثلاث فئات: (عائلة بلا إنترنت منزلي، وطالب، وأمين المكتبة). اذكر فائدة واحدة وعيباً واحداً للاعتماد على «موقع إلكتروني» كقناة رئيسية لكل فئة.",
+                        en_q: "A public library wants to promote a free reading program to three groups: (a family without home internet, a student, and the librarian). State one benefit and one drawback of using a website as the main channel for each.",
+                        hint: "فكر في توفر الإنترنت لدى العائلة، وعادات تصفح الطالب، ومهام التحديث لدى أمين المكتبة.",
+                        en_hint: "Consider internet access for the family, discovery habits for the student, and content management for the librarian.",
+                        model: "1. <b>عائلة بلا إنترنت منزلي:</b> <i>الفائدة:</i> وجود مرجع كامل للتفاصيل عند توفر شبكة عامة؛ <i>العيب:</i> عدم قدرتهم على فتح الموقع من المنزل لغياب الإنترنت.<br>2. <b>طالب:</b> <i>الفائدة:</i> سهولة الاطلاع على التفاصيل والتسجيل عبر الهاتف في أي وقت؛ <i>العيب:</i> لن يعلم بالبرنامج إذا لم يفتح موقع المكتبة بنفسه.<br>3. <b>أمين المكتبة:</b> <i>الفائدة:</i> سهولة تحديث المواعيد وقوائم الكتب فوراً؛ <i>العيب:</i> عدم كفاية الموقع وحده للوصول إلى جميع سكان المدينة.",
+                        en_model: "1. <b>Family without home internet:</b> <i>Benefit:</i> Full details available at public terminals; <i>Drawback:</i> Inaccessible from home.<br>2. <b>Student:</b> <i>Benefit:</i> Easy 24/7 access and online sign-up; <i>Drawback:</i> Must actively visit the site unless notified.<br>3. <b>Librarian:</b> <i>Benefit:</i> Instant updates to schedules; <i>Drawback:</i> Cannot reach offline families with the website alone."
+                    },
+                    {
+                        source: "فكّر كمهندس - خطة الوصول للعائلات غير المتصلة بالإنترنت (ص 72)",
+                        q: "في مشروع المكتبة العامة، هل توصي باستخدام وسيلة واحدة فقط أم الجمع بين الوسائط؟ وما أفضل وسيلة للوصول إلى العائلات التي قد لا تكون متصلة بالإنترنت؟",
+                        en_q: "In the public library project, do you recommend using a single medium or combining media? What is the best medium to reach families without internet?",
+                        hint: "تذكر دور الملصقات المطبوعة والصحف والراديو المحلي بجانب الموقع ووسائل التواصل.",
+                        en_hint: "Consider printed posters, local newspapers, or local radio alongside the website and social media.",
+                        model: "• <b>القرار:</b> نوصي بـ <b>الجمع بين الوسائط حسب الغرض</b>؛ لأن الجمهور متنوع في قدرات الوصول وعادات المتابعة.<br>• <b>أفضل وسيلة للوصول للعائلات غير المتصلة بالإنترنت:</b> استخدام <b>الملصقات المطبوعة (في المدارس والأماكن العامة) أو الصحيفة المحلية أو الراديو المحلي</b>؛ لأنها وسائل لا تتطلب اتصالاً بالإنترنت وتصل إليهم في أماكن تواجدهم اليومية.",
+                        en_model: "• <b>Decision:</b> <b>Combine multiple media according to purpose</b> because target audiences have different access conditions.<br>• <b>Best medium for offline families:</b> <b>Printed posters, local newspapers, or local radio</b>, since they require no internet connection."
+                    },
+                    {
+                        source: "طبّق ما تعلمته - مستشفى المدينة (ص 72)",
+                        q: "مستشفى يريد إبلاغ المرضى بمواعيد العمل الجديدة والسماح لهم بطرح الأسئلة. اذكر وسيلة واحدة للوصول إلى عدد كبير من الناس بسرعة، ووسيلة أخرى تتيح تفاعلاً ثنائي الاتجاه، واذكر سبب مناسبة كل منهما.",
+                        en_q: "A hospital wants to inform patients of new working hours and allow them to ask questions. Name one medium for reaching many people quickly and another for two-way interaction, justifying each.",
+                        hint: "التلفزيون/وسائل التواصل للانتشار السريع، والموقع الإلكتروني/وسائل التواصل للتفاعل ثنائي الاتجاه.",
+                        en_hint: "TV/Social Media for rapid wide reach, and Website forms/Social Media comments for two-way Q&A.",
+                        model: "1. <b>للوصول إلى عدد كبير من الناس بسرعة:</b> نستخدم <b>منشورات وإعلانات وسائل التواصل الاجتماعي أو التلفزيون المحلي</b>؛ لأنها تتميز بسرعة الانتشار والوصول لجمهور واسع في وقت قصير.<br>2. <b>لإتاحة تفاعل ثنائي الاتجاه (طرح الأسئلة):</b> نستخدم <b>الموقع الإلكتروني للمستشفى (عبر نموذج الاستفسارات) أو التعليقات والرسائل في وسائل التواصل</b>؛ لأنها تدعم الاتصال ثنائي الاتجاه مع عرض جدول المواعيد التفصيلي محدّثاً.",
+                        en_model: "1. <b>Reaching many people quickly:</b> <b>Social media announcements or local TV</b>, due to rapid and broad reach.<br>2. <b>Two-way interaction (asking questions):</b> <b>Hospital website forms or social media messages/comments</b>, as they enable two-way communication and detailed schedule display."
+                    },
+                    {
+                        source: "توقّف وفكّر - المقارنة بين التلفزيون والموقع الإلكتروني (ص 70)",
+                        q: "لماذا لا يغني الإعلان التلفزيوني وحده عن الموقع الإلكتروني عند إطلاق خدمة جديدة؟",
+                        en_q: "Why doesn't a television commercial alone replace a website when launching a new service?",
+                        hint: "فكر في مدة الإعلان التلفزيوني واتجاه الاتصال فيه مقابل عمق وتفاعلية الموقع.",
+                        en_hint: "Consider TV's short duration and one-way nature vs. a website's permanent detailed pages and two-way forms.",
+                        model: "لأن <b>التلفزيون</b> وسيلة <b>أحادية الاتجاه</b> مرتبطة بوقت بث قصير ومحدد، فلا يستطيع عرض كافة الشروط والمواصفات التفصيلية ولا يتيح للمشاهد التسجيل الفوري؛ بينما يتيح <b>الموقع الإلكتروني</b> تنظيم كمية كبيرة من المعلومات التفصيلية في صفحات متاحة في أي وقت، مع إمكانية التفاعل ثنائي الاتجاه عبر النماذج.",
+                        en_model: "Because <b>TV</b> is a <b>one-way medium</b> limited to a brief broadcast slot and cannot host deep documentation or interactive forms, whereas a <b>Website</b> provides 24/7 organized detailed information and two-way user interaction."
+                    },
+                    {
+                        source: "الفرق بين الموقع الإلكتروني ووسائل التواصل الاجتماعي (ص 69 - 70)",
+                        q: "كلا (الموقع الإلكتروني) و(وسائل التواصل الاجتماعي) ينقل النص والصور والصوت والفيديو عبر الإنترنت. ما الفرق بينهما من حيث الغرض الأساسي في الحملة الإعلامية؟",
+                        en_q: "Both websites and social media transmit text, images, audio, and video online. What is the difference between their primary roles in a media campaign?",
+                        hint: "الانتشار السريع والتناقل الشفهي مقابل التعمق وتنظيم المعلومات التفصيلية في صفحات وأقسام.",
+                        en_hint: "Rapid sharing and word-of-mouth vs. structured, in-depth multi-page documentation.",
+                        model: "• <b>وسائل التواصل الاجتماعي:</b> تتفوق في <b>السرعة والانتشار عبر التناقل الشفهي</b>، حيث يشارك المستخدمون المنشورات طوعاً ويتفاعلون معها لحظياً.<br>• <b>الموقع الإلكتروني:</b> يتفوق في <b>العمق والتنظيم الهيكلي</b>، حيث يقدم كمية كبيرة من المعلومات التفصيلية مرتبة في صفحات وأقسام ثابتة يسهل الرجوع إليها وتحديثها.",
+                        en_model: "• <b>Social Media:</b> Excels at <b>rapid dissemination and word-of-mouth</b> through voluntary user sharing and instant engagement.<br>• <b>Website:</b> Excels at <b>informational depth and structured organization</b> across permanent, easily navigable pages and sections."
+                    },
+                    {
+                        source: "معالجة القيد الثاني للموقع الإلكتروني (ص 70)",
+                        q: "من قيود الموقع الإلكتروني أن «المستخدم يحتاج غالباً إلى فتح الموقع بنفسه للوصول إلى محتواه». كيف يمكن للمؤسسة التغلب على هذا القيد؟",
+                        en_q: "One limitation of a website is that 'users usually must open the website themselves to access its content.' How can an organization overcome this limitation?",
+                        hint: "راجع الاستثناء المذكور في القيد الثاني ص 70 والجمع بين الوسائط.",
+                        en_hint: "Review notifications, email alerts, and cross-promotion mentioned on p. 70.",
+                        model: "يمكن التغلب على هذا القيد بطريقتين ذكرهما الكتاب:<br>1. تفعيل <b>الإشعارات (Notifications) أو القنوات التنبيهية</b> مثل رسائل البريد الإلكتروني لإبلاغ المستخدمين بالتحديثات الجديدة.<br>2. <b>الجمع بين الوسائط:</b> استخدام إعلانات التلفزيون أو منشورات وسائل التواصل الاجتماعي لجذب انتباه الجمهور وتوجيههم برابط مباشر إلى الموقع الإلكتروني.",
+                        en_model: "This limitation can be overcome in two ways:<br>1. Using <b>push notifications or external alert channels</b> (such as email newsletters) to notify users of new content.<br>2. <b>Combining media:</b> Using TV commercials or social media posts to capture attention and direct users to the website."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - تأمّل في موثوقية الوسائط (ص 73)",
+                        q: "أي وسيلة تثق بها شخصياً أكثر عند متابعة الأخبار المهمة أو القرارات الرسمية، ولماذا؟",
+                        en_q: "Which medium do you personally trust most when following important news or official decisions, and why?",
+                        hint: "قارن بين سرعة وسائل التواصل الاجتماعي وموثوقية المواقع الرسمية والتلفزيون والصحف.",
+                        en_hint: "Compare the speed of unverified social media posts with official websites, television, and newspapers.",
+                        model: "أثق أكثر في <b>المواقع الإلكترونية الرسمية للمؤسسات، والتلفزيون الرسمي، والصحف المعتمدة</b>؛ لأن المعلومات المنشورة فيها تمر بمراجعة وتدقيق من مصدر معروف وموثوق، بينما قد تنتشر الشائعات في وسائل التواصل الاجتماعي بسرعة عبر التناقل الشفهي دون تدقيق.",
+                        en_model: "I trust <b>official institutional websites, accredited newspapers, and official TV broadcasts</b> most because their content undergoes editorial verification from an accountable source, whereas unverified rumors can spread quickly on social media."
+                    },
+                    {
+                        source: "فكّر وتحدَّ نفسك - تحدّي فعالية المدرسة والجمهور المفقود (ص 73)",
+                        q: "خطّط لمزيج وسائط للإعلان عن فعالية مدرسية بميزانية محدودة تستبعد التلفزيون، ثم اذكر جمهوراً واحداً قد يفوّته مزيجك إذا اعتمدت على الإنترنت فقط، وكيف تعالج ذلك.",
+                        en_q: "Plan a media mix to promote a school event on a budget that excludes TV, identify one audience group that might be missed if you rely only on the internet, and explain how to fix it.",
+                        hint: "موقع المدرسة + وسائل التواصل + البريد الإلكتروني، ثم فكر في من لا يملك إنترنت.",
+                        en_hint: "School website + social media + email, then add printed posters/flyers for offline families.",
+                        model: "• <b>مزيج الوسائط المقترح:</b> استخدام <b>وسائل التواصل الاجتماعي</b> للانتشار السريع المجاني والتناقل الشفهي، و<b>الموقع الإلكتروني للمدرسة</b> لعرض جدول الفعالية التفصيلي ونموذج التسجيل، و<b>البريد الإلكتروني/الرسائل</b> لمخاطبة أولياء الأمور المسجلين فردياً.<br>• <b>الجمهور الذي قد يفوّته المزيج الرقمي:</b> الأسر أو كبار السن الذين لا يتوفر لديهم اتصال بالإنترنت.<br>• <b>العلاج:</b> إضافة <b>ملصقات ومطويات ورقية مطبوعة</b> (تعمل دون إنترنت كالصحيفة).",
+                        en_model: "• <b>Media Mix:</b> <b>Social media</b> for free viral spread, the <b>school website</b> for detailed schedules and registration, and <b>email/direct messages</b> for parents.<br>• <b>Missed Audience:</b> Families or elderly relatives without internet access.<br>• <b>Solution:</b> Add <b>printed paper flyers and posters</b>."
+                    }
+                ]
+            },
+            homework: {
+                mcq: [
+                    {
+                        tag: "تصنيف الوسائط حسب الاتجاه (ص 69)",
+                        ar_q: "أي مجموعة من الوسائط التالية يُصنّف الاتصال فيها بأنه «اتجاه واحد» (من المُرسِل إلى المُستقبِل فقط) في الوضع المعتاد؟",
+                        en_q: "Which group of media channels is classified as 'One-Way' communication (from sender to receiver only) under normal use?",
+                        options: [
+                            { ar: "وسائل التواصل الاجتماعي وتطبيقات الدردشة الفورية", en: "Social media platforms and instant messaging apps" },
+                            { ar: "التلفزيون، والراديو، والصحيفة المطبوعة", en: "Television, Radio, and Printed Newspaper" },
+                            { ar: "نماذج التسجيل التفاعلية وصناديق التعليقات في الويب", en: "Interactive registration forms and web comment boxes" },
+                            { ar: "الرسائل المباشرة المتبادلة بين الأصدقاء في المنصات", en: "Direct messages exchanged between friends on platforms" }
+                        ],
+                        correct: 1,
+                        exp_ar: "التلفزيون والراديو والصحيفة كلها وسائل إعلامية يكون الاتصال فيها عادةً باتجاه واحد من المرسل إلى المتلقي فقط (جدول ص 69).",
+                        exp_en: "Television, radio, and printed newspapers are all traditional media where communication typically flows one-way from sender to receiver (p. 69)."
+                    },
+                    {
+                        tag: "المعلومات المنقولة في الصحيفة والراديو (ص 69)",
+                        ar_q: "ما الفرق بين (الراديو) و(الصحيفة) من حيث نوع المعلومات المنقولة في كل منهما وفق الجدول المرجعي بالكتاب؟",
+                        en_q: "What is the difference between Radio and Newspaper regarding the type of information transmitted according to the textbook table?",
+                        options: [
+                            { ar: "الراديو ينقل النص والصور، بينما الصحيفة تنقل الفيديو والصوت", en: "Radio transmits text and images, while Newspaper transmits video and audio" },
+                            { ar: "كلاهما ينقل مقاطع الفيديو المتحركة عالية الدقة مع الصوت", en: "Both transmit high-definition moving video clips with audio" },
+                            { ar: "الراديو ينقل الصوت فقط، بينما الصحيفة تنقل النص والصور", en: "Radio transmits audio only, while Newspaper transmits text and images" },
+                            { ar: "الراديو ينقل النص المطبوع، بينما الصحيفة تنقل الصوت المسموع", en: "Radio transmits printed text, while Newspaper transmits audible sound" }
+                        ],
+                        correct: 2,
+                        exp_ar: "في جدول مقارنة خصائص الوسائط (ص 69): الراديو ينقل (صوت)، بينما الصحيفة تنقل (نص + صور).",
+                        exp_en: "In the media comparison table (p. 69): Radio transmits audio only, whereas a newspaper transmits text + images."
+                    },
+                    {
+                        tag: "الوسائط أثناء التنقل وأداء المهام (ص 69)",
+                        ar_q: "يريد سائق أو عامل الاستماع إلى نشرة إخبارية أثناء القيادة أو العمل دون النظر إلى شاشة أو ورقة. ما الوسيلة الأنسب له؟",
+                        en_q: "A driver or worker wants to follow a news bulletin while driving or working without looking at a screen or paper. Which medium is best?",
+                        options: [
+                            { ar: "قراءة صحيفة ورقية مطبوعة من عدة صفحات", en: "Reading a multi-page printed paper newspaper" },
+                            { ar: "ملء نموذج إلكتروني مفصل داخل موقع ويب", en: "Filling out a detailed online form on a website" },
+                            { ar: "مشاهدة الجداول النصية في البريد الإلكتروني", en: "Viewing text tables inside an email message" },
+                            { ar: "الاستماع إلى الراديو لأنه يعتمد على الصوت أثناء التنقل", en: "Listening to the Radio because it relies on audio while on the move" }
+                        ],
+                        correct: 3,
+                        exp_ar: "الراديو يعتمد على الصوت، ويمكن الاستماع إليه أثناء التنقل أو أداء مهام أخرى بحسب التغطية ووسيلة الاستقبال (ص 69).",
+                        exp_en: "Radio relies on audio and can be listened to while commuting or performing other tasks (p. 69)."
+                    },
+                    {
+                        tag: "توفير محتوى محدود دون اتصال (ص 70)",
+                        ar_q: "ما مدى دقة العبارة: «لا يمكن لأي موقع أو تطبيق ويب أن يوفر أي محتوى أو وظيفة على الإطلاق عند انقطاع الإنترنت»؟",
+                        en_q: "How accurate is the statement: 'No website or web application can ever provide any content or function when the internet is disconnected'?",
+                        options: [
+                            { ar: "غير دقيقة؛ إذ يمكن تصميم بعض المواقع أو تطبيقات الويب لتوفير محتوى أو وظائف محدودة دون اتصال", en: "Inaccurate; some websites or web apps can be designed to provide limited offline content or functions" },
+                            { ar: "دقيقة تماماً؛ لأن المتصفح يحذف جهاز الكمبيوتر بالكامل فور انقطاع الشبكة", en: "Completely accurate; the browser deletes the computer when disconnected" },
+                            { ar: "غير دقيقة؛ لأن جميع المواقع الإلكترونية تعمل بدون إنترنت منذ اختراعها", en: "Inaccurate; all websites work 100% without internet by default" },
+                            { ar: "دقيقة تماماً؛ لأن المواقع الإلكترونية لا تستخدم شاشات العرض أبداً", en: "Completely accurate; websites never use display screens" }
+                        ],
+                        correct: 0,
+                        exp_ar: "نص الكتاب ص 70 (القيد الأول): «تحتاج معظم وظائف المواقع إلى اتصال بالشبكة، لكن يمكن تصميم بعض المواقع أو تطبيقات الويب لتوفير محتوى أو وظائف محدودة دون اتصال».",
+                        exp_en: "Textbook p. 70: While most website functions require a network connection, some websites or web apps can be designed to provide limited content or functions offline."
+                    },
+                    {
+                        tag: "تشغيل وتثبيت تطبيقات الويب (ص 70)",
+                        ar_q: "كيف يصل المستخدم عادةً إلى الموقع الإلكتروني، وما الإمكانية الإضافية التي تتيحها بعض تطبيقات الويب؟",
+                        en_q: "How does a user typically access a website, and what additional capability do some web applications offer?",
+                        options: [
+                            { ar: "يُشترى من كشك الصحف الورقية ولا يعمل على الهواتف", en: "Purchased from a paper newsstand and does not work on phones" },
+                            { ar: "يُستخدم من المتصفح، وقد تسمح بعض تطبيقات الويب أيضاً بالتثبيت على الجهاز", en: "Used via a web browser, and some web apps also allow installation on the device" },
+                            { ar: "يعمل فقط عبر هوائي الراديو التناظري بدون شاشة عرض", en: "Works only via an analog radio antenna without a display screen" },
+                            { ar: "لا يعمل إلا بعد طباعته بالكامل على ورق مقوى", en: "Works only after being completely printed on cardboard" }
+                        ],
+                        correct: 1,
+                        exp_ar: "النقطة الخامسة من نقاط قوة المواقع الإلكترونية (ص 70): «يمكن استخدامه من المتصفح، وقد تسمح بعض تطبيقات الويب أيضاً بالتثبيت».",
+                        exp_en: "Strength 5 of websites (p. 70): They can be used from a browser, and some web applications also allow installation on the device."
+                    },
+                    {
+                        tag: "تمارين 2 - إكمال الفراغات (ص 73)",
+                        ar_q: "في تمرين إكمال الفقرة (ص 73): «تحتاج معظم وظائف الموقع إلى اتصال ( 1 )، وغالباً يحتاج المستخدم إلى ( 2 ) الموقع لرؤية محتواه، وفي الحملات الفعلية كثيراً ما تُجمع ( 3 ) متعددة». ما الكلمات الصحيحة؟",
+                        en_q: "In the paragraph completion exercise (p. 73): 'Most site functions need a (1) connection, users usually need to (2) the site to view content, and real campaigns often combine multiple (3).' What are the correct words?",
+                        options: [
+                            { ar: "(1) ورقي — (2) طباعة — (3) صحف", en: "(1) paper — (2) print — (3) newspapers" },
+                            { ar: "(1) صوتي — (2) إغلاق — (3) موجات", en: "(1) audio — (2) close — (3) waves" },
+                            { ar: "(1) بالشبكة/الإنترنت — (2) فتح — (3) وسائط/وسائل", en: "(1) network/internet — (2) open — (3) media channels" },
+                            { ar: "(1) كهربائي — (2) حذف — (3) كابلات", en: "(1) electrical — (2) delete — (3) cables" }
+                        ],
+                        correct: 2,
+                        exp_ar: "الفراغ (1): بالشبكة (أو بالإنترنت)، والفراغ (2): فتح، والفراغ (3): وسائط (أو وسائل إعلامية) (تمرين 2 ص 73).",
+                        exp_en: "Blank (1): network/internet, Blank (2): open, Blank (3): media/channels (Exercise 2, p. 73)."
+                    },
+                    {
+                        tag: "المثال المحلول (1)-ب (ص 71)",
+                        ar_q: "لماذا تُعد العبارة «التلفزيون وسيلة تتيح التفاعل ثنائي الاتجاه مع المستخدمين» عبارة خاطئة (×) في المثال المحلول بالكتاب؟",
+                        en_q: "Why is the statement 'Television is a medium that enables two-way interaction with users' marked false (×) in the textbook's worked example?",
+                        options: [
+                            { ar: "لأن التلفزيون لا يستطيع نقل الصوت أو الصورة نهائياً", en: "Because television cannot transmit audio or video at all" },
+                            { ar: "لأن التلفزيون لا يصل إلا لشخص واحد فقط في كل مدينة", en: "Because television reaches only one single person per city" },
+                            { ar: "لأن التلفزيون يحتاج إلى ورق وحبر لطباعة البرامج", en: "Because television requires paper and ink to print programs" },
+                            { ar: "لأن التلفزيون عادةً وسيلة أحادية الاتجاه من المُرسِل إلى المُستقبِل فقط", en: "Because television is typically a one-way medium from sender to receiver only" }
+                        ],
+                        correct: 3,
+                        exp_ar: "في حل المثال المحلول ص 71: «التلفزيون عادةً وسيلة أحادية الاتجاه من المُرسِل إلى المُستقبِل. لذلك، ×».",
+                        exp_en: "Worked Example p. 71: Television is typically a one-way medium from sender to receiver, not a two-way interactive medium."
+                    },
+                    {
+                        tag: "دراسة حالة: مكتبة المدينة العامة (ص 72)",
+                        ar_q: "في نشاط «فكّر كمهندس» (ص 72)، ما أكبر عائق يواجه استخدام الموقع الإلكتروني وحده للإعلان عن برنامج القراءة المجاني؟",
+                        en_q: "In the 'Think Like an Engineer' activity (p. 72), what is the biggest obstacle to using a website alone to announce the free reading program?",
+                        options: [
+                            { ar: "عدم وصول الإعلان للعائلات التي لا تملك اتصالاً بالإنترنت أو التي لا تفتح موقع المكتبة", en: "Failing to reach families without home internet or people who don't visit the library site" },
+                            { ar: "عدم قدرة الموقع الإلكتروني على عرض النصوص العربية أو الصور الملونة", en: "The website's inability to display Arabic text or colored images" },
+                            { ar: "استحالة تحديث المعلومات داخل الموقع الإلكتروني بعد نشرها لأول مرة", en: "The impossibility of updating information on a website after initial publication" },
+                            { ar: "عدم إمكانية فتح الموقع الإلكتروني من أجهزة الهواتف الذكية أو الحواسيب", en: "The inability to open a website from smartphones or computers" }
+                        ],
+                        correct: 0,
+                        exp_ar: "الاعتماد على الموقع الإلكتروني وحده يفوّت العائلات التي لا تملك إنترنت منزلياً وكذلك الأشخاص الذين لا يبادرون بفتح موقع المكتبة بأنفسهم (ص 72).",
+                        exp_en: "Relying on a website alone misses families without internet access as well as people who do not actively visit the library's website (p. 72)."
+                    },
+                    {
+                        tag: "ملخص نقاط القوة والقيود (ص 72)",
+                        ar_q: "في صندوق «مصطلحات أساسية» (ص 72)، بأي أربع كلمات لخّص الكتاب نقاط قوة الموقع الإلكتروني؟",
+                        en_q: "In the 'Key Terms' box (p. 72), with which four attributes did the textbook summarize the strengths of a website?",
+                        options: [
+                            { ar: "مطبوع، ورقي، أحادي الاتجاه، يعمل بدون شبكة", en: "Printed, paper-based, one-way, works without network" },
+                            { ar: "متنوع، قابل للتحديث، عالمي، ثنائي الاتجاه", en: "Diverse, updatable, global, two-way" },
+                            { ar: "صوتي فقط، محلي التغطية، غير قابل للتعديل، مؤقت", en: "Audio-only, local coverage, uneditable, temporary" },
+                            { ar: "مكلف جداً، بطيء التحديث، سري، مغلق المصدر", en: "Very expensive, slow to update, secret, closed-source" }
+                        ],
+                        correct: 1,
+                        exp_ar: "في صندوق مصطلحات أساسية (ص 72): «نقاط قوة الموقع الإلكتروني — متنوع، قابل للتحديث، عالمي، ثنائي الاتجاه».",
+                        exp_en: "Key Terms box (p. 72): Website strengths — diverse, updatable, global, two-way."
+                    },
+                    {
+                        tag: "المقارنة بين الموقع ووسائل التواصل (ص 69 - 70)",
+                        ar_q: "ما القاسم المشترك بين (الموقع الإلكتروني) و(وسائل التواصل الاجتماعي) في جدول خصائص الوسائط (ص 69)؟",
+                        en_q: "What do a (Website) and (Social Media) have in common in the media characteristics table (p. 69)?",
+                        options: [
+                            { ar: "كلاهما يعمل على الورق المطبوع دون حاجة لأي اتصال بالشبكة", en: "Both operate on printed paper without needing any network connection" },
+                            { ar: "كلاهما ينقل الصوت فقط ولا يدعم عرض الصور أو النصوص", en: "Both transmit audio only and do not support images or text" },
+                            { ar: "كلاهما ينقل (نص + صور + فيديو + صوت) ويتيح التفاعل ثنائي الاتجاه", en: "Both transmit (text + images + video + audio) and support two-way interaction" },
+                            { ar: "كلاهما وسيلة اتصال أحادية الاتجاه يستحيل فيها تعليق المستخدمين", en: "Both are strictly one-way channels where user comments are impossible" }
+                        ],
+                        correct: 2,
+                        exp_ar: "في جدول ص 69: كل من الموقع الإلكتروني ووسائل التواصل الاجتماعي ينقل (نص + صور + فيديو + صوت) ويتيح التفاعل مع المستخدمين.",
+                        exp_en: "In Table 1 (p. 69), both websites and social media transmit text + images + video + audio and allow user interaction."
+                    },
+                    {
+                        tag: "سيناريو تطبيقي: إشعارات الطوارئ (ص 70)",
+                        ar_q: "لماذا لا يكفي نشر تنبيه عاجل داخل صفحة في موقع إلكتروني فقط دون إرسال إشعارات أو رسائل نصية؟",
+                        en_q: "Why is posting an urgent alert inside a webpage alone insufficient without sending notifications or direct messages?",
+                        options: [
+                            { ar: "لأن المواقع الإلكترونية لا تقبل كتابة النصوص باللغة العربية", en: "Because websites do not accept text written in Arabic" },
+                            { ar: "لأن الموقع الإلكتروني يحذف التنبيهات العاجلة تلقائياً بعد دقيقة", en: "Because websites automatically delete urgent alerts after one minute" },
+                            { ar: "لأن الموقع الإلكتروني لا يمكن فتحه إلا من داخل مبنى المؤسسة", en: "Because a website can only be opened from inside the organization's building" },
+                            { ar: "لأن المستخدم يحتاج غالباً إلى فتح الموقع بنفسه لرؤية محتواه ما لم تصله إشعارات", en: "Because users usually must open the site themselves to see its content unless notified" }
+                        ],
+                        correct: 3,
+                        exp_ar: "القيد الثاني للمواقع الإلكترونية (ص 70): غالباً يحتاج المستخدم إلى فتح الموقع للوصول إلى محتواه، ما لم تستخدم الخدمة إشعارات أو قنوات أخرى.",
+                        exp_en: "Website Limitation 2 (p. 70): Users generally must open the website themselves to see its content unless the service uses push notifications or other channels."
+                    },
+                    {
+                        tag: "سيناريو تطبيقي: كتيب إرشادات مفصل (ص 70)",
+                        ar_q: "تريد شركة أجهزة إلكترونية توفير دليل استخدام مفصل يضم مئات الصفحات والصور التوضيحية والفيديوهات مع تحديثه باستمرار. ما الوسيلة الأنسب؟",
+                        en_q: "An electronics company wants to provide a detailed user manual with hundreds of pages, diagrams, and videos that can be updated continuously. Which medium is best?",
+                        options: [
+                            { ar: "الموقع الإلكتروني لتنظيم المعلومات التفصيلية في صفحات وأقسام وتحديثها", en: "A Website to organize detailed information into pages/sections and update it" },
+                            { ar: "إعلان إذاعي في الراديو مدته ثلاثون ثانية فقط", en: "A thirty-second audio commercial on the radio" },
+                            { ar: "إعلان تلفزيوني قصير بين البرامج المسائية", en: "A brief television commercial between evening shows" },
+                            { ar: "ملصق ورقي صغير على جدار المتجر", en: "A small paper poster on the store wall" }
+                        ],
+                        correct: 0,
+                        exp_ar: "لتقديم معلومات تفصيلية كبيرة الحجم ومنظمة في صفحات وأقسام وقابلة للتحديث في أي وقت، فإن الموقع الإلكتروني هو الوسيلة الأنسب (ص 70).",
+                        exp_en: "A website is the best medium for presenting large volumes of detailed, multi-page information that can be updated anytime (p. 70)."
+                    },
+                    {
+                        tag: "تكامل الوحدة الثالثة والرابعة (ص 63 و 69)",
+                        ar_q: "قبل أن يبدأ المطور بكتابة أكواد HTML وCSS وJavaScript لبناء موقع إلكتروني (الوحدة 3)، ما السؤال التخطيطي الأول في الدرس 4-1؟",
+                        en_q: "Before a developer writes HTML, CSS, and JavaScript to build a website (Unit 3), what is the first planning question posed in Lesson 4-1?",
+                        options: [
+                            { ar: "كيف نشفر قاعدة البيانات الخلفية ببروتوكول TLS؟", en: "How do we encrypt the back-end database with TLS?" },
+                            { ar: "لماذا نختار هذه الوسيلة (الموقع الإلكتروني) وما مدى مناسبتها للغرض والجمهور؟", en: "Why are we choosing this medium (a website) and how well does it fit the purpose and audience?" },
+                            { ar: "كم عدد الترانزستورات داخل المعالج الدقيق للخادم؟", en: "How many transistors are inside the server's microprocessor?" },
+                            { ar: "ما اسم إطار العمل المستخدم في خادم البريد الإلكتروني؟", en: "What is the name of the framework used in the mail server?" }
+                        ],
+                        correct: 1,
+                        exp_ar: "افتتح الكتاب الدرس 4-1 (ص 69) بقوله: «قبل بناء موقع إلكتروني، من المفيد أن تسأل: لماذا نختار هذه الوسيلة؟ ... لذلك يعتمد الاختيار على الرسالة والجمهور والموارد».",
+                        exp_en: "Lesson 4-1 opens (p. 69) with: 'Before building a website, it is useful to ask: Why choose this medium? ... The choice depends on the message, audience, and resources.'"
+                    },
+                    {
+                        tag: "التمهيد للدرس 4-2 (ص 69 و 75)",
+                        ar_q: "بعد أن نختار «الموقع الإلكتروني» كوسيلة مناسبة في الدرس 4-1، ما الخطوة التالية المباشرة في تصميم الموقع (الدرس 4-2)؟",
+                        en_q: "After selecting a 'Website' as the appropriate medium in Lesson 4-1, what is the immediate next step in website design (Lesson 4-2)?",
+                        options: [
+                            { ar: "إلغاء الموقع الإلكتروني والاعتماد على الراديو وحده", en: "Canceling the website and relying on radio alone" },
+                            { ar: "شراء مطبعة ورقية لطباعة الصحف اليومية", en: "Buying a paper printing press to print daily newspapers" },
+                            { ar: "فهم المستخدم المستهدف وتنظيم المعلومات وتخطيط هيكل الصفحة حول احتياجاته", en: "Understanding the target user and organizing information around their needs" },
+                            { ar: "فصل الخادم عن شبكة الإنترنت لمنع الزوار من الدخول", en: "Disconnecting the server from the internet to block visitors" }
+                        ],
+                        correct: 2,
+                        exp_ar: "عندما نختار الموقع الإلكتروني كوسيلة وفق الغرض والجمهور (4-1)، تبدأ الخطوة التالية بفهم المستخدم وتنظيم المعلومات حول احتياجاته (شخصية المستخدم والمخطط الهيكلي ومبادئ CRAP في 4-2).",
+                        exp_en: "Once a website is chosen for the purpose and audience (4-1), the next step is understanding the user and organizing information around their needs (4-2)."
+                    },
+                    {
+                        tag: "الفكرة الرئيسة للدرس 4-1 (ص 71 و 73)",
+                        ar_q: "أي عبارة تلخّص بدقة «الفكرة الرئيسة» للدرس 4-1 (أنواع الوسائط وخصائصها) كما وردت في الكتاب المدرسي؟",
+                        en_q: "Which statement accurately summarizes the 'Main Idea' of Lesson 4-1 (Media Types and Their Characteristics) in the textbook?",
+                        options: [
+                            { ar: "التلفزيون هو الوسيلة الوحيدة المناسبة لجميع الأغراض والجمهور في كل الأوقات", en: "Television is the only medium suitable for all purposes and audiences at all times" },
+                            { ar: "المواقع الإلكترونية لا تعاني من أي قيود وتصل لملايين الناس دون اتصال بالإنترنت", en: "Websites have zero limitations and reach millions of people without internet" },
+                            { ar: "الصحف المطبوعة والراديو هما الوسيلتان الوحيدتان اللتان تدعمان التفاعل ثنائي الاتجاه", en: "Printed newspapers and radio are the only two media supporting two-way interaction" },
+                            { ar: "لا توجد وسيلة واحدة هي الأفضل لكل شيء: اختر بناءً على الغرض والجمهور، واجمع بين الوسائط", en: "No single medium is best for everything: choose based on purpose and audience, and combine media" }
+                        ],
+                        correct: 3,
+                        exp_ar: "نص الفكرة الرئيسة (ص 71 والخلاصة ص 73): «لا توجد وسيلة واحدة هي الأفضل لكل شيء: اختر بناءً على الغرض والجمهور، واجمع بين الوسائط بحيث تقوم كل وسيلة بما تُجيده».",
+                        exp_en: "Main Idea (p. 71, 73): No single medium is best for everything—choose based on purpose and audience, and combine media so each does what it does best."
+                    }
+                ],
+                essay: [
+                    {
+                        source: "واجب منزلي 1 - لماذا نسأل قبل بناء الموقع؟ (ص 69)",
+                        q: "اشرح لماذا يؤكد الكتاب المدرسي أنه «قبل بناء موقع إلكتروني، من المفيد أن تسأل: لماذا نختار هذه الوسيلة؟»، وما العوامل الثلاثة التي يعتمد عليها الاختيار؟",
+                        en_q: "Explain why the textbook emphasizes asking 'Why choose this medium?' before building a website, and state the three factors that guide this choice.",
+                        hint: "لكل وسيلة نقاط قوة وقيود، والعوامل هي الرسالة (الغرض) والجمهور والموارد.",
+                        en_hint: "Each medium has strengths and limitations; the choice depends on the message (purpose), audience, and resources.",
+                        model: "لأن الموقع الإلكتروني — رغم مزاياه الكثيرة — ليس هو الحل الوحيد أو الأفضل لكل موقف بمفرده؛ فلكل وسيلة إعلامية نقاط قوة وقيود مختلفة. ويعتمد اختيار الوسيلة المناسبة على ثلاثة عوامل أساسية ذكرها الكتاب (ص 69):<br>1. <b>الرسالة (الغرض الاتصالي)</b>.<br>2. <b>الجمهور المستهدف (خصائصه وإمكانية وصوله للإنترنت)</b>.<br>3. <b>الموارد المتاحة (الميزانية والوقت)</b>.",
+                        en_model: "Because a website—despite its strengths—is not always the sole best choice for every situation. Selecting the right medium depends on three key factors (p. 69):<br>1. <b>The Message (Purpose)</b>.<br>2. <b>The Target Audience</b>.<br>3. <b>Available Resources (budget and time)</b>."
+                    },
+                    {
+                        source: "واجب منزلي 2 - مقارنة شاملة بين الصحيفة والموقع الإلكتروني (ص 69 - 70)",
+                        q: "قارن بين (الصحيفة المطبوعة) و(الموقع الإلكتروني) من حيث: نوع المعلومات المنقولة، الحاجة للإنترنت، قابلية التحديث، واتجاه الاتصال.",
+                        en_q: "Compare a Printed Newspaper and a Website in terms of: information types, internet requirement, updatability, and communication direction.",
+                        hint: "استعن بجدول ص 69 وقسم نقاط القوة والقيود ص 70.",
+                        en_hint: "Use Table 1 on p. 69 and the strengths/limitations section on p. 70.",
+                        model: "• <b>نوع المعلومات:</b> الصحيفة تنقل (نص + صور فقط)، بينما الموقع يجمع بين (نص + صور + فيديو + صوت).<br>• <b>الحاجة للإنترنت:</b> الصحيفة تبقى موجودة مادياً وتُقرأ دون إنترنت، بينما يحتاج الموقع غالباً لاتصال بالشبكة.<br>• <b>قابلية التحديث:</b> الصحيفة لا يمكن تعديلها بعد طباعتها، بينما يمكن تحديث الموقع في أي وقت.<br>• <b>اتجاه الاتصال:</b> الصحيفة اتجاه واحد، بينما الموقع يتيح تفاعلاً ثنائي الاتجاه عبر النماذج والتعليقات.",
+                        en_model: "• <b>Information Types:</b> Newspaper (text + images); Website (text + images + video + audio).<br>• <b>Internet Requirement:</b> Newspaper works offline on paper; Website requires network connectivity for most functions.<br>• <b>Updatability:</b> Newspaper is fixed once printed; Website can be updated anytime.<br>• <b>Direction:</b> Newspaper is one-way; Website supports two-way interaction via forms and comments."
+                    },
+                    {
+                        source: "واجب منزلي 3 - مقارنة بين التلفزيون والراديو (ص 69)",
+                        q: "يتشابه التلفزيون والراديو في أن الاتصال فيهما عادةً «باتجاه واحد». وضّح وجه الاختلاف بينهما في نوع المعلومات المنقولة وفي الموقف الأنسب لاستخدام كل منهما.",
+                        en_q: "TV and Radio are both typically one-way media. Explain how they differ in transmitted information and the ideal usage situation for each.",
+                        hint: "فيديو + صوت لجمهور كبير مقابل صوت فقط أثناء التنقل.",
+                        en_hint: "Video + audio for mass visual impact vs. audio-only while commuting or multitasking.",
+                        model: "• <b>التلفزيون:</b> ينقل (<b>فيديو + صوت</b>)، وهو الأنسب عندما نريد إعلام جمهور كبير في آنٍ واحد برسالة بصرية وسمعية مؤثرة.<br>• <b>الراديو:</b> ينقل (<b>صوت فقط</b>)، وهو الأنسب للجمهور أثناء <b>التنقل أو القيادة أو أداء مهام أخرى</b> لا تسمح بالنظر إلى شاشة، بحسب التغطية ووسيلة الاستقبال.",
+                        en_model: "• <b>Television:</b> Transmits <b>video + audio</b>, ideal for informing a large audience simultaneously with visual demonstrations.<br>• <b>Radio:</b> Transmits <b>audio only</b>, ideal for reaching people who are <b>commuting, driving, or performing other tasks</b>."
+                    },
+                    {
+                        source: "واجب منزلي 4 - كيف يحول المطور الموقع إلى وسيلة ثنائية الاتجاه؟ (ص 69 - 70)",
+                        q: "يقول الكتاب عن الموقع الإلكتروني إنه «اتجاه واحد أساساً، لكن التفاعل ثنائي الاتجاه ممكن أيضاً». اشرح هذه العبارة مع إعطاء أمثلة عملية من المواقع.",
+                        en_q: "The textbook states a website is 'primarily one-way, but two-way interaction is also possible.' Explain this statement with practical examples.",
+                        hint: "قراءة المقالات اتجاه واحد، بينما إرسال النماذج والتعليقات اتجاهان.",
+                        en_hint: "Reading static pages is one-way, while submitting forms, comments, and reviews makes it two-way.",
+                        model: "• يكون الموقع <b>أحادي الاتجاه أساساً</b> عندما يكتفي بعرض النصوص والصور والفيديوهات ليقرأها الزائر أو يشاهدها دون رد.<br>• ويتحول إلى <b>ثنائي الاتجاه</b> عندما يضيف المطور أدوات تفاعلية مثل: <b>نماذج التسجيل والحجز، وصناديق التعليقات والتقييمات، ونماذج طرح الأسئلة والتواصل</b> التي تسمح للمستخدم بإرسال بياناته واستجاباته للموقع.",
+                        en_model: "• A website is <b>primarily one-way</b> when users simply read or watch published content.<br>• It becomes <b>two-way</b> when interactive features are included, such as <b>registration forms, comment sections, surveys, and inquiry forms</b>."
+                    },
+                    {
+                        source: "واجب منزلي 5 - تحليل حملة متجر إلكتروني جديد (ص 70 - 71)",
+                        q: "يريد متجر إلكتروني جديد تنفيذ أربع مهام: (1 تعريف ملايين المشاهدين بافتتاح المتجر، 2 عرض كتالوج يضم 500 منتج بمواصفاتها وأسعارها، 3 تشجيع المشترين على مشاركة تجاربهم مع أصدقائهم، 4 إرسال كوبون خصم خاص لكل عميل مسجل). حدد الوسيلة الأنسب لكل مهمة.",
+                        en_q: "A new online store wants to: (1 announce its launch to millions, 2 display a 500-item catalog with specs, 3 encourage buyers to share reviews with friends, 4 send a personal discount code to each registered customer). Specify the best medium for each.",
+                        hint: "طابق المهام الأربع مع جدول اختيار الوسائط ص 70.",
+                        en_hint: "Match the 4 tasks with the media selection table on p. 70.",
+                        model: "1. <b>تعريف ملايين المشاهدين في آنٍ واحد:</b> <b>التلفزيون أو إعلانات التواصل الاجتماعي</b> (للانتشار الواسع).<br>2. <b>عرض كتالوج يضم 500 منتج بالتفصيل:</b> <b>الموقع الإلكتروني</b> (لتنظيم كمية كبيرة من المعلومات في صفحات وأقسام وتحديثها).<br>3. <b>مشاركة المشترين لتجاربهم (التناقل الشفهي):</b> <b>وسائل التواصل الاجتماعي</b>.<br>4. <b>إرسال كوبون خصم خاص لكل عميل مسجل:</b> <b>البريد الإلكتروني أو الرسائل المباشرة</b> (للتوصيل الفردي المباشر).",
+                        en_model: "1. <b>Mass launch announcement:</b> <b>TV or Social Media Ads</b>.<br>2. <b>500-item detailed catalog:</b> <b>Website</b>.<br>3. <b>Word-of-mouth buyer sharing:</b> <b>Social Media</b>.<br>4. <b>Individual discount coupon:</b> <b>Email or Direct Messages</b>."
+                    },
+                    {
+                        source: "واجب منزلي 6 - تأثير جهاز المستخدم وبيئة الشبكة (ص 70)",
+                        q: "من قيود المواقع الإلكترونية أنه «قد تختلف سرعة العرض والتحميل حسب جهاز المستخدم وبيئة الشبكة». كيف يجب أن يراعي مصمم الموقع هذا القيد؟",
+                        en_q: "One website limitation is that 'display and loading speed may vary depending on the user's device and network environment.' How should a web designer account for this?",
+                        hint: "تذكر عدم إثقال الصفحة بملفات ضخمة غير ضرورية ومراعاة الهواتف والشبكات الضعيفة.",
+                        en_hint: "Optimize images/videos and keep pages lightweight so users on slower phones or networks can load them smoothly.",
+                        model: "يجب على مصمم الموقع مراعاة أن بعض المستخدمين يتصفحون عبر هواتف بسيطة أو شبكات إنترنت بطيئة؛ لذلك ينبغي <b>ضغط حجم الصور والفيديوهات، وتجنب العناصر الثقيلة غير الضرورية، وتنظيم المحتوى في صفحات واضحة</b> حتى لا يتأخر تحميل الموقع ويغادره الزائر.",
+                        en_model: "Designers must recognize that some users have older phones or slow connections; therefore, they should <b>optimize media file sizes, avoid unnecessary heavy assets, and structure pages cleanly</b> for fast loading."
+                    },
+                    {
+                        source: "واجب منزلي 7 - الفرق بين البث التلقائي والوصول للموقع (ص 70 - 71)",
+                        q: "اشرح لماذا تُعد عبارة «تصل المعلومات في الموقع الإلكتروني تلقائياً إلى المستخدمين دون أن يصلوا إليها بأنفسهم» عبارة خاطئة، وقارن ذلك بالتلفزيون أو الرسائل المباشرة.",
+                        en_q: "Explain why 'information on a website automatically reaches users without them accessing it themselves' is false, comparing it to TV or direct messages.",
+                        hint: "الموقع ينتظر زيارة المستخدم (سحب)، بينما الرسائل والإشعارات تذهب للمستخدم (دفع).",
+                        en_hint: "A website requires the user to open/visit it (pull), whereas direct messages or notifications actively push alerts to the user.",
+                        model: "لأن الموقع الإلكتروني موجود على الخادم ولا يظهر محتواه للمستخدم إلا إذا <b>بادر المستخدم نفسه بفتح المتصفح وكتابة عنوان الموقع أو البحث عنه</b>؛ على عكس <b>الرسائل المباشرة أو البريد الإلكتروني أو الإشعارات</b> التي تُرسل إلى جهاز المستخدم لتنبيهه، أو <b>التلفزيون</b> الذي يعرض الإعلانات تلقائياً أثناء مشاهدة البرامج.",
+                        en_model: "Because a website resides on a server and its content is only seen when a <b>user actively opens a browser and visits or searches for it</b>, unlike <b>direct messages/notifications</b> that push alerts to the user's device."
+                    },
+                    {
+                        source: "واجب منزلي 8 - حملة توعية صحية في قرية ومدينة (ص 69 - 72)",
+                        q: "تريد وزارة الصحة إطلاق حملة توعية تشمل سكان المدن المتصلين بالإنترنت وسكان القرى والمناطق النائية الذين قد ينقطع لديهم الإنترنت. صمّم خطة وسائط متكاملة تضمن وصول الحملة للجميع.",
+                        en_q: "The Ministry of Health wants to launch an awareness campaign reaching both connected city residents and rural areas with limited internet. Design an integrated media plan.",
+                        hint: "اجمع بين الوسائط التقليدية (تلفزيون، راديو، مطبوعات) والوسائط الرقمية (موقع، تواصل اجتماعي، رسائل).",
+                        en_hint: "Combine traditional media (TV, radio, printed posters) with digital media (website, social media, SMS).",
+                        model: "• <b>للوصول العام وللمناطق ضعيفة الإنترنت:</b> نستخدم <b>التلفزيون والراديو</b> (للانتشار الواسع وأثناء التنقل)، مع توزيع <b>ملصقات ومطويات ورقية مطبوعة</b> في الوحدات الصحية لأنها تبقى متاحة مادياً دون إنترنت.<br>• <b>للمتصلين بالإنترنت وللتفاصيل:</b> نستخدم <b>الموقع الإلكتروني</b> لعرض الإرشادات الطبية التفصيلية وأماكن المراكز وتحديثها، و<b>وسائل التواصل الاجتماعي</b> للتناقل الشفهي السريع.",
+                        en_model: "• <b>For broad & offline reach:</b> Use <b>Television, Radio, and Printed Posters/Brochures</b> at local clinics (available without internet).<br>• <b>For connected users & depth:</b> Use a <b>Website</b> for detailed medical guidelines and clinic maps, plus <b>Social Media</b> for rapid community sharing."
+                    },
+                    {
+                        source: "واجب منزلي 9 - متى تتفوق الصحيفة أو المطبوعات الورقية؟ (ص 69 و 72)",
+                        q: "رغم التطور الرقمي الكبير، لا تزال الصحف والمطبوعات الورقية محتفظة بأهميتها في مواقف معينة. اذكر ميزتين للوسيلة المطبوعة لا تتوفران في الموقع الإلكتروني عند انقطاع الكهرباء أو الشبكة.",
+                        en_q: "Despite digital advances, printed newspapers and brochures remain valuable in certain situations. State two advantages of print media when power or internet fails.",
+                        hint: "وجود مادي ملموس، وقراءة مباشرة دون جهاز أو شحن أو اتصال بالإنترنت.",
+                        en_hint: "Physical permanence on paper and immediate readability without batteries, devices, or internet connection.",
+                        model: "1. <b>البقاء المادي الملموس:</b> تبقى الصحيفة أو الوثيقة المطبوعة موجودة مادياً بين يدي القارئ ويمكن تعليقها في لوحة إعلانات عامة ليراها كل من يمر.<br>2. <b>الاستقلالية التامة عن الشبكة والأجهزة:</b> يمكن قراءتها في أي وقت ومكان دون الحاجة إلى اتصال بالإنترنت أو جهاز إلكتروني مشحون بالكهرباء.",
+                        en_model: "1. <b>Physical Permanence:</b> Printed media exist physically and can be posted on public boards where anyone passing by sees them.<br>2. <b>Zero Device/Network Dependency:</b> Readable anytime without internet connectivity, electricity, or electronic devices."
+                    },
+                    {
+                        source: "واجب منزلي 10 - تحليل دور البريد الإلكتروني والرسائل المباشرة (ص 70 و 71)",
+                        q: "لماذا نستخدم (البريد الإلكتروني أو الرسائل المباشرة) في الحملات الإعلامية بجانب الموقع الإلكتروني والتلفزيون؟",
+                        en_q: "Why do we use Email or Direct Messages in media campaigns alongside a Website and Television?",
+                        hint: "التوصيل الفردي لأشخاص محددين.",
+                        en_hint: "Individual, personalized delivery to specific targeted recipients.",
+                        model: "لأن التلفزيون والموقع الإلكتروني يخاطبان الجمهور العام، بينما يتميز <b>البريد الإلكتروني والرسائل المباشرة</b> بالقدرة على <b>إيصال المعلومات مباشرة لأشخاص محددين بشكل فردي</b> (مثل إرسال تأكيد حجز، أو درجات طالب بعينه، أو عرض مخصص لعميل حالي) مع تنبيه المستلم بوصول الرسالة.",
+                        en_model: "While TV and websites address the general public, <b>Email and Direct Messages</b> excel at <b>delivering personalized information directly to specific individuals</b> (such as booking confirmations or targeted updates)."
+                    },
+                    {
+                        source: "واجب منزلي 11 - نقد قرار إعلامي خاطئ (ص 70 - 73)",
+                        q: "قررت شركة الاكتفاء بصفحة على وسائل التواصل الاجتماعي وإغلاق موقعها الإلكتروني الرسمي نهائياً بحجة أن وسائل التواصل أسرع انتشاراً. ناقش لماذا يُعد هذا القرار غير حكيم.",
+                        en_q: "A company decided to shut down its official website and rely solely on social media because social media spreads faster. Discuss why this decision is unwise.",
+                        hint: "كيف سيجد العملاء المعلومات التفصيلية المنظمة في صفحات وأقسام؟",
+                        en_hint: "Social media feeds bury old posts, whereas a website organizes comprehensive, structured information across sections.",
+                        model: "هذا القرار غير حكيم لأن <b>وسائل التواصل الاجتماعي</b> مصممة للنشر السريع والتفاعل اللحظي حيث تختفي المنشورات القديمة سريعاً أسفل الخط الزمني؛ بينما لا غنى عن <b>الموقع الإلكتروني</b> لتقديم <b>كمية كبيرة من المعلومات التفصيلية المنظمة في صفحات وأقسام واضحة</b> يسهل البحث فيها والرجوع إليها في أي وقت. والصواب هو <b>الجمع بينهما</b>.",
+                        en_model: "This is unwise because <b>social media</b> is built for fast, chronological posts that quickly get buried, whereas an official <b>website</b> is essential for hosting <b>comprehensive, well-organized information across structured pages and sections</b>. Combining both is best."
+                    },
+                    {
+                        source: "واجب منزلي 12 - تتبع رحلة المستخدم عبر الوسائط المتعددة (ص 70 - 71)",
+                        q: "اشرح بمثال عملي كيف ينتقل المشاهد من (التلفزيون) إلى (الموقع الإلكتروني) ثم إلى (وسائل التواصل الاجتماعي) في حملة ناجحة.",
+                        en_q: "Explain with a practical example how a user moves from Television to a Website and then to Social Media in a successful campaign.",
+                        hint: "طبق المثال المذكور في آخر صفحة 70 على مبادرة تعليمية أو منتج جديد.",
+                        en_hint: "Apply the textbook example on p. 70 to an educational initiative or new product.",
+                        model: "<b>مثال (مبادرة تدريبية مجانية للطلاب):</b><br>1. يشاهد الطالب وأسرته <b>إعلاناً تلفزيونياً</b> قصيراً يجذب انتباههم ويعرض عنوان الموقع.<br>2. يفتح الطالب <b>الموقع الإلكتروني</b> للمبادرة ليقرأ تفاصيل المسارات التدريبية وشروط القبول ويسجل عبر النموذج.<br>3. يضغط الطالب على زر المشاركة داخل الموقع لينشر رابط المبادرة عبر <b>وسائل التواصل الاجتماعي</b> لأصدقائه (تناقل شفهي).",
+                        en_model: "<b>Example (Free Student Training Initiative):</b><br>1. A student sees a <b>TV commercial</b> that sparks interest and shows the web address.<br>2. They visit the <b>Website</b> to read full course details and register via an online form.<br>3. They use the site's share button to post the link on <b>Social Media</b> for their classmates."
+                    },
+                    {
+                        source: "واجب منزلي 13 - مقارنة سرعة النشر بين الوسائط الخمس (ص 69 - 70)",
+                        q: "إذا حدث تعديل طارئ في جدول امتحانات مدرسة، أي الوسائط الخمس (التلفزيون، الراديو، الصحيفة، الموقع الإلكتروني، وسائل التواصل + الرسائل) أسرع في إبلاغ الطلاب وتحديث الجدول، وأيها الأبطأ؟ ولماذا؟",
+                        en_q: "If an urgent change occurs in a school exam schedule, which media are fastest for alerting students and updating the table, and which is slowest? Why?",
+                        hint: "وسائل التواصل والرسائل والموقع الإلكتروني فورية، بينما الصحيفة المطبوعة تحتاج طباعة وتوزيعاً.",
+                        en_hint: "Social media, direct messages, and website updates are instant, whereas printed newspapers require printing and physical distribution.",
+                        model: "• <b>الأسرع:</b> الجمع بين <b>تحديث الموقع الإلكتروني للمدرسة فوراً</b> (لعرض الجدول المعدل كاملاً في أي وقت) مع نشر تنبيه عبر <b>وسائل التواصل الاجتماعي والرسائل المباشرة</b> (لسرعة انتشارها وتنبيه الطلاب فوراً).<br>• <b>الأبطأ:</b> <b>الصحيفة المطبوعة</b>؛ لأنها وسيلة ورقية تحتاج إلى وقت للإعداد والطباعة والتوزيع ولا يمكن تحديثها لحظياً.",
+                        en_model: "• <b>Fastest:</b> Updating the <b>School Website immediately</b> (for the full revised table) combined with <b>Social Media posts and Direct Messages</b> (for instant alerts).<br>• <b>Slowest:</b> <b>Printed Newspaper</b>, as it requires physical printing and distribution."
+                    },
+                    {
+                        source: "واجب منزلي 14 - تصميم خطة إعلامية لعيادة طبية (ص 70 و 72)",
+                        q: "تريد عيادة مجتمعية جديدة إعلام سكان الحي بافتتاحها، وعرض تخصصات الأطباء ومواعيدهم بالتفصيل، وإرسال تذكير فردي لكل مريض قبل موعده بيوم. اختر الوسيلة المناسبة لكل هدف من الأهداف الثلاثة.",
+                        en_q: "A new community clinic wants to: (1 announce its opening to the neighborhood, 2 display doctor specialties and schedules in detail, 3 send an individual reminder to each patient a day before their appointment). Choose the appropriate medium for each.",
+                        hint: "وسائل التواصل/ملصقات للحي، الموقع للتفاصيل، والرسائل المباشرة/البريد للتذكير الفردي.",
+                        en_hint: "Local social media/posters for awareness, Website for detailed schedules, and SMS/Email for individual reminders.",
+                        model: "1. <b>إعلام سكان الحي بالافتتاح:</b> <b>إعلانات وسائل التواصل الاجتماعي والملصقات المحلية والراديو المحلي</b> (لتحقيق انتشار واسع والوصول لغير المتصلين بالإنترنت أيضاً).<br>2. <b>عرض تخصصات الأطباء ومواعيدهم بالتفصيل:</b> <b>الموقع الإلكتروني للعيادة</b> (لتنظيم المعلومات التفصيلية وتحديثها في أي وقت).<br>3. <b>إرسال تذكير فردي لكل مريض:</b> <b>الرسائل المباشرة (SMS / واتساب) أو البريد الإلكتروني</b> (للتوصيل الفردي المباشر).",
+                        en_model: "1. <b>Neighborhood opening announcement:</b> <b>Social media ads, local radio, and printed posters</b>.<br>2. <b>Detailed doctor specialties & schedules:</b> <b>Clinic Website</b>.<br>3. <b>Individual appointment reminder:</b> <b>Direct Messages (SMS/WhatsApp) or Email</b>."
+                    },
+                    {
+                        source: "واجب منزلي 15 - الخلاصة الذهبية للدرس 4-1 (ص 71 و 73)",
+                        q: "صِغ بأسلوبك «الخلاصة الذهبية» للدرس 4-1 التي ترشد أي مصمم ويب أو مسؤول إعلامي عند اختيار الوسائط.",
+                        en_q: "Formulate in your own words the 'Golden Summary' of Lesson 4-1 that guides any web designer or media planner when selecting media.",
+                        hint: "راجع صندوق الفكرة الرئيسة ص 71 والخلاصة ص 73.",
+                        en_hint: "Review the Main Idea box on p. 71 and Summary box on p. 73.",
+                        model: "<b>الخلاصة الذهبية للدرس 4-1:</b><br>لا توجد وسيلة إعلامية واحدة هي الأفضل لكل شيء؛ لذا يجب <b>مطابقة الوسيلة مع الغرض والجمهور المستهدف والموارد</b>، و<b>الجمع بين عدة وسائط معاً</b> — مثل التلفزيون أو وسائل التواصل لانتشار واسع، والموقع الإلكتروني للتعمق والتفاصيل والتحديث، والبريد الإلكتروني للرسائل الفردية — بحيث تقوم كل وسيلة بما تُجيده.",
+                        en_model: "<b>Golden Summary of Lesson 4-1:</b><br>No single medium is best for everything; always <b>match the medium to the purpose, target audience, and resources</b>, and <b>combine multiple media</b>—TV or social media for broad reach, a website for depth and updates, and email for individuals—so each medium does what it does best."
+                    }
+                ]
+            }
+        };
+
+        let currentMode = 'session';
+        let currentSubTab = 'mcq';
+        let mcqViewMode = 'single';
+        let deferredGrading = true;
+        let state = {
+            session: { answers: new Array(15).fill(null), currentIdx: 0, submitted: false },
+            homework: { answers: new Array(15).fill(null), currentIdx: 0, submitted: false }
+        };
+
+        function safeGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+        function safeSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        function getPrefix() { return 'cs_u4_l1_' + currentMode; }
+
+        function toggleGradingMode() {
+            deferredGrading = !deferredGrading;
+            const btn = document.getElementById('gradingModeBtn');
+            btn.innerText = deferredGrading ? '📝 وضع التصحيح: عند الإنهاء' : '⚡ وضع التصحيح: فوري';
+            displayQuestion();
+            renderAllMcqList();
+        }
+
+        function jumpToQuiz(m, sub) {
+            switchMode(m);
+            switchSubTab(sub);
+            document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchMode(m) {
+            currentMode = m;
+            document.getElementById('modeBtnSession').className = m === 'session' ? 'mode-card-btn active-mode-session' : 'mode-card-btn';
+            document.getElementById('modeBtnHomework').className = m === 'homework' ? 'mode-card-btn active-mode-homework' : 'mode-card-btn';
+            const lbl = m === 'session' ? 'السيشن' : 'الواجب';
+            document.getElementById('tabMCQLabel').innerText = `🔘 الاختيار من متعدد (15 - ${lbl})`;
+            document.getElementById('tabEssayLabel').innerText = `✍️ الأسئلة المقالية (15 - ${lbl})`;
+            document.getElementById('currentModeBadge').innerText = m === 'session' ? '👨‍🏫 السيشن' : '🏠 الواجب';
+            document.getElementById('essayBannerTitle').innerText = `📝 الأسئلة المقالية والتحليلية لقسم ${lbl} (15 سؤالاً):`;
+            document.getElementById('resultsCard').style.display = 'none';
+            if (mcqViewMode === 'single') {
+                document.getElementById('quizCard').style.display = 'block';
+            }
+            loadScores();
+            displayQuestion();
+            renderAllMcqList();
+            renderEssayQuestions();
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            document.getElementById('tabMCQ').classList.toggle('active', sub === 'mcq');
+            document.getElementById('tabEssay').classList.toggle('active', sub === 'essay');
+            document.getElementById('mcqContainer').style.display = sub === 'mcq' ? 'block' : 'none';
+            document.getElementById('essayContainer').style.display = sub === 'essay' ? 'block' : 'none';
+            document.getElementById('mcqViewToggleGroup').style.display = sub === 'mcq' ? 'flex' : 'none';
+        }
+
+        function setMcqViewMode(vm) {
+            mcqViewMode = vm;
+            document.getElementById('viewSingleBtn').classList.toggle('active-view', vm === 'single');
+            document.getElementById('viewAllBtn').classList.toggle('active-view', vm === 'all');
+            document.getElementById('quizCard').style.display = vm === 'single' ? 'block' : 'none';
+            document.getElementById('allMcqListContainer').style.display = vm === 'all' ? 'block' : 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+            if (vm === 'single') displayQuestion();
+            else renderAllMcqList();
+        }
+
+        function calculateScore() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const isSub = state[currentMode].submitted;
+            let s = 0, answered = 0;
+            qs.forEach((q, i) => {
+                if (ans[i] !== null) {
+                    answered++;
+                    if (ans[i] === q.correct) s++;
+                }
+            });
+            document.getElementById('score').innerText = (deferredGrading && !isSub) ? answered : s;
+            document.getElementById('progressBar').style.width = ((answered / qs.length) * 100) + '%';
+            return s;
+        }
+
+        function loadScores() {
+            const p = getPrefix();
+            document.getElementById('highScore').innerText = safeGet(p + '_high') || '0';
+            document.getElementById('firstScore').innerText = safeGet(p + '_first') !== null ? safeGet(p + '_first') : '--';
+            calculateScore();
+        }
+
+        function displayQuestion() {
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const idx = state[currentMode].currentIdx;
+            const isSub = state[currentMode].submitted;
+            const showFeedback = !deferredGrading || isSub;
+            const q = qs[idx];
+
+            document.getElementById('qCurrent').innerText = idx + 1;
+            document.getElementById('topicBadge').innerText = q.tag;
+            document.getElementById('questionTextAr').innerHTML = (idx + 1) + '. ' + q.ar_q;
+            document.getElementById('questionTextEn').innerHTML = 'Q' + (idx + 1) + ': ' + q.en_q;
+            calculateScore();
+
+            const box = document.getElementById('optionsContainer');
+            box.innerHTML = '';
+            const exp = document.getElementById('explanationText');
+            const st = document.getElementById('qStatusIndicator');
+            const prev = ans[idx];
+
+            if (prev === null) {
+                st.innerText = 'لم يُجب بعد';
+                exp.style.display = 'none';
+            } else if (!showFeedback) {
+                st.innerText = '📌 تم تسجيل اختيارك (يُصحح عند الإنهاء)';
+                exp.style.display = 'none';
+            } else {
+                const ok = prev === q.correct;
+                st.innerText = ok ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة';
+                exp.style.display = 'block';
+                exp.style.borderRightColor = ok ? 'var(--success)' : 'var(--danger)';
+                exp.innerHTML = `<b>${ok ? '✅ أحسنت!' : '❌ الإجابة الصحيحة: (' + ['أ','ب','ج','د'][q.correct] + ') ' + q.options[q.correct].ar}</b><div style="margin-top:6px;">${q.exp_ar}</div><div class="exp-en" style="margin-top:6px;">${q.exp_en}</div>`;
+            }
+
+            q.options.forEach((opt, oi) => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.innerHTML = `<div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${opt.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${opt.en}</div>`;
+                if (prev !== null && showFeedback) {
+                    b.disabled = true;
+                    if (oi === q.correct) b.classList.add('correct');
+                    else if (oi === prev) b.classList.add('wrong');
+                } else {
+                    if (prev === oi && !showFeedback) {
+                        b.classList.add('selected-pending');
+                    }
+                    b.onclick = () => {
+                        state[currentMode].answers[idx] = oi;
+                        displayQuestion();
+                    };
+                }
+                box.appendChild(b);
+            });
+
+            document.getElementById('prevBtn').disabled = (idx === 0);
+            document.getElementById('nextBtn').innerText = (idx === qs.length - 1) ? 'إنهاء وتصحيح الاختبار 🏁' : 'السؤال التالي ⬅️';
+        }
+
+        function submitAndGradeQuiz() {
+            state[currentMode].submitted = true;
+            document.getElementById('quizCard').style.display = 'none';
+            document.getElementById('allMcqListContainer').style.display = 'none';
+            document.getElementById('resultsCard').style.display = 'block';
+            const s = calculateScore();
+            const p = getPrefix();
+            document.getElementById('finalScore').innerText = s;
+            if (safeGet(p + '_first') === null) safeSet(p + '_first', s);
+            if (s > parseInt(safeGet(p + '_high') || '0')) safeSet(p + '_high', s);
+            loadScores();
+            renderMistakesReview();
+        }
+
+        function renderMistakesReview() {
+            const reviewBox = document.getElementById('mistakesReviewBox');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            let html = '<h3 style="color:var(--primary-light); margin-bottom:14px;">📋 المراجعة التفصيلية للإجابات وتصويب الأخطاء:</h3>';
+            qs.forEach((q, i) => {
+                const userAns = ans[i];
+                const isCorrect = userAns === q.correct;
+                const userText = userAns !== null ? `(${['أ','ب','ج','د'][userAns]}) ${q.options[userAns].ar}` : 'لم يُجب';
+                const correctText = `(${['أ','ب','ج','د'][q.correct]}) ${q.options[q.correct].ar}`;
+                html += `
+                <div style="border:2px solid ${isCorrect ? '#10b981' : '#ef4444'}; background:${isCorrect ? 'var(--success-soft)' : 'var(--danger-soft)'}; border-radius:14px; padding:14px; margin-bottom:12px;">
+                    <div style="font-weight:900; margin-bottom:6px;">س${i+1}: ${q.ar_q}</div>
+                    <div style="font-size:0.92rem; margin-bottom:4px;"><strong>إجابتك:</strong> ${userText} ${isCorrect ? '✅' : '❌'}</div>
+                    ${!isCorrect ? `<div style="font-size:0.92rem; color:#065f46; font-weight:800; margin-bottom:4px;"><strong>الإجابة الصحيحة:</strong> ${correctText}</div>` : ''}
+                    <div style="font-size:0.9rem; margin-top:6px; padding-top:6px; border-top:1px dashed rgba(0,0,0,0.15);">${q.exp_ar}</div>
+                </div>`;
+            });
+            reviewBox.innerHTML = html;
+        }
+
+        function nextQuestion() {
+            const qs = quizData[currentMode].mcq;
+            if (state[currentMode].currentIdx < qs.length - 1) {
+                state[currentMode].currentIdx++;
+                displayQuestion();
+            } else {
+                submitAndGradeQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (state[currentMode].currentIdx > 0) {
+                state[currentMode].currentIdx--;
+                displayQuestion();
+            }
+        }
+
+        function selectAllViewOption(qi, oi) {
+            state[currentMode].answers[qi] = oi;
+            calculateScore();
+            renderAllMcqList();
+        }
+
+        function renderAllMcqList() {
+            const box = document.getElementById('allMcqListContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const isSub = state[currentMode].submitted;
+            const showFeedback = !deferredGrading || isSub;
+            box.innerHTML = '';
+
+            qs.forEach((q, qi) => {
+                const prev = ans[qi];
+                const ok = prev === q.correct;
+                const card = document.createElement('div');
+                card.className = 'q-card';
+                let opts = '';
+                q.options.forEach((o, oi) => {
+                    let cls = 'opt-btn';
+                    if (prev !== null && showFeedback) {
+                        if (oi === q.correct) cls += ' correct';
+                        else if (oi === prev) cls += ' wrong';
+                    } else if (prev === oi && !showFeedback) {
+                        cls += ' selected-pending';
+                    }
+                    opts += `<button class="${cls}" ${(prev !== null && showFeedback) ? 'disabled' : ''} onclick="selectAllViewOption(${qi}, ${oi})"><div class="opt-ar">${['أ','ب','ج','د'][oi]}) ${o.ar}</div><div class="opt-en">${['A','B','C','D'][oi]}) ${o.en}</div></button>`;
+                });
+                let statusText = 'لم يُجب';
+                if (prev !== null) {
+                    statusText = showFeedback ? (ok ? '✅ صحيحة' : '❌ خاطئة') : '📌 تم الاختيار';
+                }
+                card.innerHTML = `
+                    <div class="q-header">
+                        <span class="q-badge">${q.tag}</span>
+                        <span>${statusText}</span>
+                    </div>
+                    <div class="q-text-ar">${qi+1}. ${q.ar_q}</div>
+                    <div class="q-text-en">Q${qi+1}: ${q.en_q}</div>
+                    <div class="options-list">${opts}</div>
+                    ${(prev !== null && showFeedback) ? `<div class="explanation" style="display:block; border-right-color:${ok ? 'var(--success)' : 'var(--danger)'};"><div>${q.exp_ar}</div><div class="exp-en">${q.exp_en}</div></div>` : ''}
+                `;
+                box.appendChild(card);
+            });
+
+            const submitBar = document.createElement('div');
+            submitBar.style.textAlign = 'center';
+            submitBar.style.marginTop = '16px';
+            submitBar.innerHTML = `<button class="btn-restart" style="font-size:1.05rem; padding:12px 28px;" onclick="submitAndGradeQuiz()">✅ إنهاء وتصحيح الاختبار وعرض المراجعة الكاملة</button>`;
+            box.appendChild(submitBar);
+        }
+
+        function openIndexModal() {
+            const g = document.getElementById('gridIndexContainer');
+            const qs = quizData[currentMode].mcq;
+            const ans = state[currentMode].answers;
+            const showFeedback = !deferredGrading || state[currentMode].submitted;
+            g.innerHTML = '';
+            qs.forEach((q, i) => {
+                const d = document.createElement('div');
+                let cls = 'index-pill';
+                if (ans[i] !== null) {
+                    cls += showFeedback ? (ans[i] === q.correct ? ' solved-correct' : ' solved-wrong') : ' solved-pending';
+                }
+                d.className = cls;
+                d.innerText = i + 1;
+                d.onclick = () => {
+                    state[currentMode].currentIdx = i;
+                    setMcqViewMode('single');
+                    closeIndexModal();
+                };
+                g.appendChild(d);
+            });
+            document.getElementById('indexModal').style.display = 'flex';
+        }
+
+        function closeIndexModal() {
+            document.getElementById('indexModal').style.display = 'none';
+        }
+
+        function restartCurrentQuiz() {
+            state[currentMode].answers = new Array(15).fill(null);
+            state[currentMode].currentIdx = 0;
+            state[currentMode].submitted = false;
+            setMcqViewMode(mcqViewMode);
+            calculateScore();
+        }
+
+        function toggleEssayBox(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function renderEssayQuestions() {
+            const box = document.getElementById('essayList');
+            const list = quizData[currentMode].essay;
+            box.innerHTML = '';
+            list.forEach((it, i) => {
+                const d = document.createElement('div');
+                d.className = 'essay-item';
+                d.innerHTML = `
+                    <span class="essay-source">${it.source}</span>
+                    <div class="essay-q-text"><strong>س${i+1}:</strong> ${it.q}</div>
+                    <div class="q-text-en"><strong>Q${i+1}:</strong> ${it.en_q}</div>
+                    <textarea class="essay-textarea" placeholder="اكتب إجابتك وتحليلك الهندسي هنا..."></textarea>
+                    <div>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('h_${i}')">💡 تلميح / Hint</button>
+                        <button class="btn-reveal-answer" onclick="toggleEssayBox('m_${i}')">👁️ الإجابة النموذجية / Model Answer</button>
+                    </div>
+                    <div class="hint-box" id="h_${i}">
+                        <div>💡 ${it.hint}</div>
+                        <div class="exp-en" style="margin-top:4px;">💡 ${it.en_hint}</div>
+                    </div>
+                    <div class="model-answer" id="m_${i}">
+                        <div>${it.model}</div>
+                        <hr style="margin:8px 0;opacity:0.3;">
+                        <div class="exp-en" style="color:inherit;">${it.en_model}</div>
+                    </div>
+                `;
+                box.appendChild(d);
+            });
+        }
+
+        function toggleAllEssays(show) {
+            quizData[currentMode].essay.forEach((_, i) => {
+                const m = document.getElementById('m_' + i);
+                if (m) m.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        window.onload = () => {
+            loadScores();
+            displayQuestion();
+            renderEssayQuestions();
+        };
+    </script>
+</body>
+</html>
